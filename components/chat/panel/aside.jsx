@@ -9,7 +9,7 @@ export default function SidebarOptions() {
           <div className="p-2 h-[56px] flex items-center">
               <TransvipLogo logoOnly={true} size={30} />
           </div>
-          <nav className="hidden grid gap-1 p-2">
+          {/* <nav className="hidden grid gap-1 p-2">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
@@ -25,7 +25,7 @@ export default function SidebarOptions() {
                 Playground
               </TooltipContent>
             </Tooltip>
-          </nav>
+          </nav> */}
         </aside>
     )
 }
