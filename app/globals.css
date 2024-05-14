@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer components {
+  .auth-widths {
+		@apply w-[320px] xs:w-[360px] sm:w-[420px];
+	}
+  .auth-form {
+		@apply m-0 px-0 border-0 rounded-none text-white flex flex-col gap-5;
+	}
+  .auth-btn {
+    @apply bg-transvip-dark hover:bg-transvip text-white px-6 py-2.5 items-center justify-center flex rounded-lg;
+  }
+  .auth-input-field {
+		@apply w-full py-2 pl-4 rounded-lg placeholder:text-gray-500 text-black border border-gray-300;
+	}
+  .content-header-btn {
+    @apply hover:bg-slate-500 bg-slate-700 hover:shadow-md text-white py-2 px-3 rounded-md;
+  }
+  .header-link {
+    @apply text-foreground transition-colors hover:text-foreground min-w-fit;
+  }
+  .chat-message {
+    @apply whitespace-normal text-base lg:text-base xl:text-lg leading-6 w-full shadow-md rounded-lg;
+  }
+  .chat-message.assistant {
+    @apply bg-slate-700 text-white flex flex-col gap-3 p-3 md:p-4;
+  }
+  .chat-message.user {
+    @apply bg-gray-200 text-gray-900 p-3 md:p-4 flex gap-3 items-center whitespace-normal;
+  }
+  .chat-message.start.options {
+    @apply text-xs flex flex-row sm:flex-col gap-1 sm:gap-0 items-center h-full cursor-pointer rounded-xl transition-colors bg-gray-800 hover:bg-gray-600 text-white p-3 py-2.5 md:p-5 md:py-3 px-4;
+  }
+  .messages-list {
+    @apply pt-0 mx-auto grid auto-rows-max gap-4 px-2 max-w-[400px] xs:px-0 xs:max-w-screen-xs sm:max-w-2xl;
+  }
+  .message-item {
+    @apply w-full;
+  }
+  .search-results-card {
+    @apply min-w-[320px] md:min-w-[400px];
+  }
+  .search-results-card.booking-information {
+    @apply bg-slate-100 gap-2 p-3 rounded-md text-slate-900;
+  }
+  .titles-font {
+    @apply text-sm md:text-base lg:text-lg;
+  }
+  .detail-info-font {
+    @apply text-xs md:text-sm lg:text-base;
+  }
+  .booking-card-info-detail, .vehicle-card-info-detail {
+    @apply flex flex-row gap-3 items-center justify-start detail-info-font;
+  }
+  .tools-btn {
+    @apply text-slate-900 text-xs;
+  }
+}
