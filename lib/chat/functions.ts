@@ -1,171 +1,21 @@
+import { format } from "date-fns";
 import { getSession } from "../lib";
 import { branches } from "../transvip/config";
 import { VEHICLE_STATUS } from "../utils";
+import { BookingInfoOutputProps, BookingInfoProps, DriverProfileProps, VehicleDetailProps } from "./types";
 
 // URLs
-const VEHICLE_STATUS_API_URL = `${process.env.API_BASE_URL}/${process.env.API_ADMIN_VEHICLE_STATUS}`;
-const VEHICLE_DETAIL_API_URL = `${process.env.API_BASE_URL}/${process.env.API_ADMIN_VEHICLE_DETAIL}`;
-const BOOKING_ID_API_URL = `${process.env.API_BASE_URL}/${process.env.API_SEARCH_BOOKING_BY_ID}`;
-
-// DATA TYPES
-export interface BranchProps {
-    branch_id: number;
-    name: string;
-    code: string;
-}
-export interface VehicleStatusSearchResultProps {
-    vehicle_number: string;
-    message: string;
-    status: number
-     // 0 - Online Free / 1 - Online Busy / Nada: offline
-    fleet_id: number;
-    email: string;
-    first_name: string;
-    last_name: string;
-    driver_name: string;
-    phone_number: string;
-    fleet_image: string;
-    is_active: number;
-    is_available: number;
-    license_plate: string;
-    job_id?: number;
-    pax_count: number;
-    branch: BranchProps;
-    contract_name: string;
-    service_name: string;
-    vehicle_image: string
-}
-export interface BookingInfoProps {
-    job_id: number
-    job_status: number
-    type_of_trip: string
-    is_round_trip: number
-    estimated_payment_cost: number
-    branch: string,
-    is_VIP: number
-    payment_status: number
-    job_time: string
-    job_time_utc: string
-    fleet_first_name: string
-    fleet_last_name: string
-    fleet_country_code: string
-    fleet_phone_number: string
-    transport_details: string
-    unique_car_id: string
-    number_of_passangers: string
-    service_name: string
-    contract_name: string
-    customer_first_name: string
-    customer_last_name: string
-    customer_country_code: string
-    customer_phone_number: string
-    job_pickup_email: string
-    booking_for: string
-    creation_datetime: string
-    job_pickup_address: string
-    job_address: string
-    eta: number,
-    shared_service_id: string | undefined
-}
-export interface BookingInfoOutputProps {
-    booking: {
-        id: number
-        status: number
-        type_of_trip: string
-        is_round_trip: number
-        pax_count: string
-        job_time: string
-        job_time_utc: string
-        creation_datetime: string
-        shared_service_id: string | undefined
-        service_name: string
-        contract_name: string
-        booking_for: string;
-    }
-    branch: {
-        branch_id: number
-        name: string
-        code: string;
-    }
-    directions: { 
-        origin: string
-        destination: string
-        eta: number
-    }
-    payment: {
-        status: number
-        estimated_payment: number
-    }
-    fleet: {
-        first_name: string
-        last_name: string
-        full_name: string
-        phone_number: string
-    }
-    vehicle: {
-        license_plate: string
-        vehicle_number: number
-    }
-    customer: {
-        vip_flag: boolean
-        first_name: string
-        last_name: string
-        full_name: string
-        phone_number: string
-        email: string
-    };
-}
-export interface VehicleDetailProps {
-    vehicle_number: number,
-    license_plate: string,
-    branch: BranchProps,
-    status: number,
-    drivers: VehicleDetailDriversProps[],
-    creation_datetime: string,
-    owner: {
-        id: number,
-        fleet_id: number,
-        first_name: string,
-        last_name: string,
-    },
-    documents: {
-        registration_image: string,
-        permission_of_circulation: string,
-        transportation_permit: string,
-        travel_card_key: string,
-        passenger_insurance_key: string
-    },
-    verification: {
-        status: number,
-        comment: string
-    },
-    contract: {
-        type: string,
-        society_name: string,
-    },
-    type: {
-        id: number,
-        name: string  
-    },
-    model: {
-        id: number,
-        name: string,
-    },
-    color: {
-        id: number,
-        name: string,
-        code: string,
-    }
-}
-export interface VehicleDetailDriversProps {
-    fleet_id: number,
-    first_name: string
-    last_name: string,
-    country_code: string,
-    phone: string
-}
+const VEHICLE_STATUS_API_URL = buildURL(process.env.GET_VEHICLE_STATUS);
+const VEHICLE_DETAIL_API_URL = buildURL(process.env.GET_VEHICLE_DETAIL);
+const DRIVER_SEARCH_API_URL  = buildURL(process.env.SEARCH_DRIVER);
+const DRIVER_PROFILE_API_URL = buildURL(process.env.GET_DRIVER_PROFILE);
+const DRIVER_RATINGS_API_URL = buildURL(process.env.GET_DRIVER_RATINGS);
+const BOOKING_ID_API_URL     = buildURL(process.env.GET_BOOKING_BY_ID);
 
 // AUX FUNCTIONS
+function buildURL(endpoint: string | undefined) {
+    return `${process.env.API_BASE_URL}/${endpoint}`
+}
 async function getResponseFromURL(URL: string) {
     try {
         const options = {
@@ -185,6 +35,7 @@ async function getResponseFromURL(URL: string) {
 }
 
 // FUNCTIONS
+// Vehicles
 export async function getVehicleStatus(vehicleNumber: number) {
     const session = await getSession()
     const currentUser = session?.user as any
@@ -242,6 +93,91 @@ export async function getVehicleStatus(vehicleNumber: number) {
     }
 }
 
+export async function getVehicleDetail(license_plate: string) {
+    const session = await getSession()
+    const currentUser = session?.user as any
+    const accessToken = currentUser?.accessToken as string
+
+    const LIMIT_RESULTS = 1
+    const OFFSET_RESULTS = 0
+
+    const { status, data: { final_data } } = await getResponseFromURL(`${VEHICLE_DETAIL_API_URL}?access_token=${accessToken}&limit=${LIMIT_RESULTS}&offset=${OFFSET_RESULTS}&search_filter=1&search_value=${license_plate}`)
+
+    if (status !== 200) return null
+
+    const { totalCount, result } = final_data
+
+    if (totalCount > 0) {
+        const {
+            registration_number: license_plate,
+            registration_image,
+            permission_of_circulation,
+            travel_card_key,
+            passenger_insurance_key,
+            transportation_permit,
+            owner_id, fleet_id,
+            assigned_drivers, // array
+            added_at,
+            verification_status, verification_comment, // último comentario?
+            working_status, // 0 - Inactivo, 1: Activo
+            unique_car_id,
+            tipo_contrato, society_name,
+            model_id, model_name,
+            color_id, color_name, color_code,
+            first_name, last_name,
+            branch, 
+            car_type: vehicle_type_id, carName: vehicle_type_name
+        } = result[0]
+
+        const output_item : VehicleDetailProps = {
+            vehicle_number: Number(unique_car_id),
+            license_plate,
+            branch: branches.filter(br => br.name.toUpperCase() === branch)[0],
+            status: working_status,
+            drivers: assigned_drivers,
+            creation_datetime: added_at,
+            owner: {
+                id: owner_id,
+                fleet_id,
+                first_name,
+                last_name,
+            },
+            documents: {
+                registration_image,
+                permission_of_circulation,
+                transportation_permit,
+                travel_card_key,
+                passenger_insurance_key
+            },
+            verification: {
+                status: verification_status,
+                comment: verification_comment
+            },
+            contract: {
+                type: tipo_contrato,
+                society_name,
+            },
+            type: {
+                id: vehicle_type_id,
+                name: vehicle_type_name  
+            },
+            model: {
+                id: model_id,
+                name: model_name,
+            },
+            color: {
+                id: color_id,
+                name: color_name,
+                code: color_code,
+            }
+        }
+        return output_item
+    }
+
+    return null
+}
+
+// Bookings
 export async function getBookingInfo(bookingId: number, isShared: boolean) {
     const session = await getSession()
     const currentUser = session?.user as any
@@ -338,7 +274,8 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
     return null
 }
 
-export async function getVehicleDetail(license_plate: string) {
+// Drivers
+export async function searchDriver(driver_email: string) {
     const session = await getSession()
     const currentUser = session?.user as any
     const accessToken = currentUser?.accessToken as string
@@ -346,78 +283,153 @@ export async function getVehicleDetail(license_plate: string) {
     const LIMIT_RESULTS = 1
     const OFFSET_RESULTS = 0
 
-    const { status, data: { final_data } } = await getResponseFromURL(`${VEHICLE_DETAIL_API_URL}?access_token=${accessToken}&limit=${LIMIT_RESULTS}&offset=${OFFSET_RESULTS}&search_filter=1&search_value=${license_plate}`)
+    const params = [
+        `access_token=${accessToken}`,
+        `limit=${LIMIT_RESULTS}`,
+        `offset=${OFFSET_RESULTS}`,
+        `driver_type=0`,
+        `driver_status=1`,
+        `search_filter=1`,
+        `search_value=${driver_email}`
+    ].join("&")
+
+    const { status, data } = await getResponseFromURL(`${DRIVER_SEARCH_API_URL}?${params}`)
+    console.log("RESPUESTA");
+    console.log(data);
 
     if (status !== 200) return null
 
-    const { totalCount, result } = final_data
+    const { customerCount, result } = data
 
-    if (totalCount > 0) {
-        const {
-            registration_number: license_plate,
-            registration_image,
-            permission_of_circulation,
-            travel_card_key,
-            passenger_insurance_key,
-            transportation_permit,
-            owner_id, fleet_id,
-            assigned_drivers, // array
-            added_at,
-            verification_status, verification_comment, // último comentario?
-            working_status, // 0 - Inactivo, 1: Activo
-            unique_car_id,
-            tipo_contrato, society_name,
-            model_id, model_name,
-            color_id, color_name, color_code,
-            first_name, last_name,
-            branch, 
-            car_type: vehicle_type_id, carName: vehicle_type_name
-        } = result[0]
-
-        const output_item : VehicleDetailProps = {
-            vehicle_number: Number(unique_car_id),
-            license_plate,
-            branch: branches.filter(br => br.name.toUpperCase() === branch)[0],
-            status: working_status,
-            drivers: assigned_drivers,
-            creation_datetime: added_at,
-            owner: {
-                id: owner_id,
-                fleet_id,
-                first_name,
-                last_name,
-            },
-            documents: {
-                registration_image,
-                permission_of_circulation,
-                transportation_permit,
-                travel_card_key,
-                passenger_insurance_key
-            },
-            verification: {
-                status: verification_status,
-                comment: verification_comment
-            },
-            contract: {
-                type: tipo_contrato,
-                society_name,
-            },
-            type: {
-                id: vehicle_type_id,
-                name: vehicle_type_name  
-            },
-            model: {
-                id: model_id,
-                name: model_name,
-            },
-            color: {
-                id: color_id,
-                name: color_name,
-                code: color_code,
-            }
-        }
-        return output_item
+    if (customerCount > 0) {
+        return result[0].fleet_id
     }
 
     return null
+}
+
+export async function getDriverProfile(fleet_id: number) {
+    const session = await getSession()
+    const currentUser = session?.user as any
+    const accessToken = currentUser?.accessToken as string
+
+    const params = [
+        `access_token=${accessToken}`,
+        `fleet_id=${fleet_id}`,
+    ].join("&")
+
+    const { status, data } = await getResponseFromURL(`${DRIVER_PROFILE_API_URL}?${params}`)
+
+    if (status !== 200) return null
+
+    const { driver_detail } = data
+
+    const {
+        fleet_id: driver_id,
+        branch,
+        GaussControl_ID, GaussControl_IBC, GaussControl_NFA, GaussControl_LastUpdate, GaussControl_timezone,
+        first_name, last_name, email, country_code, phone,
+        fleet_image,
+        registration_status, verification_status,
+        is_active, is_available, is_blocked, is_blocked_gauss,
+        status: driver_status,
+        total_rating, total_rated_tasks,
+        creation_datetime,
+        last_login_datetime: last_login,
+        RUT, RUT_image,
+        license_type, license_expiry_date, license_img,
+        life_sheet_img, antecents_certificate,
+        current_car_details,
+        invoice_rut,
+        car_details, // []
+        assigned_cars, // []
+    } = driver_detail
+
+    const output_item : DriverProfileProps = {
+        id: driver_id,
+        created_at: creation_datetime,
+        last_login,
+        branch: branches.filter(br => br.branch_id === branch)[0],
+        current_license_plate: current_car_details,
+        invoice_rut: invoice_rut.toUpperCase(),
+        personal: {
+            first_name: first_name.trim(),
+            last_name: last_name.trim(),
+            full_name: first_name.trim() + " " + last_name.trim(),
+            phone: country_code.trim() + phone.trim(),
+            email: email.toLocaleLowerCase(),
+            image: fleet_image,
+        },
+        status: {
+            registration_status,
+            verification_status,
+            is_active,
+            is_available,
+            is_blocked,
+            is_blocked_gauss,
+            current: driver_status,
+        },
+        quality: {
+            total_rating,
+            rated_trips: total_rated_tasks,
+            avg_rating: total_rating / total_rated_tasks,
+        },
+        safety: {
+            GaussControl: {
+                id: GaussControl_ID,
+                IBC: GaussControl_IBC,
+                NFA: GaussControl_NFA,
+                last_updated_at: GaussControl_LastUpdate,
+                timezone: GaussControl_timezone
+            }
+        },
+        driver_documents: {
+            RUT: {
+                number: RUT,
+                image: RUT_image,
+            },
+            license: {
+                type: license_type,
+                expiration_date: license_expiry_date,
+                image: license_img,
+            },
+            life_sheet: {
+                image: life_sheet_img
+            },
+            background: {
+                image: antecents_certificate,
+            }
+        },
+        vehicles: car_details,
+        assigned_cars,
+    }
+
+    return output_item
+}
+
+export async function getDriverRatings(fleet_id: number) {
+    const session = await getSession()
+    const currentUser = session?.user as any
+    const accessToken = currentUser?.accessToken as string
+
+    const OFFSET_DAYS = 90
+    const DATE_FORMAT = "yyyy-MM-dd"
+
+    // DATES
+    const END_DATE = new Date()
+    const TODAY = new Date()
+    const START_DATE = TODAY.setDate(TODAY.getDate() - OFFSET_DAYS)
+
+    const params = [
+        `access_token=${accessToken}`,
+        `fleet_id=${fleet_id}`,
+        `startDate=${format(START_DATE, DATE_FORMAT)}`,
+        `endDate=${format(END_DATE, DATE_FORMAT)}`,
+    ].join("&")
+
+    const { status, data } = await getResponseFromURL(`${DRIVER_RATINGS_API_URL}?${params}`)
+
+    if (status !== 200) return null
+
+    return data
 }

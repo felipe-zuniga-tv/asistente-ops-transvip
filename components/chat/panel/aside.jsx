@@ -1,15 +1,18 @@
+import { cn } from "@/lib/utils";
 import { TransvipLogo } from "@/components/transvip/transvip-logo";
-import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Bot, Code2, LifeBuoy, SquareTerminal, SquareUser } from "lucide-react";
+// import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+// import { SquareTerminal } from "lucide-react";
 
-export default function SidebarOptions() {
-    return (
-        <aside className="inset-y fixed left-0 z-20 flex h-full flex-col border-r bg-transvip/80">
-          <div className="p-2 h-[56px] flex items-center">
-              <TransvipLogo logoOnly={true} size={30} />
-          </div>
-          {/* <nav className="hidden grid gap-1 p-2">
+export default function SidebarOptions({ className }) {
+  return (
+    <aside className={
+      cn("inset-y fixed left-0 z-20 flex h-full flex-col border-r bg-transvip/80",
+        className
+      )}>
+      <div className="p-2 h-[56px] flex items-center">
+        <TransvipLogo logoOnly={true} size={30} />
+      </div>
+      {/* <nav className="hidden grid gap-1 p-2">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
@@ -26,6 +29,6 @@ export default function SidebarOptions() {
               </TooltipContent>
             </Tooltip>
           </nav> */}
-        </aside>
-    )
+    </aside>
+  )
 }

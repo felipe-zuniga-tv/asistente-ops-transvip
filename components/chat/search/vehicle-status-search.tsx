@@ -1,16 +1,14 @@
 'use client'
 import {
-    // useAIState,
     useActions,
     useUIState
 } from 'ai/rsc'
-import { VehicleStatusSearchResultProps } from '@/lib/chat/functions';
 import { nanoid } from 'nanoid';
-import { AssistantMessageContent, UserMessage } from '../message';
-import Link from 'next/link';
-import { CheckCircle, SparklesIcon, UserIcon } from 'lucide-react';
-import { VEHICLE_STATUS, cn } from '@/lib/utils';
 import Image from 'next/image';
+import { CheckCircle, SparklesIcon, UserIcon } from 'lucide-react';
+import { AssistantMessageContent, UserMessage } from '../message';
+import { VehicleStatusSearchResultProps } from '@/lib/chat/types';
+import { VEHICLE_STATUS, cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import CityBadge from '../city-badge';
 import ToolsButton from '../tools/tools-button';
@@ -26,7 +24,6 @@ export function VehicleStatusSearch({ session, searchResults, content }: {
     searchResults: VehicleStatusSearchResults, 
     content: string 
 }) {
-    // const [aiState] = useAIState()
     const [_, setMessages] = useUIState()
     const { submitUserMessage } = useActions()
 
@@ -37,7 +34,7 @@ export function VehicleStatusSearch({ session, searchResults, content }: {
             ...currentMessages,
             {
                 id: nanoid(),
-                display: <UserMessage content={userMessageContent} />
+                display: <UserMessage content={userMessageContent} session={session} />
             }
         ])
 

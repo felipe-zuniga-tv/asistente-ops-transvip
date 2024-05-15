@@ -1,43 +1,27 @@
 'use client'
 import {
-    // useAIState,
     useActions,
     useUIState
 } from 'ai/rsc'
-import { BookingInfoOutputProps, VehicleDetailDriversProps, VehicleDetailProps } from '@/lib/chat/functions';
 import { nanoid } from 'nanoid';
-import { AssistantMessageContent, UserMessage } from '../message';
 import Link from 'next/link';
 import { CarIcon, PhoneIcon, UserCircleIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { AssistantMessageContent, UserMessage } from '../message';
+import { VehicleDetailDriversProps, VehicleDetailProps } from '@/lib/chat/types';
 import { Badge } from '@/components/ui/badge';
 import CityBadge from '../city-badge';
-import { Table, TableCaption, TableHeader } from '@/components/ui/table';
 import ToolsButton from '../tools/tools-button';
 // import * as Whatsapp from '../../../public/images/whatsapp-logo.svg'
 
-export function VehicleDetail({ vehicleInformation, content }: { vehicleInformation: VehicleDetailProps[], content: string }) {
+export function VehicleDetail({ session, vehicleInformation, content }: { 
+    session: any,
+    vehicleInformation: VehicleDetailProps[]
+    content: string 
+}) {
     const [_, setMessages] = useUIState()
     const { submitUserMessage } = useActions()
 
-    const handleClick = async ({ result } : { result : VehicleDetailProps }) => {
-        const userMessageContent = `Me gustaría saber más sobre el vehículo ${result.license_plate}.`
-
-        setMessages((currentMessages: any) => [
-            ...currentMessages,
-            {
-                id: nanoid(),
-                display: <UserMessage content={userMessageContent} />
-            }
-        ])
-
-        const response = await submitUserMessage(userMessageContent)
-        setMessages((currentMessages: any) => [
-            ...currentMessages,
-            response
-        ])
-    }
-    
     const handleVehicleStatusClick = async (vehicle_number : number ) => {
         const userMessageContent = `Me gustaría saber si el móvil ${vehicle_number} está online.`
 
@@ -45,7 +29,7 @@ export function VehicleDetail({ vehicleInformation, content }: { vehicleInformat
             ...currentMessages,
             {
                 id: nanoid(),
-                display: <UserMessage content={userMessageContent} />
+                display: <UserMessage content={userMessageContent} session={session} />
             }
         ])
 
@@ -67,7 +51,6 @@ export function VehicleDetail({ vehicleInformation, content }: { vehicleInformat
                 { vehicleInformation.map((result: VehicleDetailProps) => (
                     <VehicleDetailCard keyName={result.license_plate} 
                         result={result}
-                        handleClick={handleClick}
                         handleVehicleStatusClick={() => handleVehicleStatusClick(result.vehicle_number)}
                     />
                 ))}
@@ -79,15 +62,13 @@ export function VehicleDetail({ vehicleInformation, content }: { vehicleInformat
     )
 }
 
-function VehicleDetailCard({ keyName, result, handleClick, handleVehicleStatusClick } : {
+function VehicleDetailCard({ keyName, result, handleVehicleStatusClick } : {
     keyName: any, 
     result: VehicleDetailProps,
-    handleClick?: any,
     handleVehicleStatusClick?: any
 }) {
     return (
-        <div key={keyName} 
-            className='vehicle-detail-card w-full flex flex-col gap-2 md:gap-4'>
+        <div key={keyName} className='vehicle-detail-card w-full flex flex-col gap-2 md:gap-4'>
             <VehicleMainDetails result={result} />
             <VehicleDrivers result={result} />
             <VehicleBadges result={result} handleStatusClick={handleVehicleStatusClick} />
@@ -95,12 +76,12 @@ function VehicleDetailCard({ keyName, result, handleClick, handleVehicleStatusCl
     )
 }
 
-function VehicleMainDetails({ result } : { result : VehicleDetailProps}) {
+function VehicleMainDetails({ result } : { result : VehicleDetailProps }) {
     const bgColor = result.color.code
     return (
         <div className={cn(`vehicle-main-details flex flex-col gap-2 items-start justify-start`)}>
             <span className='font-bold titles-font'>General</span>
-            <div className='vehicle-card-info-detail flex flex-col gap-3 items-start justify-start pl-2 w-full'>
+            <div className='card-info-detail flex flex-col gap-3 items-start justify-start pl-2 w-full'>
                 <div className='flex flex-row gap-4 items-center justify-start w-full'>
                     <span>PPU: { result.license_plate }</span>
                     <span>Número de Móvil: { result.vehicle_number }</span>
@@ -123,7 +104,7 @@ function VehicleMainDetails({ result } : { result : VehicleDetailProps}) {
     )
 }
 
-function VehicleDrivers({ result } : { result : VehicleDetailProps}) {
+function VehicleDrivers({ result } : { result : VehicleDetailProps }) {
     return (
         <div className='vehicle-info-drivers flex flex-col gap-2 items-start justify-start'>
             <span className='font-bold titles-font'>Conductores</span>
@@ -131,12 +112,12 @@ function VehicleDrivers({ result } : { result : VehicleDetailProps}) {
                 {
                     result.drivers.map((driver: VehicleDetailDriversProps) => 
                         <li className='flex flex-row gap-2'>
-                            <div className='vehicle-card-info-detail'>
+                            <div className='card-info-detail'>
                                 <UserCircleIcon className='size-4' />
                                 <span>{driver.first_name.trim() + " " + driver.last_name.trim()}</span>
                             </div>
                             <span>·</span>
-                            <div className='vehicle-card-info-detail'>
+                            <div className='card-info-detail'>
                                 <PhoneIcon className='size-4' />
                                 <Link href={`tel:${driver.country_code.trim() + driver.phone.trim()}`} className='hover:underline'>
                                     <span>{driver.country_code.trim() + driver.phone.trim()}</span>

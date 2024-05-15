@@ -56,7 +56,7 @@
     @apply text-foreground transition-colors hover:text-foreground min-w-fit;
   }
   .chat-message {
-    @apply whitespace-normal text-base lg:text-base xl:text-lg leading-6 w-full shadow-md rounded-lg;
+    @apply whitespace-normal text-sm xl:text-base leading-6 w-full shadow-md rounded-lg;
   }
   .chat-message.assistant {
     @apply bg-slate-700 text-white flex flex-col gap-3 p-3 md:p-4;
@@ -85,7 +85,7 @@
   .detail-info-font {
     @apply text-xs md:text-sm lg:text-base;
   }
-  .booking-card-info-detail, .vehicle-card-info-detail {
+  .card-info-detail {
     @apply flex flex-row gap-3 items-center justify-start detail-info-font;
   }
   .tools-btn {

@@ -21,8 +21,8 @@ import SystemTools from "./tools"
 
 export function TransvipPanel({ id, session }) {
 	return (
-		<div className="grid h-screen w-full pl-[56px] bg-white">
-			<SidebarOptions />
+		<div className="grid h-screen w-full xs:pl-[56px] bg-white">
+			<SidebarOptions className="" />
 			<div className="flex flex-col">
 				<header className="sticky top-0 z-10 flex h-[56px] items-center gap-1 border-b_ bg-background px-4">
 					<div className="flex flex-row gap-2 text-xl font-semibold mr-4">
@@ -47,12 +47,12 @@ export function TransvipPanel({ id, session }) {
 							</DrawerHeader>
 							<form className="grid w-full items-start gap-6 overflow-auto p-4 pt-0">
 								<fieldset className="grid gap-6 rounded-lg border p-4">
-									<legend className="-ml-1 px-2 text-sm font-medium">
+									{/* <legend className="-ml-1 px-2 text-sm font-medium">
 										<Badge className="bg-transvip">
 											<TransvipLogo colored={false} className="py-1" size={60} />
 										</Badge>
-									</legend>
-									<span>Selecciona una herramienta</span>
+									</legend> */}
+									{/* <span>Selecciona una herramienta</span> */}
 									<SystemTools session={session} />
 								</fieldset>
 							</form>

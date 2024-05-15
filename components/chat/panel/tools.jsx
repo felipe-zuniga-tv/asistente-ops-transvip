@@ -3,6 +3,7 @@ import { useActions, useUIState } from "ai/rsc"
 import { UserMessage } from "../message"
 import { Car } from "lucide-react"
 import { nanoid } from "nanoid"
+import { TransvipLogo } from "@/components/transvip/transvip-logo"
 
 const toolsList = [
     {
@@ -11,14 +12,24 @@ const toolsList = [
         search: 'Me gustaría saber si un vehículo específico se encuentra conectado'
     },
     {
+        name: 'Detalle de un móvil',
+        hint: 'Busca utilizando la patente',
+        search: 'Quiero saber más detalles sobre un móvil en particular',
+    },
+    {
         name: 'Detalle por reserva o paquete',
         hint: 'Busca una reserva o paquete usando su código',
         search: 'Me gustaría saber más información sobre una reserva o paquete'
     },
     {
-        name: 'Detalle de un móvil',
-        hint: 'Busca utilizando la patente',
-        search: 'Quiero saber más detalles sobre un móvil en particular',
+        name: 'Perfil de un conductor',
+        hint: 'Busca usando el email',
+        search: 'Quiero ver el perfil de un conductor en particular',
+    },
+    {
+        name: 'Evaluaciones de un conductor',
+        hint: 'Busca por el teléfono o email',
+        search: 'Quiero armar un resumen de las evaluaciones de un conductor en particular',
     },
 ]
 
@@ -52,7 +63,8 @@ export default function SystemTools({ session }) {
                         className="border p-2 bg-gray-50 hover:bg-gray-100 hover:cursor-pointer rounded-md shadow-md w-full flex items-center justify-start gap-3 text-muted-background"
                         onClick={() => handleClick({ tool })}
                     >
-                        <Car className="size-5" />
+                        {/* <Car className="size-5" /> */}
+                        <TransvipLogo logoOnly={true} colored={false} size={20} className="bg-transvip p-1 rounded-md" />
                         <div className="grid gap-0.5">
                             <span>{ tool.name }</span>
                             <p className="text-xs text-muted-foreground" data-description>{ tool.hint }</p>
