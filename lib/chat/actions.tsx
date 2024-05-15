@@ -12,7 +12,7 @@ import {
 import { z } from "zod";
 import { openai } from "@ai-sdk/openai";
 import { getSession } from "../lib";
-import { VEHICLE_STATUS, nanoid } from "@/lib/utils";
+import { VEHICLE_STATUS, getDriverRatingSummary, nanoid } from "@/lib/utils";
 import { CREATE_DRIVER_RATINGS_SUMMARY, SYSTEM_MESSAGE } from "./config";
 import { getVehicleStatus, getBookingInfo, getVehicleDetail, getDriverProfile, searchDriver, getDriverRatings } from "./functions";
 import { BotCard, AssistantMessage, LoadingMessage, UserMessage } from "@/components/chat/message";
@@ -124,7 +124,7 @@ async function submitUserMessage(content: string) {
 
 					return vehicleStatus.status !== VEHICLE_STATUS.OFFLINE ? (
 						<BotCard>
-							<VehicleStatusSearch searchResults={[vehicleStatus]} 
+							<VehicleStatusSearch searchResults={[vehicleStatus]}
 								content={content.text}
 								session={session}
 							/>
@@ -148,7 +148,7 @@ async function submitUserMessage(content: string) {
 				}).required(),
 				generate: async function* ({ bookingId, isShared }) {
 					yield <LoadingMessage text={`Buscando información de la reserva #${bookingId}...`} />
-					
+
 					const bookingInformation = await getBookingInfo(bookingId, isShared)
 					// console.log(`RESERVA: ${bookingId} - IS SHARED: ${isShared}`);
 					// console.log(bookingInformation);
@@ -167,14 +167,14 @@ async function submitUserMessage(content: string) {
 					return bookingInformation ? (
 						<BotCard>
 							<BookingIdSearch
-								searchResults={bookingInformation} 
-								content={content.text} 
+								searchResults={bookingInformation}
+								content={content.text}
 								session={session}
 							/>
 						</BotCard>
 					) : (
 						<BotCard>
-							<div>No se pudo encontrar la reserva o paquete con el código <span className="font-bold">{ bookingId }</span>.</div>
+							<div>No se pudo encontrar la reserva o paquete con el código <span className="font-bold">{bookingId}</span>.</div>
 						</BotCard>
 					)
 				}
@@ -231,8 +231,8 @@ async function submitUserMessage(content: string) {
 				}).required(),
 				generate: async function* ({ driverEmail }) {
 					yield <LoadingMessage text={`Buscando conductor con email ${driverEmail}...`}
-							className="text-sm"
-						/>
+						className="text-sm"
+					/>
 
 					const fleetId = await searchDriver(driverEmail)
 					const driverProfile = await getDriverProfile(fleetId)
@@ -256,7 +256,7 @@ async function submitUserMessage(content: string) {
 						</BotCard>
 					) : (
 						<BotCard>
-							<div>No se pudo encontrar el conductor utilizando el email { driverEmail }.</div>
+							<div>No se pudo encontrar el conductor utilizando el email {driverEmail}.</div>
 						</BotCard>
 					)
 				}
@@ -271,14 +271,14 @@ async function submitUserMessage(content: string) {
 						.describe(`El email del conductor del cual se quiere construir un resumen de sus evaluaciones`),
 				}).required(),
 				generate: async function* ({ driverEmail }) {
-					yield <LoadingMessage text={`Buscando conductor con email ${driverEmail}...`}
-							className="text-sm"
-						/>
+					yield <LoadingMessage text={`Buscando conductor ${driverEmail}`}
+						className="text-sm"
+					/>
 
 					const fleetId = await searchDriver(driverEmail)
 					const driverProfile = await getDriverProfile(fleetId)
 					const driverRatings = await getDriverRatings(fleetId)
-					// console.log(driverRatings);
+					const driverRatingsSummary = getDriverRatingSummary(driverRatings)
 
 					aiState.update({
 						...aiState.get(),
@@ -290,7 +290,7 @@ async function submitUserMessage(content: string) {
 							},
 							{
 								role: 'assistant',
-								content: JSON.stringify(driverRatings)
+								content: JSON.stringify(driverRatingsSummary) + `\n\nAverage Rating: ${driverProfile?.quality.avg_rating}`
 							},
 						]
 					})
@@ -306,7 +306,7 @@ async function submitUserMessage(content: string) {
 						<AssistantMessage content={content.text} session={session} />
 					) : (
 						<BotCard>
-							<div>No se pudo encontrar el conductor de email { driverEmail }.</div>
+							<div>No se pudo encontrar el conductor de email {driverEmail}.</div>
 						</BotCard>
 					)
 				}

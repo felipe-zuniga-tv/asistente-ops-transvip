@@ -199,7 +199,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
         await getResponseFromURL(`${BOOKING_ID_API_URL}?package_id=${bookingId}&access_token=${accessToken}`) :
         await getResponseFromURL(`${BOOKING_ID_API_URL}?booking_id=${bookingId}&access_token=${accessToken}`)
 
-    // console.log(data)
+    console.log(data)
 
     if (status !== 200) return null
 

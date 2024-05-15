@@ -5,7 +5,7 @@ import {
 } from 'ai/rsc'
 import { nanoid } from 'nanoid';
 import Link from 'next/link';
-import { differenceInDays } from 'date-fns';
+import { differenceInDays, differenceInMinutes } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { BookingInfoOutputProps } from '@/lib/chat/types';
 import { AssistantMessageContent, UserMessage } from '../message';
@@ -101,7 +101,9 @@ function BookingIdResultsCard({ keyName, result, handleVehicleNumberClick } : {
 }
 
 function BookingMainDetails({ result } : { result : BookingInfoOutputProps}) {
-    const daysToTrip = differenceInDays(new Date(result.booking.job_time), new Date())
+    const booking_datetime_local = new Date(result.booking.job_time_utc)
+    const days_to_trip = differenceInDays(booking_datetime_local, new Date())
+    const minutes_to_trip = differenceInMinutes(booking_datetime_local, new Date())
 
     return (
         <div className='booking-main-details flex flex-col gap-2 items-start justify-start w-full'>
@@ -114,19 +116,34 @@ function BookingMainDetails({ result } : { result : BookingInfoOutputProps}) {
                 )}
                 <div className='card-info-detail'>
                     <Calendar className='size-4' />
-                    <span>{new Date(result.booking.job_time).toLocaleString()}</span>
-                    { daysToTrip > 0 && (
+                    <span>{ booking_datetime_local.toLocaleString() }</span>
+                    { days_to_trip > 0 && (
                         <>
                             <span>·</span>
-                            <span className='font-semibold'>Faltan: {daysToTrip} días</span>
+                            <span className='font-semibold'>Faltan: {days_to_trip} días</span>
                         </>
                     )}
-                    { daysToTrip < 0 && (
+                    { minutes_to_trip >= 0 && (
                         <>
                             <span>·</span>
-                            <span className='font-semibold'>Hace: {-1*daysToTrip} días</span>
+                            <span className='font-semibold'>Faltan: {minutes_to_trip} minutos</span>
                         </>
                     )}
+                    { days_to_trip < 0 && (
+                        <>
+                            <span>·</span>
+                            <span className='font-semibold'>Hace: {-1*days_to_trip} días</span>
+                        </>
+                    )}
+                    { minutes_to_trip < 0 && (
+                        <>
+                            <span>·</span>
+                            <span className='font-semibold'>Hace: {-1*minutes_to_trip} minutos</span>
+                        </>
+                    )}
+                </div>
+                <div className='card-info-detail gap-2'>
+                    <span>{result.booking.contract_name}</span>
                 </div>
                 <div className='card-info-detail gap-2'>
                     <span>Pax: {result.booking.pax_count}</span>
@@ -135,10 +152,9 @@ function BookingMainDetails({ result } : { result : BookingInfoOutputProps}) {
                     <span>·</span>
                     <span>{result.booking.service_name}</span>
                     <span>·</span>
-                    <span>{result.booking.contract_name}</span>
-                    <span>·</span>
                     <span>RT: {result.booking.is_round_trip === 1 ? 'Sí': 'No'}</span>
                 </div>
+                
                 <div className='card-info-detail payment'>
                     <span className='font-semibold'>Monto:</span>
                     <span>{chileanPeso.format(result.payment.estimated_payment)}</span>
@@ -251,10 +267,10 @@ function BookingVehicle({ result, handleVehicleNumberClick } : {
             <div className='card-info-detail pl-2'>
                 <CircleUserIcon className='size-4' />
                 <span>Conductor: {result.fleet.full_name}</span>
-                <Button variant={'outline'} className='py-0.5 bg-green-600 hover:bg-green-800 text-white hover:text-white'>
+                <Button variant={'outline'} className='px-2.5 rounded-full bg-green-600 hover:bg-green-800 text-white hover:text-white'>
                     <Link href={whatsappLink} 
                         target='_blank'
-                        className='flex flex-row gap-1 items-center'>
+                        className='flex flex-row items-center'>
                         <WhatsappIcon />
                     </Link>
                 </Button>
