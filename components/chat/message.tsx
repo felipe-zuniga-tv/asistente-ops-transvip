@@ -28,7 +28,6 @@ export function UserMessage({ session, content }: { session?: any, content: stri
 			<div className="flex flex-col gap-2 w-full">
 				{ content }
 				<div className="flex flex-row gap-0 justify-end items-center text-xs">
-					{/* <UserIcon className="h-4" /> */}
 					{ session && <span>{ session.user.full_name }</span>}
 				</div>
 			</div>
@@ -95,7 +94,7 @@ export function LoadingMessage({ text = 'Espera...', className } :{
 	className?: string
 }) {
 	return (
-		<div className={cn(`chat-message bg-slate-700 text-white rounded-md shadow-md flex flex-col gap-3 whitespace-pre-wrap mb-2 animate-pulse justify-center items-center bg-gradient-to-r from-gray-100 via-white to-slate-100 p-3`, className)}>
+		<div className={cn(`loading-message bg-slate-700 text-white rounded-md shadow-md flex flex-col gap-3 whitespace-pre-wrap mb-2 animate-pulse justify-center items-center bg-gradient-to-r from-gray-100 via-white to-slate-100 p-3`, className)}>
 			<div className="flex gap-3 items-center text-gray-700">
 				<TransvipLogo className="assistant-logo rounded-md self-start" />
 				{ text }

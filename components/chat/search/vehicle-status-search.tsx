@@ -12,6 +12,7 @@ import { VEHICLE_STATUS, cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import CityBadge from '../city-badge';
 import ToolsButton from '../tools/tools-button';
+import DriverAvatar from '@/components/driver/driver-avatar';
 // import * as Whatsapp from '../../../public/images/whatsapp-logo.svg'
 
 export interface VehicleStatusSearchResults {
@@ -120,13 +121,8 @@ function VehicleStatusHeader({ result }: {
                 { result.phone_number && <span className='hidden font-semibold text-xs'>{ result.phone_number }</span>}
             </div>
             <div className='fleet-profile-img'>
-                { result.fleet_image !== '' ? 
-                    <Image src={result.fleet_image}
-                        width={100} height={100}
-                        className='h-12 w-12 md:h-16 md:w-16 shadow-md object-cover rounded-full' 
-                        alt={result.first_name}
-                        />
-                    : <UserIcon className='size-12 rounded-full shadow-md bg-gray-100 text-black p-2' />
+                { result.fleet_image !== '' &&
+                    <DriverAvatar url={result.fleet_image} alt={result.first_name} />
                 }
             </div>
         </div>

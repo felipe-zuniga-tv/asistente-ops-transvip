@@ -12,8 +12,7 @@ import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
 import CityBadge from '../city-badge';
 import ToolsButton from '../tools/tools-button';
-import Image from 'next/image';
-// import * as Whatsapp from '../../../public/images/whatsapp-logo.svg'
+import DriverAvatar from '@/components/driver/driver-avatar';
 
 export function DriverProfile({ session, driverProfile, content }: { 
     session: any,
@@ -79,13 +78,8 @@ function DriverMainDetails({ result } : { result : DriverProfileProps }) {
         <div className={cn(`result-fleet-header flex flex-row items-center justify-between gap-4`)}>
             <div className='flex flex-row gap-4 items-center justify-start'>
                 <div className='driver-profile-img'>
-                    { result.personal.image !== '' ? 
-                        <Image src={result.personal.image}
-                            width={100} height={100}
-                            className='h-12 w-12 md:h-16 md:w-16 shadow-md object-cover rounded-full' 
-                            alt={result.personal.full_name}
-                            />
-                        : <UserIcon className='size-12 rounded-full shadow-md bg-gray-100 text-black p-2' />
+                    { result.personal.image !== '' &&
+                        <DriverAvatar url={result.personal.image} alt={result.personal.full_name} />
                     }
                 </div>
                 <div className='card-info-detail flex flex-col gap-0 items-start justify-start'>

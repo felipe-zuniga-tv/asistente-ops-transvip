@@ -12,7 +12,7 @@ export function EmptyScreen({ session }: { session: any }) {
                     <span className="mt-2 font-bold">¿Con qué puedo ayudarte hoy?</span>
                 </div>
                 <div className="flex flex-row gap-2 justify-end items-center text-xs">
-                    <TransvipLogo colored={false} />
+                    <TransvipLogo logoOnly={true} colored={false} size={20} />
                 </div>
             </div>
         </div>
