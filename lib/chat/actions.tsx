@@ -276,6 +276,7 @@ async function submitUserMessage(content: string) {
 						/>
 
 					const fleetId = await searchDriver(driverEmail)
+					const driverProfile = await getDriverProfile(fleetId)
 					const driverRatings = await getDriverRatings(fleetId)
 					// console.log(driverRatings);
 
@@ -285,7 +286,7 @@ async function submitUserMessage(content: string) {
 							...aiState.get().messages,
 							{
 								role: 'assistant',
-								content: `Mostrando evaluaciones del conductor de email ${driverEmail}`
+								content: `Evaluaciones del conductor ${driverProfile?.personal.full_name}, email ${driverEmail}`
 							},
 							{
 								role: 'assistant',

@@ -5,15 +5,15 @@ import { VEHICLE_STATUS } from "../utils";
 import { BookingInfoOutputProps, BookingInfoProps, DriverProfileProps, VehicleDetailProps } from "./types";
 
 // URLs
-const VEHICLE_STATUS_API_URL = buildURL(process.env.GET_VEHICLE_STATUS);
-const VEHICLE_DETAIL_API_URL = buildURL(process.env.GET_VEHICLE_DETAIL);
-const DRIVER_SEARCH_API_URL  = buildURL(process.env.SEARCH_DRIVER);
-const DRIVER_PROFILE_API_URL = buildURL(process.env.GET_DRIVER_PROFILE);
-const DRIVER_RATINGS_API_URL = buildURL(process.env.GET_DRIVER_RATINGS);
-const BOOKING_ID_API_URL     = buildURL(process.env.GET_BOOKING_BY_ID);
+const VEHICLE_STATUS_API_URL = buildAPIUrl(process.env.GET_VEHICLE_STATUS);
+const VEHICLE_DETAIL_API_URL = buildAPIUrl(process.env.GET_VEHICLE_DETAIL);
+const DRIVER_SEARCH_API_URL  = buildAPIUrl(process.env.SEARCH_DRIVER);
+const DRIVER_PROFILE_API_URL = buildAPIUrl(process.env.GET_DRIVER_PROFILE);
+const DRIVER_RATINGS_API_URL = buildAPIUrl(process.env.GET_DRIVER_RATINGS);
+const BOOKING_ID_API_URL     = buildAPIUrl(process.env.GET_BOOKING_BY_ID);
 
 // AUX FUNCTIONS
-function buildURL(endpoint: string | undefined) {
+function buildAPIUrl(endpoint: string | undefined) {
     return `${process.env.API_BASE_URL}/${endpoint}`
 }
 async function getResponseFromURL(URL: string) {
@@ -41,10 +41,12 @@ export async function getVehicleStatus(vehicleNumber: number) {
     const currentUser = session?.user as any
     const accessToken = currentUser?.accessToken as string
 
-    // console.log('CURRENT SESSION');
-    // console.log(currentUser);
+    const params = [
+        `access_token=${accessToken}`,
+        `search_id=${vehicleNumber}`,
+    ].join("&")
 
-    const output = await getResponseFromURL(`${VEHICLE_STATUS_API_URL}?search_id=${vehicleNumber}&access_token=${accessToken}`)
+    const output = await getResponseFromURL(`${VEHICLE_STATUS_API_URL}?${params}`)
 
     if (output.data.length > 0) {
         const {
@@ -101,7 +103,15 @@ export async function getVehicleDetail(license_plate: string) {
     const LIMIT_RESULTS = 1
     const OFFSET_RESULTS = 0
 
-    const { status, data: { final_data } } = await getResponseFromURL(`${VEHICLE_DETAIL_API_URL}?access_token=${accessToken}&limit=${LIMIT_RESULTS}&offset=${OFFSET_RESULTS}&search_filter=1&search_value=${license_plate}`)
+    const params = [
+        `access_token=${accessToken}`,
+        `limit=${LIMIT_RESULTS}`,
+        `offset=${OFFSET_RESULTS}`,
+        `search_filter=1`,
+        `search_value=${license_plate}`
+    ].join("&")
+
+    const { status, data: { final_data } } = await getResponseFromURL(`${VEHICLE_DETAIL_API_URL}?${params}`)
 
     if (status !== 200) return null
 
@@ -198,7 +208,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
     if (totalCount > 0) {
         const output: BookingInfoOutputProps[] = []
 
-        result.forEach((r: BookingInfoProps) => {
+        await Promise.all(result.map(async (r: BookingInfoProps) => {
             const {
                 job_id, job_status, type_of_trip,
                 is_round_trip, estimated_payment_cost,
@@ -206,7 +216,8 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 is_VIP,
                 payment_status,
                 job_time, job_time_utc,
-                fleet_first_name, fleet_last_name, fleet_country_code, fleet_phone_number,
+                fleet_first_name, fleet_last_name, 
+                fleet_country_code, fleet_phone_number,
                 transport_details,
                 unique_car_id,
                 number_of_passangers,
@@ -218,8 +229,11 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 creation_datetime, // UTC time
                 job_pickup_address, job_address, eta,
                 shared_service_id
-            } = r
-
+            } = r;
+        
+            // Get more details about the vehicle, such as type
+            const vehicleDetail = await getVehicleDetail(transport_details);
+        
             const output_item: BookingInfoOutputProps = {
                 booking: {
                     id: job_id,
@@ -235,11 +249,11 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     contract_name,
                     booking_for,
                 },
-                branch: branches.filter(br => br.branch_id === Number(branch))[0],
+                branch: branches.find(br => br.branch_id === Number(branch)),
                 directions: {
                     origin: job_pickup_address.trim(),
                     destination: job_address.trim(),
-                    eta
+                    estimated_travel_time: eta
                 },
                 payment: {
                     status: payment_status,
@@ -254,6 +268,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 vehicle: {
                     license_plate: transport_details,
                     vehicle_number: Number(unique_car_id),
+                    type: vehicleDetail?.type.name
                 },
                 customer: {
                     vip_flag: is_VIP === 1,
@@ -263,10 +278,10 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     phone_number: [customer_country_code.trim(), customer_phone_number.trim()].join(""),
                     email: job_pickup_email,
                 },
-            }
+            };
 
-            output.push(output_item)
-        });
+            output.push(output_item);
+        }));
 
         return output
     }
@@ -294,8 +309,6 @@ export async function searchDriver(driver_email: string) {
     ].join("&")
 
     const { status, data } = await getResponseFromURL(`${DRIVER_SEARCH_API_URL}?${params}`)
-    console.log("RESPUESTA");
-    console.log(data);
 
     if (status !== 200) return null
 

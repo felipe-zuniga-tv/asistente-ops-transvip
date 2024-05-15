@@ -123,7 +123,7 @@ export function PromptForm({ session, input, setInput }: {
                     tabIndex={0}
                     onKeyDown={onKeyDown}
                     placeholder="Pregúntame lo que necesites..."
-                    className="text-slate-900 min-h-[60px] w-full bg-transparent placeholder:text-slate-900 resize-none py-[1.3rem] focus-within:outline-none sm:text-sm"
+                    className="text-slate-900 min-h-[60px] w-full bg-transparent placeholder:text-slate-900 resize-none py-[1.3rem] focus-within:outline-none text-sm md:text-base"
                     autoFocus
                     spellCheck={false}
                     autoComplete="off"

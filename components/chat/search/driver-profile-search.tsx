@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid';
 import Link from 'next/link';
 import { CarIcon, PhoneIcon, UserCircle, UserCircleIcon, UserIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { DriverProfileProps, DriverVehiclesProps, VehicleDetailDriversProps, VehicleDetailProps } from '@/lib/chat/functions';
+import { DriverProfileProps, DriverVehiclesProps, VehicleDetailDriversProps, VehicleDetailProps } from '@/lib/chat/types';
 import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
 import CityBadge from '../city-badge';
@@ -76,25 +76,27 @@ function DriverProfileCard({ keyName, result, handleVehicleStatusClick } : {
 
 function DriverMainDetails({ result } : { result : DriverProfileProps }) {
     return (
-        <div className={cn(`result-fleet-header flex flex-row items-center justify-between gap-12`)}>
-            <div className='card-info-detail flex flex-col gap-3 items-start justify-start pl-2 w-full'>
-                <span className='font-bold titles-font'>{ result.personal.full_name }</span>
-                {/* <div className='flex flex-row gap-4'>
-                    <span>Contrato: { result.contract.type }</span>
-                    <span>·</span>
-                    <span>Sociedad: { result.contract.society_name }</span>
-                </div> */}
-                <span>Creación: {new Date(result.created_at).toLocaleString()}</span>
-            </div>
-            <div className='driver-profile-img'>
-                { result.personal.image !== '' ? 
-                    <Image src={result.personal.image}
-                        width={100} height={100}
-                        className='h-12 w-12 md:h-16 md:w-16 shadow-md object-cover rounded-full' 
-                        alt={result.personal.full_name}
-                        />
-                    : <UserIcon className='size-12 rounded-full shadow-md bg-gray-100 text-black p-2' />
-                }
+        <div className={cn(`result-fleet-header flex flex-row items-center justify-between gap-4`)}>
+            <div className='flex flex-row gap-4 items-center justify-start'>
+                <div className='driver-profile-img'>
+                    { result.personal.image !== '' ? 
+                        <Image src={result.personal.image}
+                            width={100} height={100}
+                            className='h-12 w-12 md:h-16 md:w-16 shadow-md object-cover rounded-full' 
+                            alt={result.personal.full_name}
+                            />
+                        : <UserIcon className='size-12 rounded-full shadow-md bg-gray-100 text-black p-2' />
+                    }
+                </div>
+                <div className='card-info-detail flex flex-col gap-0 items-start justify-start'>
+                    <span className='font-bold titles-font'>{ result.personal.full_name }</span>
+                    {/* <div className='flex flex-row gap-4'>
+                        <span>Contrato: { result.contract.type }</span>
+                        <span>·</span>
+                        <span>Sociedad: { result.contract.society_name }</span>
+                    </div> */}
+                    <span>Fecha de creación: {new Date(result.created_at).toLocaleString()}</span>
+                </div>
             </div>
         </div>
     )
@@ -104,10 +106,10 @@ function DriverVehicles({ result } : { result : DriverProfileProps }) {
     return (
         <div className='driver-info-vehicles flex flex-col gap-2 items-start justify-start'>
             <span className='font-bold titles-font'>Vehículos</span>
-            <ul className=''>
+            <div className='flex flex-col gap-1 items-center justify-start'>
                 {
                     result.vehicles.map((vehicle: DriverVehiclesProps) => 
-                        <li className='flex flex-row gap-2'>
+                        <div className='flex flex-row gap-3'>
                             <div className='card-info-detail'>
                                 <CarIcon className='size-4' />
                                 <span>Móvil: { vehicle.unique_car_id }</span>
@@ -117,10 +119,10 @@ function DriverVehicles({ result } : { result : DriverProfileProps }) {
                                     { vehicle.working_status === 1 ? 'Activo': 'Inactivo' }
                                 </Badge>
                             </div>
-                        </li>
+                        </div>
                     )
                 }
-            </ul>
+            </div>
         </div>
     )
 }

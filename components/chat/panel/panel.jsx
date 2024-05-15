@@ -41,21 +41,10 @@ export function TransvipPanel({ id, session }) {
 						<DrawerContent className="max-h-[80vh]">
 							<DrawerHeader>
 								<DrawerTitle>Herramientas</DrawerTitle>
-								<DrawerDescription>
-									Selecciona la herramienta que necesitas usar.
-								</DrawerDescription>
 							</DrawerHeader>
-							<form className="grid w-full items-start gap-6 overflow-auto p-4 pt-0">
-								<fieldset className="grid gap-6 rounded-lg border p-4">
-									{/* <legend className="-ml-1 px-2 text-sm font-medium">
-										<Badge className="bg-transvip">
-											<TransvipLogo colored={false} className="py-1" size={60} />
-										</Badge>
-									</legend> */}
-									{/* <span>Selecciona una herramienta</span> */}
+								<div className="grid w-full items-start gap-4 border p-4 rounded-xl" action={""}>
 									<SystemTools session={session} />
-								</fieldset>
-							</form>
+								</div>
 						</DrawerContent>
 					</Drawer>
 					<div className="ml-auto flex gap-4 items-center">
@@ -65,17 +54,9 @@ export function TransvipPanel({ id, session }) {
 				</header>
 				<main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-[1fr_4fr]">
 					<div className="relative hidden flex-col items-start gap-8 md:flex min-w-[360px]">
-						<form className="grid w-full items-start gap-6" action={""}>
-							<fieldset className="grid gap-6 rounded-xl border p-4">
-								{/* <legend className="-ml-1 px-1 text-sm font-medium items-center flex gap-2">
-									<Badge className="bg-transvip">
-										<TransvipLogo colored={false} className="py-1" size={60} />
-									</Badge>
-								</legend> */}
-								<span>Selecciona una herramienta</span>	
-								<SystemTools session={session} />
-							</fieldset>
-						</form>
+						<div className="grid w-full items-start gap-4 border p-4 rounded-xl" action={""}>
+							<SystemTools session={session} />
+						</div>
 					</div>
 					<div className="relative border flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2_">
 						<TransvipOpsChat id={id} session={session} />

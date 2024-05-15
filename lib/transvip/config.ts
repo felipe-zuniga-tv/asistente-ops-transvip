@@ -6,8 +6,8 @@ export const branches = [
 
 export const bookingStatus = [
     { status: 2, label: 'Completada' },
-    { status: 12, label: 'No Show' },
-    { status: 15, label: 'Asignada' }, // Transición
     { status: 6, label: 'No asignada' },
     { status: 9, label: 'Cancelada' },
+    { status: 12, label: 'No Show' },
+    { status: 15, label: 'En camino' },
 ]

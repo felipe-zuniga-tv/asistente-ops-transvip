@@ -73,15 +73,11 @@ export interface BookingInfoOutputProps {
         contract_name: string
         booking_for: string;
     }
-    branch: {
-        branch_id: number
-        name: string
-        code: string;
-    }
+    branch: BranchProps | undefined
     directions: {
         origin: string
         destination: string
-        eta: number
+        estimated_travel_time: number
     }
     payment: {
         status: number
@@ -96,6 +92,7 @@ export interface BookingInfoOutputProps {
     vehicle: {
         license_plate: string
         vehicle_number: number
+        type?: string
     }
     customer: {
         vip_flag: boolean
