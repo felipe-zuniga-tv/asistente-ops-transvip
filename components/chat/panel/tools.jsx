@@ -56,13 +56,13 @@ export default function SystemTools({ session }) {
     }
 
     return (
-        <>
+        <div className="tools flex flex-col gap-3 items-start justify-center">
             <span className="font-normal">Selecciona una herramienta</span>	
             <div className="flex flex-col gap-3 items-start justify-center w-full">
                 {
                     toolsList.map((tool, index) => (
                         <div key={index + 1} 
-                            className="border p-2 bg-gray-50 hover:bg-gray-100 hover:cursor-pointer rounded-md shadow-md w-full flex items-center justify-start gap-3 text-muted-background"
+                            className="border p-2 bg-gray-50 hover:bg-gray-200 hover:cursor-pointer rounded-md shadow-md w-full flex items-center justify-start gap-3 text-muted-background"
                             onClick={() => handleClick({ tool })}
                         >
                             {/* <Car className="size-5" /> */}
@@ -75,6 +75,6 @@ export default function SystemTools({ session }) {
                     ))
                 }
             </div>
-        </>
+        </div>
     )
 }
