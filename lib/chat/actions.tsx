@@ -275,7 +275,17 @@ async function submitUserMessage(content: string) {
 						className="text-sm"
 					/>
 
+					// Search driver by email
 					const fleetId = await searchDriver(driverEmail)
+
+					if (!fleetId) 
+						return (
+							<BotCard>
+								<div>No se pudo encontrar el conductor de email {driverEmail}.</div>
+							</BotCard>
+						)
+					
+					// Get driver profile + ratings
 					const driverProfile = await getDriverProfile(fleetId)
 					const driverRatings = await getDriverRatings(fleetId)
 					const driverRatingsSummary = getDriverRatingSummary(driverRatings)

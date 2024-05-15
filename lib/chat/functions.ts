@@ -364,7 +364,7 @@ export async function getDriverProfile(fleet_id: number) {
         last_login,
         branch: branches.filter(br => br.branch_id === branch)[0],
         current_license_plate: current_car_details,
-        invoice_rut: invoice_rut.toUpperCase(),
+        invoice_rut: invoice_rut ? invoice_rut.toUpperCase() : '',
         personal: {
             first_name: first_name.trim(),
             last_name: last_name.trim(),
