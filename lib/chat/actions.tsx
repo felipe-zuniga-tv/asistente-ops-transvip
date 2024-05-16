@@ -22,8 +22,10 @@ import { VehicleDetail } from "@/components/chat/search/vehicle-detail-search";
 import { generateText } from "ai";
 import { DriverProfile } from "@/components/chat/search/driver-profile-search";
 
-export const OPENAI_MODEL_NAME = 'gpt-3.5-turbo' // 'gpt-4'
-const modelInstance = openai(OPENAI_MODEL_NAME)
+export const OPENAI_GPT_3_5 = 'gpt-3.5-turbo' // 'gpt-4'
+export const OPENAI_GPT_4   = 'gpt-4' // 'gpt-4'
+const modelInstance = openai(OPENAI_GPT_3_5)
+const modelInstanceSmart = openai(OPENAI_GPT_4)
 
 async function submitUserMessage(content: string) {
 	"use server";
@@ -296,18 +298,16 @@ async function submitUserMessage(content: string) {
 							...aiState.get().messages,
 							{
 								role: 'assistant',
-								content: `Evaluaciones del conductor ${driverProfile?.personal.full_name}, email ${driverEmail}`
-							},
-							{
-								role: 'assistant',
-								content: JSON.stringify(driverRatingsSummary) + `\n\nAverage Rating: ${driverProfile?.quality.avg_rating}`
-							},
+								content: `Evaluaciones del conductor ${driverProfile?.personal.full_name}, email ${driverEmail}` +
+									`\n\n` + JSON.stringify(driverRatingsSummary) + 
+									`\n\n`+ `Average Rating: ${driverProfile?.quality.avg_rating}`
+							}
 						]
 					})
 
 					// Create text response for current search results
 					const content = await generateText({
-						model: modelInstance,
+						model: modelInstanceSmart,
 						system: SYSTEM_MESSAGE + CREATE_DRIVER_RATINGS_SUMMARY,
 						messages: [{
 							role: 'assistant',

@@ -59,7 +59,7 @@
     @apply whitespace-normal text-sm xl:text-base leading-6 w-full shadow-md rounded-lg;
   }
   .chat-message.assistant {
-    @apply bg-transvip/90 text-white flex flex-col gap-3 p-3 md:p-4;
+    @apply bg-transvip/60 text-slate-900 flex flex-col gap-3 p-3 md:p-4;
   }
   .chat-message.user {
     @apply bg-gray-200 text-gray-900 p-3 md:p-4 flex gap-3 items-center whitespace-normal;
