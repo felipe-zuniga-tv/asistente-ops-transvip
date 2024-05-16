@@ -31,6 +31,11 @@ const toolsList = [
         hint: 'Busca por el teléfono o email',
         search: 'Quiero armar un resumen de las evaluaciones de un conductor en particular',
     },
+    {
+        name: 'Gestión de Geocercas',
+        hint: 'Invierte las coordenadas',
+        search: 'Necesito invertir las coordenadas de un texto en GeoJSON',
+    },
 ]
 
 export default function SystemTools({ session }) {

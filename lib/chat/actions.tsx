@@ -238,7 +238,7 @@ async function submitUserMessage(content: string) {
 					const driverProfile = await getDriverProfile(fleetId)
 					// console.log(driverProfile);
 
-					aiState.update({
+					aiState.done({
 						...aiState.get(),
 						messages: [
 							...aiState.get().messages,
@@ -290,7 +290,7 @@ async function submitUserMessage(content: string) {
 					const driverRatings = await getDriverRatings(fleetId)
 					const driverRatingsSummary = getDriverRatingSummary(driverRatings)
 
-					aiState.update({
+					aiState.done({
 						...aiState.get(),
 						messages: [
 							...aiState.get().messages,
@@ -309,7 +309,10 @@ async function submitUserMessage(content: string) {
 					const content = await generateText({
 						model: modelInstance,
 						system: SYSTEM_MESSAGE + CREATE_DRIVER_RATINGS_SUMMARY,
-						messages: [...aiState.get().messages.filter(m => m.role !== "function")],
+						messages: [{
+							role: 'assistant',
+							content: JSON.stringify(driverRatingsSummary) + `\n\nAverage Rating: ${driverProfile?.quality.avg_rating}`
+						}],
 					})
 
 					return driverRatings ? (
@@ -317,6 +320,49 @@ async function submitUserMessage(content: string) {
 					) : (
 						<BotCard>
 							<div>No se pudo encontrar el conductor de email {driverEmail}.</div>
+						</BotCard>
+					)
+				}
+			},
+			invertCoordinatesGeoJson: {
+				description: `Utiliza esta función para invertir el orden de las coordenadas de un texto que entrega 
+				el usuario en formato GeoJson. Solicita siempre al usuario el texto en GeoJson.
+				No se debe utilizar otras herramientas`,
+				parameters: z.object({
+					coordinates: z
+						.string()
+						.describe(`El texto en formato GeoJson que se requiere para invertir sus coordenadas`),
+				}).required(),
+				generate: async function* ({ coordinates }) {
+					yield <LoadingMessage text={`Invirtiendo coordenadas...`} />
+
+					const baseCoordinates = JSON.parse(coordinates)
+					
+					const coordinatesArray = []
+					baseCoordinates.coordinates[0].map(c => 
+						coordinatesArray.push(c.reverse())
+					)
+						
+					const outputCoordinates = {
+						type: baseCoordinates.type,
+						coordinates: [coordinatesArray]
+					}
+
+					aiState.done({
+						...aiState.get(),
+						messages: [
+							...aiState.get().messages,
+							{
+								role: 'assistant',
+								content: JSON.stringify(outputCoordinates)
+							},
+						]
+					})
+					
+					return (
+						<BotCard>
+							<div>Listo, acá va el resultado de la inversión de coordenadas:</div>
+							<div className="p-3 rounded-md bg-muted text-black">{ JSON.stringify(outputCoordinates) }</div>
 						</BotCard>
 					)
 				}
