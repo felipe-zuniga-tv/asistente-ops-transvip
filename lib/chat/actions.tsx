@@ -311,7 +311,9 @@ async function submitUserMessage(content: string) {
 						system: SYSTEM_MESSAGE + CREATE_DRIVER_RATINGS_SUMMARY,
 						messages: [{
 							role: 'assistant',
-							content: JSON.stringify(driverRatingsSummary) + `\n\nAverage Rating: ${driverProfile?.quality.avg_rating}`
+							content: `Evaluaciones del conductor ${driverProfile?.personal.full_name}, email ${driverEmail}` +
+								`\n\n` + JSON.stringify(driverRatingsSummary) + 
+								`\n\n`+ `Average Rating: ${driverProfile?.quality.avg_rating}`
 						}],
 					})
 
