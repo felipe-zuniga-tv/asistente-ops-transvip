@@ -135,7 +135,7 @@ function BookingMainDetails({ result } : { result : BookingInfoOutputProps}) {
                             <span className='font-semibold'>Hace: {-1*days_to_trip} días</span>
                         </>
                     )}
-                    { minutes_to_trip < 0 && (
+                    { minutes_to_trip < 0 && Math.abs(minutes_to_trip) <= 180 && (
                         <>
                             <span>·</span>
                             <span className='font-semibold'>Hace: {-1*minutes_to_trip} minutos</span>
@@ -257,16 +257,20 @@ function BookingVehicle({ result, handleVehicleNumberClick } : {
     return (
         <div className='booking-info-vehicle flex flex-col gap-1 justify-start'>
             <span className='font-bold titles-font'>Vehículo / Conductor</span>
-            <div className='card-info-detail pl-2'>
-                <CarIcon className='size-4' />
-                <div className='flex flex-row gap-2 items-center justify-start'>
-                    <span>PPU: {result.vehicle.license_plate}</span>
-                    <span onClick={handleVehicleNumberClick} className='hover:underline cursor-pointer'>Móvil: {result.vehicle.vehicle_number}</span>
+            <div className='flex flex-row items-center justify-start gap-4 w-full'>
+                <div>
+                    <div className='card-info-detail pl-2'>
+                        <CarIcon className='size-4' />
+                        <div className='flex flex-row gap-2 items-center justify-start'>
+                            <span>PPU: {result.vehicle.license_plate}</span>
+                            <span onClick={handleVehicleNumberClick} className='hover:underline cursor-pointer'>Móvil: {result.vehicle.vehicle_number}</span>
+                        </div>
+                    </div>
+                    <div className='card-info-detail pl-2'>
+                        <CircleUserIcon className='size-4' />
+                        <span>Conductor: {result.fleet.full_name}</span>
+                    </div>
                 </div>
-            </div>
-            <div className='card-info-detail pl-2'>
-                <CircleUserIcon className='size-4' />
-                <span>Conductor: {result.fleet.full_name}</span>
                 <Button variant={'outline'} className='px-2.5 rounded-full bg-green-600 hover:bg-green-800 text-white hover:text-white'>
                     <Link href={whatsappLink} 
                         target='_blank'
