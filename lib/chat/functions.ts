@@ -313,8 +313,10 @@ export async function searchDriver(driver_email: string) {
     if (status !== 200) return null
 
     const { customerCount, result } = data
-
+    
     if (customerCount > 0) {
+        // console.log(data.result[0].car_details);
+        // console.log(data.result[0].assigned_cars);
         return result[0].fleet_id
     }
 

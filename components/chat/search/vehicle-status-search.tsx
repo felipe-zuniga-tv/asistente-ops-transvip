@@ -139,16 +139,10 @@ function VehicleStatusBadges({ result, currentStatus, handleDetailClick }: {
             <div className='flex flex-row items-center justify-start gap-2'>
                 { result.branch && <CityBadge code={result.branch.code} /> }
                 <ToolsButton item={result} handleClick={() => handleDetailClick({ result })} label={'Ver más detalles'} />
-                {/* <Button variant={'outline'} className='hidden'>
-                    <Link href="https://apps.mtt.cl/consultaweb/" className='text-slate-900 text-xs hover:underline' target='_blank'>
-                        Verificar en MTT
-                    </Link>
-                </Button> */}
             </div>
             { currentStatus === 'ONLINE' && <div className='text-xs'><CheckCircle className='h-4' /></div> }
             { currentStatus === 'OFFLINE' && 
                 <Button className='h-8 bg-green-400 hover:bg-green-600 text-white'>
-                    {/* <SendHorizonalIcon className='h-4' /> */}
                     <Image src={'/images/whatsapp-logo.svg'} 
                         width={100} height={100}
                         className='h-4 w-4 text-white'

@@ -242,7 +242,7 @@ function BookingBadges({ result } : { result : BookingInfoOutputProps}) {
                 result.payment.status === 0 ? 'bg-red-600' : 'bg-green-700')}>
                 {paymentStatus}
             </Badge>
-            <CityBadge code={result.branch?.code} />
+            <CityBadge code={result.branch?.code} className='ml-auto' />
         </div>
     )
 }

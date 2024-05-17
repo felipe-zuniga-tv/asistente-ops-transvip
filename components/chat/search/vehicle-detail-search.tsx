@@ -12,6 +12,7 @@ import { VehicleDetailDriversProps, VehicleDetailProps } from '@/lib/chat/types'
 import { Badge } from '@/components/ui/badge';
 import CityBadge from '../city-badge';
 import ToolsButton from '../tools/tools-button';
+import { Button } from '@/components/ui/button';
 // import * as Whatsapp from '../../../public/images/whatsapp-logo.svg'
 
 export function VehicleDetail({ session, vehicleInformation, content }: { 
@@ -21,6 +22,24 @@ export function VehicleDetail({ session, vehicleInformation, content }: {
 }) {
     const [_, setMessages] = useUIState()
     const { submitUserMessage } = useActions()
+
+    const handleDriverClick = async(driver : VehicleDetailDriversProps) => {
+        const userMessageContent = `Búscame el perfil del conductor de teléfono ${driver.country_code.trim()} + ${driver.phone.trim()}.`
+    
+        setMessages((currentMessages: any) => [
+            ...currentMessages,
+            {
+                id: nanoid(),
+                display: <UserMessage content={userMessageContent} session={session} />
+            }
+        ])
+    
+        const response = await submitUserMessage(userMessageContent)
+        setMessages((currentMessages: any) => [
+            ...currentMessages,
+            response
+        ])
+    }
 
     const handleVehicleStatusClick = async (vehicle_number : number ) => {
         const userMessageContent = `Me gustaría saber si el móvil ${vehicle_number} está online.`
@@ -51,6 +70,7 @@ export function VehicleDetail({ session, vehicleInformation, content }: {
                 { vehicleInformation.map((result: VehicleDetailProps) => (
                     <VehicleDetailCard keyName={result.license_plate} 
                         result={result}
+                        handleDriverClick={handleDriverClick}
                         handleVehicleStatusClick={() => handleVehicleStatusClick(result.vehicle_number)}
                     />
                 ))}
@@ -62,15 +82,16 @@ export function VehicleDetail({ session, vehicleInformation, content }: {
     )
 }
 
-function VehicleDetailCard({ keyName, result, handleVehicleStatusClick } : {
+function VehicleDetailCard({ keyName, result, handleDriverClick, handleVehicleStatusClick } : {
     keyName: any, 
     result: VehicleDetailProps,
+    handleDriverClick?: any
     handleVehicleStatusClick?: any
 }) {
     return (
         <div key={keyName} className='vehicle-detail-card w-full flex flex-col gap-2 md:gap-4'>
             <VehicleMainDetails result={result} />
-            <VehicleDrivers result={result} />
+            <VehicleDrivers result={result} handleClick={handleDriverClick}/>
             <VehicleBadges result={result} handleStatusClick={handleVehicleStatusClick} />
         </div>
     )
@@ -81,7 +102,7 @@ function VehicleMainDetails({ result } : { result : VehicleDetailProps }) {
     return (
         <div className={cn(`vehicle-main-details flex flex-col gap-2 items-start justify-start`)}>
             <span className='font-bold titles-font'>General</span>
-            <div className='card-info-detail flex flex-col gap-3 items-start justify-start pl-2 w-full'>
+            <div className='card-info-detail info-section flex flex-col gap-3 items-start justify-start pl-2 w-full'>
                 <div className='flex flex-row gap-4 items-center justify-start w-full'>
                     <span>PPU: { result.license_plate }</span>
                     <span>Número de Móvil: { result.vehicle_number }</span>
@@ -93,7 +114,7 @@ function VehicleMainDetails({ result } : { result : VehicleDetailProps }) {
                         { result.color.name.toUpperCase() }
                     </Badge>}
                 </div>
-                <div className='flex flex-row gap-4'>
+                <div className='flex flex-row gap-4 items-center justify-start w-ful'>
                     <span>Contrato: { result.contract.type }</span>
                     <span>·</span>
                     <span>Sociedad: { result.contract.society_name }</span>
@@ -104,11 +125,14 @@ function VehicleMainDetails({ result } : { result : VehicleDetailProps }) {
     )
 }
 
-function VehicleDrivers({ result } : { result : VehicleDetailProps }) {
+function VehicleDrivers({ result, handleClick } : { 
+    result : VehicleDetailProps 
+    handleClick: any
+}) {
     return (
         <div className='vehicle-info-drivers flex flex-col gap-2 items-start justify-start'>
             <span className='font-bold titles-font'>Conductores</span>
-            <ul className='pl-2_'>
+            <ul className='info-section w-full flex flex-col gap-2'>
                 {
                     result.drivers.map((driver: VehicleDetailDriversProps) => 
                         <li className='flex flex-row gap-2'>
@@ -122,6 +146,14 @@ function VehicleDrivers({ result } : { result : VehicleDetailProps }) {
                                 <Link href={`tel:${driver.country_code.trim() + driver.phone.trim()}`} className='hover:underline'>
                                     <span>{driver.country_code.trim() + driver.phone.trim()}</span>
                                 </Link>
+                            </div>
+                            <div className='ml-auto'>
+                                <Button variant={'outline'}
+                                    className='text-xs text-white py-[1px] h-7 bg-slate-600'
+                                    onClick={() => handleClick(driver)}
+                                >
+                                    Buscar perfil
+                                </Button>
                             </div>
                         </li>
                     )
@@ -146,14 +178,8 @@ function VehicleBadges({ result, handleStatusClick } : {
                 'bg-gray-800')}>
                 { vehicleStatus }
             </Badge>
-            <CityBadge code={result.branch.code} />
-            <ToolsButton item={result} handleClick={() => handleStatusClick({ result })} label={'Ver si está online'} />
-            {/* <Button variant={'outline'} 
-                className='text-slate-900'
-                onClick={handleStatusClick}
-                >
-                Ver si está online
-            </Button> */}
+            <ToolsButton item={result} handleClick={() => handleStatusClick({ result })} label={'Ver si el móvil está online'} />
+            <CityBadge code={result.branch.code} className='ml-auto' />
         </div>
     )
 }

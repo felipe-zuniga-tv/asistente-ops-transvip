@@ -13,6 +13,9 @@ import { Badge } from '@/components/ui/badge';
 import CityBadge from '../city-badge';
 import ToolsButton from '../tools/tools-button';
 import DriverAvatar from '@/components/driver/driver-avatar';
+import { Button } from '@/components/ui/button';
+import Image from 'next/image';
+import { differenceInDays } from 'date-fns';
 
 export function DriverProfile({ session, driverProfile, content }: { 
     session: any,
@@ -22,8 +25,17 @@ export function DriverProfile({ session, driverProfile, content }: {
     const [_, setMessages] = useUIState()
     const { submitUserMessage } = useActions()
 
-    const handleClick = async (vehicle_number : number ) => {
-        const userMessageContent = `Me gustaría saber si el móvil ${vehicle_number} está online.`
+    const handleClick = async (vehicle : DriverVehiclesProps, request : string) => {
+
+        let userMessageContent = ""
+        if (request === 'online') {
+            userMessageContent = `Me gustaría saber si el móvil ${vehicle.unique_car_id} está online.`
+        } else if (request === 'details') {
+            userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${vehicle.registration_number}.`
+        } else {
+            userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${vehicle.registration_number}.`
+        }
+        
 
         setMessages((currentMessages: any) => [
             ...currentMessages,
@@ -49,7 +61,7 @@ export function DriverProfile({ session, driverProfile, content }: {
             <div className={'search-results-cards relative w-full flex flex-col gap-2 items-start'}>
                 <DriverProfileCard keyName={driverProfile.fleet_id} 
                     result={driverProfile}
-                    // handleVehicleStatusClick={() => handleClick(driverProfile.vehicle_number)}
+                    handleVehicleClick={handleClick}
                 />
             </div>
             { content && <div className='search-results-text mt-4'>
@@ -59,16 +71,17 @@ export function DriverProfile({ session, driverProfile, content }: {
     )
 }
 
-function DriverProfileCard({ keyName, result, handleVehicleStatusClick } : {
+function DriverProfileCard({ keyName, result, handleVehicleClick } : {
     keyName: any, 
     result: any,
-    handleVehicleStatusClick?: any
+    handleVehicleClick?: any
 }) {
     return (
         <div key={keyName} className='vehicle-detail-card w-full flex flex-col gap-2 md:gap-4'>
             <DriverMainDetails result={result} />
-            <DriverVehicles result={result} />
-            <DriverBadges result={result} handleStatusClick={handleVehicleStatusClick} />
+            <DriverDocuments result={result} />
+            <DriverVehicles result={result} handleVehicleClick={handleVehicleClick} />
+            <DriverBadges result={result} handleStatusClick={handleVehicleClick} />
         </div>
     )
 }
@@ -84,35 +97,91 @@ function DriverMainDetails({ result } : { result : DriverProfileProps }) {
                 </div>
                 <div className='card-info-detail flex flex-col gap-0 items-start justify-start'>
                     <span className='font-bold titles-font'>{ result.personal.full_name }</span>
-                    {/* <div className='flex flex-row gap-4'>
-                        <span>Contrato: { result.contract.type }</span>
-                        <span>·</span>
-                        <span>Sociedad: { result.contract.society_name }</span>
-                    </div> */}
-                    <span>Fecha de creación: {new Date(result.created_at).toLocaleString()}</span>
+                    <span className='font-normal text-xs'>{ result.personal.email }</span>
                 </div>
+                    {/* <span>Fecha de creación: {new Date(result.created_at).toLocaleString()}</span> */}
             </div>
         </div>
     )
 }
 
-function DriverVehicles({ result } : { result : DriverProfileProps }) {
+function DriverDocuments({ result } : { result : DriverProfileProps }) {
+    let days_to_expiration_license = null
+    if (result.driver_documents.license.expiration_date) {
+        const _aux_license_expiration_date = result.driver_documents.license.expiration_date?.substring(0, result.driver_documents.license.expiration_date.indexOf("T")) as string
+        const license_expiration_date = new Date(_aux_license_expiration_date)
+        days_to_expiration_license = differenceInDays(license_expiration_date, new Date())
+    }
+
+    return (
+        <div className='driver-docuemtns flex flex-col gap-2 items-start justify-start'>
+            <span className='font-bold titles-font'>Documentos</span>
+            <div className='info-section flex flex-col gap-3 items-start justify-start w-full'>
+                <div className='flex flex-row gap-2 items-center'>
+                    <>
+                        <span className=''>Licencia</span>
+                        <Badge variant={'default'} className={"bg-gray-200 text-slate-900"}>
+                            {result.driver_documents.license.type}
+                        </Badge>
+                    </>
+                    <>·</>
+                    <>
+                        <span className=''>Vencimiento:</span>
+                        <Badge variant={'default'} className={"bg-gray-200 text-slate-900"}>
+                            { result.driver_documents.license.expiration_date?.substring(0, result.driver_documents.license.expiration_date.indexOf("T")) }
+                        </Badge>
+                        { days_to_expiration_license && <span>(faltan {days_to_expiration_license} días)</span>}
+                    </>
+                </div>
+                <div className='flex flex-row gap-2 items-center text-sm'>
+                    <span className=''>RUT</span>
+                    <Badge variant={'default'} className={"bg-gray-200 text-slate-900"}>
+                        {result.driver_documents.RUT.number}
+                    </Badge>
+                    {/* { result.driver_documents.RUT.image && 
+                        <Image src={result.driver_documents.RUT.image} 
+                            width={100} height={100}
+                            className='h-12 w-auto object-contain'
+                            alt={`Rut del conductor ${result.driver_documents.RUT.number}`}
+                        />
+                    } */}
+                </div>
+            </div>       {/* <span>Fecha de creación: {new Date(result.created_at).toLocaleString()}</span> */}
+        </div>
+    )
+}
+
+function DriverVehicles({ result, handleVehicleClick } : {
+    result : DriverProfileProps 
+    handleVehicleClick: any
+}) {
     return (
         <div className='driver-info-vehicles flex flex-col gap-2 items-start justify-start'>
-            <span className='font-bold titles-font'>Vehículos</span>
-            <div className='flex flex-col gap-1 items-center justify-start'>
+            <span className='font-bold titles-font'>Vehículos Propios</span>
+            <div className='info-section flex flex-col gap-2 items-center justify-start w-full'>
                 {
                     result.vehicles.map((vehicle: DriverVehiclesProps) => 
-                        <div className='flex flex-row gap-3'>
-                            <div className='card-info-detail'>
-                                <CarIcon className='size-4' />
-                                <span>Móvil: { vehicle.unique_car_id }</span>
-                                <Badge variant={'default'} 
-                                    className={vehicle.working_status === 1 ? 'bg-green-700 hover:bg-green-700' :
-                                    'bg-red-400 hover:bg-red-400' }>
-                                    { vehicle.working_status === 1 ? 'Activo': 'Inactivo' }
-                                </Badge>
+                        <div key={vehicle.registration_number} className='flex flex-row gap-3 justify-start items-center w-full'>
+                            <span>Móvil: { vehicle.unique_car_id }</span>
+                            <span>PPU: { vehicle.registration_number }</span>
+                            <Badge variant={'default'} 
+                                className={vehicle.working_status === 1 ? 'bg-green-700 hover:bg-green-700' :
+                                'bg-red-400 hover:bg-red-400' }>
+                                { vehicle.working_status === 1 ? 'Activo': 'Inactivo' }
+                            </Badge>
+                            <div className='vehicle-actions flex-row flex gap-x-1 ml-auto'>
+                                <Button variant={'outline'} className='text-xs text-white py-[1px] h-7 bg-slate-600'
+                                    onClick={() => handleVehicleClick(vehicle, 'details')}
+                                >
+                                    Más detalles
+                                </Button>
+                                <Button variant={'outline'} className='text-xs text-white py-[1px] h-7 bg-slate-600'
+                                    onClick={() => handleVehicleClick(vehicle, 'online')}
+                                >
+                                    Ver si está online
+                                </Button>
                             </div>
+
                         </div>
                     )
                 }
@@ -136,7 +205,7 @@ function DriverBadges({ result, handleStatusClick } : {
                 'bg-gray-800')}>
                 { driverStatus }
             </Badge>
-            <CityBadge code={result.branch.code} />
+            <CityBadge code={result.branch.code} className='ml-auto' />
             {/* <ToolsButton item={result} handleClick={() => handleStatusClick({ result })} label={'Ver si está online'} /> */}
         </div>
     )

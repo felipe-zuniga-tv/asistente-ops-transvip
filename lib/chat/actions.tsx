@@ -227,26 +227,32 @@ async function submitUserMessage(content: string) {
 				description: `Utiliza esta función para obtener información general del perfil de un conductor
 					de Transvip, como su nombre, teléfono, y otros. Se realiza la búsqueda sólo por email.`,
 				parameters: z.object({
-					driverEmail: z
+					driverQuery: z
 						.string()
-						.describe(`El email del conductor del cual se quiere buscar su perfil.`),
+						.describe(`El email o teléfono del conductor del cual se quiere buscar su perfil.`),
+					// driverEmail: z
+					// 	.string()
+					// 	.describe(`El email del conductor del cual se quiere buscar su perfil.`),
+					// phoneNumber: z
+					// 	.string()
+					// 	.describe(`El teléfono del conductor del cual se quiere buscar su perfil.`),
 				}).required(),
-				generate: async function* ({ driverEmail }) {
-					yield <LoadingMessage text={`Buscando conductor con email ${driverEmail}...`}
+				generate: async function* ({ driverQuery }) {
+					yield <LoadingMessage text={`Buscando conductor: ${driverQuery}...`}
 						className="text-sm"
 					/>
 
-					const fleetId = await searchDriver(driverEmail)
+					const fleetId = await searchDriver(driverQuery)
 					const driverProfile = await getDriverProfile(fleetId)
-					// console.log(driverProfile);
+					console.log(driverProfile);
 
-					aiState.done({
+					aiState.update({
 						...aiState.get(),
 						messages: [
 							...aiState.get().messages,
 							{
 								role: 'assistant',
-								content: `Mostrando perfil del conductor con email ${driverEmail}`
+								content: `Mostrando perfil del conductor ${driverProfile?.personal.email}`
 							},
 						]
 					})
@@ -254,11 +260,10 @@ async function submitUserMessage(content: string) {
 					return driverProfile ? (
 						<BotCard>
 							<DriverProfile driverProfile={driverProfile} />
-							{/* <pre className="max-w-[400px]">{JSON.stringify(driverProfile)}</pre> */}
 						</BotCard>
 					) : (
 						<BotCard>
-							<div>No se pudo encontrar el conductor utilizando el email {driverEmail}.</div>
+							<div>No se pudo encontrar el conductor utilizando: {driverQuery}.</div>
 						</BotCard>
 					)
 				}
