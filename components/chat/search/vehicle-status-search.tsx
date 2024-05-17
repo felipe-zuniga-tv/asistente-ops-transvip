@@ -28,8 +28,16 @@ export function VehicleStatusSearch({ session, searchResults, content }: {
     const [_, setMessages] = useUIState()
     const { submitUserMessage } = useActions()
 
-    const handleClick = async ({ result } : { result : VehicleStatusSearchResultProps }) => {
-        const userMessageContent = `Me gustaría saber detalles más sobre el móvil con patente ${result.license_plate}.`
+    const handleClick = async (result : VehicleStatusSearchResultProps, request: string) => {
+        let userMessageContent = ""
+        if (request === 'booking') {
+            userMessageContent = `Me gustaría saber más detalles de la reserva ${result.job_id}.`
+        } else if (request === 'vehicle') {
+            userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${result.license_plate}.`
+        } else {
+            userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${result.license_plate}.`
+        }
+
 
         setMessages((currentMessages: any) => [
             ...currentMessages,
@@ -64,11 +72,15 @@ export function VehicleStatusSearch({ session, searchResults, content }: {
     )
 }
 
-function VehicleStatusResultsCard({ keyName, result, handleClick } : { keyName: string, result: VehicleStatusSearchResultProps, handleClick: any }) {
+function VehicleStatusResultsCard({ keyName, result, handleClick } : { 
+    keyName: string
+    result: VehicleStatusSearchResultProps
+    handleClick: any 
+}) {
     const currentStatus = (result.status === VEHICLE_STATUS.ONLINE_AVAILABLE || result.status === VEHICLE_STATUS.ONLINE_BUSY) ? 'ONLINE' : 'OFFLINE'
 
     return (
-        <div key={keyName} className='search-results-card'>
+        <div key={keyName} className='search-results-card w-full'>
             <div className={cn(
                 'h-fit p-3 flex flex-col gap-2 md:gap-4 justify-between text-white rounded-xl hover:text-white',
                 `${currentStatus === 'ONLINE' ? 'bg-green-800' : 'bg-red-400' }`
@@ -85,6 +97,10 @@ function VehicleStatusResultsCard({ keyName, result, handleClick } : { keyName: 
                                 <span className="">{result.service_name}</span>
                                 <span className="">·</span>
                                 <span className="">{result.contract_name}</span>
+                                <Button variant={'outline'} className='text-xs text-white py-[1px] h-7 bg-slate-600'
+                                    onClick={() => handleClick(result, 'booking')}>
+                                        Buscar reserva
+                                </Button>
                             </div>
                         </>
                     )}
@@ -99,7 +115,12 @@ function VehicleStatusHeader({ result }: {
     result: VehicleStatusSearchResultProps
 }) {
     return (
-        <div className='result-fleet-header flex flex-row items-center justify-between gap-12'>
+        <div className='result-fleet-header flex flex-row items-center justify-start gap-4'>
+            <div className='fleet-profile-img'>
+                { result.fleet_image !== '' &&
+                    <DriverAvatar url={result.fleet_image} alt={result.first_name} />
+                }
+            </div>
             <div className='flex flex-col gap-1 items-start'>
                 { result.driver_name && <span className='font-bold titles-font'>{ result.driver_name }</span>}
                 <div className='flex flex-row gap-1 items-center justify-start font-normal detail-info-font'>
@@ -120,11 +141,7 @@ function VehicleStatusHeader({ result }: {
                 { result.email && <span className='hidden font-semibold text-xs'>{ result.email }</span>}
                 { result.phone_number && <span className='hidden font-semibold text-xs'>{ result.phone_number }</span>}
             </div>
-            <div className='fleet-profile-img'>
-                { result.fleet_image !== '' &&
-                    <DriverAvatar url={result.fleet_image} alt={result.first_name} />
-                }
-            </div>
+            
         </div>
     )
 }

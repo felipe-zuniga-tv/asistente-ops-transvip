@@ -73,9 +73,9 @@
   .message-item {
     @apply w-full;
   }
-  .search-results-card {
+  /* .search-results-card {
     @apply min-w-[320px] md:min-w-[400px];
-  }
+  } */
   .search-results-card.booking-information {
     @apply bg-slate-100 gap-2 p-3 rounded-md text-slate-900;
   }
