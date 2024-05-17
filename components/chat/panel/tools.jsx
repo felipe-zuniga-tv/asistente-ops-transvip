@@ -23,7 +23,7 @@ const toolsList = [
     },
     {
         name: 'Perfil de un conductor',
-        hint: 'Busca usando el email',
+        hint: 'Busca usando el email o teléfono',
         search: 'Quiero ver el perfil de un conductor en particular',
     },
     {

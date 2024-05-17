@@ -230,19 +230,16 @@ async function submitUserMessage(content: string) {
 					driverQuery: z
 						.string()
 						.describe(`El email o teléfono del conductor del cual se quiere buscar su perfil.`),
-					// driverEmail: z
-					// 	.string()
-					// 	.describe(`El email del conductor del cual se quiere buscar su perfil.`),
-					// phoneNumber: z
-					// 	.string()
-					// 	.describe(`El teléfono del conductor del cual se quiere buscar su perfil.`),
 				}).required(),
 				generate: async function* ({ driverQuery }) {
 					yield <LoadingMessage text={`Buscando conductor: ${driverQuery}...`}
 						className="text-sm"
 					/>
 
-					const fleetId = await searchDriver(driverQuery)
+					// Clean query
+					let driverQueryClean = driverQuery.trim().replace("+", "")
+
+					const fleetId = await searchDriver(driverQueryClean)
 					const driverProfile = await getDriverProfile(fleetId)
 					console.log(driverProfile);
 

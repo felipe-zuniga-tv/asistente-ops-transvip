@@ -292,7 +292,7 @@ function BookingVehicle({ result, handleVehicleNumberClick } : {
                         <span>Conductor: {result.fleet.full_name}</span>
                     </div>
                 </div>
-                <Button variant={'outline'} className='px-2.5 rounded-full bg-green-600 hover:bg-green-800 text-white hover:text-white'>
+                <Button variant={'outline'} className='ml-auto px-2.5 rounded-full bg-green-600 hover:bg-green-800 text-white hover:text-white'>
                     <Link href={whatsappLink} 
                         target='_blank'
                         className='flex flex-row items-center'>
