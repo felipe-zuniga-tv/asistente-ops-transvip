@@ -78,7 +78,9 @@ function DriverProfileCard({ keyName, result, handleVehicleClick } : {
 }) {
     return (
         <div key={keyName} className='vehicle-detail-card w-full flex flex-col gap-2 md:gap-4'>
-            <DriverMainDetails result={result} />
+            <div className={cn(`driver-main flex flex-row items-center justify-between gap-4`)}>
+                <DriverMainDetails result={result} />
+            </div>
             <DriverDocuments result={result} />
             <DriverVehicles result={result} handleVehicleClick={handleVehicleClick} />
             <DriverBadges result={result} handleStatusClick={handleVehicleClick} />
@@ -88,19 +90,17 @@ function DriverProfileCard({ keyName, result, handleVehicleClick } : {
 
 function DriverMainDetails({ result } : { result : DriverProfileProps }) {
     return (
-        <div className={cn(`result-fleet-header flex flex-row items-center justify-between gap-4`)}>
-            <div className='flex flex-row gap-4 items-center justify-start'>
-                <div className='driver-profile-img'>
-                    { result.personal.image !== '' &&
-                        <DriverAvatar url={result.personal.image} alt={result.personal.full_name} />
-                    }
-                </div>
-                <div className='card-info-detail flex flex-col gap-0 items-start justify-start'>
-                    <span className='font-bold titles-font'>{ result.personal.full_name }</span>
-                    <span className='font-normal text-xs'>{ result.personal.email }</span>
-                </div>
-                    {/* <span>Fecha de creación: {new Date(result.created_at).toLocaleString()}</span> */}
+        <div className='flex flex-row gap-4 items-center justify-start'>
+            <div className='driver-profile-img'>
+                { result.personal.image !== '' &&
+                    <DriverAvatar url={result.personal.image} alt={result.personal.full_name} />
+                }
             </div>
+            <div className='card-info-detail flex flex-col gap-0 items-start justify-start'>
+                <span className='font-bold titles-font'>{ result.personal.full_name }</span>
+                <span className='font-normal text-xs'>{ result.personal.email }</span>
+            </div>
+                {/* <span>Fecha de creación: {new Date(result.created_at).toLocaleString()}</span> */}
         </div>
     )
 }
@@ -119,22 +119,23 @@ function DriverDocuments({ result } : { result : DriverProfileProps }) {
             <div className='info-section flex flex-col gap-3 items-start justify-start w-full'>
                 <div className='flex flex-row gap-2 items-center'>
                     <>
-                        <span className=''>Licencia</span>
+                        <span className='font-semibold'>Licencia</span>
                         <Badge variant={'default'} className={"bg-gray-200 text-slate-900"}>
-                            {result.driver_documents.license.type}
+                            {result.driver_documents.license.type.toUpperCase()}
                         </Badge>
                     </>
                     <>·</>
                     <>
-                        <span className=''>Vencimiento:</span>
+                        <span className='font-semibold'>Vencimiento:</span>
                         <Badge variant={'default'} className={"bg-gray-200 text-slate-900"}>
                             { result.driver_documents.license.expiration_date?.substring(0, result.driver_documents.license.expiration_date.indexOf("T")) }
                         </Badge>
-                        { days_to_expiration_license && <span>(faltan {days_to_expiration_license} días)</span>}
+                        { days_to_expiration_license && days_to_expiration_license > 0 && <span>(faltan {days_to_expiration_license} días)</span>}
+                        { days_to_expiration_license && days_to_expiration_license < 0 && <span>(vencido hace {-1*days_to_expiration_license} días)</span>}
                     </>
                 </div>
                 <div className='flex flex-row gap-2 items-center text-sm'>
-                    <span className=''>RUT</span>
+                    <span className='font-semibold'>RUT</span>
                     <Badge variant={'default'} className={"bg-gray-200 text-slate-900"}>
                         {result.driver_documents.RUT.number}
                     </Badge>
