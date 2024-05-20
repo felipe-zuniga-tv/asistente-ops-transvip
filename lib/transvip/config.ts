@@ -11,3 +11,8 @@ export const bookingStatus = [
     { status: 12, label: 'No Show' },
     { status: 15, label: 'En camino' },
 ]
+
+export const paymentStatus = [
+    { status: 0, label: 'No Pagada' },
+    { status: 1, label: 'Pagada' },
+]

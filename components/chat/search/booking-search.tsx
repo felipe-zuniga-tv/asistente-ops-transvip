@@ -12,7 +12,7 @@ import { AssistantMessageContent, UserMessage } from '../message';
 import { Calendar, CarIcon, CircleUserIcon, Clock, GoalIcon, HotelIcon, MailIcon, MapPin, PhoneIcon, UserCircleIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import CityBadge from '../city-badge';
-import { bookingStatus } from '@/lib/transvip/config';
+import { bookingStatus, paymentStatus } from '@/lib/transvip/config';
 import { Button } from '@/components/ui/button';
 import { WhatsappIcon } from '@/components/ui/icons';
 
@@ -121,64 +121,68 @@ function BookingMainDetails({ result, handleClick } : {
     const minutes_to_trip = differenceInMinutes(booking_datetime_local, new Date())
 
     return (
-        <div className='booking-main-details flex flex-col gap-2 items-start justify-start'>
-            <div className='flex flex-row items-end justify-start w-full'>
-                <Button variant={"default"}
-                    onClick={() => handleClick({ result })}
-                    className={cn("py-2 text-white w-fit bg-transvip/80 hover:bg-transvip-dark text-sm z-20", "")}>
-                    { result.booking.id }
-                </Button>
-            </div>
-            <div className='info-section flex flex-row sm:flex-col gap-4 sm:gap-0 items-start justify-start w-full'>
-                { result.booking.shared_service_id && (
-                    <div className='card-info-detail gap-2'>
-                        <span>Paquete: {result.booking.shared_service_id}</span>
+        <div className='booking-main-details'>
+            <div className='flex flex-col gap-2 items-start justify-start w-full'>
+                <div className='booking-id-section flex flex-row items-end justify-start'>
+                    <Button variant={"default"}
+                        onClick={() => handleClick({ result })}
+                        className={cn("py-2 text-white w-fit bg-transvip/80 hover:bg-transvip-dark text-sm z-20_", "")}>
+                        { result.booking.id }
+                    </Button>
+                </div>
+                <div className='info-section flex flex-col lg:flex-row gap-0 lg:gap-4 items-start lg:items-center justify-start w-full'>
+                    <div className='flex flex-col'>
+                        { result.booking.shared_service_id && (
+                            <div className='card-info-detail gap-2'>
+                                <span>Paquete: {result.booking.shared_service_id}</span>
+                            </div>
+                        )}
+                        <div className='card-info-detail gap-2'>
+                            <Calendar className='size-4' />
+                            <span>{ booking_datetime_local.toLocaleString() }</span>
+                            { days_to_trip > 0 && (
+                                <>
+                                    <span>·</span>
+                                    <span className='font-semibold'>Faltan: {days_to_trip} días</span>
+                                </>
+                            )}
+                            { minutes_to_trip >= 0 && (
+                                <>
+                                    <span>·</span>
+                                    <span className='font-semibold'>Faltan: {minutes_to_trip} minutos</span>
+                                </>
+                            )}
+                            { days_to_trip < 0 && (
+                                <>
+                                    <span>·</span>
+                                    <span className='font-semibold'>Hace: {-1*days_to_trip} días</span>
+                                </>
+                            )}
+                            { minutes_to_trip < 0 && Math.abs(minutes_to_trip) <= 180 && (
+                                <>
+                                    <span>·</span>
+                                    <span className='font-semibold'>Hace: {-1*minutes_to_trip} minutos</span>
+                                </>
+                            )}
+                        </div>
+                        <div className='card-info-detail gap-2'>
+                            <span>Pax: {result.booking.pax_count}</span>
+                            <span>·</span>
+                            <span>Sentido: {result.booking.type_of_trip}</span>
+                            <span>·</span>
+                            <span>{result.booking.service_name}</span>
+                            <span>·</span>
+                            <span>RT: {result.booking.is_round_trip === 1 ? 'Sí': 'No'}</span>
+                        </div>
+                        <div className='card-info-detail gap-2'>
+                            <span className='font-bold'>Convenio:</span>
+                            <span>{result.booking.contract_name}</span>
+                        </div>
                     </div>
-                )}
-                <div className='card-info-detail'>
-                    <Calendar className='size-4' />
-                    <span>{ booking_datetime_local.toLocaleString() }</span>
-                    { days_to_trip > 0 && (
-                        <>
-                            <span>·</span>
-                            <span className='font-semibold'>Faltan: {days_to_trip} días</span>
-                        </>
-                    )}
-                    { minutes_to_trip >= 0 && (
-                        <>
-                            <span>·</span>
-                            <span className='font-semibold'>Faltan: {minutes_to_trip} minutos</span>
-                        </>
-                    )}
-                    { days_to_trip < 0 && (
-                        <>
-                            <span>·</span>
-                            <span className='font-semibold'>Hace: {-1*days_to_trip} días</span>
-                        </>
-                    )}
-                    { minutes_to_trip < 0 && Math.abs(minutes_to_trip) <= 180 && (
-                        <>
-                            <span>·</span>
-                            <span className='font-semibold'>Hace: {-1*minutes_to_trip} minutos</span>
-                        </>
-                    )}
-                </div>
-                <div className='card-info-detail gap-2'>
-                    <span>Pax: {result.booking.pax_count}</span>
-                    <span>·</span>
-                    <span>Sentido: {result.booking.type_of_trip}</span>
-                    <span>·</span>
-                    <span>{result.booking.service_name}</span>
-                    <span>·</span>
-                    <span>RT: {result.booking.is_round_trip === 1 ? 'Sí': 'No'}</span>
-                </div>
-                <div className='card-info-detail gap-2'>
-                    <span className='font-bold'>Convenio:</span>
-                    <span>{result.booking.contract_name}</span>
-                </div>
-                <div className='card-info-detail payment'>
-                    <span className='font-semibold'>Monto:</span>
-                    <span>{chileanPeso.format(result.payment.estimated_payment)}</span>
+                    <div className='card-info-detail payment lg:ml-auto lg:px-4 lg:flex-col gap-2 lg:gap-0'>
+                        <span className='font-semibold'>Monto</span>
+                        <span>{chileanPeso.format(result.payment.estimated_payment)}</span>
+                    </div>
                 </div>
             </div>
     </div>
@@ -187,24 +191,29 @@ function BookingMainDetails({ result, handleClick } : {
 
 function BookingCustomer({ result } : { result : BookingInfoOutputProps}) {
     return (
-        <div className='booking-info-customer flex flex-col gap-2 items-start justify-start'>
-            <span className='font-bold titles-font'>Pasajeros</span>
-            <div className='info-section flex flex-row sm:flex-col gap-4 sm:gap-0 items-start justify-start w-full'>
-                <div className='card-info-detail'>
-                    <UserCircleIcon className='size-4' />
-                    <span>{result.customer.full_name}</span>
-                </div>
-                <div className='card-info-detail'>
-                    <PhoneIcon className='size-4' />
-                    <Link href={`tel:${result.customer.phone_number}`} className='hover:underline'>
-                        <span>{result.customer.phone_number}</span>
-                    </Link>
-                </div>
-                <div className='card-info-detail'>
-                    <MailIcon className='size-4' />
-                    <Link href={`mailto:${result.customer.email}`} className='hover:underline'>
-                        <span>{result.customer.email}</span>
-                    </Link>
+        <div className='booking-info-customer'>
+            <div className='flex flex-col gap-1 items-start justify-start'>
+                <span className='font-bold titles-font'>Pasajeros</span>
+                <div className='info-section'>
+                    <div className='card-info-detail'>
+                        <UserCircleIcon className='size-4' />
+                        <span>{result.customer.full_name}</span>
+                    </div>
+                    <div className='card-info-detail'>
+                        <PhoneIcon className='size-4' />
+                        <Link href={`tel:${result.customer.phone_number}`} className='hover:underline'>
+                            <span>{result.customer.phone_number}</span>
+                        </Link>
+                    </div>
+                    <div className='card-info-detail'>
+                        <MailIcon className='size-4' />
+                        <Link href={`mailto:${result.customer.email}`} className='hover:underline'>
+                            <span>{result.customer.email}</span>
+                        </Link>
+                        <Badge variant={'outline'} className={result.customer.vip_flag ? 'bg-orange-200' : 'bg-gray-200'}>
+                            { result.customer.vip_flag ? 'VIP' : 'NO VIP' }
+                        </Badge>
+                    </div>
                 </div>
             </div>
         </div>
@@ -213,28 +222,30 @@ function BookingCustomer({ result } : { result : BookingInfoOutputProps}) {
 
 function BookingDirections({ result } : { result : BookingInfoOutputProps}) {
     return (
-        <div className='booking-info-directions flex flex-col gap-2 items-start justify-start'>
-            <span className='font-bold titles-font'>Direcciones</span>
-            <div className='info-section flex flex-row sm:flex-col gap-4 sm:gap-0 items-start justify-start w-full'>
-                <div className='card-info-detail'>
-                    <MapPin className='size-4' />
-                    <div className="flex flex-row gap-2 items-center justify-start">
-                        <span className='font-semibold'>Origen:</span>
-                        <span className='line-clamp-1'>{result.directions.origin}</span>
+        <div className='booking-info-directions'>
+            <div className='flex flex-col gap-1 items-start justify-start'>
+                <span className='font-bold titles-font'>Direcciones</span>
+                <div className='info-section'>
+                    <div className='card-info-detail'>
+                        <MapPin className='size-4' />
+                        <div className="flex flex-row gap-2 items-center justify-start">
+                            <span className='font-semibold'>Origen:</span>
+                            <span className='line-clamp-1'>{result.directions.origin}</span>
+                        </div>
                     </div>
-                </div>
-                <div className='card-info-detail'>
-                    <GoalIcon className='size-4' />
-                    <div className="flex flex-row gap-2 items-center justify-start">
-                        <span className='font-semibold'>Destino:</span>
-                        <span className='line-clamp-1'>{result.directions.destination}</span>
+                    <div className='card-info-detail'>
+                        <GoalIcon className='size-4' />
+                        <div className="flex flex-row gap-2 items-center justify-start">
+                            <span className='font-semibold'>Destino:</span>
+                            <span className='line-clamp-1'>{result.directions.destination}</span>
+                        </div>
                     </div>
-                </div>
-                <div className='card-info-detail'>
-                    <Clock className='size-4' />
-                    <div className="flex flex-row gap-2 items-center justify-start">
-                        <span className='font-semibold'>Tiempo Estimado:</span>
-                        <span>{result.directions.estimated_travel_time} minutos ({(result.directions.estimated_travel_time / 60).toFixed(2)} horas)</span>
+                    <div className='card-info-detail'>
+                        <Clock className='size-4' />
+                        <div className="flex flex-row gap-2 items-center justify-start">
+                            <span className='font-semibold'>Tiempo Estimado:</span>
+                            <span>{result.directions.estimated_travel_time} minutos ({(result.directions.estimated_travel_time / 60).toFixed(2)} horas)</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -243,7 +254,7 @@ function BookingDirections({ result } : { result : BookingInfoOutputProps}) {
 }
 
 function BookingBadges({ result } : { result : BookingInfoOutputProps}) {
-    const paymentStatus = result.payment.status === 0 ? 'No pagada': 'Pagada'
+    const paymentStatusLabel = paymentStatus.filter(ps => ps.status === result.payment.status)[0].label
     const bookingStatusLabel = bookingStatus.filter(bs => bs.status === result.booking.status).length ? 
     bookingStatus.filter(bs => bs.status === result.booking.status)[0].label : 'Otro estado'
     
@@ -261,7 +272,7 @@ function BookingBadges({ result } : { result : BookingInfoOutputProps}) {
             <Badge variant={"default"} 
                 className={cn("py-2 text-white", 
                 result.payment.status === 0 ? 'bg-red-600' : 'bg-green-700')}>
-                {paymentStatus}
+                {paymentStatusLabel}
             </Badge>
             <CityBadge code={result.branch?.code} className='ml-auto' />
         </div>
@@ -272,7 +283,7 @@ function BookingVehicle({ result, handleVehicleNumberClick } : {
     result : BookingInfoOutputProps, 
     handleVehicleNumberClick : any 
 }) {
-    const WHATSAPP_TEXT = 'Hola, te escribimos de Transvip, ¿cómo estás?'
+    const WHATSAPP_TEXT = `Hola ${result.fleet.first_name ? result.fleet.first_name : ''}, te escribimos de Transvip, ¿cómo estás?`
     const whatsappLink = encodeURI(`https://wa.me/${result.fleet.phone_number.replace('+', '')}?text=${WHATSAPP_TEXT}`)
 
     return (
@@ -295,7 +306,8 @@ function BookingVehicle({ result, handleVehicleNumberClick } : {
                 <Button variant={'outline'} className='ml-auto px-2.5 rounded-full bg-green-600 hover:bg-green-800 text-white hover:text-white'>
                     <Link href={whatsappLink} 
                         target='_blank'
-                        className='flex flex-row items-center'>
+                        className='flex flex-row items-center gap-0 lg:gap-2'>
+                        <span className='hidden xl:block'>Contactar</span>
                         <WhatsappIcon />
                     </Link>
                 </Button>

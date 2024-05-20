@@ -52,7 +52,7 @@ export function TransvipPanel({ id, session }) {
 						<LogoutButton className="ml-auto" />
 					</div>
 				</header>
-				<main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-[1fr_4fr]">
+				<main className="grid flex-1 gap-4 overflow-auto p-0 md:p-4 md:grid-cols-[1fr_4fr]">
 					<div className="relative hidden flex-col items-start gap-8 md:flex min-w-[360px]">
 						<div className="grid w-full items-start gap-4 border p-4 rounded-xl" action={""}>
 							<SystemTools session={session} />
