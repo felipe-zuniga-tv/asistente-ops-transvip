@@ -38,7 +38,6 @@ export function VehicleStatusSearch({ session, searchResults, content }: {
             userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${result.license_plate}.`
         }
 
-
         setMessages((currentMessages: any) => [
             ...currentMessages,
             {

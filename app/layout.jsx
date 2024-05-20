@@ -10,7 +10,7 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Transvip | Ops Chile",
+  title: "Transvip | Operaciones Chile",
   description: "Operaciones Transvip Chile",
 };
 

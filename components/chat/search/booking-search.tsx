@@ -29,32 +29,21 @@ export function BookingIdSearch({ session, searchResults, content }: {
     const [_, setMessages] = useUIState()
     const { submitUserMessage } = useActions()
 
-    const handleClick = async ({ result } : { result : BookingInfoOutputProps}) => {
-        const userMessageContent = `Me gustaría buscar la reserva ${result.booking.id}.`
+    const handleClick = async (result : BookingInfoOutputProps, request: string) => {
+        let userMessageContent = ""
+        if (request === 'booking') {
+            userMessageContent = `Me gustaría buscar la reserva ${result.booking.id}.`
+        } else if (request === 'vehicle') {
+            userMessageContent = `Me gustaría saber si el vehículo ${result.vehicle.vehicle_number} está online.`
+        } else {
+            userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${result.vehicle.license_plate}.`
+        }
 
         setMessages((currentMessages: any) => [
             ...currentMessages,
             {
                 id: nanoid(),
-                display: <UserMessage content={userMessageContent} />
-            }
-        ])
-
-        const response = await submitUserMessage(userMessageContent)
-        setMessages((currentMessages: any) => [
-            ...currentMessages,
-            response
-        ])
-    }
-
-    const handleVehicleNumberClick = async (vehicle_number : number ) => {
-        const userMessageContent = `Me gustaría saber si el móvil ${vehicle_number} está online.`
-
-        setMessages((currentMessages: any) => [
-            ...currentMessages,
-            {
-                id: nanoid(),
-                display: <UserMessage content={userMessageContent} />
+                display: <UserMessage content={userMessageContent} session={session} />
             }
         ])
 
@@ -71,14 +60,13 @@ export function BookingIdSearch({ session, searchResults, content }: {
                 <HotelIcon className='h-4' />
                 <span className='font-bold'>Resultados</span>
             </div>
-            {/* // 1235058 */}
+            {/* // Ejemplo, paquete 1235058 */}
             <span>He encontrado {searchResults.length} reserva{searchResults.length > 1 ? 's' : ''}:</span>
             <div className={'search-results-cards relative w-full flex flex-col gap-4 items-start'}>
                 { searchResults.map((result: BookingInfoOutputProps) => (
                     <BookingIdResultsCard keyName={result.booking.id} 
                         result={result}
                         handleClick={handleClick}
-                        handleVehicleNumberClick={() => handleVehicleNumberClick(result.vehicle.vehicle_number)}
                     />
                 ))}
             </div>
@@ -89,11 +77,10 @@ export function BookingIdSearch({ session, searchResults, content }: {
     )
 }
 
-function BookingIdResultsCard({ keyName, result, handleClick, handleVehicleNumberClick } : {
+function BookingIdResultsCard({ keyName, result, handleClick } : {
     keyName: any, 
     result: BookingInfoOutputProps,
     handleClick: any
-    handleVehicleNumberClick: any
 }) {
     return (
         <div key={keyName + " " + new Date().getMilliseconds()} className='booking-information w-full p-3 px-2 bg-gray-200 rounded-md text-slate-900'>
@@ -103,7 +90,7 @@ function BookingIdResultsCard({ keyName, result, handleClick, handleVehicleNumbe
                 { result.customer && <BookingCustomer result={result} />}
                 { result.directions && <BookingDirections result={result} />}
                 { [2, 12, 0, 9].includes(result.booking.status) && 
-                    <BookingVehicle result={result} handleVehicleNumberClick={handleVehicleNumberClick} /> 
+                    <BookingVehicle result={result} handleClick={handleClick} /> 
                 }
 
                 <BookingBadges result={result} />
@@ -125,7 +112,7 @@ function BookingMainDetails({ result, handleClick } : {
             <div className='flex flex-col gap-2 items-start justify-start w-full'>
                 <div className='booking-id-section flex flex-row items-end justify-start'>
                     <Button variant={"default"}
-                        onClick={() => handleClick({ result })}
+                        onClick={() => handleClick(result, 'booking')}
                         className={cn("py-2 text-white w-fit bg-transvip/80 hover:bg-transvip-dark text-sm z-20_", "")}>
                         { result.booking.id }
                     </Button>
@@ -279,9 +266,9 @@ function BookingBadges({ result } : { result : BookingInfoOutputProps}) {
     )
 }
 
-function BookingVehicle({ result, handleVehicleNumberClick } : {
+function BookingVehicle({ result, handleClick } : {
     result : BookingInfoOutputProps, 
-    handleVehicleNumberClick : any 
+    handleClick : any 
 }) {
     const WHATSAPP_TEXT = `Hola ${result.fleet.first_name ? result.fleet.first_name : ''}, te escribimos de Transvip, ¿cómo estás?`
     const whatsappLink = encodeURI(`https://wa.me/${result.fleet.phone_number.replace('+', '')}?text=${WHATSAPP_TEXT}`)
@@ -295,7 +282,7 @@ function BookingVehicle({ result, handleVehicleNumberClick } : {
                         <CarIcon className='size-4' />
                         <div className='flex flex-row gap-2 items-center justify-start'>
                             <span>PPU: {result.vehicle.license_plate}</span>
-                            <span onClick={handleVehicleNumberClick} className='hover:underline cursor-pointer'>Móvil: {result.vehicle.vehicle_number}</span>
+                            <span onClick={() => handleClick(result, 'vehicle')} className='hover:underline cursor-pointer'>Móvil: {result.vehicle.vehicle_number}</span>
                         </div>
                     </div>
                     <div className='card-info-detail'>
