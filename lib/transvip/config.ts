@@ -15,4 +15,5 @@ export const bookingStatus = [
 export const paymentStatus = [
     { status: 0, label: 'No Pagada' },
     { status: 1, label: 'Pagada' },
+    { status: 2, label: 'Pagada' },
 ]

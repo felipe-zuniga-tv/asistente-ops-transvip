@@ -64,7 +64,7 @@ export function BookingIdSearch({ session, searchResults, content }: {
             <span>He encontrado {searchResults.length} reserva{searchResults.length > 1 ? 's' : ''}:</span>
             <div className={'search-results-cards relative w-full flex flex-col gap-4 items-start'}>
                 { searchResults.map((result: BookingInfoOutputProps) => (
-                    <BookingIdResultsCard keyName={result.booking.id} 
+                    <BookingIdResultsCard key={result.booking.id} keyName={result.booking.id} 
                         result={result}
                         handleClick={handleClick}
                     />
@@ -176,7 +176,7 @@ function BookingMainDetails({ result, handleClick } : {
     )
 }
 
-function BookingCustomer({ result } : { result : BookingInfoOutputProps}) {
+function BookingCustomer({ result } : { result : BookingInfoOutputProps }) {
     return (
         <div className='booking-info-customer'>
             <div className='flex flex-col gap-1 items-start justify-start'>
@@ -207,7 +207,7 @@ function BookingCustomer({ result } : { result : BookingInfoOutputProps}) {
     )
 }
 
-function BookingDirections({ result } : { result : BookingInfoOutputProps}) {
+function BookingDirections({ result } : { result : BookingInfoOutputProps }) {
     return (
         <div className='booking-info-directions'>
             <div className='flex flex-col gap-1 items-start justify-start'>
@@ -240,7 +240,7 @@ function BookingDirections({ result } : { result : BookingInfoOutputProps}) {
     )
 }
 
-function BookingBadges({ result } : { result : BookingInfoOutputProps}) {
+function BookingBadges({ result } : { result : BookingInfoOutputProps }) {
     const paymentStatusLabel = paymentStatus.filter(ps => ps.status === result.payment.status)[0].label
     const bookingStatusLabel = bookingStatus.filter(bs => bs.status === result.booking.status).length ? 
     bookingStatus.filter(bs => bs.status === result.booking.status)[0].label : 'Otro estado'
