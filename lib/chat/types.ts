@@ -52,7 +52,9 @@ export interface BookingInfoProps {
     customer_country_code: string
     customer_phone_number: string
     job_pickup_email: string
-    booking_for: string
+    job_pickup_name: string
+    job_pickup_phone: string
+    booking_for: number
     creation_datetime: string
     job_pickup_address: string
     job_address: string
@@ -72,7 +74,7 @@ export interface BookingInfoOutputProps {
         shared_service_id: string | undefined
         service_name: string
         contract_name: string
-        booking_for: string;
+        booking_for: boolean;
     }
     branch: BranchProps | undefined
     directions: {
@@ -98,8 +100,8 @@ export interface BookingInfoOutputProps {
     }
     customer: {
         vip_flag: boolean
-        first_name: string
-        last_name: string
+        first_name?: string
+        last_name?: string
         full_name: string
         phone_number: string
         email: string

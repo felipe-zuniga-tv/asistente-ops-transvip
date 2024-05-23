@@ -5,6 +5,7 @@ export const branches = [
 ]
 
 export const bookingStatus = [
+    { status: 0, label: 'Asignada' },
     { status: 2, label: 'Completada' },
     { status: 6, label: 'No asignada' },
     { status: 9, label: 'Cancelada' },

@@ -10,6 +10,7 @@ const VEHICLE_DETAIL_API_URL = buildAPIUrl(process.env.GET_VEHICLE_DETAIL);
 const DRIVER_SEARCH_API_URL  = buildAPIUrl(process.env.SEARCH_DRIVER);
 const DRIVER_PROFILE_API_URL = buildAPIUrl(process.env.GET_DRIVER_PROFILE);
 const DRIVER_RATINGS_API_URL = buildAPIUrl(process.env.GET_DRIVER_RATINGS);
+const BOOKING_DETAIL_URL     = buildAPIUrl(process.env.GET_BOOKING_DETAIL);
 const BOOKING_ID_API_URL     = buildAPIUrl(process.env.GET_BOOKING_BY_ID);
 
 // AUX FUNCTIONS
@@ -226,16 +227,19 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 service_name,
                 contract_name,
                 customer_first_name, customer_last_name, customer_country_code, customer_phone_number,
-                job_pickup_email,
+                job_pickup_email, job_pickup_name, job_pickup_phone,
                 booking_for,
                 creation_datetime, // UTC time
                 job_pickup_address, job_address, eta,
                 shared_service_id
             } = r;
-            // console.log(r);
+            console.log(r);
         
             // Get more details about the vehicle, such as type
             const vehicleDetail = await getVehicleDetail(transport_details);
+
+            const pax_full_name = booking_for === 1 ? job_pickup_name : [customer_first_name.trim(), customer_last_name.trim()].join(" ")
+            const pax_phone_number = booking_for === 1 ? customer_country_code.trim() + job_pickup_phone : [customer_country_code.trim(), customer_phone_number.trim()].join("")
         
             const output_item: BookingInfoOutputProps = {
                 booking: {
@@ -250,7 +254,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     shared_service_id,
                     service_name,
                     contract_name,
-                    booking_for,
+                    booking_for: booking_for === 1,
                 },
                 branch: branches.find(br => br.branch_id === Number(branch)),
                 directions: {
@@ -276,10 +280,10 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 },
                 customer: {
                     vip_flag: is_VIP === 1,
-                    first_name: customer_first_name.trim(),
-                    last_name: customer_last_name.trim(),
-                    full_name: [customer_first_name.trim(), customer_last_name.trim()].join(" "),
-                    phone_number: [customer_country_code.trim(), customer_phone_number.trim()].join(""),
+                    // first_name: customer_first_name.trim(),
+                    // last_name: customer_last_name.trim(),
+                    full_name: pax_full_name,
+                    phone_number: pax_phone_number,
                     email: job_pickup_email,
                 },
             };
@@ -292,6 +296,51 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
 
     return null
 }
+
+// export async function getBookings() {
+//     const session = await getSession()
+//     const currentUser = session?.user as any
+//     const accessToken = currentUser?.accessToken as string
+
+//     const LIMIT_RESULTS = 25
+//     const OFFSET_RESULTS = 0
+
+//     const OFFSET_DAYS = 1
+//     const DATE_FORMAT = "yyyy-MM-dd"
+
+//     // DATES
+//     const START_DATE = new Date()
+//     const TODAY = new Date()
+//     const END_DATE = TODAY.setDate(TODAY.getDate() + OFFSET_DAYS)
+
+//     const params = [
+//         `access_token=${accessToken}`,
+//         `limit=${LIMIT_RESULTS}`,
+//         `offset=${OFFSET_RESULTS}`,
+//         `search_filter=0`,
+//         // `search_value=${license_plate}`,
+//         `branch_filter=1`,
+//         `branch_value=1`,
+//         `date_time_filter=1`,
+//         `date_time_value1=${format(START_DATE, DATE_FORMAT)}`,
+//         `date_time_value2=${format(END_DATE, DATE_FORMAT)}`,
+//         `job_status_filter=1`,
+//         `job_status_value=[0,6,7,17]`,
+//         `aggrement_filter=0`,
+//         `booking_status=0`,
+//         `search_by_agreement_filter=0`,
+//         `search_filter=0`,
+//         `search_user_filter=0`,
+//         `service_filter=0`,
+//         `type_of_trip_filter=0`,
+//         `vehicle_filter=0`,
+//     ].join("&")
+
+//     const { status, data: { final_data } } = await getResponseFromURL(`${BOOKING_DETAIL_URL}?${params}`)
+
+
+    
+// }
 
 // Drivers
 export async function searchDriver(driver_email: string) {

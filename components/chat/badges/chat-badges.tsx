@@ -14,7 +14,7 @@ export function CityBadge({ branch, className }: { branch?: BranchProps, classNa
 
 export function BookingStatusBadge({ result } : { result : BookingInfoOutputProps }) {
     const bookingStatusLabel = bookingStatus.filter(bs => bs.status === result.booking.status).length ? 
-    bookingStatus.filter(bs => bs.status === result.booking.status)[0].label : 'Otro estado'
+    bookingStatus.filter(bs => bs.status === result.booking.status)[0].label : result.booking.status
 
     return (
         <Badge variant={"default"} 
