@@ -118,14 +118,14 @@ function DriverDocuments({ result } : { result : DriverProfileProps }) {
                 <div className='flex flex-row gap-2 items-center'>
                     <>
                         <span className='font-semibold'>Licencia</span>
-                        <Badge variant={'default'} className={"bg-gray-200 text-slate-900"}>
+                        <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
                             {result.driver_documents.license.type.toUpperCase()}
                         </Badge>
                     </>
                     <>·</>
                     <>
                         <span className='font-semibold'>Vencimiento:</span>
-                        <Badge variant={'default'} className={"bg-gray-200 text-slate-900"}>
+                        <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
                             { result.driver_documents.license.expiration_date?.substring(0, result.driver_documents.license.expiration_date.indexOf("T")) }
                         </Badge>
                         { days_to_expiration_license && days_to_expiration_license > 0 && <span>(faltan {days_to_expiration_license} días)</span>}
@@ -134,7 +134,7 @@ function DriverDocuments({ result } : { result : DriverProfileProps }) {
                 </div>
                 <div className='flex flex-row gap-2 items-center text-sm'>
                     <span className='font-semibold'>RUT</span>
-                    <Badge variant={'default'} className={"bg-gray-200 text-slate-900"}>
+                    <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
                         {result.driver_documents.RUT.number}
                     </Badge>
                     {/* { result.driver_documents.RUT.image && 
@@ -196,7 +196,7 @@ function DriverBadges({ result, handleStatusClick } : {
     return (
         <div className='gap-2 flex flex-row items-end'>
             <DriverStatusBadge result={result} />
-            <CityBadge code={result.branch.code} className='ml-auto' />
+            <CityBadge branch={result.branch} className='ml-auto' />
             {/* <ToolsButton item={result} handleClick={() => handleStatusClick({ result })} label={'Ver si está online'} /> */}
         </div>
     )

@@ -116,7 +116,7 @@ function VehicleStatusHeader({ result }: {
     return (
         <div className='result-fleet-header flex flex-row items-center justify-start gap-4'>
             <div className='fleet-profile-img'>
-                { result.fleet_image !== '' &&
+                { result.fleet_image &&
                     <DriverAvatar url={result.fleet_image} alt={result.first_name} />
                 }
             </div>
@@ -153,7 +153,7 @@ function VehicleStatusBadges({ result, currentStatus, handleDetailClick }: {
     return (
         <div className='result-status w-full flex flex-row gap-2 md:gap-4 items-center justify-between'>
             <div className='flex flex-row items-center justify-start gap-2'>
-                { result.branch && <CityBadge code={result.branch.code} /> }
+                { result.branch && <CityBadge branch={result.branch} /> }
                 <ToolsButton item={result} handleClick={() => handleDetailClick({ result })} label={'Ver más detalles'} />
             </div>
             { currentStatus === 'ONLINE' && <div className='text-xs'><CheckCircle className='h-4' /></div> }

@@ -232,9 +232,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 job_pickup_address, job_address, eta,
                 shared_service_id
             } = r;
-
-            console.log(r);
-            
+            // console.log(r);
         
             // Get more details about the vehicle, such as type
             const vehicleDetail = await getVehicleDetail(transport_details);

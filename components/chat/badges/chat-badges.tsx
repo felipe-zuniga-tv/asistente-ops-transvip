@@ -1,13 +1,13 @@
-import { BookingInfoOutputProps, DriverProfileProps, VehicleDetailProps } from "@/lib/chat/types";
+import { BookingInfoOutputProps, BranchProps, DriverProfileProps, VehicleDetailProps } from "@/lib/chat/types";
 import { bookingStatus, paymentStatus } from "@/lib/transvip/config";
 import { cn } from "@/lib/utils";
 import { Badge } from "../../ui/badge";
 
-export function CityBadge({ code, className }: { code?: string, className?: string }) {
+export function CityBadge({ branch, className }: { branch?: BranchProps, className?: string }) {
     return (
         <Badge variant={"default"} 
             className={cn("py-2 bg-slate-400 hover:bg-slate-500 text-xs text-white", className)}>
-            {code}
+            {branch?.name}
         </Badge>
     )
 }

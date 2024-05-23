@@ -91,7 +91,7 @@ function BookingIdResultsCard({ keyName, result, handleClick }: {
                 {result.booking && <BookingMainDetails result={result} />}
                 {result.customer && <BookingCustomer result={result} />}
                 {result.directions && <BookingDirections result={result} />}
-                {[2, 12, 0, 9].includes(result.booking.status) &&
+                {[2, 12, 0].includes(result.booking.status) &&
                     <BookingVehicle result={result} handleClick={handleClick} />
                 }
             </div>
@@ -245,7 +245,7 @@ function BookingBadges({ result, handleClick }: {
             <BookingIdBadge result={result} handleClick={handleClick} />
             <BookingStatusBadge result={result} />
             <PaymentStatusBadge result={result} />
-            <CityBadge code={result.branch?.code} className='ml-auto' />
+            <CityBadge branch={result.branch} className='ml-auto' />
         </div>
     )
 }

@@ -24,7 +24,7 @@ export function VehicleDetail({ session, vehicleInformation, content }: {
     const { submitUserMessage } = useActions()
 
     const handleDriverClick = async(driver : VehicleDetailDriversProps) => {
-        const userMessageContent = `Búscame el perfil del conductor de teléfono ${driver.country_code.trim()}${driver.phone.trim()}.`
+        const userMessageContent = `Búscame el perfil del conductor de teléfono ${driver.country_code.replace('+', '').trim()}${driver.phone.trim()}.`
     
         setMessages((currentMessages: any) => [
             ...currentMessages,
@@ -171,7 +171,7 @@ function VehicleBadges({ result, handleStatusClick } : {
         <div className='gap-2 flex flex-row items-end'>
             <VehicleStatusBadge result={result} />
             <ToolsButton item={result} handleClick={() => handleStatusClick({ result })} label={'Ver si el móvil está online'} />
-            <CityBadge code={result.branch.code} className='ml-auto' />
+            <CityBadge branch={result.branch} className='ml-auto' />
         </div>
     )
 }
