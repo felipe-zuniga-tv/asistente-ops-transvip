@@ -5,7 +5,7 @@ export default function DriverAvatar({ url, alt } : {
     url: string, alt: string 
 }) {
     return (
-        url ? <Image src={url}
+        url !== '' ? <Image src={url}
             width={100} height={100}
             className='h-12 w-12 md:h-16 md:w-16 shadow-md object-cover rounded-full' 
             alt={alt}

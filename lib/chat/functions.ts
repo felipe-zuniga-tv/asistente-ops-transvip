@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { getSession } from "../lib";
+import { getSession } from "../auth";
 import { branches } from "../transvip/config";
 import { VEHICLE_STATUS } from "../utils";
 import { BookingInfoOutputProps, BookingInfoProps, DriverProfileProps, VehicleDetailProps } from "./types";
@@ -32,6 +32,9 @@ async function getResponseFromURL(URL: string) {
         console.log(e)
         return null
     }
+}
+export function buildWhatsappLink(phone_number : string, text: string) {
+    return encodeURI(`https://wa.me/${phone_number.replace('+', '').trim()}?text=${text.trim()}`)
 }
 
 // FUNCTIONS
@@ -212,7 +215,8 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 is_round_trip, estimated_payment_cost,
                 branch,
                 is_VIP,
-                payment_status,
+                payment_status, 
+                // payment_method_name,
                 job_time, job_time_utc,
                 fleet_first_name, fleet_last_name, 
                 fleet_country_code, fleet_phone_number,
@@ -228,6 +232,9 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 job_pickup_address, job_address, eta,
                 shared_service_id
             } = r;
+
+            console.log(r);
+            
         
             // Get more details about the vehicle, such as type
             const vehicleDetail = await getVehicleDetail(transport_details);
@@ -255,7 +262,8 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 },
                 payment: {
                     status: payment_status,
-                    estimated_payment: estimated_payment_cost
+                    estimated_payment: estimated_payment_cost,
+                    // method_name: payment_method_name
                 },
                 fleet: {
                     first_name: fleet_first_name ? fleet_first_name.trim() : "",

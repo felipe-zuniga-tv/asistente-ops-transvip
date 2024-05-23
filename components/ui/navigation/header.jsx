@@ -1,4 +1,4 @@
-import { getSession } from "@/lib/lib";
+import { getSession } from "@/lib/auth";
 import LogoutButton from "../../auth/logout";
 import SheetNavigation from "./sheet";
 import UserDetails from "./user-details";

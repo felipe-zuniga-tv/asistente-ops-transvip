@@ -35,6 +35,7 @@ export interface BookingInfoProps {
     branch: string,
     is_VIP: number
     payment_status: number
+    payment_method_name?: string
     job_time: string
     job_time_utc: string
     fleet_first_name: string
@@ -82,6 +83,7 @@ export interface BookingInfoOutputProps {
     payment: {
         status: number
         estimated_payment: number
+        method_name?: string
     }
     fleet: {
         first_name: string

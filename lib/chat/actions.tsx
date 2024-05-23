@@ -1,6 +1,4 @@
 // @ts-nocheck
-/* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable @next/next/no-img-element */
 import "server-only";
 import {
 	getMutableAIState,
@@ -11,7 +9,7 @@ import {
 
 import { z } from "zod";
 import { openai } from "@ai-sdk/openai";
-import { getSession } from "../lib";
+import { getSession } from "../auth";
 import { VEHICLE_STATUS, getDriverRatingSummary, nanoid } from "@/lib/utils";
 import { CREATE_DRIVER_RATINGS_SUMMARY, SYSTEM_MESSAGE } from "./config";
 import { getVehicleStatus, getBookingInfo, getVehicleDetail, getDriverProfile, searchDriver, getDriverRatings } from "./functions";

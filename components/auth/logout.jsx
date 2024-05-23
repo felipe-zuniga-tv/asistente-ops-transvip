@@ -1,4 +1,4 @@
-import { logout } from "@/lib/lib"
+import { logout } from "@/lib/auth"
 import { Routes } from "@/utils/routes"
 import { redirect } from "next/navigation"
 import { Button } from "../ui/button"

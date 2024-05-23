@@ -10,9 +10,9 @@ import { cn } from '@/lib/utils';
 import { AssistantMessageContent, UserMessage } from '../message';
 import { VehicleDetailDriversProps, VehicleDetailProps } from '@/lib/chat/types';
 import { Badge } from '@/components/ui/badge';
-import CityBadge from '../city-badge';
 import ToolsButton from '../tools/tools-button';
 import { Button } from '@/components/ui/button';
+import { CityBadge, VehicleStatusBadge } from '../badges/chat-badges';
 // import * as Whatsapp from '../../../public/images/whatsapp-logo.svg'
 
 export function VehicleDetail({ session, vehicleInformation, content }: { 
@@ -24,7 +24,7 @@ export function VehicleDetail({ session, vehicleInformation, content }: {
     const { submitUserMessage } = useActions()
 
     const handleDriverClick = async(driver : VehicleDetailDriversProps) => {
-        const userMessageContent = `Búscame el perfil del conductor de teléfono ${driver.country_code.trim()} + ${driver.phone.trim()}.`
+        const userMessageContent = `Búscame el perfil del conductor de teléfono ${driver.country_code.trim()}${driver.phone.trim()}.`
     
         setMessages((currentMessages: any) => [
             ...currentMessages,
@@ -130,18 +130,18 @@ function VehicleDrivers({ result, handleClick } : {
     handleClick: any
 }) {
     return (
-        <div className='vehicle-info-drivers flex flex-col gap-2 items-start justify-start'>
+        <div className='vehicle-info-drivers flex flex-col gap-1 items-start justify-start'>
             <span className='font-bold titles-font'>Conductores</span>
-            <ul className='info-section w-full flex flex-col gap-2'>
+            <ul className='info-section w-full flex flex-col gap-1'>
                 {
                     result.drivers.map((driver: VehicleDetailDriversProps) => 
-                        <li className='flex flex-row gap-2'>
-                            <div className='card-info-detail'>
+                        <li className='flex flex-row gap-2 w-full'>
+                            <div className='card-info-detail text-sm'>
                                 <UserCircleIcon className='size-4' />
                                 <span>{driver.first_name.trim() + " " + driver.last_name.trim()}</span>
                             </div>
                             <span>·</span>
-                            <div className='card-info-detail'>
+                            <div className='card-info-detail text-sm'>
                                 <PhoneIcon className='size-4' />
                                 <Link href={`tel:${driver.country_code.trim() + driver.phone.trim()}`} className='hover:underline'>
                                     <span>{driver.country_code.trim() + driver.phone.trim()}</span>
@@ -167,17 +167,9 @@ function VehicleBadges({ result, handleStatusClick } : {
     result : VehicleDetailProps,
     handleStatusClick: any
 }) {
-    const vehicleStatus = result.status === 1 ? 'Activo' : 'Inactivo'
-    
     return (
         <div className='gap-2 flex flex-row items-end'>
-            <Badge variant={"default"} 
-                className={cn("py-2 text-white", 
-                result.status === 1 ? 'bg-green-700 hover:bg-green-700' :
-                result.status === 0 ? 'bg-red-400 hover:bg-red-400' :
-                'bg-gray-800')}>
-                { vehicleStatus }
-            </Badge>
+            <VehicleStatusBadge result={result} />
             <ToolsButton item={result} handleClick={() => handleStatusClick({ result })} label={'Ver si el móvil está online'} />
             <CityBadge code={result.branch.code} className='ml-auto' />
         </div>

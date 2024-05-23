@@ -10,9 +10,9 @@ import { AssistantMessageContent, UserMessage } from '../message';
 import { VehicleStatusSearchResultProps } from '@/lib/chat/types';
 import { VEHICLE_STATUS, cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import CityBadge from '../city-badge';
 import ToolsButton from '../tools/tools-button';
 import DriverAvatar from '@/components/driver/driver-avatar';
+import { CityBadge } from '../badges/chat-badges';
 // import * as Whatsapp from '../../../public/images/whatsapp-logo.svg'
 
 export interface VehicleStatusSearchResults {

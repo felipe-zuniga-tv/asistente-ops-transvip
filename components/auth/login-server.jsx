@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import { Routes } from "@/utils/routes"
-import { getSession, login } from '@/lib/lib'
+import { getSession, login } from '@/lib/auth'
 import { FormSubmit } from "../ui/form-submit"
 
 export default async function LoginFormServer() {

@@ -10,12 +10,11 @@ import { cn } from '@/lib/utils';
 import { DriverProfileProps, DriverVehiclesProps, VehicleDetailDriversProps, VehicleDetailProps } from '@/lib/chat/types';
 import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
-import CityBadge from '../city-badge';
 import ToolsButton from '../tools/tools-button';
 import DriverAvatar from '@/components/driver/driver-avatar';
 import { Button } from '@/components/ui/button';
-import Image from 'next/image';
 import { differenceInDays } from 'date-fns';
+import { CityBadge, DriverStatusBadge } from '../badges/chat-badges';
 
 export function DriverProfile({ session, driverProfile, content }: { 
     session: any,
@@ -35,7 +34,6 @@ export function DriverProfile({ session, driverProfile, content }: {
         } else {
             userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${vehicle.registration_number}.`
         }
-        
 
         setMessages((currentMessages: any) => [
             ...currentMessages,
@@ -92,7 +90,7 @@ function DriverMainDetails({ result } : { result : DriverProfileProps }) {
     return (
         <div className='flex flex-row gap-4 items-center justify-start'>
             <div className='driver-profile-img'>
-                { result.personal.image !== '' &&
+                { result.personal.image &&
                     <DriverAvatar url={result.personal.image} alt={result.personal.full_name} />
                 }
             </div>
@@ -192,20 +190,12 @@ function DriverVehicles({ result, handleVehicleClick } : {
 }
 
 function DriverBadges({ result, handleStatusClick } : { 
-    result : DriverProfileProps,
+    result : DriverProfileProps
     handleStatusClick: any
 }) {
-    const driverStatus = result.status.current === 1 ? 'Online' : 'Offline'
-    
     return (
         <div className='gap-2 flex flex-row items-end'>
-            <Badge variant={"default"} 
-                className={cn("py-2 text-white", 
-                result.status.current === 1 ? 'bg-green-700 hover:bg-green-700' :
-                result.status.current === 0 ? 'bg-red-400 hover:bg-red-400' :
-                'bg-gray-800')}>
-                { driverStatus }
-            </Badge>
+            <DriverStatusBadge result={result} />
             <CityBadge code={result.branch.code} className='ml-auto' />
             {/* <ToolsButton item={result} handleClick={() => handleStatusClick({ result })} label={'Ver si está online'} /> */}
         </div>
