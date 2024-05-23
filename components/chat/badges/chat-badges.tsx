@@ -6,7 +6,7 @@ import { Badge } from "../../ui/badge";
 export function CityBadge({ branch, className }: { branch?: BranchProps, className?: string }) {
     return (
         <Badge variant={"default"} 
-            className={cn("py-2 bg-slate-400 hover:bg-slate-500 text-xs text-white", className)}>
+            className={cn("py-2 bg-slate-600 hover:bg-slate-700 text-xs text-white", className)}>
             {branch?.name}
         </Badge>
     )
