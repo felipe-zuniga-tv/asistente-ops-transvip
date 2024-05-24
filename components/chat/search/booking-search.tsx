@@ -13,8 +13,10 @@ import { Button } from '@/components/ui/button';
 import { Calendar, CarIcon, CircleUserIcon, Clock, GoalIcon, HotelIcon, MailIcon, MapPin, PhoneIcon, UserCircleIcon } from 'lucide-react';
 import { WhatsappIcon } from '@/components/ui/icons';
 import { buildWhatsappLink } from '@/lib/chat/functions';
-import { BookingStatusBadge, CityBadge, PaymentStatusBadge } from '../badges/chat-badges';
+import { BookingStatusBadge, CityBadge, CustomerVipBadge, PaymentStatusBadge } from '../badges/chat-badges';
 import { BookingIdBadge } from '../badges/booking-badge';
+import DriverAvatar from '@/components/driver/driver-avatar';
+import Image from 'next/image';
 
 let chileanPeso = new Intl.NumberFormat('es-CL', {
     style: 'currency',
@@ -109,8 +111,8 @@ function BookingMainDetails({ result }: {
     return (
         <div className='booking-main-details'>
             <div className='flex flex-col gap-2 items-start justify-start w-full'>
-                <div className='info-section flex flex-col lg:flex-row gap-0 lg:gap-4 items-start lg:items-center justify-start w-full'>
-                    <div className='flex flex-col'>
+                <div className='info-section flex flex-col lg:flex-row gap-1 lg:gap-4 items-start lg:items-center justify-start w-full'>
+                    <div className='flex flex-col gap-1'>
                         {result.booking.shared_service_id && (
                             <div className='card-info-detail gap-2'>
                                 <span>Paquete: {result.booking.shared_service_id}</span>
@@ -173,27 +175,33 @@ function BookingCustomer({ result }: {
 }) {
     return (
         <div className='booking-info-customer'>
-            <div className='flex flex-col gap-1 items-start justify-start'>
+            <div className='flex flex-col gap-1 items-start justify-start w-full'>
                 <span className='font-bold titles-font'>Pasajeros</span>
-                <div className='info-section'>
-                    <div className='card-info-detail'>
-                        <UserCircleIcon className='size-4' />
-                        <span>{result.customer.full_name}</span>
+                <div className='info-section flex flex-col lg:flex-row gap-1 lg:gap-4 items-start lg:items-center justify-start w-full'>
+                    <div className='flex flex-col gap-1'>
+                        <div className='card-info-detail'>
+                            <UserCircleIcon className='size-4' />
+                            <span>{result.customer.full_name}</span>
+                        </div>
+                        <div className='card-info-detail'>
+                            <PhoneIcon className='size-4' />
+                            <Link href={`tel:${result.customer.phone_number}`} className='hover:underline'>
+                                <span>{result.customer.phone_number}</span>
+                            </Link>
+                        </div>
+                        <div className='card-info-detail'>
+                            <MailIcon className='size-4' />
+                            <Link href={`mailto:${result.customer.email}`} className='hover:underline'>
+                                <span>{result.customer.email}</span>
+                            </Link>
+                            <CustomerVipBadge result={result} />
+                        </div>
                     </div>
-                    <div className='card-info-detail'>
-                        <PhoneIcon className='size-4' />
-                        <Link href={`tel:${result.customer.phone_number}`} className='hover:underline'>
-                            <span>{result.customer.phone_number}</span>
-                        </Link>
-                    </div>
-                    <div className='card-info-detail'>
-                        <MailIcon className='size-4' />
-                        <Link href={`mailto:${result.customer.email}`} className='hover:underline'>
-                            <span>{result.customer.email}</span>
-                        </Link>
-                        <Badge variant={'outline'} className={result.customer.vip_flag ? 'bg-orange-200' : 'bg-gray-200'}>
-                            {result.customer.vip_flag ? 'VIP' : 'NO VIP'}
-                        </Badge>
+                    <div className='hidden qr-link ml-auto md:flex flex-col items-center justify-center'>
+                        <span className='font-bold text-sm'>Código QR</span>
+                        <Image src={result.booking.qr_link} alt={result.booking.id.toString()}
+                            width={70} height={70}
+                            />
                     </div>
                 </div>
             </div>
@@ -241,11 +249,13 @@ function BookingBadges({ result, handleClick }: {
     handleClick: any
 }) {
     return (
-        <div className='flex flex-row gap-2 items-center justify-start'>
-            <BookingIdBadge result={result} handleClick={handleClick} />
-            <BookingStatusBadge result={result} />
-            <PaymentStatusBadge result={result} />
-            <CityBadge branch={result.branch} className='ml-auto' />
+        <div className='booking-badges'>
+            <div className='flex flex-row gap-2 items-center justify-start'>
+                <BookingIdBadge result={result} handleClick={handleClick} />
+                <BookingStatusBadge result={result} />
+                <PaymentStatusBadge result={result} />
+                <CityBadge branch={result.branch} className='ml-auto' />
+            </div>
         </div>
     )
 }
@@ -258,36 +268,38 @@ function BookingVehicle({ result, handleClick }: {
     const whatsappLink = buildWhatsappLink(result.fleet.phone_number, WHATSAPP_TEXT)
 
     return (
-        <div className='booking-info-vehicle flex flex-col gap-1 justify-start'>
-            <span className='font-bold titles-font'>Vehículo / Conductor</span>
-            <div className='info-section flex flex-row items-center justify-start gap-4 w-full'>
-                <div>
+        <div className='booking-info-vehicle'>
+            <div className='flex flex-col gap-1 items-start justify-start'>
+                <span className='font-bold titles-font'>Vehículo / Conductor</span>
+                <div className='info-section flex flex-row items-center justify-start gap-4 w-full'>
                     <div className='card-info-detail'>
-                        <CircleUserIcon className='size-4' />
-                        <span>Conductor: {result.fleet.full_name}</span>
+                        <DriverAvatar url={result.fleet.image} alt={result.fleet.full_name} />
                     </div>
-                    <div className='card-info-detail items-center'>
-                        <CarIcon className='size-4' />
-                        {/* <div className='flex flex-row gap-2 items-center justify-start'>
-                            <span>PPU: {result.vehicle.license_plate}</span>
-                            <span onClick={() => handleClick(result, 'vehicle')} className='hover:underline cursor-pointer'>Móvil: {result.vehicle.vehicle_number}</span>
-                        </div> */}
-                        <Badge variant={'default'} className='flex flex-row gap-2 items-center justify-start'>
-                            <span onClick={() => handleClick(result, 'license')} className='hover:underline cursor-pointer'>PPU: {result.vehicle.license_plate}</span>
-                        </Badge>
-                        <Badge variant={'default'} className='flex flex-row gap-2 items-center justify-start'>
-                            <span onClick={() => handleClick(result, 'vehicle')} className='hover:underline cursor-pointer'>Móvil: {result.vehicle.vehicle_number}</span>
-                        </Badge>
+                    <div className='flex flex-col gap-0.5'>
+                        <div className='card-info-detail'>
+                            {/* <CircleUserIcon className='size-4' /> */}
+                            <span className='hidden'>Conductor: {result.fleet.full_name}</span>
+                            <span>{result.fleet.full_name}</span>
+                        </div>
+                        <div className='card-info-detail items-center gap-2'>
+                            {/* <CarIcon className='size-4' /> */}
+                            <Badge variant={'default'} className='flex flex-row gap-2 items-center justify-start md:text-sm'>
+                                <span onClick={() => handleClick(result, 'license')} className='hover:underline cursor-pointer'>PPU: {result.vehicle.license_plate}</span>
+                            </Badge>
+                            <Badge variant={'default'} className='flex flex-row gap-2 items-center justify-start md:text-sm'>
+                                <span onClick={() => handleClick(result, 'vehicle')} className='hover:underline cursor-pointer'>Móvil: {result.vehicle.vehicle_number}</span>
+                            </Badge>
+                        </div>
                     </div>
+                    <Button variant={'outline'} className='ml-auto px-2.5 rounded-full bg-green-600 hover:bg-green-800 text-white hover:text-white'>
+                        <Link href={whatsappLink}
+                            target='_blank'
+                            className='flex flex-row items-center gap-0 lg:gap-2'>
+                            <span className='hidden xl:block'>Contactar</span>
+                            <WhatsappIcon />
+                        </Link>
+                    </Button>
                 </div>
-                <Button variant={'outline'} className='ml-auto px-2.5 rounded-full bg-green-600 hover:bg-green-800 text-white hover:text-white'>
-                    <Link href={whatsappLink}
-                        target='_blank'
-                        className='flex flex-row items-center gap-0 lg:gap-2'>
-                        <span className='hidden xl:block'>Contactar</span>
-                        <WhatsappIcon />
-                    </Link>
-                </Button>
             </div>
         </div>
     )

@@ -18,3 +18,8 @@ export const paymentStatus = [
     { status: 1, label: 'Pagada' },
     { status: 2, label: 'Pagada' },
 ]
+
+export const paymentMethods = {
+    CARD: 'Tarjeta de Credito o Debito',
+    CASH: 'Efectivo Pesos',
+}

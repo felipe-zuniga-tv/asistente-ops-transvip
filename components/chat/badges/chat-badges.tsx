@@ -2,6 +2,7 @@ import { BookingInfoOutputProps, BranchProps, DriverProfileProps, VehicleDetailP
 import { bookingStatus, paymentStatus } from "@/lib/transvip/config";
 import { cn } from "@/lib/utils";
 import { Badge } from "../../ui/badge";
+import PaymentAvatar from "../payment/payment-avatar";
 
 export function CityBadge({ branch, className }: { branch?: BranchProps, className?: string }) {
     return (
@@ -29,14 +30,23 @@ export function BookingStatusBadge({ result } : { result : BookingInfoOutputProp
     )
 }
 
+export function CustomerVipBadge({ result } : { result : BookingInfoOutputProps }) {
+    return (
+        <Badge variant={'outline'} className={result.customer.vip_flag ? 'bg-orange-200' : 'bg-gray-200'}>
+            {result.customer.vip_flag ? 'VIP' : 'NO VIP'}
+        </Badge>
+    )
+}
+
 export function PaymentStatusBadge({ result } : { result : BookingInfoOutputProps }) {
     const paymentStatusLabel = paymentStatus.filter(ps => ps.status === result.payment.status)[0].label
 
     return (
         <Badge variant={"default"} 
-            className={cn("h-9 py-2 text-white", 
+            className={cn("h-9 py-2 text-white flex flex-row gap-2 items-center",
             result.payment.status === 0 ? 'bg-red-600' : 'bg-green-700')}>
-            {paymentStatusLabel}
+            <span>{ paymentStatusLabel }</span>
+            <PaymentAvatar result={result} />
         </Badge>
     )
 }

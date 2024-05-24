@@ -11,6 +11,7 @@ const DRIVER_SEARCH_API_URL  = buildAPIUrl(process.env.SEARCH_DRIVER);
 const DRIVER_PROFILE_API_URL = buildAPIUrl(process.env.GET_DRIVER_PROFILE);
 const DRIVER_RATINGS_API_URL = buildAPIUrl(process.env.GET_DRIVER_RATINGS);
 const BOOKING_DETAIL_URL     = buildAPIUrl(process.env.GET_BOOKING_DETAIL);
+const BOOKING_INFO_FULL_URL  = buildAPIUrl(process.env.GET_BOOKING_INFO_FULL);
 const BOOKING_ID_API_URL     = buildAPIUrl(process.env.GET_BOOKING_BY_ID);
 
 // AUX FUNCTIONS
@@ -233,8 +234,20 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 job_pickup_address, job_address, eta,
                 shared_service_id
             } = r;
-            console.log(r);
-        
+            // console.log(r);
+
+            // TODO
+            const { status: status_r, data: data_r } = await getResponseFromURL(`${BOOKING_INFO_FULL_URL}?job_id=${job_id}&access_token=${accessToken}`)
+
+            const {
+                assignment_identity,
+                fleet_image, // URL
+                payment_method_name,
+                qr_link,
+                total_distance_travelled, // kms
+                total_time_travelled // segundos
+            } = data_r
+
             // Get more details about the vehicle, such as type
             const vehicleDetail = await getVehicleDetail(transport_details);
 
@@ -255,19 +268,24 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     service_name,
                     contract_name,
                     booking_for: booking_for === 1,
+                    qr_link,
+                    assignment_identity
                 },
                 branch: branches.find(br => br.branch_id === Number(branch)),
                 directions: {
                     origin: job_pickup_address.trim(),
                     destination: job_address.trim(),
-                    estimated_travel_time: eta
+                    estimated_travel_time: eta,
+                    total_travel_kms: total_distance_travelled,
+                    total_travel_minutes: total_time_travelled / 60,
                 },
                 payment: {
                     status: payment_status,
                     estimated_payment: estimated_payment_cost,
-                    // method_name: payment_method_name
+                    method_name: payment_method_name
                 },
                 fleet: {
+                    image: fleet_image,
                     first_name: fleet_first_name ? fleet_first_name.trim() : "",
                     last_name: fleet_last_name ? fleet_last_name.trim() : "",
                     full_name: fleet_first_name && fleet_last_name ? [fleet_first_name.trim(), fleet_last_name.trim()].join(" ") : "",
@@ -287,6 +305,8 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     email: job_pickup_email,
                 },
             };
+
+            console.log(output_item)
 
             output.push(output_item);
         }));

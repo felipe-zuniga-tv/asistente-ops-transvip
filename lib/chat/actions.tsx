@@ -147,7 +147,9 @@ async function submitUserMessage(content: string) {
 						.describe('Este campo es TRUE en caso de que se pregunte por un paquete, package o ID de un servicio compartido'),
 				}).required(),
 				generate: async function* ({ bookingId, isShared }) {
-					yield <LoadingMessage text={`Buscando información de la reserva #${bookingId}...`} />
+					yield <LoadingMessage text={`Buscando la reserva/paquete ${bookingId}...`} 
+							className="text-xs md:text-base"
+						/>
 
 					const bookingInformation = await getBookingInfo(bookingId, isShared)
 					// console.log(`RESERVA: ${bookingId} - IS SHARED: ${isShared}`);

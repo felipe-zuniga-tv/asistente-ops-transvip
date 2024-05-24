@@ -74,13 +74,17 @@ export interface BookingInfoOutputProps {
         shared_service_id: string | undefined
         service_name: string
         contract_name: string
-        booking_for: boolean;
+        booking_for: boolean
+        qr_link: string
+        assignment_identity: string
     }
     branch: BranchProps | undefined
     directions: {
         origin: string
         destination: string
         estimated_travel_time: number
+        total_travel_kms: number
+        total_travel_minutes: number
     }
     payment: {
         status: number
@@ -88,6 +92,7 @@ export interface BookingInfoOutputProps {
         method_name?: string
     }
     fleet: {
+        image: string
         first_name: string
         last_name: string
         full_name: string
