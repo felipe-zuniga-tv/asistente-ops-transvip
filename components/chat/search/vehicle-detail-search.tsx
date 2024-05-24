@@ -89,10 +89,12 @@ function VehicleDetailCard({ keyName, result, handleDriverClick, handleVehicleSt
     handleVehicleStatusClick?: any
 }) {
     return (
-        <div key={keyName} className='vehicle-detail-card w-full flex flex-col gap-2 md:gap-4'>
-            <VehicleMainDetails result={result} />
-            <VehicleDrivers result={result} handleClick={handleDriverClick}/>
-            <VehicleBadges result={result} handleStatusClick={handleVehicleStatusClick} />
+        <div key={keyName} className='vehicle-detail-information w-full p-3 px-2 bg-gray-200 rounded-md text-slate-900'>
+            <div className={"flex flex-col gap-2 md:gap-3"}>
+                <VehicleBadges result={result} handleStatusClick={handleVehicleStatusClick} />
+                <VehicleMainDetails result={result} />
+                <VehicleDrivers result={result} handleClick={handleDriverClick}/>
+            </div>
         </div>
     )
 }
@@ -100,26 +102,32 @@ function VehicleDetailCard({ keyName, result, handleDriverClick, handleVehicleSt
 function VehicleMainDetails({ result } : { result : VehicleDetailProps }) {
     const bgColor = result.color.code
     return (
-        <div className={cn(`vehicle-main-details flex flex-col gap-2 items-start justify-start`)}>
-            <span className='font-bold titles-font'>General</span>
-            <div className='card-info-detail info-section flex flex-col gap-3 items-start justify-start pl-2 w-full'>
-                <div className='flex flex-row gap-4 items-center justify-start w-full'>
-                    <span>PPU: { result.license_plate }</span>
-                    <span>Número de Móvil: { result.vehicle_number }</span>
+        <div className='vehicle-main-details'>
+            <div className='flex flex-col gap-2 items-start justify-start'>
+                <span className='hidden font-bold titles-font'>General</span>
+                <div className='info-section'>
+                    <div className='card-info-detail flex flex-col gap-2 items-start justify-start w-full'>
+                        <div className='flex flex-row gap-2 items-center justify-start w-full'>
+                            <span>PPU: { result.license_plate }</span>
+                            <span>·</span>
+                            <span>Número de Móvil: { result.vehicle_number }</span>
+                        </div>
+                        <div className='flex flex-row gap-2 items-center justify-start w-full'>
+                            <span>Marca: { result.model.name }</span>
+                            <span>·</span>
+                            <span>Tipo: { result.type.name }</span>
+                            { result.color.name && <Badge variant={'default'} className={cn('text-white shadow-sm', `bg-[${bgColor}] hover:bg-[${bgColor}]`)}>
+                                { result.color.name.toUpperCase() }
+                            </Badge>}
+                        </div>
+                        <div className='flex flex-row gap-2 items-center justify-start w-ful'>
+                            <span>Contrato: { result.contract.type }</span>
+                            <span>·</span>
+                            <span>Sociedad: { result.contract.society_name }</span>
+                        </div>
+                        <span>Creación: {new Date(result.creation_datetime).toLocaleString()}</span>
+                    </div>
                 </div>
-                <div className='flex flex-row gap-4 items-center justify-start w-full'>
-                    <span>Marca: { result.model.name }</span>
-                    <span>Tipo: {result.type.name }</span>
-                    { result.color.name && <Badge variant={'default'} className={cn('text-white shadow-sm', `bg-[${bgColor}] hover:bg-[${bgColor}]`)}>
-                        { result.color.name.toUpperCase() }
-                    </Badge>}
-                </div>
-                <div className='flex flex-row gap-4 items-center justify-start w-ful'>
-                    <span>Contrato: { result.contract.type }</span>
-                    <span>·</span>
-                    <span>Sociedad: { result.contract.society_name }</span>
-                </div>
-                <span>Creación: {new Date(result.creation_datetime).toLocaleString()}</span>
             </div>
         </div>
     )
@@ -132,7 +140,7 @@ function VehicleDrivers({ result, handleClick } : {
     return (
         <div className='vehicle-info-drivers flex flex-col gap-1 items-start justify-start'>
             <span className='font-bold titles-font'>Conductores</span>
-            <ul className='info-section w-full flex flex-col gap-1'>
+            <ul className='info-section w-full flex flex-col gap-1 max-h-[250px] overflow-auto'>
                 {
                     result.drivers.map((driver: VehicleDetailDriversProps) => 
                         <li className='flex flex-row gap-2 w-full'>

@@ -154,7 +154,7 @@ function VehicleStatusBadges({ result, currentStatus, handleDetailClick }: {
         <div className='result-status w-full flex flex-row gap-2 md:gap-4 items-center justify-between'>
             <div className='flex flex-row items-center justify-start gap-2'>
                 { result.branch && <CityBadge branch={result.branch} /> }
-                <ToolsButton item={result} handleClick={() => handleDetailClick({ result })} label={'Ver más detalles'} />
+                <ToolsButton item={result} handleClick={() => handleDetailClick(result, 'vehicle')} label={'Ver más detalles'} />
             </div>
             { currentStatus === 'ONLINE' && <div className='text-xs'><CheckCircle className='h-4' /></div> }
             { currentStatus === 'OFFLINE' && 

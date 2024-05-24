@@ -21,5 +21,6 @@ export const paymentStatus = [
 
 export const paymentMethods = {
     CARD: 'Tarjeta de Credito o Debito',
+    FACTURA: 'Factura Credito',
     CASH: 'Efectivo Pesos',
 }
