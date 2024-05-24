@@ -139,7 +139,7 @@ function VehicleDrivers({ result, handleClick } : {
 }) {
     return (
         <div className='vehicle-info-drivers flex flex-col gap-1 items-start justify-start'>
-            <span className='font-bold titles-font'>Conductores</span>
+            <span className='font-bold titles-font'>Conductores: { result.drivers.length } </span>
             <ul className='info-section w-full flex flex-col gap-1 max-h-[250px] overflow-auto'>
                 {
                     result.drivers.map((driver: VehicleDetailDriversProps) => 
