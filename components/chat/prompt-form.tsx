@@ -97,7 +97,6 @@ export function PromptForm({ session, input, setInput }: {
                 onChange={e => handleFileChange(e)}
             />
             <div className={cn(
-                // "flex-col bg-gray-200 px-16 sm:rounded-full_ sm:px-16_",
                 "relative flex flex-col grow w-full max-h-60 overflow-hidden",
                 `${SHOW_FILE_BUTTON ? 'pl-4': 'pl-8'}`
             )}>
