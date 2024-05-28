@@ -16,7 +16,7 @@ import { cn } from '@/lib/utils'
 
 const SHOW_FILE_BUTTON = false
 
-export function PromptForm({ session, input, setInput }: { 
+export function PromptForm({ session, input, setInput } : { 
     session: any,
     input: string
     setInput: (value: string) => void
