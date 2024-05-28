@@ -305,8 +305,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     email: job_pickup_email,
                 },
             };
-
-            console.log(output_item)
+            // console.log(output_item)
 
             output.push(output_item);
         }));

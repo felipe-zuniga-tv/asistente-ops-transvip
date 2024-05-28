@@ -19,6 +19,11 @@ export const paymentStatus = [
     { status: 2, label: 'Pagada' },
 ]
 
+export const driverStatus = [
+    { status: 0, label: 'Offline' },
+    { status: 1, label: 'Online' },
+]
+
 export const paymentMethods = {
     CARD: 'Tarjeta de Credito o Debito',
     FACTURA: 'Factura Credito',

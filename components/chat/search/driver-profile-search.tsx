@@ -5,7 +5,7 @@ import {
 } from 'ai/rsc'
 import { nanoid } from 'nanoid';
 import Link from 'next/link';
-import { CarIcon, PhoneIcon, UserCircle, UserCircleIcon, UserIcon } from 'lucide-react';
+import { CarIcon, MailIcon, PhoneIcon, UserCircle, UserCircleIcon, UserIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { DriverProfileProps, DriverVehiclesProps, VehicleDetailDriversProps, VehicleDetailProps } from '@/lib/chat/types';
 import { AssistantMessageContent, UserMessage } from '../message';
@@ -14,7 +14,7 @@ import ToolsButton from '../tools/tools-button';
 import DriverAvatar from '@/components/driver/driver-avatar';
 import { Button } from '@/components/ui/button';
 import { differenceInDays } from 'date-fns';
-import { CityBadge, DriverStatusBadge } from '../badges/chat-badges';
+import { CityBadge, DriverStatusBadge, LicenseExpirationBadge } from '../badges/chat-badges';
 
 export function DriverProfile({ session, driverProfile, content }: { 
     session: any,
@@ -75,20 +75,20 @@ function DriverProfileCard({ keyName, result, handleVehicleClick } : {
     handleVehicleClick?: any
 }) {
     return (
-        <div key={keyName} className='vehicle-detail-card w-full flex flex-col gap-2 md:gap-4'>
-            <div className={cn(`driver-main flex flex-row items-center justify-between gap-4`)}>
+        <div key={keyName} className='vehicle-detail-card w-full flex flex-col gap-2 md:gap-4 bg-gray-200 p-2 rounded-xl'>
+            <div className={cn(`driver-main flex flex-col md:flex-row items-center justify-between gap-2 md:gap-4`)}>
                 <DriverMainDetails result={result} />
+                <DriverBadges result={result} handleStatusClick={handleVehicleClick} />
             </div>
             <DriverDocuments result={result} />
-            <DriverVehicles result={result} handleVehicleClick={handleVehicleClick} />
-            <DriverBadges result={result} handleStatusClick={handleVehicleClick} />
+            { result.vehicles.length > 0 && <DriverVehicles result={result} handleVehicleClick={handleVehicleClick} /> }
         </div>
     )
 }
 
 function DriverMainDetails({ result } : { result : DriverProfileProps }) {
     return (
-        <div className='flex flex-row gap-4 items-center justify-start'>
+        <div className='flex flex-row gap-4 items-center justify-center md:justify-start text-slate-700 w-full'>
             <div className='driver-profile-img'>
                 { result.personal.image &&
                     <DriverAvatar url={result.personal.image} alt={result.personal.full_name} />
@@ -96,7 +96,13 @@ function DriverMainDetails({ result } : { result : DriverProfileProps }) {
             </div>
             <div className='card-info-detail flex flex-col gap-0 items-start justify-start'>
                 <span className='font-bold titles-font'>{ result.personal.full_name }</span>
-                <span className='font-normal text-xs'>{ result.personal.email }</span>
+                <div className='flex flex-row gap-2 items-center justify-start'>
+                    <span className='font-normal text-xs'>{ result.personal.email }</span>
+                    {/* <span className='font-normal text-xs'>·</span>
+                    <Badge variant={"default"} className={"text-white"}>
+                        <MailIcon className='size-4' />
+                    </Badge> */}
+                </div>
             </div>
                 {/* <span>Fecha de creación: {new Date(result.created_at).toLocaleString()}</span> */}
         </div>
@@ -104,32 +110,21 @@ function DriverMainDetails({ result } : { result : DriverProfileProps }) {
 }
 
 function DriverDocuments({ result } : { result : DriverProfileProps }) {
-    let days_to_expiration_license = null
-    if (result.driver_documents.license.expiration_date) {
-        const _aux_license_expiration_date = result.driver_documents.license.expiration_date?.substring(0, result.driver_documents.license.expiration_date.indexOf("T")) as string
-        const license_expiration_date = new Date(_aux_license_expiration_date)
-        days_to_expiration_license = differenceInDays(license_expiration_date, new Date())
-    }
-
     return (
-        <div className='driver-docuemtns flex flex-col gap-2 items-start justify-start'>
+        <div className='driver-documents flex flex-col gap-2 items-start justify-start text-slate-700'>
             <span className='font-bold titles-font'>Documentos</span>
             <div className='info-section flex flex-col gap-3 items-start justify-start w-full'>
                 <div className='flex flex-row gap-2 items-center'>
                     <>
                         <span className='font-semibold'>Licencia</span>
                         <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
-                            {result.driver_documents.license.type.toUpperCase()}
+                            { result.driver_documents.license.type.toUpperCase() }
                         </Badge>
                     </>
                     <>·</>
                     <>
                         <span className='font-semibold'>Vencimiento:</span>
-                        <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
-                            { result.driver_documents.license.expiration_date?.substring(0, result.driver_documents.license.expiration_date.indexOf("T")) }
-                        </Badge>
-                        { days_to_expiration_license && days_to_expiration_license > 0 && <span>(faltan {days_to_expiration_license} días)</span>}
-                        { days_to_expiration_license && days_to_expiration_license < 0 && <span>(vencido hace {-1*days_to_expiration_license} días)</span>}
+                        <LicenseExpirationBadge result={result} />
                     </>
                 </div>
                 <div className='flex flex-row gap-2 items-center text-sm'>
@@ -155,9 +150,9 @@ function DriverVehicles({ result, handleVehicleClick } : {
     handleVehicleClick: any
 }) {
     return (
-        <div className='driver-info-vehicles flex flex-col gap-2 items-start justify-start'>
+        <div className='driver-info-vehicles flex flex-col gap-2 items-start justify-start text-slate-700'>
             <span className='font-bold titles-font'>Vehículos Propios</span>
-            <div className='info-section flex flex-col gap-2 items-center justify-start w-full'>
+            <div className='info-section flex flex-col gap-2 items-center justify-start w-full text-sm'>
                 {
                     result.vehicles.map((vehicle: DriverVehiclesProps) => 
                         <div key={vehicle.registration_number} className='flex flex-row gap-3 justify-start items-center w-full'>
@@ -170,13 +165,11 @@ function DriverVehicles({ result, handleVehicleClick } : {
                             </Badge>
                             <div className='vehicle-actions flex-row flex gap-x-1 ml-auto'>
                                 <Button variant={'outline'} className='text-xs text-white py-[1px] h-7 bg-slate-600'
-                                    onClick={() => handleVehicleClick(vehicle, 'details')}
-                                >
+                                    onClick={() => handleVehicleClick(vehicle, 'details')}>
                                     Más detalles
                                 </Button>
                                 <Button variant={'outline'} className='text-xs text-white py-[1px] h-7 bg-slate-600'
-                                    onClick={() => handleVehicleClick(vehicle, 'online')}
-                                >
+                                    onClick={() => handleVehicleClick(vehicle, 'online')}>
                                     Ver si está online
                                 </Button>
                             </div>
