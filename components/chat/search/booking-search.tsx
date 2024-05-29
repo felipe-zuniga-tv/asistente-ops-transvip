@@ -114,11 +114,25 @@ function BookingMainDetails({ result }: {
                 <div className='info-section flex flex-col lg:flex-row gap-1 lg:gap-4 items-start lg:items-center justify-start w-full'>
                     <div className='flex flex-col gap-1'>
                         {result.booking.shared_service_id && (
-                            <div className='card-info-detail gap-2'>
-                                <span>Paquete: {result.booking.shared_service_id}</span>
+                            <div className='card-info-detail gap-1'>
+                                <span className='font-semibold'>Paquete:</span>
+                                <span>{result.booking.shared_service_id}</span>
                             </div>
                         )}
-                        <div className='card-info-detail gap-2'>
+                        <div className='card-info-detail gap-1'>
+                            <span className='font-bold'>Convenio:</span>
+                            <span>{result.booking.contract_name}</span>
+                        </div>
+                        <div className='card-info-detail gap-1'>
+                            <span>Pax: {result.booking.pax_count}</span>
+                            <span>·</span>
+                            <span>Sentido: {result.booking.type_of_trip}</span>
+                            <span>·</span>
+                            <span>{result.booking.service_name}</span>
+                            <span>·</span>
+                            <span>RT: {result.booking.is_round_trip === 1 ? 'Sí' : 'No'}</span>
+                        </div>
+                        <div className='card-info-detail gap-1'>
                             <Calendar className='size-4' />
                             <span>{booking_datetime_local.toLocaleString()}</span>
                             {days_to_trip > 0 && (
@@ -146,23 +160,11 @@ function BookingMainDetails({ result }: {
                                 </>
                             )}
                         </div>
-                        <div className='card-info-detail gap-2'>
-                            <span>Pax: {result.booking.pax_count}</span>
-                            <span>·</span>
-                            <span>Sentido: {result.booking.type_of_trip}</span>
-                            <span>·</span>
-                            <span>{result.booking.service_name}</span>
-                            <span>·</span>
-                            <span>RT: {result.booking.is_round_trip === 1 ? 'Sí' : 'No'}</span>
-                        </div>
-                        <div className='card-info-detail gap-2'>
-                            <span className='font-bold'>Convenio:</span>
-                            <span>{result.booking.contract_name}</span>
-                        </div>
                     </div>
-                    <div className='card-info-detail payment lg:ml-auto lg:px-4 lg:flex-col gap-2 lg:gap-0'>
+                    <div className='card-info-detail payment lg:ml-auto lg:px-4 lg:flex-col gap-0 lg:gap-0'>
                         <span className='font-semibold'>Monto</span>
-                        <span>{chileanPeso.format(result.payment.estimated_payment)}</span>
+                        <span className='font-semibold block lg:hidden'>:</span>
+                        <span className='pl-1 lg:pl-0'>{chileanPeso.format(result.payment.estimated_payment)}</span>
                     </div>
                 </div>
             </div>
@@ -197,7 +199,7 @@ function BookingCustomer({ result }: {
                             <CustomerVipBadge result={result} />
                         </div>
                     </div>
-                    <div className='hidden qr-link ml-auto md:flex flex-col items-center justify-center'>
+                    <div className='qr-link hidden ml-auto lg:flex flex-row items-center justify-center'>
                         <span className='font-bold text-sm'>Código QR</span>
                         <Image src={result.booking.qr_link} alt={result.booking.id.toString()}
                             width={70} height={70}

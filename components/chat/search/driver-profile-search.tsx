@@ -90,9 +90,7 @@ function DriverMainDetails({ result } : { result : DriverProfileProps }) {
     return (
         <div className='flex flex-row gap-4 items-center justify-center md:justify-start text-slate-700 w-full'>
             <div className='driver-profile-img'>
-                { result.personal.image &&
-                    <DriverAvatar url={result.personal.image} alt={result.personal.full_name} />
-                }
+                <DriverAvatar url={result.personal.image} alt={result.personal.full_name} />
             </div>
             <div className='card-info-detail flex flex-col gap-0 items-start justify-start'>
                 <span className='font-bold titles-font'>{ result.personal.full_name }</span>
@@ -114,7 +112,7 @@ function DriverDocuments({ result } : { result : DriverProfileProps }) {
         <div className='driver-documents flex flex-col gap-2 items-start justify-start text-slate-700'>
             <span className='font-bold titles-font'>Documentos</span>
             <div className='info-section flex flex-col gap-3 items-start justify-start w-full'>
-                <div className='flex flex-row gap-2 items-center'>
+                <div className='card-info-detail gap-2'>
                     <>
                         <span className='font-semibold'>Licencia</span>
                         <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
@@ -127,7 +125,7 @@ function DriverDocuments({ result } : { result : DriverProfileProps }) {
                         <LicenseExpirationBadge result={result} />
                     </>
                 </div>
-                <div className='flex flex-row gap-2 items-center text-sm'>
+                <div className='card-info-detail gap-2'>
                     <span className='font-semibold'>RUT</span>
                     <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
                         {result.driver_documents.RUT.number}

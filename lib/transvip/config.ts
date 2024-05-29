@@ -24,6 +24,11 @@ export const driverStatus = [
     { status: 1, label: 'Online' },
 ]
 
+export const vehicleStatus = [
+    { status: 0, label: 'Inactivo', color: 'bg-red-400 hover:bg-red-400' },
+    { status: 1, label: 'Activo', color: 'bg-green-700 hover:bg-green-700' },
+]
+
 export const paymentMethods = {
     CARD: 'Tarjeta de Credito o Debito',
     FACTURA: 'Factura Credito',

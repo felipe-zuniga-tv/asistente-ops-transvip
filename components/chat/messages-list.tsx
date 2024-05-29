@@ -1,4 +1,5 @@
 import { UIState } from '@/lib/chat/actions'
+import { nanoid } from 'nanoid'
 
 export interface ChatList {
     messages: UIState
@@ -11,7 +12,7 @@ export function MessagesList({ messages, session, isShared }: ChatList) {
         <div className="messages-list">
             {
                 messages.map(message => (
-                    <div className='message-item' key={message.id}>
+                    <div className='message-item' key={message.id + nanoid()}>
                         {message.display}
                         {/* {message.spinner} */}
                         {/* {message.attachments} */}

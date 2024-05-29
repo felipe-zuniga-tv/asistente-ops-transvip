@@ -148,8 +148,8 @@ function VehicleDrivers({ result, handleClick } : {
                                 <UserCircleIcon className='size-4' />
                                 <span>{driver.first_name.trim() + " " + driver.last_name.trim()}</span>
                             </div>
-                            <span>·</span>
-                            <div className='card-info-detail text-sm'>
+                            <span className='hidden'>·</span>
+                            <div className='card-info-detail text-sm hidden'>
                                 <PhoneIcon className='size-4' />
                                 <Link href={`tel:${driver.country_code.trim() + driver.phone.trim()}`} className='hover:underline'>
                                     <span>{driver.country_code.trim() + driver.phone.trim()}</span>

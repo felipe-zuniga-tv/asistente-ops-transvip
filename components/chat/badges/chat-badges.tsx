@@ -1,5 +1,5 @@
 import { BookingInfoOutputProps, BranchProps, DriverProfileProps, VehicleDetailProps } from "@/lib/chat/types";
-import { bookingStatus, driverStatus, paymentStatus } from "@/lib/transvip/config";
+import { bookingStatus, driverStatus, paymentStatus, vehicleStatus } from "@/lib/transvip/config";
 import { cn } from "@/lib/utils";
 import { Badge } from "../../ui/badge";
 import PaymentAvatar from "../payment/payment-avatar";
@@ -20,7 +20,7 @@ export function BookingStatusBadge({ result } : { result : BookingInfoOutputProp
 
     return (
         <Badge variant={"default"} 
-            className={cn("h-9 py-1 md:py-2 text-white", 
+            className={cn("py-1 md:py-2 text-white", 
             result.booking.status === 6 ? 'bg-red-600' :
             result.booking.status === 9 ? 'bg-orange-800' :
             result.booking.status === 2 ? 'bg-green-700' :
@@ -44,8 +44,8 @@ export function PaymentStatusBadge({ result } : { result : BookingInfoOutputProp
 
     return (
         <Badge variant={"default"} 
-            className={cn("h-9 py-1 md:py-2 text-white flex flex-row gap-2 items-center",
-            result.payment.status === 0 ? 'bg-red-600' : 'bg-green-700')}>
+            className={cn("py-1 md:py-2 text-white flex flex-row gap-2 items-center",
+            result.payment.status === 0 ? 'bg-red-400' : 'bg-green-700')}>
             <span>{ paymentStatusLabel }</span>
             <PaymentAvatar result={result} />
         </Badge>
@@ -66,14 +66,17 @@ export function DriverStatusBadge({ result } : { result : DriverProfileProps }) 
 }
 
 export function VehicleStatusBadge({ result } : { result : VehicleDetailProps }) {
-    const vehicleStatus = result.status === 1 ? 'Activo' : 'Inactivo'
+    const vehicleStatus_ = vehicleStatus.filter(vs => vs.status === result.status)[0]
+    const vehicleStatusLabel = vehicleStatus_.label
+    const vehicleStatusColor = vehicleStatus_.color
     return (
         <Badge variant={"default"} 
-            className={cn("py-1 md:py-2 text-white", 
-            result.status === 1 ? 'bg-green-700 hover:bg-green-700' :
-            result.status === 0 ? 'bg-red-400 hover:bg-red-400' :
-            'bg-gray-800')}>
-            { vehicleStatus }
+            className={cn("py-1 md:py-2 text-white", vehicleStatusColor
+            // result.status === 1 ? 'bg-green-700 hover:bg-green-700' :
+            // result.status === 0 ? 'bg-red-400 hover:bg-red-400' :
+            // 'bg-gray-800'
+            )}>
+            { vehicleStatusLabel }
         </Badge>
     )
 }

@@ -80,10 +80,10 @@
     @apply bg-slate-100 gap-2 p-3 rounded-md text-slate-900;
   }
   .titles-font {
-    @apply text-sm md:text-base lg:text-lg;
+    @apply text-sm md:text-base lg:text-base;
   }
   .detail-info-font {
-    @apply text-xs md:text-sm lg:text-base;
+    @apply text-xs md:text-sm lg:text-sm;
   }
   .card-info-detail {
     @apply flex flex-row gap-3 items-center justify-start detail-info-font;
