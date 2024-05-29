@@ -97,4 +97,19 @@
   .info-section {
     @apply flex flex-col gap-1 sm:gap-0 items-start justify-start w-full;
   }
+  .booking-detail.main-card {
+    @apply w-full p-3 px-2 bg-gray-200 rounded-md text-slate-900;
+  }
+  .booking-detail.main-card {
+    @apply flex flex-col gap-2 md:gap-3;
+  }
+  .booking-detail.booking-badges {
+    @apply flex flex-row gap-2 items-center justify-start;
+  }
+  .booking-detail.main-details,
+  .booking-detail.info-customer,
+  .booking-detail.info-directions,
+  .booking-detail.info-vehicle {
+    @apply flex flex-col gap-1 items-start justify-start w-full;
+  }
 }
