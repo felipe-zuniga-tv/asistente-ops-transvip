@@ -5,12 +5,12 @@ export const branches = [
 ]
 
 export const bookingStatus = [
-    { status: 0, label: 'Asignada' },
-    { status: 2, label: 'Completada' },
-    { status: 6, label: 'No asignada' },
-    { status: 9, label: 'Cancelada' },
-    { status: 12, label: 'No Show' },
-    { status: 15, label: 'En camino' },
+    { status: 0, label: 'Asignada', color: 'bg-black' },
+    { status: 2, label: 'Completada', color: 'bg-green-700 hover:bg-green-600' },
+    { status: 6, label: 'No asignada', color: 'bg-red-600 hover:bg-red-500' },
+    { status: 9, label: 'Cancelada', color: 'bg-orange-800 hover:bg-orange-700' },
+    { status: 12, label: 'No Show', color: 'bg-yellow-500 hover:bg-yellow-400' },
+    { status: 15, label: 'En camino', color: 'bg-blue-400 bg-blue-500' },
 ]
 
 export const paymentStatus = [

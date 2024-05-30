@@ -15,12 +15,13 @@ export function CityBadge({ branch, className }: { branch?: BranchProps, classNa
 }
 
 export function BookingStatusBadge({ result } : { result : BookingInfoOutputProps }) {
-    const bookingStatusLabel = bookingStatus.filter(bs => bs.status === result.booking.status).length ? 
-    bookingStatus.filter(bs => bs.status === result.booking.status)[0].label : result.booking.status
+    const bookingStatusItem = bookingStatus.filter(bs => bs.status === result.booking.status)[0]
+    const bookingStatusLabel = bookingStatusItem.label
+    // const bookingStatusColor = bookingStatusItem.color
 
     return (
         <Badge variant={"default"} 
-            className={cn("py-1 md:py-2 text-white", 
+            className={cn("py-1 md:py-2 text-white",
             result.booking.status === 6 ? 'bg-red-600 hover:bg-red-500' :
             result.booking.status === 9 ? 'bg-orange-800 hover:bg-orange-700' :
             result.booking.status === 2 ? 'bg-green-700 hover:bg-green-600' :
