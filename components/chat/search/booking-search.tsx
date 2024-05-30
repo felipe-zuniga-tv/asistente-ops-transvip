@@ -127,11 +127,15 @@ function BookingMainDetails({ result }: {
                         <span>·</span>
                         <span>{result.booking.service_name}</span>
                         <span>·</span>
-                        <span>RT: {result.booking.is_round_trip === 1 ? 'Sí' : 'No'}</span>
+                        <span>RT: {result.booking.is_round_trip ? 'Sí' : 'No'}</span>
                     </div>
                     <div className='card-info-detail gap-1'>
                         <Calendar className='size-4' />
-                        <span>{booking_datetime_local.toLocaleString()}</span>
+                        <span>Creación: { new Date(result.booking.creation_datetime).toLocaleString() }</span>
+                    </div>
+                    <div className='card-info-detail gap-1'>
+                        <Calendar className='size-4' />
+                        <span>Fecha: {booking_datetime_local.toLocaleString()}</span>
                         {days_to_trip > 0 && (
                             <>
                                 <span>·</span>
@@ -230,7 +234,7 @@ function BookingDirections({ result }: {
                     <Clock className='size-4' />
                     <div className="flex flex-row gap-2 items-center justify-start">
                         <span className='font-semibold'>Tiempo Estimado:</span>
-                        <span>{result.directions.estimated_travel_time} minutos ({(result.directions.estimated_travel_time / 60).toFixed(2)} horas)</span>
+                        <span>{result.directions.estimated_travel_minutes} minutos ({(result.directions.estimated_travel_minutes / 60).toFixed(2)} horas)</span>
                     </div>
                 </div>
             </div>

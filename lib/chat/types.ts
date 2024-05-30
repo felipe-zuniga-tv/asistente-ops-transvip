@@ -33,7 +33,7 @@ export interface BookingInfoProps {
     is_round_trip: number
     estimated_payment_cost: number
     branch: string,
-    is_VIP: number
+    is_vip: number
     payment_status: number
     payment_method_name?: string
     job_time: string
@@ -66,10 +66,11 @@ export interface BookingInfoOutputProps {
         id: number
         status: number
         type_of_trip: string
-        is_round_trip: number
+        is_round_trip: boolean
         pax_count: string
         job_time: string
         job_time_utc: string
+        cancellation_datetime: string
         creation_datetime: string
         shared_service_id: string | undefined
         service_name: string
@@ -82,7 +83,8 @@ export interface BookingInfoOutputProps {
     directions: {
         origin: string
         destination: string
-        estimated_travel_time: number
+        estimated_travel_kms: number
+        estimated_travel_minutes: number
         total_travel_kms: number
         total_travel_minutes: number
     }

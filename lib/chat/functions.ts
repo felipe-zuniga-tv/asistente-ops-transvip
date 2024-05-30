@@ -35,6 +35,16 @@ async function getResponseFromURL(URL: string) {
         return null
     }
 }
+function addHours(date : Date, hours : number) {
+    const hoursToAdd = hours * 60 * 60 * 1000;
+    date.setTime(date.getTime() + hoursToAdd);
+    return date;
+}
+//   const date = new Date('2022-05-15T12:00:00.000Z');
+//   const newDate1 = addHours(date, 2);
+//   console.log(newDate1); // 2022-05-15T14:00:00.000Z
+//   const newDate2 = addHours(newDate1, 5);
+//   console.log(newDate2); // 2022-05-15T19:00:00.000Z
 export function buildWhatsappLink(phone_number : string, text: string) {
     return encodeURI(`https://wa.me/${phone_number.replace('+', '').trim()}?text=${text.trim()}`)
 }
@@ -212,34 +222,33 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
         const output: BookingInfoOutputProps[] = []
 
         await Promise.all(result.map(async (r: BookingInfoProps) => {
+            const { job_id } = r;
+
+            const { status: status_r, data: data_r } = await getResponseFromURL(`${BOOKING_INFO_FULL_URL}?job_id=${job_id}&access_token=${accessToken}`)
+
             const {
-                job_id, job_status, type_of_trip,
+                job_status, type_of_trip,
                 is_round_trip, estimated_payment_cost,
                 branch,
-                is_VIP,
+                is_vip,
                 payment_status, 
-                // payment_method_name,
                 job_time, job_time_utc,
                 fleet_first_name, fleet_last_name, 
                 fleet_country_code, fleet_phone_number,
                 transport_details,
-                unique_car_id,
+                unique_car_id, // uniqueNo
                 number_of_passangers,
                 service_name,
                 contract_name,
                 customer_first_name, customer_last_name, customer_country_code, customer_phone_number,
                 job_pickup_email, job_pickup_name, job_pickup_phone,
                 booking_for,
+                cancellation_datetime,
                 creation_datetime, // UTC time
-                job_pickup_address, job_address, eta,
-                shared_service_id
-            } = r;
-            // console.log(r);
-
-            // TODO
-            const { status: status_r, data: data_r } = await getResponseFromURL(`${BOOKING_INFO_FULL_URL}?job_id=${job_id}&access_token=${accessToken}`)
-
-            const {
+                job_pickup_address, job_address, 
+                estimated_distance,
+                eta,
+                shared_service_id,
                 assignment_identity,
                 fleet_image, // URL
                 payment_method_name,
@@ -259,10 +268,11 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     id: job_id,
                     status: job_status,
                     type_of_trip,
-                    is_round_trip,
+                    is_round_trip: is_round_trip === 1,
                     pax_count: number_of_passangers,
                     job_time,
                     job_time_utc,
+                    cancellation_datetime,
                     creation_datetime, // UTC time
                     shared_service_id,
                     service_name,
@@ -275,7 +285,8 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 directions: {
                     origin: job_pickup_address.trim(),
                     destination: job_address.trim(),
-                    estimated_travel_time: eta,
+                    estimated_travel_kms: estimated_distance / 1000,
+                    estimated_travel_minutes: eta,
                     total_travel_kms: total_distance_travelled,
                     total_travel_minutes: total_time_travelled / 60,
                 },
@@ -297,7 +308,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     type: vehicleDetail?.type.name
                 },
                 customer: {
-                    vip_flag: is_VIP === 1,
+                    vip_flag: is_vip === 1,
                     // first_name: customer_first_name.trim(),
                     // last_name: customer_last_name.trim(),
                     full_name: pax_full_name,
@@ -305,7 +316,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     email: job_pickup_email,
                 },
             };
-            // console.log(output_item)
+            console.log(output_item)
 
             output.push(output_item);
         }));
@@ -323,14 +334,12 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
 
 //     const LIMIT_RESULTS = 25
 //     const OFFSET_RESULTS = 0
-
-//     const OFFSET_DAYS = 1
+//     const HOURS_TO_ADD = 6
 //     const DATE_FORMAT = "yyyy-MM-dd"
 
 //     // DATES
 //     const START_DATE = new Date()
-//     const TODAY = new Date()
-//     const END_DATE = TODAY.setDate(TODAY.getDate() + OFFSET_DAYS)
+//     const END_DATE = addHours(START_DATE, HOURS_TO_ADD)
 
 //     const params = [
 //         `access_token=${accessToken}`,

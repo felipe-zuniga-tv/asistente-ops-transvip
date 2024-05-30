@@ -46,7 +46,7 @@ export default function ControlPage() {
 	const handleSendWhatsAppMessages = () => {
 		const selectedUsers = selectedRows.map((index) => data[index])
 		// Implement logic to send WhatsApp messages to selected users
-		console.log('Sending WhatsApp messages to:', selectedUsers)
+		// console.log('Sending WhatsApp messages to:', selectedUsers)
 	}
 
 	return (
