@@ -22,9 +22,9 @@ export function BookingStatusBadge({ result } : { result : BookingInfoOutputProp
     return (
         <Badge variant={"default"} 
             className={cn("py-1 md:py-2 text-white",
+            result.booking.status === 2 ? 'bg-green-700 hover:bg-green-600' :
             result.booking.status === 6 ? 'bg-red-600 hover:bg-red-500' :
             result.booking.status === 9 ? 'bg-orange-800 hover:bg-orange-700' :
-            result.booking.status === 2 ? 'bg-green-700 hover:bg-green-600' :
             result.booking.status === 12 ? 'bg-yellow-500 hover:bg-yellow-400' :
             'bg-black')}>
             { bookingStatusLabel }
