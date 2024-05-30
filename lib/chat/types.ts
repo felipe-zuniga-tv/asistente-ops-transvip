@@ -92,6 +92,8 @@ export interface BookingInfoOutputProps {
         status: number
         estimated_payment: number
         method_name?: string
+        fare_route_name?: string
+        fare_route_type?: number
     }
     fleet: {
         image: string

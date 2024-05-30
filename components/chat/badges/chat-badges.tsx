@@ -1,5 +1,5 @@
 import { BookingInfoOutputProps, BranchProps, DriverProfileProps, VehicleDetailProps } from "@/lib/chat/types";
-import { bookingStatus, driverStatus, paymentStatus, vehicleStatus } from "@/lib/transvip/config";
+import { bookingStatus, bookingStatusColor, bookingStatusKey, driverStatus, paymentStatus, vehicleStatus } from "@/lib/transvip/config";
 import { cn } from "@/lib/utils";
 import { Badge } from "../../ui/badge";
 import PaymentAvatar from "../payment/payment-avatar";
@@ -16,17 +16,12 @@ export function CityBadge({ branch, className }: { branch?: BranchProps, classNa
 
 export function BookingStatusBadge({ result } : { result : BookingInfoOutputProps }) {
     const bookingStatusItem = bookingStatus.filter(bs => bs.status === result.booking.status)[0]
-    const bookingStatusLabel = bookingStatusItem.label
-    // const bookingStatusColor = bookingStatusItem.color
+    const bookingStatusLabel = bookingStatusItem.label || bookingStatusItem.status
+    const bookingStatusColorValue = bookingStatusColor[bookingStatusItem.key as bookingStatusKey]
 
     return (
         <Badge variant={"default"} 
-            className={cn("py-1 md:py-2 text-white",
-            result.booking.status === 2 ? 'bg-green-700 hover:bg-green-600' :
-            result.booking.status === 6 ? 'bg-red-600 hover:bg-red-500' :
-            result.booking.status === 9 ? 'bg-orange-800 hover:bg-orange-700' :
-            result.booking.status === 12 ? 'bg-yellow-500 hover:bg-yellow-400' :
-            'bg-black')}>
+            className={cn("py-1 md:py-2 text-white", bookingStatusColorValue)}>
             { bookingStatusLabel }
         </Badge>
     )

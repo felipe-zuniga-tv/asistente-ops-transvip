@@ -226,6 +226,8 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
 
             const { status: status_r, data: data_r } = await getResponseFromURL(`${BOOKING_INFO_FULL_URL}?job_id=${job_id}&access_token=${accessToken}`)
 
+            console.log(data_r)
+
             const {
                 job_status, type_of_trip,
                 is_round_trip, estimated_payment_cost,
@@ -236,7 +238,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 fleet_first_name, fleet_last_name, 
                 fleet_country_code, fleet_phone_number,
                 transport_details,
-                unique_car_id, // uniqueNo
+                uniqueNo, // uniqueNo
                 number_of_passangers,
                 service_name,
                 contract_name,
@@ -254,7 +256,8 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 payment_method_name,
                 qr_link,
                 total_distance_travelled, // kms
-                total_time_travelled // segundos
+                total_time_travelled, // segundos
+                route_details
             } = data_r
 
             // Get more details about the vehicle, such as type
@@ -293,7 +296,9 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 payment: {
                     status: payment_status,
                     estimated_payment: estimated_payment_cost,
-                    method_name: payment_method_name
+                    method_name: payment_method_name,
+                    fare_route_name: route_details.route_name,
+                    fare_route_type: route_details.route_type
                 },
                 fleet: {
                     image: fleet_image,
@@ -304,7 +309,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 },
                 vehicle: {
                     license_plate: transport_details,
-                    vehicle_number: Number(unique_car_id),
+                    vehicle_number: Number(uniqueNo),
                     type: vehicleDetail?.type.name
                 },
                 customer: {

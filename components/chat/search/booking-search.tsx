@@ -90,6 +90,7 @@ function BookingIdResultsCard({ keyName, result, handleClick }: {
         <div key={keyName + " " + new Date().getMilliseconds()} className='booking-detail main-card'>
             <BookingBadges result={result} handleClick={handleClick} />
             {result.booking && <BookingMainDetails result={result} />}
+            {result.payment && <BookingFinancials result={result} />}
             {result.customer && <BookingCustomer result={result} />}
             {result.directions && <BookingDirections result={result} />}
             {[2, 12, 0, 15].includes(result.booking.status) &&
@@ -108,7 +109,7 @@ function BookingMainDetails({ result }: {
 
     return (
         <div className='booking-detail main-details'>
-            <div className='info-section flex flex-col lg:flex-row gap-1 lg:gap-4 items-start lg:items-center justify-start w-full'>
+            <div className='info-section'>
                 <div className='flex flex-col gap-1'>
                     {result.booking.shared_service_id && (
                         <div className='card-info-detail gap-1'>
@@ -125,13 +126,11 @@ function BookingMainDetails({ result }: {
                         <span>·</span>
                         <span>Sentido: {result.booking.type_of_trip}</span>
                         <span>·</span>
-                        <span>{result.booking.service_name}</span>
-                        <span>·</span>
                         <span>RT: {result.booking.is_round_trip ? 'Sí' : 'No'}</span>
-                    </div>
-                    <div className='card-info-detail gap-1'>
-                        <Calendar className='size-4' />
-                        <span>Creación: { new Date(result.booking.creation_datetime).toLocaleString() }</span>
+                        <span>·</span>
+                        <Badge variant={'outline'} className={'bg-gray-200 ml-3'}>
+                            {result.booking.service_name}
+                        </Badge>
                     </div>
                     <div className='card-info-detail gap-1'>
                         <Calendar className='size-4' />
@@ -161,11 +160,38 @@ function BookingMainDetails({ result }: {
                             </>
                         )}
                     </div>
+                    <div className='card-info-detail gap-1'>
+                        <Calendar className='size-4' />
+                        <span>Creación: { new Date(result.booking.creation_datetime).toLocaleString() }</span>
+                    </div>
                 </div>
-                <div className='card-info-detail payment lg:ml-auto lg:px-4 lg:flex-col gap-0 lg:gap-0'>
-                    <span className='font-semibold'>Monto</span>
-                    <span className='font-semibold block lg:hidden'>:</span>
-                    <span className='pl-1 lg:pl-0'>{chileanPeso.format(result.payment.estimated_payment)}</span>
+            </div>
+        </div>
+    )
+}
+
+function BookingFinancials({ result }: {
+    result: BookingInfoOutputProps
+}) {
+    return (
+        <div className='booking-detail info-customer'>
+            <span className='font-bold titles-font'>Pago</span>
+            <div className='info-section'>
+                <div className='flex flex-col gap-0.5'>
+                    <div className='card-info-detail flex-row gap-2'>
+                        <span className='font-semibold'>Monto:</span>
+                        <span className=''>{chileanPeso.format(result.payment.estimated_payment)}</span>
+                    </div>
+                    <div className='card-info-detail flex-row gap-2'>
+                        <span className='font-semibold'>Forma de Pago:</span>
+                        <span className=''>{result.payment.method_name}</span>
+                    </div>
+                    <div className='card-info-detail gap-1'>
+                        <span className='font-semibold'>Tarifa:</span>
+                        <span className=''>{result.payment.fare_route_name}</span>
+                        <Badge variant={'outline'} className='ml-3 bg-gray-200'>
+                            {result.payment.fare_route_type === 1 ? 'Fija' : 'Variable'}</Badge>
+                    </div>
                 </div>
             </div>
         </div>
