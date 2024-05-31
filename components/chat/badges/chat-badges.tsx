@@ -1,5 +1,5 @@
 import { BookingInfoOutputProps, BranchProps, DriverProfileProps, VehicleDetailProps } from "@/lib/chat/types";
-import { bookingStatus, bookingStatusColor, bookingStatusKey, driverStatus, getBookingStatusColor, paymentStatus, vehicleStatus } from "@/lib/transvip/config";
+import { bookingStatus, driverStatus, getBookingStatusColor, getPaymentStatusColor, paymentStatus, vehicleStatus } from "@/lib/transvip/config";
 import { cn } from "@/lib/utils";
 import { Badge } from "../../ui/badge";
 import PaymentAvatar from "../payment/payment-avatar";
@@ -36,12 +36,13 @@ export function CustomerVipBadge({ result } : { result : BookingInfoOutputProps 
 }
 
 export function PaymentStatusBadge({ result } : { result : BookingInfoOutputProps }) {
-    const paymentStatusLabel = paymentStatus.filter(ps => ps.status === result.payment.status)[0].label
+    const paymentStatusItem = paymentStatus.filter(ps => ps.status === result.payment.status)[0]
+    const paymentStatusLabel = paymentStatusItem ? paymentStatusItem.label : result.payment.status
+    const paymentStatusColor = getPaymentStatusColor(result.payment.status)
 
     return (
         <Badge variant={"default"} 
-            className={cn("py-1 md:py-2 text-white flex flex-row gap-2 items-center",
-            result.payment.status === 0 ? 'bg-red-400 hover:bg-red-300' : 'bg-green-700 hover:bg-green-600')}>
+            className={cn("py-1 md:py-2 text-white flex flex-row gap-2 items-center", paymentStatusColor)}>
             <span>{ paymentStatusLabel }</span>
             <PaymentAvatar result={result} />
         </Badge>

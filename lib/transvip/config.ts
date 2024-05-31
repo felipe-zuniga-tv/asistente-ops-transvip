@@ -16,9 +16,9 @@ export const bookingStatus = [
 ]
 
 export const paymentStatus = [
-    { status: 0, label: 'No Pagada' },
-    { status: 1, label: 'Pagada' },
-    { status: 2, label: 'Pagada*' },
+    { status: 0, label: 'No Pagada', color: 'bg-red-400 hover:bg-red-300'  },
+    { status: 1, label: 'Pagada', color: 'bg-green-700 hover:bg-green-600' },
+    { status: 2, label: 'Pagada*', color: 'bg-green-700 hover:bg-green-600' },
 ]
 
 export const driverStatus = [
@@ -39,4 +39,7 @@ export const paymentMethods = {
 
 export const getBookingStatusColor = (status: number) => {
     return bookingStatus.filter(bs => bs.status === status)[0].color
+}
+export const getPaymentStatusColor = (status: number) => {
+    return paymentStatus.filter(bs => bs.status === status)[0].color
 }
