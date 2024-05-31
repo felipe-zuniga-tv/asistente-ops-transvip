@@ -1,5 +1,5 @@
 import { BookingInfoOutputProps, BranchProps, DriverProfileProps, VehicleDetailProps } from "@/lib/chat/types";
-import { bookingStatus, bookingStatusColor, bookingStatusKey, driverStatus, paymentStatus, vehicleStatus } from "@/lib/transvip/config";
+import { bookingStatus, bookingStatusColor, bookingStatusKey, driverStatus, getBookingStatusColor, paymentStatus, vehicleStatus } from "@/lib/transvip/config";
 import { cn } from "@/lib/utils";
 import { Badge } from "../../ui/badge";
 import PaymentAvatar from "../payment/payment-avatar";
@@ -16,8 +16,8 @@ export function CityBadge({ branch, className }: { branch?: BranchProps, classNa
 
 export function BookingStatusBadge({ result } : { result : BookingInfoOutputProps }) {
     const bookingStatusItem = bookingStatus.filter(bs => bs.status === result.booking.status)[0]
-    const bookingStatusLabel = bookingStatusItem.label || bookingStatusItem.status
-    const bookingStatusColorValue = bookingStatusColor[bookingStatusItem.key as bookingStatusKey]
+    const bookingStatusLabel = bookingStatusItem ? bookingStatusItem.label : result.booking.status
+    const bookingStatusColorValue = getBookingStatusColor(result.booking.status)
 
     return (
         <Badge variant={"default"} 

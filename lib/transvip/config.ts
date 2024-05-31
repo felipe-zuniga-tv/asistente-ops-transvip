@@ -5,31 +5,20 @@ export const branches = [
 ]
 
 export const bookingStatus = [
-    { status: 0, label: 'Asignada', key: 'ASSIGNED' },
-    { status: 2, label: 'Completada', key: 'COMPLETED' },
-    { status: 4, label: 'En Posición', key: 'ARRIVED' },
-    { status: 6, label: 'No asignada', key: 'UNASSIGNED' },
-    { status: 9, label: 'Cancelada', key: 'CANCELLED' },
-    { status: 12, label: 'No Show', key: 'NO_SHOW' },
-    { status: 15, label: 'En camino', key: 'ON_ROAD' },
+    { status: 0, label: 'Asignada', color: 'bg-gray-200 hover:bg-gray-300' },
+    { status: 1, label: 'Iniciada', color: 'bg-slate-800 hover:bg-slate-900' },
+    { status: 2, label: 'Completada', color: 'bg-green-700 hover:bg-green-600' },
+    { status: 4, label: 'En Posición', color: 'bg-red-600 hover:bg-red-500' },
+    { status: 6, label: 'No asignada', color: 'bg-orange-800 hover:bg-orange-700' },
+    { status: 9, label: 'Cancelada', color: 'bg-orange-800 hover:bg-orange-700' },
+    { status: 12, label: 'No Show', color: 'bg-yellow-500 hover:bg-yellow-400' },
+    { status: 15, label: 'En camino', color: 'bg-blue-400 hover:bg-blue-500' },
 ]
-
-export type bookingStatusKey = 'ASSIGNED' | 'COMPLETED' | 'ARRIVED' | 'UNASSIGNED' | 'CANCELLED' | 'NO_SHOW' | 'ON_ROAD'
-
-export const bookingStatusColor = {
-    ASSIGNED: 'bg-black',
-    COMPLETED: 'bg-green-700 hover:bg-green-600',
-    UNASSIGNED: 'bg-red-600 hover:bg-red-500',
-    ARRIVED: 'bg-orange-800 hover:bg-orange-700',
-    CANCELLED: 'bg-orange-800 hover:bg-orange-700',
-    NO_SHOW: 'bg-yellow-500 hover:bg-yellow-400',
-    ON_ROAD: 'bg-blue-400 hover:bg-blue-500',
-}
 
 export const paymentStatus = [
     { status: 0, label: 'No Pagada' },
     { status: 1, label: 'Pagada' },
-    { status: 2, label: 'Pagada' },
+    { status: 2, label: 'Pagada*' },
 ]
 
 export const driverStatus = [
@@ -46,4 +35,8 @@ export const paymentMethods = {
     CARD: 'Tarjeta de Credito o Debito',
     FACTURA: 'Factura Credito',
     CASH: 'Efectivo Pesos',
+}
+
+export const getBookingStatusColor = (status: number) => {
+    return bookingStatus.filter(bs => bs.status === status)[0].color
 }

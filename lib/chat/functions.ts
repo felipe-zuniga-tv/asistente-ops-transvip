@@ -226,8 +226,6 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
 
             const { status: status_r, data: data_r } = await getResponseFromURL(`${BOOKING_INFO_FULL_URL}?job_id=${job_id}&access_token=${accessToken}`)
 
-            console.log(data_r)
-
             const {
                 job_status, type_of_trip,
                 is_round_trip, estimated_payment_cost,
@@ -321,7 +319,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     email: job_pickup_email,
                 },
             };
-            console.log(output_item)
+            // console.log(output_item)
 
             output.push(output_item);
         }));
