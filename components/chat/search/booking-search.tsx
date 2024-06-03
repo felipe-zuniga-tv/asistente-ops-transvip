@@ -181,17 +181,21 @@ function BookingFinancials({ result }: {
                     <div className='card-info-detail flex-row gap-2'>
                         <span className='font-semibold'>Monto:</span>
                         <span className=''>{chileanPeso.format(result.payment.estimated_payment)}</span>
+                        <Badge variant={'outline'} className='ml-2 bg-gray-200'>
+                            {result.payment.fare_route_type === 1 ? 'Fija' : 'Variable'}
+                        </Badge>
                     </div>
                     <div className='card-info-detail flex-row gap-2'>
                         <span className='font-semibold'>Forma de Pago:</span>
                         <span className=''>{result.payment.method_name}</span>
                     </div>
-                    <div className='card-info-detail gap-1'>
-                        <span className='font-semibold'>Tarifa:</span>
-                        <span className=''>{result.payment.fare_route_name}</span>
-                        <Badge variant={'outline'} className='ml-3 bg-gray-200'>
-                            {result.payment.fare_route_type === 1 ? 'Fija' : 'Variable'}</Badge>
-                    </div>
+                    { result.payment.fare_route_name &&
+                        <div className='card-info-detail gap-1'>
+                            <span className='font-semibold'>Tramo / Tarifa:</span>
+                            <span className=''>{result.payment.fare_route_name}</span>
+                            
+                        </div>
+                    }
                 </div>
             </div>
         </div>

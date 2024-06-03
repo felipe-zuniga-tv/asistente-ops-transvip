@@ -28,9 +28,11 @@ export function BookingStatusBadge({ result } : { result : BookingInfoOutputProp
 }
 
 export function CustomerVipBadge({ result } : { result : BookingInfoOutputProps }) {
+    const vipFlagLabel = result.customer.vip_flag ? 'VIP' : 'NO VIP'
+    const vipFlagColor = result.customer.vip_flag ? 'bg-orange-200' : 'bg-gray-200'
     return (
-        <Badge variant={'outline'} className={result.customer.vip_flag ? 'bg-orange-200' : 'bg-gray-200'}>
-            {result.customer.vip_flag ? 'VIP' : 'NO VIP'}
+        <Badge variant={'outline'} className={vipFlagColor}>
+            { vipFlagLabel }
         </Badge>
     )
 }
@@ -63,9 +65,9 @@ export function DriverStatusBadge({ result } : { result : DriverProfileProps }) 
 }
 
 export function VehicleStatusBadge({ result } : { result : VehicleDetailProps }) {
-    const vehicleStatus_ = vehicleStatus.filter(vs => vs.status === result.status)[0]
-    const vehicleStatusLabel = vehicleStatus_.label
-    const vehicleStatusColor = vehicleStatus_.color
+    const vehicleStatusItem = vehicleStatus.filter(vs => vs.status === result.status)[0]
+    const vehicleStatusLabel = vehicleStatusItem.label
+    const vehicleStatusColor = vehicleStatusItem.color
     return (
         <Badge variant={"default"} 
             className={cn("py-1 md:py-2 text-white", vehicleStatusColor

@@ -3,7 +3,7 @@ import { BookingInfoOutputProps } from "@/lib/chat/types";
 import { paymentMethods } from "@/lib/transvip/config";
 
 export default function PaymentAvatar({ result } : { result : BookingInfoOutputProps }) {
-    const checkPaymentMethods = Object.keys(paymentMethods).includes(result.payment.method_name || '')
+    const checkPaymentMethods = Object.values(paymentMethods).includes(result.payment.method_name || '')
 
     if (!checkPaymentMethods) return null
     
