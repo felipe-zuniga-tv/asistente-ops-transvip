@@ -8,7 +8,7 @@ import { differenceInDays } from "date-fns";
 export function CityBadge({ branch, className }: { branch?: BranchProps, className?: string }) {
     return (
         <Badge variant={"default"} 
-            className={cn("py-1 md:py-2 bg-slate-600 hover:bg-slate-700 text-xs text-white", className)}>
+            className={cn("py-1 md:py-2 bg-slate-600 hover:bg-slate-700 text-xs text-white cursor-pointer", className)}>
             {branch?.name}
         </Badge>
     )
@@ -21,7 +21,7 @@ export function BookingStatusBadge({ result } : { result : BookingInfoOutputProp
 
     return (
         <Badge variant={"default"} 
-            className={cn("py-1 md:py-2 text-white", bookingStatusColorValue)}>
+            className={cn("py-1 md:py-2 text-white cursor-pointer", bookingStatusColorValue)}>
             { bookingStatusLabel }
         </Badge>
     )
@@ -42,7 +42,7 @@ export function PaymentStatusBadge({ result } : { result : BookingInfoOutputProp
 
     return (
         <Badge variant={"default"} 
-            className={cn("py-1 md:py-2 text-white flex flex-row gap-2 items-center", paymentStatusColor)}>
+            className={cn("py-1 md:py-2 text-white flex flex-row gap-2 items-center cursor-pointer", paymentStatusColor)}>
             <span>{ paymentStatusLabel }</span>
             <PaymentAvatar result={result} />
         </Badge>

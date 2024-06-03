@@ -82,7 +82,7 @@ function VehicleStatusResultsCard({ keyName, result, handleClick } : {
         <div key={keyName} className='search-results-card w-full'>
             <div className={cn(
                 'h-fit p-3 flex flex-col gap-2 md:gap-4 justify-between text-white rounded-xl hover:text-white',
-                `${currentStatus === 'ONLINE' ? 'bg-green-800' : 'bg-red-400' }`
+                `${currentStatus === 'ONLINE' ? 'bg-emerald-700' : 'bg-red-400' }`
             )}>
                 <VehicleStatusHeader result={result} />
                 <div className='result-booking flex flex-col justify-between items-start gap-1 detail-info-font'>
@@ -96,7 +96,7 @@ function VehicleStatusResultsCard({ keyName, result, handleClick } : {
                                 <span className="">{result.service_name}</span>
                                 <span className="">·</span>
                                 <span className="">{result.contract_name}</span>
-                                <Button variant={'outline'} className='text-xs text-white py-[1px] h-7 bg-slate-600'
+                                <Button variant={'default'} className='ml-4 text-xs text-white py-[1px] h-7 bg-slate-600'
                                     onClick={() => handleClick(result, 'booking')}>
                                         Buscar reserva
                                 </Button>
