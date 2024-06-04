@@ -1,10 +1,39 @@
 import { BookingInfoOutputProps, BranchProps, DriverProfileProps, VehicleDetailProps } from "@/lib/chat/types";
-import { bookingStatus, driverStatus, getBookingStatusColor, getPaymentStatusColor, paymentStatus, vehicleStatus } from "@/lib/transvip/config";
 import { cn } from "@/lib/utils";
 import { Badge } from "../../ui/badge";
 import PaymentAvatar from "../payment/payment-avatar";
 import { differenceInDays } from "date-fns";
 
+// Configuration 
+const bookingStatus = [
+    { status: 0, label: 'Asignada', color: 'bg-gray-200 hover:bg-gray-300' },
+    { status: 1, label: 'Iniciada', color: 'bg-slate-800 hover:bg-slate-900' },
+    { status: 2, label: 'Completada', color: 'bg-green-700 hover:bg-green-600' },
+    { status: 4, label: 'En Posición', color: 'bg-red-600 hover:bg-red-500' },
+    { status: 6, label: 'No asignada', color: 'bg-orange-800 hover:bg-orange-700' },
+    { status: 9, label: 'Cancelada', color: 'bg-orange-800 hover:bg-orange-700' },
+    { status: 12, label: 'No Show', color: 'bg-yellow-500 hover:bg-yellow-400' },
+    { status: 15, label: 'En camino', color: 'bg-blue-400 hover:bg-blue-500' },
+]
+
+const paymentStatus = [
+    { status: 0, label: 'No Pagada', color: 'bg-red-400 hover:bg-red-300'  },
+    { status: 1, label: 'Pagada', color: 'bg-green-700 hover:bg-green-600' },
+    { status: 2, label: 'Pagada*', color: 'bg-green-700 hover:bg-green-600' },
+]
+
+const driverStatus = [
+    { status: 0, label: 'Offline', color: 'bg-red-400 hover:bg-red-300' },
+    { status: 1, label: 'Online', color: 'bg-green-700 hover:bg-green-600' },
+]
+
+const vehicleStatus = [
+    { status: 0, label: 'Inactivo', color: 'bg-red-400 hover:bg-red-400' },
+    { status: 1, label: 'Activo', color: 'bg-green-700 hover:bg-green-700' },
+]
+
+
+// Components
 export function CityBadge({ branch, className }: { branch?: BranchProps, className?: string }) {
     return (
         <Badge variant={"default"} 
@@ -17,7 +46,7 @@ export function CityBadge({ branch, className }: { branch?: BranchProps, classNa
 export function BookingStatusBadge({ result } : { result : BookingInfoOutputProps }) {
     const bookingStatusItem = bookingStatus.filter(bs => bs.status === result.booking.status)[0]
     const bookingStatusLabel = bookingStatusItem ? bookingStatusItem.label : result.booking.status
-    const bookingStatusColorValue = getBookingStatusColor(result.booking.status)
+    const bookingStatusColorValue = bookingStatusItem.color
 
     return (
         <Badge variant={"default"} 
@@ -40,7 +69,7 @@ export function CustomerVipBadge({ result } : { result : BookingInfoOutputProps 
 export function PaymentStatusBadge({ result } : { result : BookingInfoOutputProps }) {
     const paymentStatusItem = paymentStatus.filter(ps => ps.status === result.payment.status)[0]
     const paymentStatusLabel = paymentStatusItem ? paymentStatusItem.label : result.payment.status
-    const paymentStatusColor = getPaymentStatusColor(result.payment.status)
+    const paymentStatusColor = paymentStatusItem.color
 
     return (
         <Badge variant={"default"} 
@@ -52,13 +81,13 @@ export function PaymentStatusBadge({ result } : { result : BookingInfoOutputProp
 }
 
 export function DriverStatusBadge({ result } : { result : DriverProfileProps }) {
-    const driverStatusLabel = driverStatus.filter(ds => ds.status === result.status.current)[0].label
+    const driverStatusItem = driverStatus.filter(ds => ds.status === result.status.current)[0]
+    const driverStatusLabel = driverStatusItem ? driverStatusItem.label : result.status.current
+    const driverStatusColor = driverStatusItem.color
+
     return (
         <Badge variant={"default"} 
-            className={cn("py-1 md:py-2 text-white", 
-            result.status.current === 1 ? 'bg-green-700 hover:bg-green-700' :
-            result.status.current === 0 ? 'bg-red-400 hover:bg-red-400' :
-            'bg-gray-800')}>
+            className={cn("py-1 md:py-2 text-white", driverStatusColor)}>
             { driverStatusLabel }
         </Badge>
     )
@@ -68,12 +97,10 @@ export function VehicleStatusBadge({ result } : { result : VehicleDetailProps })
     const vehicleStatusItem = vehicleStatus.filter(vs => vs.status === result.status)[0]
     const vehicleStatusLabel = vehicleStatusItem.label
     const vehicleStatusColor = vehicleStatusItem.color
+
     return (
         <Badge variant={"default"} 
             className={cn("py-1 md:py-2 text-white", vehicleStatusColor
-            // result.status === 1 ? 'bg-green-700 hover:bg-green-700' :
-            // result.status === 0 ? 'bg-red-400 hover:bg-red-400' :
-            // 'bg-gray-800'
             )}>
             { vehicleStatusLabel }
         </Badge>
@@ -95,7 +122,7 @@ export function LicenseExpirationBadge({ result } : { result : DriverProfileProp
             <Badge variant={'default'} 
                 className={cn(
                     "bg-gray-200 text-white",
-                    `${days_to_expiration_license && days_to_expiration_license < 0 ? 'bg-red-400 hover:bg-red-500' : 'bg-green-700 hover:bg-green-700'}`
+                    `${days_to_expiration_license && days_to_expiration_license < 0 ? 'bg-red-400 hover:bg-red-300' : 'bg-green-700 hover:bg-green-600'}`
                 )}
             >
                 { result.driver_documents.license.expiration_date?.substring(0, result.driver_documents.license.expiration_date.indexOf("T")) }

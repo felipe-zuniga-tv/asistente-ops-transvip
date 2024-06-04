@@ -144,7 +144,7 @@ async function submitUserMessage(content: string) {
 						.describe("El número o código de la reserva o servicio del cual se necesita saber su detalle"),
 					isShared: z
 						.boolean()
-						.describe('Este campo es TRUE en caso de que se pregunte por un paquete, package o ID de un servicio compartido'),
+						.describe('Este campo es TRUE en caso de que se pregunte por un paquete, package o ID de un servicio compartido o agrupado'),
 				}).required(),
 				generate: async function* ({ bookingId, isShared }) {
 					yield <LoadingMessage text={`Buscando la reserva/paquete ${bookingId}...`} 
@@ -153,7 +153,11 @@ async function submitUserMessage(content: string) {
 
 					const bookingInformation = await getBookingInfo(bookingId, isShared)
 					// console.log(`RESERVA: ${bookingId} - IS SHARED: ${isShared}`);
-					// console.log(bookingInformation);
+					
+					// Sort by Job Pickup datetime ascending
+					bookingInformation?.
+						sort((a, b) => String(a.booking.job_time_utc).localeCompare(String(b.booking.job_time_utc)))
+						.sort((a, b) => String(a.booking.id).localeCompare(String(b.booking.id)))
 
 					aiState.done({
 						...aiState.get(),

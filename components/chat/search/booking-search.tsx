@@ -66,6 +66,9 @@ export function BookingIdSearch({ session, searchResults, content }: {
             </div>
             {/* // Ejemplo, paquete 1235058 */}
             <span>He encontrado {searchResults.length} reserva{searchResults.length > 1 ? 's' : ''}:</span>
+            <div className='hidden shared-service-summary bg-white p-2 rounded-md text-slate-900'>
+                Resumen paquete
+            </div>
             <div className={'search-results-cards relative w-full flex flex-col gap-4 items-start'}>
                 {searchResults.map((result: BookingInfoOutputProps) => (
                     <BookingIdResultsCard key={result.booking.id} keyName={result.booking.id}
