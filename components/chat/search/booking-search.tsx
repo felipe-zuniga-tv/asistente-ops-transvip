@@ -39,6 +39,8 @@ export function BookingIdSearch({ session, searchResults, content }: {
             userMessageContent = `Me gustaría saber si el vehículo ${result.vehicle.vehicle_number} está online.`
         } else if (request === 'license') {
             userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${result.vehicle.license_plate}.`
+        } else if (request === 'driver') {
+            userMessageContent = `Me gustaría saber más información sobre el conductor con el teléfono ${result.fleet.phone_number}.`
         } else {
             userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${result.vehicle.license_plate}.`
         }
@@ -323,14 +325,13 @@ function BookingVehicle({ result, handleClick }: {
                 <div className='card-info-detail'>
                     <DriverAvatar url={result.fleet.image} alt={result.fleet.full_name} />
                 </div>
-                <div className='flex flex-col gap-0.5'>
+                <div className='flex flex-col gap-2'>
                     <div className='card-info-detail'>
-                        {/* <CircleUserIcon className='size-4' /> */}
-                        <span className='hidden'>Conductor: {result.fleet.full_name}</span>
-                        <span>{result.fleet.full_name}</span>
+                        <Badge variant={'default'} className='flex flex-row gap-2 bg-gray-200 hover:bg-gray-300 text-black items-center justify-start md:text-sm'>
+                            <span onClick={() => handleClick(result, 'driver')} className='cursor-pointer'>{result.fleet.full_name}</span>
+                        </Badge>
                     </div>
                     <div className='card-info-detail items-center gap-2'>
-                        {/* <CarIcon className='size-4' /> */}
                         <Badge variant={'default'} className='flex flex-row gap-2 items-center justify-start md:text-sm'>
                             <span onClick={() => handleClick(result, 'license')} className='hover:underline cursor-pointer'>PPU: {result.vehicle.license_plate}</span>
                         </Badge>
