@@ -66,11 +66,12 @@ export function BookingIdSearch({ session, searchResults, content }: {
             </div>
             {/* // Ejemplo, paquete 1235058 */}
             <span>He encontrado {searchResults.length} reserva{searchResults.length > 1 ? 's' : ''}:</span>
-            <div className='hidden shared-service-summary bg-white p-2 rounded-md text-slate-900'>
-                Resumen paquete
-            </div>
+            
+            <SharedServiceSummary result={searchResults} handleClick={handleClick} />
+
             <div className={'search-results-cards relative w-full flex flex-col gap-4 items-start'}>
-                {searchResults.map((result: BookingInfoOutputProps) => (
+                { searchResults.length > 1 && <span className='-mb-3 mt-2 font-bold'>Detalle de Reservas</span>}
+                { searchResults.map((result: BookingInfoOutputProps) => (
                     <BookingIdResultsCard key={result.booking.id} keyName={result.booking.id}
                         result={result}
                         handleClick={handleClick}
@@ -99,6 +100,28 @@ function BookingIdResultsCard({ keyName, result, handleClick }: {
             {[2, 12, 0, 15].includes(result.booking.status) &&
                 <BookingVehicle result={result} handleClick={handleClick} />
             }
+        </div>
+    )
+}
+
+function SharedServiceSummary({ result, handleClick } : { 
+    result: BookingInfoOutputProps[]
+    handleClick: any
+}) {
+
+    if (result.length < 2) return null
+
+    return (
+        <div className='shared-service-summary bg-white p-2 rounded-md text-slate-900 flex flex-col gap-1.5'>
+            { result.map(r => (
+                <div className='shared-service-booking flex flex-row gap-2 items-center'>
+                    <BookingIdBadge result={r} handleClick={handleClick} />
+                    <PaymentStatusBadge result={r} />
+                    <BookingStatusBadge result={r} />
+                    <span>Fecha: { new Date(r.booking.job_time_utc).toLocaleString() }</span>
+                    <CityBadge branch={r.branch} isCode={true} className='ml-auto' />
+                </div>
+            ))}
         </div>
     )
 }

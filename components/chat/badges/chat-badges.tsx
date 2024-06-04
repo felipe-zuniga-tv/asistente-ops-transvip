@@ -34,11 +34,11 @@ const vehicleStatus = [
 
 
 // Components
-export function CityBadge({ branch, className }: { branch?: BranchProps, className?: string }) {
+export function CityBadge({ branch, className, isCode = false }: { branch?: BranchProps, className?: string, isCode?: boolean }) {
     return (
         <Badge variant={"default"} 
             className={cn("py-1 md:py-2 bg-slate-600 hover:bg-slate-700 text-xs text-white cursor-pointer", className)}>
-            {branch?.name}
+            { isCode ? branch?.code : branch?.name}
         </Badge>
     )
 }
