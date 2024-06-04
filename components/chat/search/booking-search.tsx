@@ -10,7 +10,7 @@ import { BookingInfoOutputProps } from '@/lib/chat/types';
 import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, CarIcon, CircleUserIcon, Clock, GoalIcon, HotelIcon, MailIcon, MapPin, PhoneIcon, UserCircleIcon } from 'lucide-react';
+import { Calendar, CarIcon, CircleUserIcon, Clock, GoalIcon, HotelIcon, MailIcon, MapPin, Pencil, PhoneIcon, UserCircleIcon } from 'lucide-react';
 import { WhatsappIcon } from '@/components/ui/icons';
 import { buildWhatsappLink } from '@/lib/chat/functions';
 import { BookingStatusBadge, CityBadge, CustomerVipBadge, PaymentRouteType, PaymentStatusBadge, ServiceNameBadge } from '../badges/chat-badges';
@@ -120,8 +120,8 @@ function SharedServiceSummary({ result, handleClick } : {
             { result.map(r => (
                 <div className='shared-service-booking flex flex-row gap-2 items-center'>
                     <BookingIdBadge result={r} handleClick={handleClick} />
-                    <PaymentStatusBadge result={r} />
                     <BookingStatusBadge result={r} />
+                    <PaymentStatusBadge result={r} />
                     <span>Fecha: { new Date(r.booking.job_time_utc).toLocaleString() }</span>
                     <CityBadge branch={r.branch} isCode={true} className='ml-auto' />
                 </div>
@@ -140,7 +140,7 @@ function BookingMainDetails({ result }: {
     return (
         <div className='booking-detail main-details'>
             <div className='info-section'>
-                <div className='flex flex-col gap-1'>
+                <div className='flex flex-col gap-1 w-full'>
                     {result.booking.shared_service_id && (
                         <div className='card-info-detail gap-1'>
                             <span className='font-semibold'>Paquete:</span>
@@ -191,6 +191,12 @@ function BookingMainDetails({ result }: {
                         <Calendar className='size-4' />
                         <span>Creación: { new Date(result.booking.creation_datetime).toLocaleString() }</span>
                     </div>
+                    { result.booking.observations && 
+                        <div className='card-info-detail mt-2 p-2 bg-yellow-300 rounded-md'>
+                            <Pencil className='size-4' />
+                            <span>{ result.booking.observations }</span>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

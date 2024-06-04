@@ -226,6 +226,8 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
 
             const { status: status_r, data: data_r } = await getResponseFromURL(`${BOOKING_INFO_FULL_URL}?job_id=${job_id}&access_token=${accessToken}`)
 
+            if (status_r !== 200) return
+
             const {
                 job_status, type_of_trip,
                 is_round_trip, estimated_payment_cost,
@@ -255,7 +257,8 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 qr_link,
                 total_distance_travelled, // kms
                 total_time_travelled, // segundos
-                route_details
+                route_details,
+                observations
             } = data_r
 
             // Get more details about the vehicle, such as type
@@ -280,7 +283,8 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     contract_name,
                     booking_for: booking_for === 1,
                     qr_link,
-                    assignment_identity
+                    assignment_identity,
+                    observations
                 },
                 branch: branches.find(br => br.branch_id === Number(branch)),
                 directions: {

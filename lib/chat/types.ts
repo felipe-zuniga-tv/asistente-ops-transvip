@@ -78,6 +78,7 @@ export interface BookingInfoOutputProps {
         booking_for: boolean
         qr_link: string
         assignment_identity: string
+        observations?: string
     }
     branch: BranchProps | undefined
     directions: {
