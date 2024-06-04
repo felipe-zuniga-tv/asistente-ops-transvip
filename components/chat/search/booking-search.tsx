@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Calendar, CarIcon, CircleUserIcon, Clock, GoalIcon, HotelIcon, MailIcon, MapPin, PhoneIcon, UserCircleIcon } from 'lucide-react';
 import { WhatsappIcon } from '@/components/ui/icons';
 import { buildWhatsappLink } from '@/lib/chat/functions';
-import { BookingStatusBadge, CityBadge, CustomerVipBadge, PaymentStatusBadge } from '../badges/chat-badges';
+import { BookingStatusBadge, CityBadge, CustomerVipBadge, PaymentRouteType, PaymentStatusBadge, ServiceNameBadge } from '../badges/chat-badges';
 import { BookingIdBadge } from '../badges/booking-badge';
 import DriverAvatar from '@/components/driver/driver-avatar';
 import Image from 'next/image';
@@ -78,9 +78,11 @@ export function BookingIdSearch({ session, searchResults, content }: {
                     />
                 ))}
             </div>
-            {content && <div className='search-results-text mt-4'>
-                <AssistantMessageContent content={content} />
-            </div>}
+            {content && 
+                <div className='search-results-text mt-4'>
+                    <AssistantMessageContent content={content} />
+                </div>
+            }
         </div>
     )
 }
@@ -153,10 +155,7 @@ function BookingMainDetails({ result }: {
                         <span>Sentido: {result.booking.type_of_trip}</span>
                         <span>·</span>
                         <span>RT: {result.booking.is_round_trip ? 'Sí' : 'No'}</span>
-                        <span>·</span>
-                        <Badge variant={'outline'} className={'bg-gray-200 ml-3'}>
-                            {result.booking.service_name}
-                        </Badge>
+                        <ServiceNameBadge result={result} />
                     </div>
                     <div className='card-info-detail gap-1'>
                         <Calendar className='size-4' />
@@ -182,7 +181,7 @@ function BookingMainDetails({ result }: {
                         {minutes_to_trip < 0 && Math.abs(minutes_to_trip) <= 180 && (
                             <>
                                 <span>·</span>
-                                <span className='font-semibold'>Hace: {-1 * minutes_to_trip} minutos</span>
+                                <span className='font-semibold text-red-500'>Hace: {-1 * minutes_to_trip} minutos</span>
                             </>
                         )}
                     </div>
@@ -207,9 +206,7 @@ function BookingFinancials({ result }: {
                     <div className='card-info-detail flex-row gap-2'>
                         <span className='font-semibold'>Monto:</span>
                         <span className=''>{chileanPeso.format(result.payment.estimated_payment)}</span>
-                        <Badge variant={'outline'} className='ml-2 bg-gray-200'>
-                            {result.payment.fare_route_type === 1 ? 'Fija' : 'Variable'}
-                        </Badge>
+                        <PaymentRouteType result={result} />
                     </div>
                     <div className='card-info-detail flex-row gap-2'>
                         <span className='font-semibold'>Forma de Pago:</span>

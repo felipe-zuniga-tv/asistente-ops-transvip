@@ -4,9 +4,9 @@ import { Badge } from "../../ui/badge";
 import PaymentAvatar from "../payment/payment-avatar";
 import { differenceInDays } from "date-fns";
 
-// Configuration 
+// Badge Configurations
 const bookingStatus = [
-    { status: 0, label: 'Asignada', color: 'bg-gray-200 hover:bg-gray-300' },
+    { status: 0, label: 'Asignada', color: 'bg-gray-400 hover:bg-gray-300' },
     { status: 1, label: 'Iniciada', color: 'bg-slate-800 hover:bg-slate-900' },
     { status: 2, label: 'Completada', color: 'bg-green-700 hover:bg-green-600' },
     { status: 4, label: 'En Posición', color: 'bg-red-600 hover:bg-red-500' },
@@ -56,11 +56,19 @@ export function BookingStatusBadge({ result } : { result : BookingInfoOutputProp
     )
 }
 
+export function ServiceNameBadge({ result } : { result : BookingInfoOutputProps }) {
+    return (
+        <Badge variant={'outline'} className={'ml-2 bg-slate-700 text-white'}>
+            {result.booking.service_name}
+        </Badge>
+    )
+}
+
 export function CustomerVipBadge({ result } : { result : BookingInfoOutputProps }) {
     const vipFlagLabel = result.customer.vip_flag ? 'VIP' : 'NO VIP'
-    const vipFlagColor = result.customer.vip_flag ? 'bg-orange-200' : 'bg-gray-200'
+    const vipFlagColor = result.customer.vip_flag ? 'bg-orange-200' : 'bg-slate-700 text-white'
     return (
-        <Badge variant={'outline'} className={vipFlagColor}>
+        <Badge variant={'outline'} className={cn('ml-2', vipFlagColor)}>
             { vipFlagLabel }
         </Badge>
     )
@@ -76,6 +84,14 @@ export function PaymentStatusBadge({ result } : { result : BookingInfoOutputProp
             className={cn("py-1 md:py-2 text-white flex flex-row gap-2 items-center cursor-pointer", paymentStatusColor)}>
             <span>{ paymentStatusLabel }</span>
             <PaymentAvatar result={result} />
+        </Badge>
+    )
+}
+
+export function PaymentRouteType({ result } : { result : BookingInfoOutputProps }) {
+    return (
+        <Badge variant={'outline'} className='ml-2 bg-slate-700 text-white'>
+            {result.payment.fare_route_type === 1 ? 'Fija' : 'Variable'}
         </Badge>
     )
 }
@@ -100,8 +116,7 @@ export function VehicleStatusBadge({ result } : { result : VehicleDetailProps })
 
     return (
         <Badge variant={"default"} 
-            className={cn("py-1 md:py-2 text-white", vehicleStatusColor
-            )}>
+            className={cn("py-1 md:py-2 text-white", vehicleStatusColor)}>
             { vehicleStatusLabel }
         </Badge>
     )

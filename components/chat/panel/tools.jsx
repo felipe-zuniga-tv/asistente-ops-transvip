@@ -1,7 +1,6 @@
 'use client'
 import { useActions, useUIState } from "ai/rsc"
 import { UserMessage } from "../message"
-import { Car } from "lucide-react"
 import { nanoid } from "nanoid"
 import { TransvipLogo } from "@/components/transvip/transvip-logo"
 
@@ -62,15 +61,14 @@ export default function SystemTools({ session }) {
 
     return (
         <div className="tools flex flex-col gap-3 items-start justify-center">
-            <span className="font-normal">Selecciona una herramienta</span>	
+            <span className="font-semibold">Selecciona una herramienta</span>	
             <div className="flex flex-col gap-3 items-start justify-center w-full">
                 {
                     toolsList.map((tool, index) => (
                         <div key={index + 1} 
-                            className="border p-2 bg-gray-50 hover:bg-gray-200 hover:cursor-pointer rounded-md shadow-md w-full flex items-center justify-start gap-3 text-muted-background"
+                            className="border p-2 bg-gray-50/50 hover:bg-gray-100 hover:cursor-pointer rounded-md shadow-md w-full flex items-center justify-start gap-3 text-muted-background"
                             onClick={() => handleClick({ tool })}
                         >
-                            {/* <Car className="size-5" /> */}
                             <TransvipLogo logoOnly={true} colored={false} size={20} className="bg-transvip p-1 rounded-md" />
                             <div className="grid gap-0.5">
                                 <span>{ tool.name }</span>
