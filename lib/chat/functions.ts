@@ -238,7 +238,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 fleet_first_name, fleet_last_name, 
                 fleet_country_code, fleet_phone_number,
                 transport_details,
-                uniqueNo, // uniqueNo
+                uniqueNo,
                 number_of_passangers,
                 service_name,
                 contract_name,
@@ -334,48 +334,53 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
     return null
 }
 
-// export async function getBookings() {
-//     const session = await getSession()
-//     const currentUser = session?.user as any
-//     const accessToken = currentUser?.accessToken as string
+export async function getBookings() {
+    const session = await getSession()
+    const currentUser = session?.user as any
+    const accessToken = currentUser?.accessToken as string
 
-//     const LIMIT_RESULTS = 25
-//     const OFFSET_RESULTS = 0
-//     const HOURS_TO_ADD = 6
-//     const DATE_FORMAT = "yyyy-MM-dd"
+    const LIMIT_RESULTS = 25
+    const OFFSET_RESULTS = 0
+    const HOURS_TO_ADD = 1
+    const DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
 
-//     // DATES
-//     const START_DATE = new Date()
-//     const END_DATE = addHours(START_DATE, HOURS_TO_ADD)
+    // DATES
+    const START_DATE = new Date()
+    const END_DATE = addHours(START_DATE, HOURS_TO_ADD)
 
-//     const params = [
-//         `access_token=${accessToken}`,
-//         `limit=${LIMIT_RESULTS}`,
-//         `offset=${OFFSET_RESULTS}`,
-//         `search_filter=0`,
-//         // `search_value=${license_plate}`,
-//         `branch_filter=1`,
-//         `branch_value=1`,
-//         `date_time_filter=1`,
-//         `date_time_value1=${format(START_DATE, DATE_FORMAT)}`,
-//         `date_time_value2=${format(END_DATE, DATE_FORMAT)}`,
-//         `job_status_filter=1`,
-//         `job_status_value=[0,6,7,17]`,
-//         `aggrement_filter=0`,
-//         `booking_status=0`,
-//         `search_by_agreement_filter=0`,
-//         `search_filter=0`,
-//         `search_user_filter=0`,
-//         `service_filter=0`,
-//         `type_of_trip_filter=0`,
-//         `vehicle_filter=0`,
-//     ].join("&")
+    const params = [
+        `access_token=${accessToken}`,
+        `limit=${LIMIT_RESULTS}`,
+        `offset=${OFFSET_RESULTS}`,
+        `search_filter=0`,
+        // `search_value=${license_plate}`,
+        `branch_filter=1`,
+        `branch_value=1`,
+        `date_time_filter=1`,
+        `date_time_value1=${format(START_DATE, DATE_FORMAT)}`,
+        `date_time_value2=${format(END_DATE, DATE_FORMAT)}`,
+        `job_status_filter=1`,
+        `job_status_value=%5B0,6,7,17%5D`,
+        `aggrement_filter=0`,
+        `booking_status=0`,
+        `search_by_agreement_filter=0`,
+        `search_filter=0`,
+        `search_user_filter=0`,
+        `service_filter=0`,
+        `type_of_trip_filter=0`,
+        `vehicle_filter=0`,
+    ].join("&")
 
-//     const { status, data: { final_data } } = await getResponseFromURL(`${BOOKING_DETAIL_URL}?${params}`)
+    console.log(`${BOOKING_DETAIL_URL}?${params}`)
+
+    const response = await getResponseFromURL(`${BOOKING_DETAIL_URL}?${params}`)
+    // const { status, data: { final_data } } = await getResponseFromURL(`${BOOKING_DETAIL_URL}?${params}`)
+
+    console.log(response)
 
 
     
-// }
+}
 
 // Drivers
 export async function searchDriver(driver_email: string) {

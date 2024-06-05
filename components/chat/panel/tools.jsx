@@ -21,6 +21,11 @@ const toolsList = [
         search: 'Me gustaría saber más información sobre una reserva o paquete'
     },
     {
+        name: 'Reservas programadas',
+        hint: 'Busca reservas para las próximas horas',
+        search: 'Me gustaría buscar reservas programadas para las próximas horas'
+    },
+    {
         name: 'Perfil de un conductor',
         hint: 'Busca usando el email o teléfono',
         search: 'Quiero ver el perfil de un conductor en particular',

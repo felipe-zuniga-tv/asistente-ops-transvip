@@ -101,7 +101,7 @@ function BookingIdResultsCard({ keyName, result, handleClick }: {
             {result.payment && <BookingFinancials result={result} />}
             {result.customer && <BookingCustomer result={result} />}
             {result.directions && <BookingDirections result={result} />}
-            {[2, 12, 0, 15].includes(result.booking.status) &&
+            {[2, 4, 12, 0, 15].includes(result.booking.status) &&
                 <BookingVehicle result={result} handleClick={handleClick} />
             }
         </div>
@@ -259,12 +259,14 @@ function BookingCustomer({ result }: {
                         <CustomerVipBadge result={result} />
                     </div>
                 </div>
-                <div className='qr-link hidden ml-auto lg:flex flex-row items-center justify-center'>
-                    <span className='font-bold text-sm'>Código QR</span>
-                    <Image src={result.booking.qr_link} alt={result.booking.id.toString()}
-                        width={70} height={70}
-                        />
-                </div>
+                { result.booking.qr_link && 
+                    <div className='qr-link hidden ml-auto lg:flex flex-row items-center justify-center'>
+                        <span className='font-bold text-sm'>Código QR</span>
+                        <Image src={result.booking.qr_link} alt={result.booking.id.toString()}
+                            width={70} height={70}
+                            />
+                    </div>
+                }
             </div>
         </div>
     )

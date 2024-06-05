@@ -12,7 +12,7 @@ import { openai } from "@ai-sdk/openai";
 import { getSession } from "../auth";
 import { VEHICLE_STATUS, getDriverRatingSummary, nanoid } from "@/lib/utils";
 import { CREATE_DRIVER_RATINGS_SUMMARY, SYSTEM_MESSAGE } from "./config";
-import { getVehicleStatus, getBookingInfo, getVehicleDetail, getDriverProfile, searchDriver, getDriverRatings } from "./functions";
+import { getVehicleStatus, getBookingInfo, getVehicleDetail, getDriverProfile, searchDriver, getDriverRatings, getBookings } from "./functions";
 import { BotCard, AssistantMessage, LoadingMessage, UserMessage } from "@/components/chat/message";
 import { VehicleStatusSearch } from "@/components/chat/search/vehicle-status-search";
 import { BookingIdSearch } from "@/components/chat/search/booking-search";
@@ -152,6 +152,9 @@ async function submitUserMessage(content: string) {
 						/>
 
 					const bookingInformation = await getBookingInfo(bookingId, isShared)
+
+					console.log(bookingInformation);
+					
 					// console.log(`RESERVA: ${bookingId} - IS SHARED: ${isShared}`);
 					
 					// Sort by Job Pickup datetime ascending
@@ -181,6 +184,45 @@ async function submitUserMessage(content: string) {
 					) : (
 						<BotCard>
 							<div>No se pudo encontrar la reserva o paquete con el código <span className="font-bold">{bookingId}</span>.</div>
+						</BotCard>
+					)
+				}
+			},
+			getFutureBookings: {
+				description: `Útil para obtener reservas futuras, programadas para las siguientes horas`,
+				parameters: z.object({
+				}).required(),
+				generate: async function* () {
+					yield <LoadingMessage text={`Buscando próximas reservas...`} 
+							className="text-xs md:text-base"
+						/>
+
+					const futureBookings = await getBookings()
+					// console.log(`RESERVA: ${bookingId} - IS SHARED: ${isShared}`);
+					
+					// Sort by Job Pickup datetime ascending
+					// bookingInformation?.
+					// 	sort((a, b) => String(a.booking.job_time_utc).localeCompare(String(b.booking.job_time_utc)))
+					// 	.sort((a, b) => String(a.booking.id).localeCompare(String(b.booking.id)))
+
+					aiState.done({
+						...aiState.get(),
+						messages: [
+							...aiState.get().messages,
+							{
+								role: 'assistant',
+								content: `Mostrando información de próximas reservas...`
+							},
+						]
+					})
+
+					return futureBookings ? (
+						<BotCard>
+							<div>Información de próximas reservas lista</div>
+						</BotCard>
+					) : (
+						<BotCard>
+							<div>No se pudo encontrar reservas para las próximas horas.</div>
 						</BotCard>
 					)
 				}
