@@ -285,8 +285,6 @@ async function submitUserMessage(content: string) {
 					const fleetId = await searchDriver(driverQueryClean)
 					const driverProfile = await getDriverProfile(fleetId)
 					
-					console.log(driverProfile);
-
 					aiState.update({
 						...aiState.get(),
 						messages: [

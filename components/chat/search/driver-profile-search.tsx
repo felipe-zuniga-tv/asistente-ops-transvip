@@ -96,6 +96,9 @@ function DriverMainDetails({ result } : { result : DriverProfileProps }) {
                 <span className='font-bold titles-font'>{ result.personal.full_name }</span>
                 <div className='flex flex-row gap-2 items-center justify-start'>
                     <span className='font-normal text-xs'>{ result.personal.email }</span>
+                    <span>·</span>
+                    <span className='text-xs font-bold'>Nota:</span>
+                    <span className='text-xs -ml-1'>{ result.quality.avg_rating.toFixed(2) }</span>
                     {/* <span className='font-normal text-xs'>·</span>
                     <Badge variant={"default"} className={"text-white"}>
                         <MailIcon className='size-4' />
@@ -118,11 +121,18 @@ function DriverDocuments({ result } : { result : DriverProfileProps }) {
                         <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
                             {result.driver_documents.RUT.number}
                         </Badge>
+                        <span>·</span>
+                        <div className='flex flex-row gap-2 items-center'>
+                            <span className='font-semibold'>RUT Facturación</span>
+                            <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
+                                {result.invoice_rut}
+                            </Badge>
+                        </div>
                     </div>
                     <div className='ml-auto'>
                         <Zoom>
                             <Image src={result.driver_documents.RUT.image} 
-                                width={800} height={600} 
+                                width={1200} height={900} 
                                 className='h-10 w-auto'
                                 alt={result.personal.full_name} 
                             />
@@ -143,7 +153,7 @@ function DriverDocuments({ result } : { result : DriverProfileProps }) {
                     <div className='ml-auto'>
                         <Zoom>
                             <Image src={result.driver_documents.license.image} 
-                                width={800} height={600} 
+                                width={1200} height={900} 
                                 className='h-10 w-auto'
                                 alt={result.personal.full_name} 
                                 />
