@@ -1,12 +1,10 @@
 'use client'
-
 import { StreamableValue } from "ai/rsc"
 import { MemoizedReactMarkdown } from "../markdown"
 import { useStreamableText } from "@/lib/hooks/use-streamable-text"
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
 import { cn } from "@/lib/utils"
-import { UserIcon } from "lucide-react"
 import { TransvipLogo } from "../transvip/transvip-logo"
 
 export function BotCard({ children, className = "" }: { children: React.ReactNode, className: string }) {

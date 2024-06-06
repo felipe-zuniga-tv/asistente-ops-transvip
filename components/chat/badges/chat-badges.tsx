@@ -142,8 +142,8 @@ export function LicenseExpirationBadge({ result } : { result : DriverProfileProp
             >
                 { result.driver_documents.license.expiration_date?.substring(0, result.driver_documents.license.expiration_date.indexOf("T")) }
             </Badge>
-            { days_to_expiration_license && days_to_expiration_license > 0 && <span className='hidden md:block'>(faltan {days_to_expiration_license} días)</span>}
-            { days_to_expiration_license && days_to_expiration_license < 0 && <span className='hidden md:block'>(vencido hace {-1*days_to_expiration_license} días)</span>}
+            {/* { days_to_expiration_license && days_to_expiration_license > 0 && <span className='hidden md:block'>(faltan {days_to_expiration_license} días)</span>}
+            { days_to_expiration_license && days_to_expiration_license < 0 && <span className='hidden md:block'>(vencido hace {-1*days_to_expiration_license} días)</span>} */}
         </>
     )
 }

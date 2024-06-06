@@ -152,9 +152,6 @@ async function submitUserMessage(content: string) {
 						/>
 
 					const bookingInformation = await getBookingInfo(bookingId, isShared)
-
-					console.log(bookingInformation);
-					
 					// console.log(`RESERVA: ${bookingId} - IS SHARED: ${isShared}`);
 					
 					// Sort by Job Pickup datetime ascending
@@ -279,7 +276,7 @@ async function submitUserMessage(content: string) {
 				}).required(),
 				generate: async function* ({ driverQuery }) {
 					// Clean query
-					let driverQueryClean = driverQuery.trim().replace("+", "")
+					let driverQueryClean = driverQuery.trim().replace("+", "").replace("  ", "")
 
 					yield <LoadingMessage text={`Buscando conductor: ${driverQueryClean}...`}
 						className="text-sm"
@@ -287,7 +284,8 @@ async function submitUserMessage(content: string) {
 
 					const fleetId = await searchDriver(driverQueryClean)
 					const driverProfile = await getDriverProfile(fleetId)
-					// console.log(driverProfile);
+					
+					console.log(driverProfile);
 
 					aiState.update({
 						...aiState.get(),
@@ -347,8 +345,8 @@ async function submitUserMessage(content: string) {
 							{
 								role: 'assistant',
 								content: `Evaluaciones del conductor ${driverProfile?.personal.full_name}, email ${driverEmail}` +
-									`\n\n` + JSON.stringify(driverRatingsSummary) + 
-									`\n\n`+ `Average Rating: ${driverProfile?.quality.avg_rating}`
+									`\n\n` + `Summary: ${JSON.stringify(driverRatingsSummary)}` + 
+									`\n\n`+ `Average Historical Rating: ${driverProfile?.quality.avg_rating}`
 							}
 						]
 					})
@@ -360,8 +358,8 @@ async function submitUserMessage(content: string) {
 						messages: [{
 							role: 'assistant',
 							content: `Evaluaciones del conductor ${driverProfile?.personal.full_name}, email ${driverEmail}` +
-								`\n\n` + JSON.stringify(driverRatingsSummary) + 
-								`\n\n`+ `Average Rating: ${driverProfile?.quality.avg_rating}`
+								`\n\n` + `Summary: ${JSON.stringify(driverRatingsSummary)}` + 
+								`\n\n`+ `Average Historical Rating: ${driverProfile?.quality.avg_rating}`
 						}],
 					})
 

@@ -101,7 +101,7 @@ function BookingIdResultsCard({ keyName, result, handleClick }: {
             {result.payment && <BookingFinancials result={result} />}
             {result.customer && <BookingCustomer result={result} />}
             {result.directions && <BookingDirections result={result} />}
-            {[2, 4, 12, 0, 15].includes(result.booking.status) &&
+            {[2, 4,  12, 0, 15].includes(result.booking.status) &&
                 <BookingVehicle result={result} handleClick={handleClick} />
             }
         </div>

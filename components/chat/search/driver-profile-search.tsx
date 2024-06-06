@@ -4,17 +4,17 @@ import {
     useUIState
 } from 'ai/rsc'
 import { nanoid } from 'nanoid';
-import Link from 'next/link';
-import { CarIcon, MailIcon, PhoneIcon, UserCircle, UserCircleIcon, UserIcon } from 'lucide-react';
+import { UserCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { DriverProfileProps, DriverVehiclesProps, VehicleDetailDriversProps, VehicleDetailProps } from '@/lib/chat/types';
+import { DriverProfileProps, DriverVehiclesProps } from '@/lib/chat/types';
 import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
-import ToolsButton from '../tools/tools-button';
 import DriverAvatar from '@/components/driver/driver-avatar';
 import { Button } from '@/components/ui/button';
-import { differenceInDays } from 'date-fns';
 import { CityBadge, DriverStatusBadge, LicenseExpirationBadge } from '../badges/chat-badges';
+import Image from 'next/image';
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
 
 export function DriverProfile({ session, driverProfile, content }: { 
     session: any,
@@ -112,31 +112,43 @@ function DriverDocuments({ result } : { result : DriverProfileProps }) {
         <div className='driver-documents flex flex-col gap-2 items-start justify-start text-slate-700'>
             <span className='font-bold titles-font'>Documentos</span>
             <div className='info-section flex flex-col gap-3 items-start justify-start w-full'>
-                <div className='card-info-detail gap-2'>
-                    <>
+                <div className='card-info-detail driver-document-rut gap-4 w-full h-12'>
+                    <div className='flex flex-row gap-2 items-center'>
+                        <span className='font-semibold'>RUT</span>
+                        <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
+                            {result.driver_documents.RUT.number}
+                        </Badge>
+                    </div>
+                    <div className='ml-auto'>
+                        <Zoom>
+                            <Image src={result.driver_documents.RUT.image} 
+                                width={800} height={600} 
+                                className='h-10 w-auto'
+                                alt={result.personal.full_name} 
+                            />
+                        </Zoom>
+                    </div>
+                </div>
+                <div className='card-info-detail driver-document-license gap-4 h-12 w-full'>
+                    <div className='flex flex-row gap-2 items-center'>
                         <span className='font-semibold'>Licencia</span>
                         <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
                             { result.driver_documents.license.type.toUpperCase() }
                         </Badge>
-                    </>
-                    <>·</>
-                    <>
+                    </div>
+                    <div className='flex flex-row gap-2 items-center'>
                         <span className='font-semibold'>Vencimiento:</span>
                         <LicenseExpirationBadge result={result} />
-                    </>
-                </div>
-                <div className='card-info-detail gap-2'>
-                    <span className='font-semibold'>RUT</span>
-                    <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
-                        {result.driver_documents.RUT.number}
-                    </Badge>
-                    {/* { result.driver_documents.RUT.image && 
-                        <Image src={result.driver_documents.RUT.image} 
-                            width={100} height={100}
-                            className='h-12 w-auto object-contain'
-                            alt={`Rut del conductor ${result.driver_documents.RUT.number}`}
-                        />
-                    } */}
+                    </div>
+                    <div className='ml-auto'>
+                        <Zoom>
+                            <Image src={result.driver_documents.license.image} 
+                                width={800} height={600} 
+                                className='h-10 w-auto'
+                                alt={result.personal.full_name} 
+                                />
+                        </Zoom>
+                    </div>
                 </div>
             </div>       {/* <span>Fecha de creación: {new Date(result.created_at).toLocaleString()}</span> */}
         </div>
