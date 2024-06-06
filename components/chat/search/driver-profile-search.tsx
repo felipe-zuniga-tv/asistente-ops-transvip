@@ -57,7 +57,7 @@ export function DriverProfile({ session, driverProfile, content }: {
                 <span className='font-bold'>Datos del Conductor</span>
             </div>
             <div className={'search-results-cards relative w-full flex flex-col gap-2 items-start'}>
-                <DriverProfileCard keyName={driverProfile.fleet_id} 
+                <DriverProfileCard key={driverProfile.fleet_id} 
                     result={driverProfile}
                     handleVehicleClick={handleClick}
                 />
@@ -69,98 +69,101 @@ export function DriverProfile({ session, driverProfile, content }: {
     )
 }
 
-function DriverProfileCard({ keyName, result, handleVehicleClick } : {
-    keyName: any, 
+function DriverProfileCard({ result, handleVehicleClick } : {
     result: any,
     handleVehicleClick?: any
 }) {
     return (
-        <div key={keyName} className='vehicle-detail-card w-full flex flex-col gap-2 md:gap-4 bg-gray-200 p-2 rounded-xl'>
-            <div className={cn(`driver-main flex flex-col md:flex-row items-center justify-between gap-2 md:gap-4`)}>
-                <DriverMainDetails result={result} />
-                <DriverBadges result={result} handleStatusClick={handleVehicleClick} />
+        <div className='driver-detail-card w-full'>
+            <div className='flex flex-col gap-2 md:gap-3 bg-gray-200 p-2 rounded-lg'>
+                <div className='driver-main'>
+                    <div className='flex flex-col md:flex-row items-center justify-between gap-2 md:gap-4'>
+                        <DriverMainDetails result={result} />
+                        <DriverBadges result={result} handleStatusClick={handleVehicleClick} />
+                    </div>
+                </div>
+                <DriverDocuments result={result} />
+                { result.vehicles.length > 0 && <DriverVehicles result={result} handleVehicleClick={handleVehicleClick} /> }
             </div>
-            <DriverDocuments result={result} />
-            { result.vehicles.length > 0 && <DriverVehicles result={result} handleVehicleClick={handleVehicleClick} /> }
         </div>
     )
 }
 
 function DriverMainDetails({ result } : { result : DriverProfileProps }) {
     return (
-        <div className='flex flex-row gap-4 items-center justify-center md:justify-start text-slate-700 w-full'>
-            <div className='driver-profile-img'>
-                <DriverAvatar url={result.personal.image} alt={result.personal.full_name} />
-            </div>
-            <div className='card-info-detail flex flex-col gap-0 items-start justify-start'>
-                <span className='font-bold titles-font'>{ result.personal.full_name }</span>
-                <div className='flex flex-row gap-2 items-center justify-start'>
-                    <span className='font-normal text-xs'>{ result.personal.email }</span>
-                    <span>·</span>
-                    <span className='text-xs font-bold'>Nota:</span>
-                    <span className='text-xs -ml-1'>{ result.quality.avg_rating.toFixed(2) }</span>
-                    {/* <span className='font-normal text-xs'>·</span>
-                    <Badge variant={"default"} className={"text-white"}>
-                        <MailIcon className='size-4' />
-                    </Badge> */}
+        <div className='driver-main-details'>
+            <div className='flex flex-row gap-4 items-center justify-center md:justify-start text-slate-700 w-full'>
+                <div className='driver-profile-img'>
+                    <DriverAvatar url={result.personal.image} alt={result.personal.full_name} />
                 </div>
-            </div>
+                <div className='card-info-detail flex flex-col gap-0 items-start justify-start'>
+                    <span className='font-bold titles-font'>{ result.personal.full_name }</span>
+                    <div className='flex flex-row gap-2 items-center justify-start'>
+                        <span className='font-normal text-xs'>{ result.personal.email }</span>
+                        <span>·</span>
+                        <span className='text-xs font-bold'>Nota:</span>
+                        <span className='text-xs -ml-1'>{ result.quality.avg_rating.toFixed(2) }</span>
+                    </div>
+                </div>
                 {/* <span>Fecha de creación: {new Date(result.created_at).toLocaleString()}</span> */}
+            </div>
         </div>
     )
 }
 
 function DriverDocuments({ result } : { result : DriverProfileProps }) {
     return (
-        <div className='driver-documents flex flex-col gap-2 items-start justify-start text-slate-700'>
-            <span className='font-bold titles-font'>Documentos</span>
-            <div className='info-section flex flex-col gap-3 items-start justify-start w-full'>
-                <div className='card-info-detail driver-document-rut gap-4 w-full h-12'>
-                    <div className='flex flex-row gap-2 items-center'>
-                        <span className='font-semibold'>RUT</span>
-                        <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
-                            {result.driver_documents.RUT.number}
-                        </Badge>
-                        <span>·</span>
+        <div className='driver-documents'>
+            <div className='flex flex-col gap-2 items-start justify-start text-slate-700'>
+                <span className='font-bold titles-font'>Documentos</span>
+                <div className='info-section flex flex-col gap-3 items-start justify-start w-full'>
+                    <div className='card-info-detail driver-document-rut gap-4 w-full h-12'>
                         <div className='flex flex-row gap-2 items-center'>
-                            <span className='font-semibold'>RUT Facturación</span>
+                            <span className='font-semibold'>RUT</span>
                             <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
-                                {result.invoice_rut}
+                                {result.driver_documents.RUT.number}
                             </Badge>
+                            <span>·</span>
+                            <div className='flex flex-row gap-2 items-center'>
+                                <span className='font-semibold'>RUT Facturación</span>
+                                <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
+                                    {result.invoice_rut}
+                                </Badge>
+                            </div>
+                        </div>
+                        <div className='ml-auto'>
+                            <Zoom>
+                                <Image src={result.driver_documents.RUT.image} 
+                                    width={1200} height={900} 
+                                    className='h-10 w-auto'
+                                    alt={result.personal.full_name} 
+                                />
+                            </Zoom>
                         </div>
                     </div>
-                    <div className='ml-auto'>
-                        <Zoom>
-                            <Image src={result.driver_documents.RUT.image} 
-                                width={1200} height={900} 
-                                className='h-10 w-auto'
-                                alt={result.personal.full_name} 
-                            />
-                        </Zoom>
+                    <div className='card-info-detail driver-document-license gap-4 w-full h-12'>
+                        <div className='flex flex-row gap-2 items-center'>
+                            <span className='font-semibold'>Licencia</span>
+                            <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
+                                { result.driver_documents.license.type.toUpperCase() }
+                            </Badge>
+                        </div>
+                        <div className='flex flex-row gap-2 items-center'>
+                            <span className='font-semibold'>Vencimiento:</span>
+                            <LicenseExpirationBadge result={result} />
+                        </div>
+                        <div className='ml-auto'>
+                            <Zoom>
+                                <Image src={result.driver_documents.license.image} 
+                                    width={1200} height={900} 
+                                    className='h-10 w-auto'
+                                    alt={result.personal.full_name} 
+                                    />
+                            </Zoom>
+                        </div>
                     </div>
                 </div>
-                <div className='card-info-detail driver-document-license gap-4 h-12 w-full'>
-                    <div className='flex flex-row gap-2 items-center'>
-                        <span className='font-semibold'>Licencia</span>
-                        <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
-                            { result.driver_documents.license.type.toUpperCase() }
-                        </Badge>
-                    </div>
-                    <div className='flex flex-row gap-2 items-center'>
-                        <span className='font-semibold'>Vencimiento:</span>
-                        <LicenseExpirationBadge result={result} />
-                    </div>
-                    <div className='ml-auto'>
-                        <Zoom>
-                            <Image src={result.driver_documents.license.image} 
-                                width={1200} height={900} 
-                                className='h-10 w-auto'
-                                alt={result.personal.full_name} 
-                                />
-                        </Zoom>
-                    </div>
-                </div>
-            </div>       {/* <span>Fecha de creación: {new Date(result.created_at).toLocaleString()}</span> */}
+            </div>
         </div>
     )
 }
@@ -170,33 +173,35 @@ function DriverVehicles({ result, handleVehicleClick } : {
     handleVehicleClick: any
 }) {
     return (
-        <div className='driver-info-vehicles flex flex-col gap-2 items-start justify-start text-slate-700'>
-            <span className='font-bold titles-font'>Vehículos Propios</span>
-            <div className='info-section flex flex-col gap-2 items-center justify-start w-full text-sm'>
-                {
-                    result.vehicles.map((vehicle: DriverVehiclesProps) => 
-                        <div key={vehicle.registration_number} className='flex flex-row gap-3 justify-start items-center w-full'>
-                            <span>Móvil: { vehicle.unique_car_id }</span>
-                            <span>PPU: { vehicle.registration_number }</span>
-                            <Badge variant={'default'} 
-                                className={vehicle.working_status === 1 ? 'bg-green-700 hover:bg-green-700' :
-                                'bg-red-400 hover:bg-red-400' }>
-                                { vehicle.working_status === 1 ? 'Activo': 'Inactivo' }
-                            </Badge>
-                            <div className='vehicle-actions flex-row flex gap-x-1 ml-auto'>
-                                <Button variant={'outline'} className='text-xs text-white py-[1px] h-7 bg-slate-600'
-                                    onClick={() => handleVehicleClick(vehicle, 'details')}>
-                                    Más detalles
-                                </Button>
-                                <Button variant={'outline'} className='text-xs text-white py-[1px] h-7 bg-slate-600'
-                                    onClick={() => handleVehicleClick(vehicle, 'online')}>
-                                    Ver si está online
-                                </Button>
-                            </div>
+        <div className='driver-vehicles'>
+            <div className='flex flex-col gap-2 items-start justify-start text-slate-700'>
+                <span className='font-bold titles-font'>Vehículos Propios</span>
+                <div className='info-section flex flex-col gap-2 items-center justify-start w-full text-sm'>
+                    {
+                        result.vehicles.map((vehicle: DriverVehiclesProps) => 
+                            <div key={vehicle.registration_number} className='flex flex-row gap-3 justify-start items-center w-full'>
+                                <span>Móvil: { vehicle.unique_car_id }</span>
+                                <span>PPU: { vehicle.registration_number }</span>
+                                <Badge variant={'default'} 
+                                    className={vehicle.working_status === 1 ? 'bg-green-700 hover:bg-green-700' :
+                                    'bg-red-400 hover:bg-red-400' }>
+                                    { vehicle.working_status === 1 ? 'Activo': 'Inactivo' }
+                                </Badge>
+                                <div className='vehicle-actions flex-row flex gap-x-1 ml-auto'>
+                                    <Button variant={'outline'} className='text-xs text-white py-[1px] h-7 bg-slate-600'
+                                        onClick={() => handleVehicleClick(vehicle, 'details')}>
+                                        Más detalles
+                                    </Button>
+                                    <Button variant={'outline'} className='text-xs text-white py-[1px] h-7 bg-slate-600'
+                                        onClick={() => handleVehicleClick(vehicle, 'online')}>
+                                        Ver si está online
+                                    </Button>
+                                </div>
 
-                        </div>
-                    )
-                }
+                            </div>
+                        )
+                    }
+                </div>
             </div>
         </div>
     )

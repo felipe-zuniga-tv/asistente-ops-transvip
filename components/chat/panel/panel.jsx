@@ -26,7 +26,7 @@ export function TransvipPanel({ id, session }) {
 					</div>
 					<Drawer>
 						<DrawerTrigger asChild>
-							<Button variant="outline" size="icon" className="md:hidden bg-slate-800">
+							<Button variant="outline" size="icon" className="lg:hidden w-12 bg-slate-800 hover:bg-slate-700">
 								<SettingsIcon className="size-4 text-white" />
 								<span className="sr-only">Herramientas</span>
 							</Button>
@@ -45,8 +45,8 @@ export function TransvipPanel({ id, session }) {
 						<LogoutButton className="ml-auto" />
 					</div>
 				</header>
-				<main className="grid flex-1 gap-4 overflow-auto p-0 md:p-4 md:grid-cols-[1fr_4fr]">
-					<div className="relative hidden flex-col items-start gap-8 md:flex min-w-[360px]">
+				<main className="grid flex-1 gap-4 overflow-auto p-0 lg:p-4 lg:grid-cols-[1fr_4fr]">
+					<div className="relative hidden flex-col items-start gap-8 lg:flex min-w-[360px]">
 						<div className="grid w-full items-start gap-4 border p-4 rounded-xl">
 							<SystemTools session={session} />
 						</div>

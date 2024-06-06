@@ -10,7 +10,7 @@ import { BookingInfoOutputProps } from '@/lib/chat/types';
 import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, CarIcon, CircleUserIcon, Clock, GoalIcon, HotelIcon, MailIcon, MapPin, Pencil, PhoneIcon, UserCircleIcon } from 'lucide-react';
+import { Calendar, Clock, GoalIcon, HotelIcon, MailIcon, MapPin, Pencil, PhoneIcon, UserCircleIcon } from 'lucide-react';
 import { WhatsappIcon } from '@/components/ui/icons';
 import { buildWhatsappLink } from '@/lib/chat/functions';
 import { BookingStatusBadge, CityBadge, CustomerVipBadge, PaymentRouteType, PaymentStatusBadge, ServiceNameBadge } from '../badges/chat-badges';
@@ -101,7 +101,7 @@ function BookingIdResultsCard({ keyName, result, handleClick }: {
             {result.payment && <BookingFinancials result={result} />}
             {result.customer && <BookingCustomer result={result} />}
             {result.directions && <BookingDirections result={result} />}
-            {[2, 4,  12, 0, 15].includes(result.booking.status) &&
+            {[2, 4, 12, 0, 15].includes(result.booking.status) &&
                 <BookingVehicle result={result} handleClick={handleClick} />
             }
         </div>
@@ -224,7 +224,6 @@ function BookingFinancials({ result }: {
                         <div className='card-info-detail gap-1'>
                             <span className='font-semibold'>Tramo / Tarifa:</span>
                             <span className=''>{result.payment.fare_route_name}</span>
-                            
                         </div>
                     }
                 </div>
@@ -262,8 +261,9 @@ function BookingCustomer({ result }: {
                 { result.booking.qr_link && 
                     <div className='qr-link hidden ml-auto lg:flex flex-row items-center justify-center'>
                         <span className='font-bold text-sm'>Código QR</span>
-                        <Image src={result.booking.qr_link} alt={result.booking.id.toString()}
+                        <Image src={result.booking.qr_link} 
                             width={70} height={70}
+                            alt={result.booking.id.toString()}
                             />
                     </div>
                 }
