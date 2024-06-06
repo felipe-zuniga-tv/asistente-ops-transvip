@@ -237,7 +237,7 @@ async function submitUserMessage(content: string) {
 					yield <LoadingMessage text={`Buscando información del móvil PPU ${licensePlate}...`} />
 
 					let vehicleInformation = null
-					const lpRegex = new RegExp('^[A-Z]{4}[ ]*[0-9]{2}$') // LICENSE PLATE VALIDATION
+					const lpRegex = new RegExp('^[A-Z]{2,4}[ ]*[0-9]{2,4}$') // LICENSE PLATE VALIDATION
 
 					if (lpRegex.test(licensePlate.toUpperCase())) {
 						vehicleInformation = await getVehicleDetail(licensePlate)
