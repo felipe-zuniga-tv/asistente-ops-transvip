@@ -68,7 +68,7 @@ export function VehicleDetail({ session, vehicleInformation, content }: {
             {/* // 1235058 */}
             <div className={'search-results-cards relative w-full flex flex-col gap-2 items-start'}>
                 { vehicleInformation.map((result: VehicleDetailProps) => (
-                    <VehicleDetailCard keyName={result.license_plate} 
+                    <VehicleDetailCard key={result.license_plate} 
                         result={result}
                         handleDriverClick={handleDriverClick}
                         handleVehicleStatusClick={() => handleVehicleStatusClick(result.vehicle_number)}
@@ -82,14 +82,13 @@ export function VehicleDetail({ session, vehicleInformation, content }: {
     )
 }
 
-function VehicleDetailCard({ keyName, result, handleDriverClick, handleVehicleStatusClick } : {
-    keyName: any, 
+function VehicleDetailCard({ result, handleDriverClick, handleVehicleStatusClick } : {
     result: VehicleDetailProps,
     handleDriverClick?: any
     handleVehicleStatusClick?: any
 }) {
     return (
-        <div key={keyName} className='vehicle-detail-information w-full p-3 px-2 bg-gray-200 rounded-md text-slate-900'>
+        <div className='vehicle-detail-information w-full p-3 px-2 bg-gray-200 rounded-md text-slate-900'>
             <div className={"flex flex-col gap-2 md:gap-3"}>
                 <VehicleBadges result={result} handleStatusClick={handleVehicleStatusClick} />
                 <VehicleMainDetails result={result} />
