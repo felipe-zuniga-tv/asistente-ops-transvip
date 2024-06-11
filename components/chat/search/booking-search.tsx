@@ -61,7 +61,7 @@ export function BookingIdSearch({ session, searchResults, content }: {
     }
 
     return (
-        <div key={'booking-search-results'} className="flex flex-col gap-2">
+        <div className="booking-search-results flex flex-col gap-2">
             <div className='flex flex-row gap-2 items-center justify-start'>
                 <HotelIcon className='h-4' />
                 <span className='font-bold'>Resultados</span>
@@ -101,7 +101,7 @@ function BookingIdResultsCard({ keyName, result, handleClick }: {
             {result.payment && <BookingFinancials result={result} />}
             {result.customer && <BookingCustomer result={result} />}
             {result.directions && <BookingDirections result={result} />}
-            {[2, 4, 12, 0, 15].includes(result.booking.status) &&
+            {[2, 4, 12, 0, 1, 15].includes(result.booking.status) &&
                 <BookingVehicle result={result} handleClick={handleClick} />
             }
         </div>
@@ -258,14 +258,15 @@ function BookingCustomer({ result }: {
                         <CustomerVipBadge result={result} />
                     </div>
                 </div>
-                { result.booking.qr_link && 
-                    <div className='qr-link hidden ml-auto lg:flex flex-row items-center justify-center'>
-                        <span className='font-bold text-sm'>Código QR</span>
-                        <Image src={result.booking.qr_link} 
-                            width={70} height={70}
-                            alt={result.booking.id.toString()}
-                            />
-                    </div>
+                { 
+                    result.booking.qr_link && 
+                        <div className='qr-link hidden ml-auto lg:flex flex-row items-center justify-center'>
+                            <span className='font-bold text-sm'>Código QR</span>
+                            <Image src={result.booking.qr_link} 
+                                width={70} height={70}
+                                alt={result.booking.id.toString()}
+                                />
+                        </div>
                 }
             </div>
         </div>

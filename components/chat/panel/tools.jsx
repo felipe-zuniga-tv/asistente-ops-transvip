@@ -32,7 +32,7 @@ const toolsList = [
     },
     {
         name: 'Evaluaciones de un conductor',
-        hint: 'Busca por el teléfono o email',
+        hint: 'Busca usando el email o teléfono',
         search: 'Quiero armar un resumen de las evaluaciones de un conductor en particular',
     },
     {

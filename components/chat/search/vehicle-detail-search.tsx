@@ -111,6 +111,12 @@ function VehicleMainDetails({ result } : { result : VehicleDetailProps }) {
                             <span>PPU: { result.license_plate }</span>
                             <span>·</span>
                             <span>Número de Móvil: { result.vehicle_number }</span>
+                            <span>·</span>
+                            <Button variant={'outline'} className='h-6 bg-slate-600 text-white text-xs'>
+                                <Link href="https://apps.mtt.cl/consultaweb/" target='_blank'>
+                                    Buscar en MTT
+                                </Link>
+                            </Button>
                         </div>
                         <div className='flex flex-row gap-2 items-center justify-start w-full'>
                             <span>Marca: { result.model.name }</span>

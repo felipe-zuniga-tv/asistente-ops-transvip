@@ -22,7 +22,8 @@ Then reply always in spanish.\
 `.trim()
 
 export const CREATE_DRIVER_RATINGS_SUMMARY = `
-Create a summary with the provided information, in order to make it easy for the user
-to understand the whole context and decide whether the driver has good or bad qualifications.
+Create a summary with the provided information and comments, in order to make it easy for the user
+to understand the whole context and decide whether the driver has good or bad qualifications,
+and how good he or she is at providing transport services to passengers.
 Provide also a recommendation about it.
 `.trim()

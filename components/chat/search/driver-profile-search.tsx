@@ -123,13 +123,17 @@ function DriverDocuments({ result } : { result : DriverProfileProps }) {
                             <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
                                 {result.driver_documents.RUT.number}
                             </Badge>
-                            <span>·</span>
-                            <div className='flex flex-row gap-2 items-center'>
-                                <span className='font-semibold'>RUT Facturación</span>
-                                <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
-                                    {result.invoice_rut}
-                                </Badge>
-                            </div>
+                            {result.invoice_rut && 
+                                <>
+                                    <span>·</span>
+                                    <div className='flex flex-row gap-2 items-center'>
+                                        <span className='font-semibold'>RUT Facturación</span>
+                                        <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
+                                            {result.invoice_rut}
+                                        </Badge>
+                                    </div>
+                                </>
+                            }
                         </div>
                         <div className='ml-auto'>
                             <Zoom>

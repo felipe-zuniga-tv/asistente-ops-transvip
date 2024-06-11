@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, formatISO } from "date-fns";
 import { getSession } from "../auth";
 import { branches } from "../transvip/config";
 import { VEHICLE_STATUS } from "../utils";
@@ -225,6 +225,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
             const { job_id } = r;
 
             const { status: status_r, data: data_r } = await getResponseFromURL(`${BOOKING_INFO_FULL_URL}?job_id=${job_id}&access_token=${accessToken}`)
+            console.log(data_r);
 
             if (status_r !== 200) return
 
@@ -323,7 +324,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     email: job_pickup_email,
                 },
             };
-            // console.log(output_item)
+            console.log(output_item)
 
             output.push(output_item);
         }));
@@ -341,8 +342,8 @@ export async function getBookings() {
 
     const LIMIT_RESULTS = 25
     const OFFSET_RESULTS = 0
-    const HOURS_TO_ADD = 1
-    const DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
+    const HOURS_TO_ADD = 2
+    const DATE_FORMAT = "yyyy-MM-ddTHH:mm:ss"
 
     // DATES
     const START_DATE = new Date()
@@ -357,8 +358,10 @@ export async function getBookings() {
         `branch_filter=1`,
         `branch_value=1`,
         `date_time_filter=1`,
-        `date_time_value1=${format(START_DATE, DATE_FORMAT)}`,
-        `date_time_value2=${format(END_DATE, DATE_FORMAT)}`,
+        `date_time_value1=${formatISO(START_DATE)}`,
+        `date_time_value2=${formatISO(END_DATE)}`,
+        // `date_time_value1=${format(START_DATE, DATE_FORMAT)}`,
+        // `date_time_value2=${format(END_DATE, DATE_FORMAT)}`,
         `job_status_filter=1`,
         `job_status_value=%5B0,6,7,17%5D`,
         `aggrement_filter=0`,

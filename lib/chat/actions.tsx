@@ -309,25 +309,28 @@ async function submitUserMessage(content: string) {
 			},
 			getDriverRatings: {
 				description: `Utiliza esta función para construir un resumen de las evaluaciones que este conductor
-					ha recibido de parte de los pasajeros. Por defecto, se buscan los últimos 90 días.
-					Se realiza la búsqueda sólo por email.`,
+					ha recibido de parte de los pasajeros en los últimos 90 días.
+					Se realiza la búsqueda sólo por email o por teléfono.`,
 				parameters: z.object({
-					driverEmail: z
+					driverQuery: z
 						.string()
-						.describe(`El email del conductor del cual se quiere construir un resumen de sus evaluaciones`),
+						.describe(`El email o teléfono del conductor del cual se quiere buscar su perfil.`),
 				}).required(),
-				generate: async function* ({ driverEmail }) {
-					yield <LoadingMessage text={`Buscando conductor ${driverEmail}`}
+				generate: async function* ({ driverQuery }) {
+					// Clean query
+					let driverQueryClean = driverQuery.trim().replace("+", "").replace("  ", "")
+
+					yield <LoadingMessage text={`Buscando conductor: ${driverQueryClean}...`}
 						className="text-sm"
 					/>
 
 					// Search driver by email
-					const fleetId = await searchDriver(driverEmail)
+					const fleetId = await searchDriver(driverQueryClean)
 
 					if (!fleetId) 
 						return (
 							<BotCard>
-								<div>No se pudo encontrar el conductor de email {driverEmail}.</div>
+								<div>No se pudo encontrar el conductor usando {driverQueryClean}.</div>
 							</BotCard>
 						)
 					
@@ -342,9 +345,9 @@ async function submitUserMessage(content: string) {
 							...aiState.get().messages,
 							{
 								role: 'assistant',
-								content: `Evaluaciones del conductor ${driverProfile?.personal.full_name}, email ${driverEmail}` +
-									`\n\n` + `Summary: ${JSON.stringify(driverRatingsSummary)}` + 
-									`\n\n`+ `Average Historical Rating: ${driverProfile?.quality.avg_rating}`
+								content: `Evaluaciones del conductor ${driverProfile?.personal.full_name}, buscando con ${driverQuery}, últimos 90 días` +
+									`\n\n` + `Resumen: ${JSON.stringify(driverRatingsSummary)}` + 
+									`\n\n`+ `Calificación promedio histórica: ${driverProfile?.quality.avg_rating}`
 							}
 						]
 					})
@@ -355,9 +358,9 @@ async function submitUserMessage(content: string) {
 						system: SYSTEM_MESSAGE + CREATE_DRIVER_RATINGS_SUMMARY,
 						messages: [{
 							role: 'assistant',
-							content: `Evaluaciones del conductor ${driverProfile?.personal.full_name}, email ${driverEmail}` +
-								`\n\n` + `Summary: ${JSON.stringify(driverRatingsSummary)}` + 
-								`\n\n`+ `Average Historical Rating: ${driverProfile?.quality.avg_rating}`
+							content: `Evaluaciones del conductor ${driverProfile?.personal.full_name}, buscando con ${driverQuery}, últimos 90 días` +
+								`\n\n` + `Resumen: ${JSON.stringify(driverRatingsSummary)}` + 
+								`\n\n`+ `Calificación promedio histórica: ${driverProfile?.quality.avg_rating}`
 						}],
 					})
 
