@@ -41,7 +41,7 @@ export function VehicleDetail({ session, vehicleInformation, content }: {
         ])
     }
 
-    const handleVehicleStatusClick = async (vehicle_number : number ) => {
+    const handleVehicleStatusClick = async (vehicle_number : number) => {
         const userMessageContent = `Me gustaría saber si el móvil ${vehicle_number} está online.`
 
         setMessages((currentMessages: any) => [
