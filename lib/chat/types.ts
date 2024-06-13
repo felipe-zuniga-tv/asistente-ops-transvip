@@ -61,6 +61,7 @@ export interface BookingInfoProps {
     eta: number,
     shared_service_id: string | undefined
 }
+
 export interface BookingInfoOutputProps {
     booking: {
         id: number
@@ -85,8 +86,16 @@ export interface BookingInfoOutputProps {
     }
     branch: BranchProps | undefined
     directions: {
-        origin: string
-        destination: string
+        origin: {
+            address: string
+            latitude: string
+            longitude: string
+        }
+        destination: {
+            address: string
+            latitude: string
+            longitude: string
+        }
         estimated_travel_kms: number
         estimated_travel_minutes: number
         total_travel_kms: number

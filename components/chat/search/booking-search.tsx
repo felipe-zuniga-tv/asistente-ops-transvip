@@ -188,9 +188,9 @@ function BookingDates({ result }: {
         <div className='booking-detail info-customer'>
             <span className='font-bold titles-font'>Fechas</span>
             <div className='info-section'>
-                <div className='flex flex-col gap-1'>
+                <div className='flex flex-col gap-1 w-full'>
                     <div className='card-info-detail gap-1'>
-                        <span className='font-semibold'>Viaje:</span>
+                        <span className='font-semibold'>Recogida:</span>
                         <span>{booking_datetime_local.toLocaleString()}</span>
                         { days_to_trip > 0 && (
                             <>
@@ -207,7 +207,7 @@ function BookingDates({ result }: {
                         {days_to_trip < 0 && (
                             <>
                                 <span>·</span>
-                                <span className='font-semibold'>Hace: {-1 * days_to_trip} días</span>
+                                <span className='font-semibold'>Hace: {-1 * days_to_trip} día{days_to_trip > 1 ? 's' : ''}</span>
                             </>
                         )}
                         {minutes_to_trip < 0 && Math.abs(minutes_to_trip) <= 180 && (
@@ -217,12 +217,16 @@ function BookingDates({ result }: {
                             </>
                         )}
                     </div>
-                    <div className='card-info-detail gap-1'>
-                        <span className='font-semibold'>Asignación:</span>
-                        <span>{ new Date(result.dates.assignment_datetime).toLocaleString() }</span>
-                        <span>·</span>
-                        <span className='font-semibold'>Usuario:</span>
-                        <span>{ result.booking.assignment_identity }</span>
+                    <div className='card-info-detail gap-1 flex-col xs:flex-row items-center justify-start'>
+                        <div className='flex flex-row gap-1 items-center w-full'>
+                            <span className='font-semibold'>Asignación:</span>
+                            <span>{ new Date(result.dates.assignment_datetime).toLocaleString() }</span>
+                        </div>
+                        {/* <span>·</span> */}
+                        <div className='flex flex-row gap-1 items-center w-full ml-8 xs:ml-0'>
+                            <span className='font-semibold'>Usuario:</span>
+                            <span>{ result.booking.assignment_identity }</span>
+                        </div>
                     </div>
                     <div className='card-info-detail gap-1'>
                         <span className='font-semibold'>Creación:</span>
@@ -315,14 +319,14 @@ function BookingDirections({ result }: {
                     <MapPin className='size-4' />
                     <div className="flex flex-row gap-2 items-center justify-start">
                         <span className='font-semibold'>Origen:</span>
-                        <span className='line-clamp-1'>{result.directions.origin}</span>
+                        <span className='line-clamp-1'>{result.directions.origin.address}</span>
                     </div>
                 </div>
                 <div className='card-info-detail'>
                     <GoalIcon className='size-4' />
                     <div className="flex flex-row gap-2 items-center justify-start">
                         <span className='font-semibold'>Destino:</span>
-                        <span className='line-clamp-1'>{result.directions.destination}</span>
+                        <span className='line-clamp-1'>{result.directions.destination.address}</span>
                     </div>
                 </div>
                 <div className='card-info-detail'>

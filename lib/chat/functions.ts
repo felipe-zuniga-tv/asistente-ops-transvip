@@ -225,7 +225,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
             const { job_id } = r;
 
             const { status: status_r, data: data_r } = await getResponseFromURL(`${BOOKING_INFO_FULL_URL}?job_id=${job_id}&access_token=${accessToken}`)
-            // console.log(data_r);
+            console.log(data_r);
 
             if (status_r !== 200) return
 
@@ -245,11 +245,12 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 customer_first_name, customer_last_name, customer_country_code, customer_phone_number,
                 job_pickup_email, job_pickup_name, job_pickup_phone,
                 booking_for,
+                job_pickup_address, job_pickup_latitude, job_pickup_longitude,
+                job_address, job_latitude, job_longitude,
                 job_time, job_time_utc,
                 cancellation_datetime,
                 creation_datetime, // UTC time
                 assignment_datetime,
-                job_pickup_address, job_address, 
                 estimated_distance,
                 eta,
                 shared_service_id,
@@ -293,8 +294,16 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 },
                 branch: branches.find(br => br.branch_id === Number(branch)),
                 directions: {
-                    origin: job_pickup_address.trim(),
-                    destination: job_address.trim(),
+                    origin: {
+                        address: job_pickup_address.trim(),
+                        latitude: job_pickup_latitude,
+                        longitude: job_pickup_longitude,
+                    },
+                    destination: {
+                        address: job_address.trim(),
+                        latitude: job_latitude,
+                        longitude: job_longitude
+                    },
                     estimated_travel_kms: estimated_distance / 1000,
                     estimated_travel_minutes: eta,
                     total_travel_kms: total_distance_travelled,

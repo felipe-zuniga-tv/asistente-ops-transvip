@@ -68,8 +68,14 @@
     @apply text-xs flex flex-row sm:flex-col gap-1 sm:gap-0 items-center h-full cursor-pointer rounded-xl transition-colors bg-gray-800 hover:bg-gray-600 text-white p-3 py-2.5 md:p-5 md:py-3 px-4;
   }
   .messages-list {
-    @apply pt-0 w-full mx-auto grid auto-rows-max gap-4 max-w-[400px] xs:px-0 xs:max-w-screen-xs sm:max-w-2xl;
+    @apply pt-0 w-full mx-auto grid auto-rows-max gap-4 max-w-[400px] xs:px-0;
   }
+  .messages-list {
+    @apply max-w-full xs:max-w-[90%];
+  }
+  /* .messages-list {
+    @apply xs:max-w-screen-xs sm:max-w-2xl;
+  } */
   .message-item {
     @apply w-full;
   }
