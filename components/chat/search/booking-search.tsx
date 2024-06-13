@@ -151,6 +151,7 @@ function BookingMainDetails({ result }: {
                         <div className='card-info-detail gap-1'>
                             <span className='font-bold'>Convenio:</span>
                             <span>{result.booking.contract_name}</span>
+                            <ServiceNameBadge result={result} />
                         </div>
                     </div>
                     <div className='card-info-detail gap-1'>
@@ -159,7 +160,6 @@ function BookingMainDetails({ result }: {
                         <span>Sentido: {result.booking.type_of_trip}</span>
                         <span>·</span>
                         <span>RT: {result.booking.is_round_trip ? 'Sí' : 'No'}</span>
-                        <ServiceNameBadge result={result} />
                     </div>
                     { result.booking.observations && 
                         <div className='card-info-detail mt-2 p-2 bg-yellow-300 rounded-md'>
