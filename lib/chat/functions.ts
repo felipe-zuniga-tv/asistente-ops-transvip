@@ -225,7 +225,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
             const { job_id } = r;
 
             const { status: status_r, data: data_r } = await getResponseFromURL(`${BOOKING_INFO_FULL_URL}?job_id=${job_id}&access_token=${accessToken}`)
-            console.log(data_r);
+            // console.log(data_r);
 
             if (status_r !== 200) return
 
@@ -235,7 +235,6 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 branch,
                 is_vip,
                 payment_status, 
-                job_time, job_time_utc,
                 fleet_first_name, fleet_last_name, 
                 fleet_country_code, fleet_phone_number,
                 transport_details,
@@ -246,8 +245,10 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 customer_first_name, customer_last_name, customer_country_code, customer_phone_number,
                 job_pickup_email, job_pickup_name, job_pickup_phone,
                 booking_for,
+                job_time, job_time_utc,
                 cancellation_datetime,
                 creation_datetime, // UTC time
+                assignment_datetime,
                 job_pickup_address, job_address, 
                 estimated_distance,
                 eta,
@@ -275,10 +276,6 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     type_of_trip,
                     is_round_trip: is_round_trip === 1,
                     pax_count: number_of_passangers,
-                    job_time,
-                    job_time_utc,
-                    cancellation_datetime,
-                    creation_datetime, // UTC time
                     shared_service_id,
                     service_name,
                     contract_name,
@@ -286,6 +283,13 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     qr_link,
                     assignment_identity,
                     observations
+                },
+                dates: {
+                    creation_datetime,
+                    job_time,
+                    job_time_utc,
+                    cancellation_datetime,
+                    assignment_datetime
                 },
                 branch: branches.find(br => br.branch_id === Number(branch)),
                 directions: {
@@ -324,7 +328,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     email: job_pickup_email,
                 },
             };
-            console.log(output_item)
+            // console.log(output_item)
 
             output.push(output_item);
         }));

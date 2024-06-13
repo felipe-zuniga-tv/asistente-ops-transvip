@@ -98,6 +98,7 @@ function BookingIdResultsCard({ keyName, result, handleClick }: {
         <div key={keyName + " " + new Date().getMilliseconds()} className='booking-detail main-card'>
             <BookingBadges result={result} handleClick={handleClick} />
             {result.booking && <BookingMainDetails result={result} />}
+            {result.dates && <BookingDates result={result} />}
             {result.payment && <BookingFinancials result={result} />}
             {result.customer && <BookingCustomer result={result} />}
             {result.directions && <BookingDirections result={result} />}
@@ -122,7 +123,7 @@ function SharedServiceSummary({ result, handleClick } : {
                     <BookingIdBadge result={r} handleClick={handleClick} />
                     <BookingStatusBadge result={r} />
                     <PaymentStatusBadge result={r} />
-                    <span>Fecha: { new Date(r.booking.job_time_utc).toLocaleString() }</span>
+                    <span>Fecha: { new Date(r.dates.job_time_utc).toLocaleString() }</span>
                     <CityBadge branch={r.branch} isCode={true} className='ml-auto' />
                 </div>
             ))}
@@ -133,7 +134,7 @@ function SharedServiceSummary({ result, handleClick } : {
 function BookingMainDetails({ result }: {
     result: BookingInfoOutputProps
 }) {
-    const booking_datetime_local = new Date(result.booking.job_time_utc)
+    const booking_datetime_local = new Date(result.dates.job_time_utc)
     const days_to_trip = differenceInDays(booking_datetime_local, new Date())
     const minutes_to_trip = differenceInMinutes(booking_datetime_local, new Date())
 
@@ -141,15 +142,20 @@ function BookingMainDetails({ result }: {
         <div className='booking-detail main-details'>
             <div className='info-section'>
                 <div className='flex flex-col gap-1 w-full'>
-                    {result.booking.shared_service_id && (
+                    <div className='flex flex-row gap-1 items-center justify-start'>
+                        {result.booking.shared_service_id && (
+                            <>
+                                <div className='card-info-detail gap-1'>
+                                    <span className='font-semibold'>Paquete:</span>
+                                    <span>{result.booking.shared_service_id}</span>
+                                </div>
+                                <span>·</span>
+                            </>
+                        )}
                         <div className='card-info-detail gap-1'>
-                            <span className='font-semibold'>Paquete:</span>
-                            <span>{result.booking.shared_service_id}</span>
+                            <span className='font-bold'>Convenio:</span>
+                            <span>{result.booking.contract_name}</span>
                         </div>
-                    )}
-                    <div className='card-info-detail gap-1'>
-                        <span className='font-bold'>Convenio:</span>
-                        <span>{result.booking.contract_name}</span>
                     </div>
                     <div className='card-info-detail gap-1'>
                         <span>Pax: {result.booking.pax_count}</span>
@@ -159,10 +165,34 @@ function BookingMainDetails({ result }: {
                         <span>RT: {result.booking.is_round_trip ? 'Sí' : 'No'}</span>
                         <ServiceNameBadge result={result} />
                     </div>
+                    { result.booking.observations && 
+                        <div className='card-info-detail mt-2 p-2 bg-yellow-300 rounded-md'>
+                            <Pencil className='size-4' />
+                            <span>{ result.booking.observations }</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    )
+}
+
+function BookingDates({ result }: {
+    result: BookingInfoOutputProps
+}) {
+    const booking_datetime_local = new Date(result.dates.job_time_utc)
+    const days_to_trip = differenceInDays(booking_datetime_local, new Date())
+    const minutes_to_trip = differenceInMinutes(booking_datetime_local, new Date())
+
+    return (
+        <div className='booking-detail info-customer'>
+            <span className='font-bold titles-font'>Fechas</span>
+            <div className='info-section'>
+                <div className='flex flex-col gap-1'>
                     <div className='card-info-detail gap-1'>
-                        <Calendar className='size-4' />
-                        <span>Fecha: {booking_datetime_local.toLocaleString()}</span>
-                        {days_to_trip > 0 && (
+                        <span className='font-semibold'>Viaje:</span>
+                        <span>{booking_datetime_local.toLocaleString()}</span>
+                        { days_to_trip > 0 && (
                             <>
                                 <span>·</span>
                                 <span className='font-semibold'>Faltan: {days_to_trip} días</span>
@@ -188,15 +218,16 @@ function BookingMainDetails({ result }: {
                         )}
                     </div>
                     <div className='card-info-detail gap-1'>
-                        <Calendar className='size-4' />
-                        <span>Creación: { new Date(result.booking.creation_datetime).toLocaleString() }</span>
+                        <span className='font-semibold'>Asignación:</span>
+                        <span>{ new Date(result.dates.assignment_datetime).toLocaleString() }</span>
+                        <span>·</span>
+                        <span className='font-semibold'>Usuario:</span>
+                        <span>{ result.booking.assignment_identity }</span>
                     </div>
-                    { result.booking.observations && 
-                        <div className='card-info-detail mt-2 p-2 bg-yellow-300 rounded-md'>
-                            <Pencil className='size-4' />
-                            <span>{ result.booking.observations }</span>
-                        </div>
-                    }
+                    <div className='card-info-detail gap-1'>
+                        <span className='font-semibold'>Creación:</span>
+                        <span>{ new Date(result.dates.creation_datetime).toLocaleString() }</span>
+                    </div>
                 </div>
             </div>
         </div>

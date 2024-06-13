@@ -68,10 +68,6 @@ export interface BookingInfoOutputProps {
         type_of_trip: string
         is_round_trip: boolean
         pax_count: string
-        job_time: string
-        job_time_utc: string
-        cancellation_datetime: string
-        creation_datetime: string
         shared_service_id: string | undefined
         service_name: string
         contract_name: string
@@ -79,6 +75,13 @@ export interface BookingInfoOutputProps {
         qr_link: string
         assignment_identity: string
         observations?: string
+    }
+    dates: {
+        creation_datetime: string
+        job_time: string
+        job_time_utc: string
+        cancellation_datetime: string
+        assignment_datetime: string
     }
     branch: BranchProps | undefined
     directions: {
