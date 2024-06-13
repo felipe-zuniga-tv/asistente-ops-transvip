@@ -76,6 +76,7 @@ export interface BookingInfoOutputProps {
         qr_link: string
         assignment_identity: string
         observations?: string
+        no_show_reason?: string
     }
     dates: {
         creation_datetime: string
@@ -86,6 +87,7 @@ export interface BookingInfoOutputProps {
         arrived_datetime: string
         started_datetime: string
         completed_datetime: string
+        no_show_datetime: string
         cancellation_datetime: string
     }
     branch: BranchProps | undefined

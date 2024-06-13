@@ -254,9 +254,11 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 arrived_datetime,
                 started_datetime,
                 completed_datetime,
+                no_show_datetime,
                 cancellation_datetime,
                 estimated_distance,
                 eta,
+                noshow_reason,
                 shared_service_id,
                 assignment_identity,
                 fleet_image, // URL
@@ -287,7 +289,8 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     booking_for: booking_for === 1,
                     qr_link,
                     assignment_identity,
-                    observations
+                    observations,
+                    no_show_reason: noshow_reason
                 },
                 dates: {
                     creation_datetime,
@@ -298,6 +301,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     arrived_datetime,
                     started_datetime,
                     completed_datetime,
+                    no_show_datetime,
                     cancellation_datetime,
                 },
                 branch: branches.find(br => br.branch_id === Number(branch)),

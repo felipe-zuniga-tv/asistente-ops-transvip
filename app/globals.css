@@ -119,6 +119,6 @@
     @apply flex flex-col gap-1 items-start justify-start w-full;
   }
   .date-tag {
-    @apply min-w-[100px];
+    @apply min-w-[110px];
   }
 }

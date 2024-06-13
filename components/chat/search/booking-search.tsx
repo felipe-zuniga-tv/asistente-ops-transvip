@@ -178,6 +178,7 @@ function BookingDates({ result }: {
 }) {
     if (!result.dates) return null
 
+    const NULL_DATE = '0000-00-00 00:00:00'
     const booking_datetime_local = new Date(result.dates.job_time_utc)
     const days_to_trip = differenceInDays(booking_datetime_local, new Date())
     const minutes_to_trip = differenceInMinutes(booking_datetime_local, new Date())
@@ -219,31 +220,50 @@ function BookingDates({ result }: {
                         <span className='font-semibold date-tag'>Creación:</span>
                         <span>{ new Date(result.dates.creation_datetime).toLocaleString() }</span>
                     </div>
-                    <div className='card-info-detail gap-1'>
-                        <div className='flex flex-row gap-1 items-center w-full'>
-                            <span className='font-semibold date-tag'>Asignación:</span>
-                            <span>{ new Date(result.dates.assignment_datetime).toLocaleString() }</span>
-                            <span className='hidden xs:block'>·</span>
-                            <span className='hidden xs:block font-semibold'>Usuario:</span>
-                            <span className='hidden xs:block'>{ result.booking.assignment_identity }</span>
+                    { result.dates.assignment_datetime !== NULL_DATE && 
+                        <div className='card-info-detail gap-1'>
+                            <div className='flex flex-row gap-1 items-center w-full'>
+                                <span className='font-semibold date-tag'>Asignación:</span>
+                                <span>{ new Date(result.dates.assignment_datetime).toLocaleString() }</span>
+                                <span className='hidden xs:block'>·</span>
+                                <span className='hidden xs:block font-semibold'>Usuario:</span>
+                                <span className='hidden xs:block'>{ result.booking.assignment_identity }</span>
+                            </div>
                         </div>
-                    </div>
-                    <div className='card-info-detail gap-1'>
-                        <span className='font-semibold date-tag'>En Camino:</span>
-                        <span>{ new Date(result.dates.on_road_datetime).toLocaleString() }</span>
-                    </div>
-                    <div className='card-info-detail gap-1'>
-                        <span className='font-semibold date-tag'>En Posición:</span>
-                        <span>{ new Date(result.dates.arrived_datetime).toLocaleString() }</span>
-                    </div>
-                    <div className='card-info-detail gap-1'>
-                        <span className='font-semibold date-tag'>Inicio de Viaje:</span>
-                        <span>{ new Date(result.dates.started_datetime).toLocaleString() }</span>
-                    </div>
-                    <div className='card-info-detail gap-1'>
-                        <span className='font-semibold date-tag'>Fin de Viaje:</span>
-                        <span>{ new Date(result.dates.completed_datetime).toLocaleString() }</span>
-                    </div>
+                    }
+                    { result.dates.on_road_datetime !== NULL_DATE &&
+                        <div className='card-info-detail gap-1'>
+                            <span className='font-semibold date-tag'>En Camino:</span>
+                            <span>{ new Date(result.dates.on_road_datetime).toLocaleString() }</span>
+                        </div>
+                    }
+                    { result.dates.arrived_datetime !== NULL_DATE && 
+                        <div className='card-info-detail gap-1'>
+                            <span className='font-semibold date-tag'>En Posición:</span>
+                            <span>{ new Date(result.dates.arrived_datetime).toLocaleString() }</span>
+                        </div>
+                    }
+                    { result.dates.started_datetime !== NULL_DATE &&
+                        <div className='card-info-detail gap-1'>
+                            <span className='font-semibold date-tag'>Inicio de Viaje:</span>
+                            <span>{ new Date(result.dates.started_datetime).toLocaleString() }</span>
+                        </div>
+                    }
+                    { result.dates.completed_datetime !== NULL_DATE &&
+                        <div className='card-info-detail gap-1'>
+                            <span className='font-semibold date-tag'>Fin de Viaje:</span>
+                            <span>{ new Date(result.dates.completed_datetime).toLocaleString() }</span>
+                        </div>
+                    }
+                    { result.dates.no_show_datetime !== NULL_DATE &&
+                        <div className='card-info-detail gap-1'>
+                            <span className='font-semibold date-tag'>Fecha No Show:</span>
+                            <span>{ new Date(result.dates.no_show_datetime).toLocaleString() }</span>
+                            <span>·</span>
+                            <span className='font-semibold'>Comentario:</span>
+                            <span>{ result.booking.no_show_reason }</span>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
