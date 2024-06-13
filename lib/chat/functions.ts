@@ -248,9 +248,13 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 job_pickup_address, job_pickup_latitude, job_pickup_longitude,
                 job_address, job_latitude, job_longitude,
                 job_time, job_time_utc,
-                cancellation_datetime,
                 creation_datetime, // UTC time
                 assignment_datetime,
+                on_road_datetime,
+                arrived_datetime,
+                started_datetime,
+                completed_datetime,
+                cancellation_datetime,
                 estimated_distance,
                 eta,
                 shared_service_id,
@@ -289,8 +293,12 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     creation_datetime,
                     job_time,
                     job_time_utc,
+                    assignment_datetime,
+                    on_road_datetime,
+                    arrived_datetime,
+                    started_datetime,
+                    completed_datetime,
                     cancellation_datetime,
-                    assignment_datetime
                 },
                 branch: branches.find(br => br.branch_id === Number(branch)),
                 directions: {

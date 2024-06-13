@@ -71,7 +71,7 @@
     @apply pt-0 w-full mx-auto grid auto-rows-max gap-4 max-w-[400px] xs:px-0;
   }
   .messages-list {
-    @apply max-w-full xs:max-w-[90%];
+    @apply max-w-full xs:max-w-[80%];
   }
   /* .messages-list {
     @apply xs:max-w-screen-xs sm:max-w-2xl;
@@ -117,5 +117,8 @@
   .booking-detail.info-directions,
   .booking-detail.info-vehicle {
     @apply flex flex-col gap-1 items-start justify-start w-full;
+  }
+  .date-tag {
+    @apply min-w-[100px];
   }
 }

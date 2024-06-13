@@ -97,14 +97,12 @@ function BookingIdResultsCard({ keyName, result, handleClick }: {
     return (
         <div key={keyName + " " + new Date().getMilliseconds()} className='booking-detail main-card'>
             <BookingBadges result={result} handleClick={handleClick} />
-            {result.booking && <BookingMainDetails result={result} />}
-            {result.dates && <BookingDates result={result} />}
-            {result.payment && <BookingFinancials result={result} />}
-            {result.customer && <BookingCustomer result={result} />}
-            {result.directions && <BookingDirections result={result} />}
-            {[2, 4, 12, 0, 1, 15].includes(result.booking.status) &&
-                <BookingVehicle result={result} handleClick={handleClick} />
-            }
+            <BookingMainDetails result={result} />
+            <BookingDates result={result} />
+            <BookingPayment result={result} />
+            <BookingCustomer result={result} />
+            <BookingDirections result={result} />
+            <BookingVehicle result={result} handleClick={handleClick} />
         </div>
     )
 }
@@ -134,9 +132,7 @@ function SharedServiceSummary({ result, handleClick } : {
 function BookingMainDetails({ result }: {
     result: BookingInfoOutputProps
 }) {
-    const booking_datetime_local = new Date(result.dates.job_time_utc)
-    const days_to_trip = differenceInDays(booking_datetime_local, new Date())
-    const minutes_to_trip = differenceInMinutes(booking_datetime_local, new Date())
+    if (!result.booking) return null
 
     return (
         <div className='booking-detail main-details'>
@@ -180,6 +176,8 @@ function BookingMainDetails({ result }: {
 function BookingDates({ result }: {
     result: BookingInfoOutputProps
 }) {
+    if (!result.dates) return null
+
     const booking_datetime_local = new Date(result.dates.job_time_utc)
     const days_to_trip = differenceInDays(booking_datetime_local, new Date())
     const minutes_to_trip = differenceInMinutes(booking_datetime_local, new Date())
@@ -190,7 +188,7 @@ function BookingDates({ result }: {
             <div className='info-section'>
                 <div className='flex flex-col gap-1 w-full'>
                     <div className='card-info-detail gap-1'>
-                        <span className='font-semibold'>Recogida:</span>
+                        <span className='font-semibold date-tag'>Recogida:</span>
                         <span>{booking_datetime_local.toLocaleString()}</span>
                         { days_to_trip > 0 && (
                             <>
@@ -217,20 +215,34 @@ function BookingDates({ result }: {
                             </>
                         )}
                     </div>
-                    <div className='card-info-detail gap-1 flex-col xs:flex-row items-center justify-start'>
+                    <div className='card-info-detail gap-1'>
+                        <span className='font-semibold date-tag'>Creación:</span>
+                        <span>{ new Date(result.dates.creation_datetime).toLocaleString() }</span>
+                    </div>
+                    <div className='card-info-detail gap-1'>
                         <div className='flex flex-row gap-1 items-center w-full'>
-                            <span className='font-semibold'>Asignación:</span>
+                            <span className='font-semibold date-tag'>Asignación:</span>
                             <span>{ new Date(result.dates.assignment_datetime).toLocaleString() }</span>
-                        </div>
-                        {/* <span>·</span> */}
-                        <div className='flex flex-row gap-1 items-center w-full ml-8 xs:ml-0'>
-                            <span className='font-semibold'>Usuario:</span>
-                            <span>{ result.booking.assignment_identity }</span>
+                            <span className='hidden xs:block'>·</span>
+                            <span className='hidden xs:block font-semibold'>Usuario:</span>
+                            <span className='hidden xs:block'>{ result.booking.assignment_identity }</span>
                         </div>
                     </div>
                     <div className='card-info-detail gap-1'>
-                        <span className='font-semibold'>Creación:</span>
-                        <span>{ new Date(result.dates.creation_datetime).toLocaleString() }</span>
+                        <span className='font-semibold date-tag'>En Camino:</span>
+                        <span>{ new Date(result.dates.on_road_datetime).toLocaleString() }</span>
+                    </div>
+                    <div className='card-info-detail gap-1'>
+                        <span className='font-semibold date-tag'>En Posición:</span>
+                        <span>{ new Date(result.dates.arrived_datetime).toLocaleString() }</span>
+                    </div>
+                    <div className='card-info-detail gap-1'>
+                        <span className='font-semibold date-tag'>Inicio de Viaje:</span>
+                        <span>{ new Date(result.dates.started_datetime).toLocaleString() }</span>
+                    </div>
+                    <div className='card-info-detail gap-1'>
+                        <span className='font-semibold date-tag'>Fin de Viaje:</span>
+                        <span>{ new Date(result.dates.completed_datetime).toLocaleString() }</span>
                     </div>
                 </div>
             </div>
@@ -238,20 +250,22 @@ function BookingDates({ result }: {
     )
 }
 
-function BookingFinancials({ result }: {
+function BookingPayment({ result }: {
     result: BookingInfoOutputProps
 }) {
+    if (!result.payment) return null
+
     return (
         <div className='booking-detail info-customer'>
             <span className='font-bold titles-font'>Pago</span>
             <div className='info-section'>
-                <div className='flex flex-col gap-0.5'>
-                    <div className='card-info-detail flex-row gap-2'>
+                <div className='flex flex-col gap-1'>
+                    <div className='card-info-detail flex-row gap-1'>
                         <span className='font-semibold'>Monto:</span>
                         <span className=''>{chileanPeso.format(result.payment.estimated_payment)}</span>
                         <PaymentRouteType result={result} />
                     </div>
-                    <div className='card-info-detail flex-row gap-2'>
+                    <div className='card-info-detail flex-row gap-1'>
                         <span className='font-semibold'>Forma de Pago:</span>
                         <span className=''>{result.payment.method_name}</span>
                     </div>
@@ -270,6 +284,8 @@ function BookingFinancials({ result }: {
 function BookingCustomer({ result }: {
     result: BookingInfoOutputProps
 }) {
+    if (!result.customer) return null
+
     return (
         <div className='booking-detail info-customer'>
             <span className='font-bold titles-font'>Pasajeros</span>
@@ -311,6 +327,8 @@ function BookingCustomer({ result }: {
 function BookingDirections({ result }: {
     result: BookingInfoOutputProps
 }) {
+    if (!result.directions) return null
+
     return (
         <div className='booking-detail info-directions'>
             <span className='font-bold titles-font'>Direcciones</span>
@@ -359,6 +377,9 @@ function BookingVehicle({ result, handleClick }: {
     result: BookingInfoOutputProps,
     handleClick: any
 }) {
+    const STATES_TO_SHOW = [2, 4, 12, 0, 1, 15]
+    if (!STATES_TO_SHOW.includes(result.booking.status)) return null
+
     const WHATSAPP_TEXT = `Hola ${result.fleet.first_name ? result.fleet.first_name : ''}, te escribimos de Transvip, ¿cómo estás?`
     const whatsappLink = buildWhatsappLink(result.fleet.phone_number, WHATSAPP_TEXT)
 

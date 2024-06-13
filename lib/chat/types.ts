@@ -81,8 +81,12 @@ export interface BookingInfoOutputProps {
         creation_datetime: string
         job_time: string
         job_time_utc: string
-        cancellation_datetime: string
         assignment_datetime: string
+        on_road_datetime: string
+        arrived_datetime: string
+        started_datetime: string
+        completed_datetime: string
+        cancellation_datetime: string
     }
     branch: BranchProps | undefined
     directions: {
