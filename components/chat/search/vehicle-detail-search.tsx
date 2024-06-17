@@ -13,7 +13,9 @@ import { Badge } from '@/components/ui/badge';
 import ToolsButton from '../tools/tools-button';
 import { Button } from '@/components/ui/button';
 import { CityBadge, VehicleStatusBadge } from '../badges/chat-badges';
-// import * as Whatsapp from '../../../public/images/whatsapp-logo.svg'
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
+import Image from 'next/image'
 
 export function VehicleDetail({ session, vehicleInformation, content }: { 
     session: any,
@@ -92,6 +94,7 @@ function VehicleDetailCard({ result, handleDriverClick, handleVehicleStatusClick
             <div className={"flex flex-col gap-2 md:gap-3"}>
                 <VehicleBadges result={result} handleStatusClick={handleVehicleStatusClick} />
                 <VehicleMainDetails result={result} />
+                <VehicleDocuments result={result} />
                 <VehicleDrivers result={result} handleClick={handleDriverClick}/>
             </div>
         </div>
@@ -106,10 +109,12 @@ function VehicleMainDetails({ result } : { result : VehicleDetailProps }) {
                 <span className='hidden font-bold titles-font'>General</span>
                 <div className='info-section'>
                     <div className='card-info-detail flex flex-col gap-2 items-start justify-start w-full'>
-                        <div className='flex flex-row gap-2 items-center justify-start w-full'>
-                            <span>PPU: { result.license_plate }</span>
+                        <div className='flex flex-row gap-1 items-center justify-start w-full'>
+                            <span className='font-semibold'>PPU:</span>
+                            <span>{ result.license_plate }</span>
                             <span>·</span>
-                            <span>Número de Móvil: { result.vehicle_number }</span>
+                            <span className='font-semibold'>Número de Móvil:</span>
+                            <span>{ result.vehicle_number }</span>
                             <span>·</span>
                             <Button variant={'outline'} className='h-6 bg-slate-600 text-white text-xs'>
                                 <Link href="https://apps.mtt.cl/consultaweb/" target='_blank'>
@@ -132,6 +137,30 @@ function VehicleMainDetails({ result } : { result : VehicleDetailProps }) {
                         </div>
                         <span>Creación: {new Date(result.creation_datetime).toLocaleString()}</span>
                     </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+function VehicleDocuments({ result } : { result : VehicleDetailProps }) {
+    return (
+        <div className='vehicle-documents'>
+            <div className='flex flex-col gap-2 items-start justify-start'>
+                <span className='font-bold titles-font'>Documentos</span>
+                <div className='info-section'>
+                    { result.documents.permission_of_circulation && 
+                        <div className='card-info-detail'>
+                            <span>Permiso de Circulación</span>
+                            <Zoom>
+                                <Image src={result.documents.permission_of_circulation} 
+                                    width={1200} height={900} 
+                                    className='h-10 w-auto'
+                                    alt={result.license_plate} 
+                                />
+                            </Zoom>
+                        </div>
+                    }                        
                 </div>
             </div>
         </div>
