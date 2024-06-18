@@ -310,12 +310,11 @@ function BookingCustomer({ result }: {
         <div className='booking-detail info-customer'>
             <span className='font-bold titles-font'>Pasajeros</span>
             <div className='info-section flex flex-col lg:flex-row gap-1 lg:gap-4 items-start lg:items-center justify-start w-full'>
-                <div className='flex flex-col gap-0.5'>
+                <div className='flex flex-col gap-1'>
                     <div className='card-info-detail'>
                         <UserCircleIcon className='size-4' />
                         <span>{result.customer.full_name}</span>
-                    </div>
-                    <div className='card-info-detail'>
+                        <span>·</span>
                         <PhoneIcon className='size-4' />
                         <Link href={`tel:${result.customer.phone_number}`} className='hover:underline'>
                             <span>{result.customer.phone_number}</span>
