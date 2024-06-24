@@ -225,9 +225,13 @@ function BookingDates({ result }: {
                             <div className='flex flex-row gap-1 items-center w-full'>
                                 <span className='font-semibold date-tag'>Asignación:</span>
                                 <span>{ new Date(result.dates.assignment_datetime).toLocaleString() }</span>
-                                <span className='hidden xs:block'>·</span>
-                                <span className='hidden xs:block font-semibold'>Usuario:</span>
-                                <span className='hidden xs:block'>{ result.booking.assignment_identity }</span>
+                                { result.booking.assignment_identity && 
+                                    <>
+                                        <span className='hidden xs:block'>·</span>
+                                        <span className='hidden xs:block font-semibold'>Usuario:</span>
+                                        <span className='hidden xs:block'>{ result.booking.assignment_identity }</span>
+                                    </>
+                                }
                             </div>
                         </div>
                     }

@@ -126,7 +126,7 @@ function VehicleMainDetails({ result } : { result : VehicleDetailProps }) {
                             <span>Marca: { result.model.name }</span>
                             <span>·</span>
                             <span>Tipo: { result.type.name }</span>
-                            { result.color.name && <Badge variant={'default'} className={cn('text-white shadow-sm', `bg-[${bgColor}] hover:bg-[${bgColor}]`)}>
+                            { result.color.name && <Badge variant={'default'} className={cn('text-white shadow-sm bg-gray-200', `bg-[${bgColor}] hover:bg-[${bgColor}]`)}>
                                 { result.color.name.toUpperCase() }
                             </Badge>}
                         </div>
