@@ -358,21 +358,21 @@ function BookingDirections({ result }: {
             <div className='info-section gap-0.5'>
                 <div className='card-info-detail'>
                     <MapPin className='size-4' />
-                    <div className="flex flex-row gap-2 items-center justify-start">
+                    <div className="flex flex-row gap-1 items-center justify-start">
                         <span className='font-semibold'>Origen:</span>
                         <span className='line-clamp-1'>{result.directions.origin.address}</span>
                     </div>
                 </div>
                 <div className='card-info-detail'>
                     <GoalIcon className='size-4' />
-                    <div className="flex flex-row gap-2 items-center justify-start">
+                    <div className="flex flex-row gap-1 items-center justify-start">
                         <span className='font-semibold'>Destino:</span>
                         <span className='line-clamp-1'>{result.directions.destination.address}</span>
                     </div>
                 </div>
                 <div className='card-info-detail'>
                     <Clock className='size-4' />
-                    <div className="flex flex-row gap-2 items-center justify-start">
+                    <div className="flex flex-row gap-1 items-center justify-start">
                         <span className='font-semibold'>Tiempo Estimado:</span>
                         <span>{result.directions.estimated_travel_minutes} minutos ({(result.directions.estimated_travel_minutes / 60).toFixed(2)} horas)</span>
                     </div>
