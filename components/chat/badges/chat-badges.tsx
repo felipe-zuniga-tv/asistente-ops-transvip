@@ -13,7 +13,7 @@ const bookingStatus = [
     { status: 6, label: 'No asignada', color: 'bg-orange-800 hover:bg-orange-700' },
     { status: 7, label: 'Aceptada', color: 'bg-orange-600 hover:bg-orange-500' },
     { status: 9, label: 'Cancelada', color: 'bg-orange-800 hover:bg-orange-700' },
-    { status: 12, label: 'No Show', color: 'bg-yellow-500 hover:bg-yellow-400' },
+    { status: 12, label: 'No Show', color: 'bg-yellow-600 hover:bg-yellow-500' },
     { status: 15, label: 'En camino', color: 'bg-blue-400 hover:bg-blue-500' },
 ]
 
@@ -51,7 +51,7 @@ export function BookingStatusBadge({ result } : { result : BookingInfoOutputProp
 
     return (
         <Badge variant={"default"} 
-            className={cn("py-1 md:py-2 text-white cursor-pointer", bookingStatusColorValue)}>
+            className={cn("py-1 md:py-2 w-[100px] text-white justify-center cursor-pointer", bookingStatusColorValue)}>
             { bookingStatusLabel }
         </Badge>
     )

@@ -231,7 +231,8 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
 
             const {
                 job_status, type_of_trip,
-                is_round_trip, estimated_payment_cost,
+                is_round_trip, 
+                estimated_payment_cost, payment_amount,
                 branch,
                 is_vip,
                 payment_status, 
@@ -249,11 +250,12 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 job_address, job_latitude, job_longitude,
                 job_time, job_time_utc,
                 creation_datetime, // UTC time
+                admin_email,
                 assignment_datetime,
-                on_road_datetime,
-                arrived_datetime,
-                started_datetime,
-                completed_datetime,
+                on_road_datetime, on_road_identity,
+                arrived_datetime, arrived_identity,
+                started_datetime, started_identity,
+                completed_datetime, ended_identity,
                 no_show_datetime,
                 cancellation_datetime,
                 estimated_distance,
@@ -288,9 +290,14 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     contract_name,
                     booking_for: booking_for === 1,
                     qr_link,
-                    assignment_identity,
                     observations,
-                    no_show_reason: noshow_reason
+                    no_show_reason: noshow_reason,
+                    creation_identity: admin_email,
+                    assignment_identity,
+                    on_road_identity,
+                    arrived_identity,
+                    started_identity,
+                    ended_identity
                 },
                 dates: {
                     creation_datetime,
@@ -324,6 +331,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 payment: {
                     status: payment_status,
                     estimated_payment: estimated_payment_cost,
+                    actual_payment: payment_amount,
                     method_name: payment_method_name,
                     fare_route_name: route_details.route_name,
                     fare_route_type: route_details.route_type

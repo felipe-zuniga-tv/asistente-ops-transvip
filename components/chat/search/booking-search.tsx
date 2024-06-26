@@ -122,7 +122,7 @@ function SharedServiceSummary({ result, handleClick } : {
                     <BookingStatusBadge result={r} />
                     <PaymentStatusBadge result={r} />
                     <span>Fecha: { new Date(r.dates.job_time_utc).toLocaleString() }</span>
-                    <CityBadge branch={r.branch} isCode={true} className='ml-auto' />
+                    <CityBadge branch={r.branch} isCode={false} className='ml-auto' />
                 </div>
             ))}
         </div>
@@ -219,6 +219,13 @@ function BookingDates({ result }: {
                     <div className='card-info-detail gap-1'>
                         <span className='font-semibold date-tag'>Creación:</span>
                         <span>{ new Date(result.dates.creation_datetime).toLocaleString() }</span>
+                        { result.booking.creation_identity && 
+                            <>
+                                <span className='hidden xs:block'>·</span>
+                                <span className='hidden xs:block font-semibold'>Usuario:</span>
+                                <span className='hidden xs:block'>{ result.booking.creation_identity }</span>
+                            </>
+                        }
                     </div>
                     { result.dates.assignment_datetime !== NULL_DATE && 
                         <div className='card-info-detail gap-1'>
@@ -239,24 +246,52 @@ function BookingDates({ result }: {
                         <div className='card-info-detail gap-1'>
                             <span className='font-semibold date-tag'>En Camino:</span>
                             <span>{ new Date(result.dates.on_road_datetime).toLocaleString() }</span>
+                            { result.booking.on_road_identity && 
+                                <>
+                                    <span className='hidden xs:block'>·</span>
+                                    <span className='hidden xs:block font-semibold'>Usuario:</span>
+                                    <span className='hidden xs:block'>{ result.booking.on_road_identity }</span>
+                                </>
+                            }
                         </div>
                     }
                     { result.dates.arrived_datetime !== NULL_DATE && 
                         <div className='card-info-detail gap-1'>
                             <span className='font-semibold date-tag'>En Posición:</span>
                             <span>{ new Date(result.dates.arrived_datetime).toLocaleString() }</span>
+                            { result.booking.arrived_identity && 
+                                <>
+                                    <span className='hidden xs:block'>·</span>
+                                    <span className='hidden xs:block font-semibold'>Usuario:</span>
+                                    <span className='hidden xs:block'>{ result.booking.arrived_identity }</span>
+                                </>
+                            }
                         </div>
                     }
                     { result.dates.started_datetime !== NULL_DATE &&
                         <div className='card-info-detail gap-1'>
                             <span className='font-semibold date-tag'>Inicio de Viaje:</span>
                             <span>{ new Date(result.dates.started_datetime).toLocaleString() }</span>
+                            { result.booking.started_identity && 
+                                <>
+                                    <span className='hidden xs:block'>·</span>
+                                    <span className='hidden xs:block font-semibold'>Usuario:</span>
+                                    <span className='hidden xs:block'>{ result.booking.started_identity }</span>
+                                </>
+                            }
                         </div>
                     }
                     { result.dates.completed_datetime !== NULL_DATE &&
                         <div className='card-info-detail gap-1'>
                             <span className='font-semibold date-tag'>Fin de Viaje:</span>
                             <span>{ new Date(result.dates.completed_datetime).toLocaleString() }</span>
+                            { result.booking.ended_identity && 
+                                <>
+                                    <span className='hidden xs:block'>·</span>
+                                    <span className='hidden xs:block font-semibold'>Usuario:</span>
+                                    <span className='hidden xs:block'>{ result.booking.ended_identity }</span>
+                                </>
+                            }
                         </div>
                     }
                     { result.dates.no_show_datetime !== NULL_DATE &&
@@ -285,8 +320,11 @@ function BookingPayment({ result }: {
             <div className='info-section'>
                 <div className='flex flex-col gap-1'>
                     <div className='card-info-detail flex-row gap-1'>
-                        <span className='font-semibold'>Monto:</span>
+                        <span className='font-semibold'>Monto Estimado:</span>
                         <span className=''>{chileanPeso.format(result.payment.estimated_payment)}</span>
+                        <span className=''>·</span>
+                        <span className='font-semibold'>Monto Real:</span>
+                        <span className=''>{chileanPeso.format(result.payment.actual_payment)}</span>
                         <PaymentRouteType result={result} />
                     </div>
                     <div className='card-info-detail flex-row gap-1'>

@@ -74,9 +74,14 @@ export interface BookingInfoOutputProps {
         contract_name: string
         booking_for: boolean
         qr_link: string
-        assignment_identity: string
         observations?: string
         no_show_reason?: string
+        creation_identity: string
+        assignment_identity: string
+        on_road_identity: string
+        arrived_identity: string
+        started_identity: string
+        ended_identity: string
     }
     dates: {
         creation_datetime: string
@@ -110,6 +115,7 @@ export interface BookingInfoOutputProps {
     payment: {
         status: number
         estimated_payment: number
+        actual_payment: number
         method_name?: string
         fare_route_name?: string
         fare_route_type?: number
