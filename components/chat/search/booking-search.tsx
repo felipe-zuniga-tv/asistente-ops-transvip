@@ -116,6 +116,7 @@ function SharedServiceSummary({ result, handleClick } : {
 
     return (
         <div className='shared-service-summary bg-white p-2 rounded-md text-slate-900 flex flex-col gap-1.5'>
+            <SharedServiceTotals result={result} />
             { result.map(r => (
                 <div className='shared-service-booking flex flex-row gap-2 items-center text-sm'>
                     <BookingIdBadge result={r} handleClick={handleClick} />
@@ -124,7 +125,35 @@ function SharedServiceSummary({ result, handleClick } : {
                     <span>Fecha: { new Date(r.dates.job_time_utc).toLocaleString() }</span>
                     <CityBadge branch={r.branch} isCode={false} className='ml-auto' />
                 </div>
-            ))}
+            ))
+            }
+        </div>
+    )
+}
+
+function SharedServiceTotals({ result } : {
+    result: BookingInfoOutputProps[]
+}) {
+    const totalPayment = result.reduce((acc, curr) => acc + curr.payment.actual_payment, 0)
+    const totalEstimatedDistance = result.reduce((acc, curr) => acc + curr.directions.estimated_travel_kms, 0)
+    const totalActualDistance = result.reduce((acc, curr) => acc + curr.directions.total_travel_kms, 0)
+
+    return (
+        <div className='shared-service-totals card-info-detail flex flex-row gap-2 justify-start'>
+            <div className='shared-service-total-payment flex flex-row gap-1'>
+                <span className='font-semibold'>Pago Total:</span>
+                <span>{chileanPeso.format(totalPayment)}</span>
+            </div>
+            <span>·</span>
+            <div className='shared-service-total-estimated-distance flex flex-row gap-1'>
+                <span className='font-semibold'>Distancia Estimada:</span>
+                <span>{totalEstimatedDistance} kms</span>
+            </div>
+            <span>·</span>
+            <div className='shared-service-total-actual-distance flex flex-row gap-1'>
+                <span className='font-semibold'>Distancia Real:</span>
+                <span>{totalActualDistance} kms</span>
+            </div>
         </div>
     )
 }
@@ -206,7 +235,7 @@ function BookingDates({ result }: {
                         {days_to_trip < 0 && (
                             <>
                                 <span>·</span>
-                                <span className='font-semibold'>Hace: {-1 * days_to_trip} día{days_to_trip > 1 ? 's' : ''}</span>
+                                <span className='font-semibold'>Hace: {-1 * days_to_trip} día{Math.abs(days_to_trip) > 1 ? 's' : ''}</span>
                             </>
                         )}
                         {minutes_to_trip < 0 && Math.abs(minutes_to_trip) <= 180 && (
