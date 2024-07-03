@@ -40,11 +40,11 @@ function addHours(date : Date, hours : number) {
     date.setTime(date.getTime() + hoursToAdd);
     return date;
 }
-//   const date = new Date('2022-05-15T12:00:00.000Z');
-//   const newDate1 = addHours(date, 2);
-//   console.log(newDate1); // 2022-05-15T14:00:00.000Z
-//   const newDate2 = addHours(newDate1, 5);
-//   console.log(newDate2); // 2022-05-15T19:00:00.000Z
+function addMinutes(date : Date, minutes : number) {
+    const minutesToAdd = minutes * 60 * 1000;
+    date.setTime(date.getTime() + minutesToAdd);
+    return date;
+}
 export function buildWhatsappLink(phone_number : string, text: string) {
     return encodeURI(`https://wa.me/${phone_number.replace('+', '').trim()}?text=${text.trim()}`)
 }

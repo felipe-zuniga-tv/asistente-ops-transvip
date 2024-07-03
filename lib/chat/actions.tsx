@@ -320,7 +320,7 @@ async function submitUserMessage(content: string) {
 					// Clean query
 					let driverQueryClean = driverQuery.trim().replace("+", "").replace("  ", "")
 
-					yield <LoadingMessage text={`Buscando conductor: ${driverQueryClean}...`}
+					yield <LoadingMessage text={`Buscando conductor: ${driverQueryClean}`}
 						className="text-sm"
 					/>
 
@@ -337,7 +337,13 @@ async function submitUserMessage(content: string) {
 					// Get driver profile + ratings
 					const driverProfile = await getDriverProfile(fleetId)
 					const driverRatings = await getDriverRatings(fleetId)
+					yield <LoadingMessage text={`Buscando evaluaciones del conductor...`} className="text-sm"/>
+					
 					const driverRatingsSummary = getDriverRatingSummary(driverRatings)
+					yield <LoadingMessage text={`Armando resumen de las evaluaciones...`} className="text-sm"/>
+
+					console.log(driverRatingsSummary);
+					console.log(JSON.stringify(driverRatingsSummary));
 
 					aiState.done({
 						...aiState.get(),
@@ -347,7 +353,8 @@ async function submitUserMessage(content: string) {
 								role: 'assistant',
 								content: `Evaluaciones del conductor ${driverProfile?.personal.full_name}, buscando con ${driverQuery}, últimos 90 días` +
 									`\n\n` + `Resumen: ${JSON.stringify(driverRatingsSummary)}` + 
-									`\n\n`+ `Calificación promedio histórica: ${driverProfile?.quality.avg_rating}`
+									`\n\n` + `Calificaciones bajas: ${JSON.stringify(driverRatingsSummary['1'])}` + 
+									`\n\n` + `Calificación promedio histórica: ${driverProfile?.quality.avg_rating}`
 							}
 						]
 					})
@@ -360,7 +367,8 @@ async function submitUserMessage(content: string) {
 							role: 'assistant',
 							content: `Evaluaciones del conductor ${driverProfile?.personal.full_name}, buscando con ${driverQuery}, últimos 90 días` +
 								`\n\n` + `Resumen: ${JSON.stringify(driverRatingsSummary)}` + 
-								`\n\n`+ `Calificación promedio histórica: ${driverProfile?.quality.avg_rating}`
+								`\n\n` + `Calificaciones bajas: ${JSON.stringify(driverRatingsSummary['1'])}` + 
+								`\n\n` + `Calificación promedio histórica: ${driverProfile?.quality.avg_rating}`
 						}],
 					})
 

@@ -15,7 +15,7 @@ export const startingMessages = [
 
 // AI Chat Configuration
 export const SYSTEM_MESSAGE = `
-Today's date: ${format(new Date(), "d LLLL, yyyy")} \n\n\
+Today's date: ${format(new Date(), "d LLLL, yyyy")}\n\n\
 You are Transvip, an expert, professional and very helpful assistant.\
 You will have a series of tools available for you to answer questions about Transvip Operations. \
 Then reply always in spanish.\
@@ -25,5 +25,7 @@ export const CREATE_DRIVER_RATINGS_SUMMARY = `
 Create a summary with the provided information and comments, in order to make it easy for the user
 to understand the whole context and decide whether the driver has good or bad qualifications,
 and how good he or she is at providing transport services to passengers.
+Focus on highlighting and summarizing the reasons behind 1-star ratings, the main area of improvement.
+Consider that a driver is showing signals of bad quality service if their historical average rating is below 4.7.
 Provide also a recommendation about it.
 `.trim()

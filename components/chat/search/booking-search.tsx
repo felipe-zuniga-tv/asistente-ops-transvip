@@ -5,12 +5,12 @@ import {
 } from 'ai/rsc'
 import { nanoid } from 'nanoid';
 import Link from 'next/link';
-import { differenceInDays, differenceInMinutes } from 'date-fns';
+import { addMinutes, differenceInDays, differenceInMinutes } from 'date-fns';
 import { BookingInfoOutputProps } from '@/lib/chat/types';
 import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, GoalIcon, HotelIcon, MailIcon, MapPin, Pencil, PhoneIcon, UserCircleIcon } from 'lucide-react';
+import { Calendar, CheckIcon, Clock, Cross, CrossIcon, GoalIcon, HotelIcon, MailIcon, MapPin, Pencil, PhoneIcon, UserCircleIcon, X } from 'lucide-react';
 import { WhatsappIcon } from '@/components/ui/icons';
 import { buildWhatsappLink } from '@/lib/chat/functions';
 import { BookingStatusBadge, CityBadge, CustomerVipBadge, PaymentRouteType, PaymentStatusBadge, ServiceNameBadge } from '../badges/chat-badges';
@@ -211,6 +211,7 @@ function BookingDates({ result }: {
     const booking_datetime_local = new Date(result.dates.job_time_utc)
     const days_to_trip = differenceInDays(booking_datetime_local, new Date())
     const minutes_to_trip = differenceInMinutes(booking_datetime_local, new Date())
+    const minutes_arrived_trip = differenceInMinutes(new Date(result.dates.arrived_datetime), booking_datetime_local)
 
     return (
         <div className='booking-detail info-customer'>
@@ -293,6 +294,25 @@ function BookingDates({ result }: {
                                     <span className='hidden xs:block'>·</span>
                                     <span className='hidden xs:block font-semibold'>Usuario:</span>
                                     <span className='hidden xs:block'>{ result.booking.arrived_identity }</span>
+                                    <span className='hidden xs:block'>·</span>
+                                    <span className='hidden xs:block'>{ 
+                                        new Date(result.dates.arrived_datetime) <= addMinutes(booking_datetime_local, 10) ? 
+                                            <CheckIcon className='size-4 bg-green-500 text-white rounded-full py-0.5' /> : 
+                                            <X className='size-4 bg-red-400 text-white rounded-full py-0.5' /> 
+                                    }</span>
+                                    <span className='hidden xs:block'>
+                                        ({ minutes_arrived_trip > 0 ?
+                                            minutes_arrived_trip > 1 ? 
+                                                <>{ minutes_arrived_trip } minutos después</> :
+                                                <>{ minutes_arrived_trip } minuto después</> 
+                                            : 
+                                            minutes_arrived_trip < 0 ?
+                                                minutes_arrived_trip <= -1 ?
+                                                <>{ minutes_arrived_trip } minutos antes</> :
+                                                <>{ minutes_arrived_trip } minuto antes</>
+                                            : null
+                                        })
+                                    </span>
                                 </>
                             }
                         </div>
