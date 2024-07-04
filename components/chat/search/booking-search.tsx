@@ -168,7 +168,7 @@ function BookingMainDetails({ result }: {
             <div className='info-section'>
                 <div className='flex flex-col gap-1 w-full'>
                     <div className='flex flex-row gap-1 items-center justify-start'>
-                        {result.booking.shared_service_id && (
+                        { result.booking.shared_service_id && (
                             <>
                                 <div className='card-info-detail gap-1'>
                                     <span className='font-semibold'>Paquete:</span>
@@ -178,17 +178,20 @@ function BookingMainDetails({ result }: {
                             </>
                         )}
                         <div className='card-info-detail gap-1'>
-                            <span className='font-bold'>Convenio:</span>
+                            <span className='font-semibold'>Convenio:</span>
                             <span>{result.booking.contract_name}</span>
                             <ServiceNameBadge result={result} />
                         </div>
                     </div>
                     <div className='card-info-detail gap-1'>
-                        <span>Pax: {result.booking.pax_count}</span>
+                        <span className='font-semibold'>Pax:</span>
+                        <span>{result.booking.pax_count}</span>
                         <span>·</span>
-                        <span>Sentido: {result.booking.type_of_trip}</span>
+                        <span className='font-semibold'>Sentido:</span>
+                        <span>{result.booking.type_of_trip}</span>
                         <span>·</span>
-                        <span>RT: {result.booking.is_round_trip ? 'Sí' : 'No'}</span>
+                        <span className='font-semibold'>RT:</span>
+                        <span>{result.booking.is_round_trip ? 'Sí' : 'No'}</span>
                     </div>
                     { result.booking.observations && 
                         <div className='card-info-detail mt-2 p-2 bg-yellow-300 rounded-md'>
@@ -211,7 +214,6 @@ function BookingDates({ result }: {
     const booking_datetime_local = new Date(result.dates.job_time_utc)
     const days_to_trip = differenceInDays(booking_datetime_local, new Date())
     const minutes_to_trip = differenceInMinutes(booking_datetime_local, new Date())
-    const minutes_arrived_trip = differenceInMinutes(new Date(result.dates.arrived_datetime), booking_datetime_local)
 
     return (
         <div className='booking-detail info-customer'>
@@ -257,7 +259,7 @@ function BookingDates({ result }: {
                             </>
                         }
                     </div>
-                    { result.dates.assignment_datetime !== NULL_DATE && 
+                    { result.dates.assignment_datetime && result.dates.assignment_datetime !== NULL_DATE && 
                         <div className='card-info-detail gap-1'>
                             <div className='flex flex-row gap-1 items-center w-full'>
                                 <span className='font-semibold date-tag'>Asignación:</span>
@@ -295,7 +297,7 @@ function BookingDates({ result }: {
                                     <span className='hidden xs:block font-semibold'>Usuario:</span>
                                     <span className='hidden xs:block'>{ result.booking.arrived_identity }</span>
                                     <span className='hidden xs:block'>·</span>
-                                    <BookingOnTimeArrival restul={result} booking_datetime_local={booking_datetime_local} />
+                                    <BookingOnTimeArrival result={result} booking_datetime_local={booking_datetime_local} />
                                 </>
                             }
                         </div>
