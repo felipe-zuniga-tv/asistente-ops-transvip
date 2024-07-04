@@ -295,24 +295,7 @@ function BookingDates({ result }: {
                                     <span className='hidden xs:block font-semibold'>Usuario:</span>
                                     <span className='hidden xs:block'>{ result.booking.arrived_identity }</span>
                                     <span className='hidden xs:block'>·</span>
-                                    <span className='hidden xs:block'>{ 
-                                        new Date(result.dates.arrived_datetime) <= addMinutes(booking_datetime_local, 10) ? 
-                                            <CheckIcon className='size-4 bg-green-500 text-white rounded-full py-0.5' /> : 
-                                            <X className='size-4 bg-red-400 text-white rounded-full py-0.5' /> 
-                                    }</span>
-                                    <span className='hidden xs:block'>
-                                        ({ minutes_arrived_trip > 0 ?
-                                            minutes_arrived_trip > 1 ? 
-                                                <>{ minutes_arrived_trip } minutos después</> :
-                                                <>{ minutes_arrived_trip } minuto después</> 
-                                            : 
-                                            minutes_arrived_trip < 0 ?
-                                                minutes_arrived_trip <= -1 ?
-                                                <>{ minutes_arrived_trip } minutos antes</> :
-                                                <>{ minutes_arrived_trip } minuto antes</>
-                                            : null
-                                        })
-                                    </span>
+                                    <BookingOnTimeArrival restul={result} booking_datetime_local={booking_datetime_local} />
                                 </>
                             }
                         </div>
@@ -525,5 +508,37 @@ function BookingVehicle({ result, handleClick }: {
                 </Button>
             </div>
         </div>
+    )
+}
+
+function BookingOnTimeArrival({ result, booking_datetime_local } : {
+    result: BookingInfoOutputProps,
+    booking_datetime_local: Date
+}) {
+    const minutes_arrived_trip = differenceInMinutes(new Date(result.dates.arrived_datetime), booking_datetime_local)
+
+    return (
+        <>
+            <span className='hidden xs:block'>{ 
+                new Date(result.dates.arrived_datetime) <= addMinutes(booking_datetime_local, 10) ? 
+                    <CheckIcon className='size-4 bg-green-500 text-white rounded-full py-0.5' /> : 
+                    <X className='size-4 bg-red-400 text-white rounded-full py-0.5' /> 
+            }</span>
+            { Math.abs(minutes_arrived_trip) > 0 &&
+                (<span className='hidden xs:block'>
+                    ({ minutes_arrived_trip > 0 ?
+                        minutes_arrived_trip > 1 ? 
+                            <>{ minutes_arrived_trip } minutos después</> :
+                            <>{ minutes_arrived_trip } minuto después</> 
+                        : 
+                        minutes_arrived_trip < 0 ?
+                            minutes_arrived_trip <= -1 ?
+                            <>{ Math.abs(minutes_arrived_trip) } minutos antes</> :
+                            <>{ Math.abs(minutes_arrived_trip) } minuto antes</>
+                        : null
+                    })
+                </span>)
+            }
+        </>
     )
 }
