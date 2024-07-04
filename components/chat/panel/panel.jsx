@@ -19,7 +19,7 @@ export function TransvipPanel({ id, session }) {
 			<div className="flex flex-col">
 				<header className="sticky top-0 z-10 flex h-[56px] items-center gap-1 border-b_ bg-background px-4">
 					<div className="flex flex-row gap-2 text-xl font-semibold mr-4">
-						<span>Operaciones</span>
+						<span className="hidden lg:block">Operaciones</span>
 						<Badge variant={"default"} className="bg-transvip">
 							<TransvipLogo colored={false} className="py-1" size={60} />
 						</Badge>
