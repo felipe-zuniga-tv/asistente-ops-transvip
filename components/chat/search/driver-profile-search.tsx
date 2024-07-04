@@ -24,15 +24,33 @@ export function DriverProfile({ session, driverProfile, content }: {
     const [_, setMessages] = useUIState()
     const { submitUserMessage } = useActions()
 
-    const handleClick = async (vehicle : DriverVehiclesProps, request : string) => {
+    const handleDriverClick = async (result : DriverProfileProps) => {
+        let userMessageContent = `Me gustaría construir un resumen de las evaluaciones del conductor ${result.personal.email}.`
+
+        setMessages((currentMessages: any) => [
+            ...currentMessages,
+            {
+                id: nanoid(),
+                display: <UserMessage content={userMessageContent} session={session} />
+            }
+        ])
+
+        const response = await submitUserMessage(userMessageContent)
+        setMessages((currentMessages: any) => [
+            ...currentMessages,
+            response
+        ])
+    }
+
+    const handleVehicleClick = async (result : DriverVehiclesProps, request : string) => {
 
         let userMessageContent = ""
         if (request === 'online') {
-            userMessageContent = `Me gustaría saber si el móvil ${vehicle.unique_car_id} está online.`
+            userMessageContent = `Me gustaría saber si el móvil ${result.unique_car_id} está online.`
         } else if (request === 'details') {
-            userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${vehicle.registration_number}.`
+            userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${result.registration_number}.`
         } else {
-            userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${vehicle.registration_number}.`
+            userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${result.registration_number}.`
         }
 
         setMessages((currentMessages: any) => [
@@ -59,7 +77,8 @@ export function DriverProfile({ session, driverProfile, content }: {
             <div className={'search-results-cards relative w-full flex flex-col gap-2 items-start'}>
                 <DriverProfileCard key={driverProfile.fleet_id} 
                     result={driverProfile}
-                    handleVehicleClick={handleClick}
+                    handleDriverClick={handleDriverClick}
+                    handleVehicleClick={handleVehicleClick}
                 />
             </div>
             { content && <div className='search-results-text mt-4'>
@@ -69,8 +88,9 @@ export function DriverProfile({ session, driverProfile, content }: {
     )
 }
 
-function DriverProfileCard({ result, handleVehicleClick } : {
+function DriverProfileCard({ result, handleDriverClick, handleVehicleClick } : {
     result: any,
+    handleDriverClick?: any
     handleVehicleClick?: any
 }) {
     return (
@@ -78,18 +98,21 @@ function DriverProfileCard({ result, handleVehicleClick } : {
             <div className='flex flex-col gap-2 md:gap-3 bg-gray-200 p-2 rounded-lg'>
                 <div className='driver-main'>
                     <div className='flex flex-col md:flex-row items-center justify-between gap-2 md:gap-4'>
-                        <DriverMainDetails result={result} />
+                        <DriverMainDetails result={result} handleClick={handleDriverClick} />
                         <DriverBadges result={result} handleStatusClick={handleVehicleClick} />
                     </div>
                 </div>
                 <DriverDocuments result={result} />
-                { result.vehicles.length > 0 && <DriverVehicles result={result} handleVehicleClick={handleVehicleClick} /> }
+                { result.vehicles.length > 0 && <DriverVehicles result={result} handleClick={handleVehicleClick} /> }
             </div>
         </div>
     )
 }
 
-function DriverMainDetails({ result } : { result : DriverProfileProps }) {
+function DriverMainDetails({ result, handleClick } : { 
+    result : DriverProfileProps 
+    handleClick: any
+}) {
     return (
         <div className='driver-main-details'>
             <div className='flex flex-row gap-4 items-center justify-center md:justify-start text-slate-700 w-full'>
@@ -105,7 +128,11 @@ function DriverMainDetails({ result } : { result : DriverProfileProps }) {
                         <span className='text-xs -ml-1'>{ result.quality.avg_rating.toFixed(2) }</span>
                     </div>
                 </div>
-                {/* <span>Fecha de creación: {new Date(result.created_at).toLocaleString()}</span> */}
+                <Button variant={'outline'}
+                    className='ml-4 py-1 text-xs bg-slate-700 text-white'
+                    onClick={() => handleClick(result)}>
+                        Ver evaluaciones
+                </Button>
             </div>
         </div>
     )
@@ -172,9 +199,9 @@ function DriverDocuments({ result } : { result : DriverProfileProps }) {
     )
 }
 
-function DriverVehicles({ result, handleVehicleClick } : {
+function DriverVehicles({ result, handleClick } : {
     result : DriverProfileProps 
-    handleVehicleClick: any
+    handleClick: any
 }) {
     return (
         <div className='driver-vehicles'>
@@ -193,11 +220,11 @@ function DriverVehicles({ result, handleVehicleClick } : {
                                 </Badge>
                                 <div className='vehicle-actions flex-row flex gap-x-1 ml-auto'>
                                     <Button variant={'outline'} className='text-xs text-white py-[1px] h-7 bg-slate-600'
-                                        onClick={() => handleVehicleClick(vehicle, 'details')}>
+                                        onClick={() => handleClick(vehicle, 'details')}>
                                         Más detalles
                                     </Button>
                                     <Button variant={'outline'} className='text-xs text-white py-[1px] h-7 bg-slate-600'
-                                        onClick={() => handleVehicleClick(vehicle, 'online')}>
+                                        onClick={() => handleClick(vehicle, 'online')}>
                                         Ver si está online
                                     </Button>
                                 </div>
@@ -213,7 +240,7 @@ function DriverVehicles({ result, handleVehicleClick } : {
 
 function DriverBadges({ result, handleStatusClick } : { 
     result : DriverProfileProps
-    handleStatusClick: any
+    handleStatusClick?: any
 }) {
     return (
         <div className='gap-2 flex flex-row items-end'>
