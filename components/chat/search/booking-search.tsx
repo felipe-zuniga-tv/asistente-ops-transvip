@@ -10,7 +10,7 @@ import { BookingInfoOutputProps } from '@/lib/chat/types';
 import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, CheckIcon, Clock, Cross, CrossIcon, GoalIcon, HotelIcon, MailIcon, MapPin, Pencil, PhoneIcon, UserCircleIcon, X } from 'lucide-react';
+import { CheckIcon, Clock, GoalIcon, HotelIcon, MailIcon, MapPin, Pencil, PhoneIcon, UserCircleIcon, X } from 'lucide-react';
 import { WhatsappIcon } from '@/components/ui/icons';
 import { buildWhatsappLink } from '@/lib/chat/functions';
 import { BookingStatusBadge, CityBadge, CustomerVipBadge, PaymentRouteType, PaymentStatusBadge, ServiceNameBadge } from '../badges/chat-badges';
