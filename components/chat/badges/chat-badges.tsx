@@ -18,9 +18,9 @@ const bookingStatus = [
 ]
 
 const paymentStatus = [
-    { status: 0, label: 'No Pagada', color: 'bg-red-400 hover:bg-red-300'  },
+    { status: 0, label: 'No Pagada', color: 'bg-red-400 hover:bg-red-300' },
     { status: 1, label: 'Pagada', color: 'bg-green-700 hover:bg-green-600' },
-    { status: 2, label: 'Pagada*', color: 'bg-green-700 hover:bg-green-600' },
+    { status: 2, label: 'Pagada', color: 'bg-green-700 hover:bg-green-600' },
 ]
 
 const driverStatus = [

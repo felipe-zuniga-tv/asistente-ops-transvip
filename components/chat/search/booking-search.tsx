@@ -147,7 +147,7 @@ function SharedServiceTotals({ result } : {
             <span>·</span>
             <div className='shared-service-total-estimated-distance flex flex-row gap-1'>
                 <span className='font-semibold'>Distancia Estimada:</span>
-                <span>{totalEstimatedDistance} kms</span>
+                <span>{totalEstimatedDistance.toFixed(2)} kms</span>
             </div>
             <span>·</span>
             <div className='shared-service-total-actual-distance flex flex-row gap-1'>
