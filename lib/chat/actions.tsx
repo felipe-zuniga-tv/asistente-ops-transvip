@@ -10,15 +10,17 @@ import {
 import { z } from "zod";
 import { openai } from "@ai-sdk/openai";
 import { getSession } from "../auth";
-import { VEHICLE_STATUS, getDriverRatingSummary, nanoid } from "@/lib/utils";
+import { VEHICLE_STATUS, getAirportZone, getDriverRatingSummary, nanoid } from "@/lib/utils";
 import { CREATE_DRIVER_RATINGS_SUMMARY, SYSTEM_MESSAGE } from "./config";
-import { getVehicleStatus, getBookingInfo, getVehicleDetail, getDriverProfile, searchDriver, getDriverRatings, getBookings } from "./functions";
+import { getVehicleStatus, getBookingInfo, getVehicleDetail, getDriverProfile, searchDriver, getDriverRatings, getBookings, getZonaIluminada, getAirportStatus, getZonaIluminadaServices } from "./functions";
 import { BotCard, AssistantMessage, LoadingMessage, UserMessage } from "@/components/chat/message";
 import { VehicleStatusSearch } from "@/components/chat/search/vehicle-status-search";
 import { BookingIdSearch } from "@/components/chat/search/booking-search";
 import { VehicleDetail } from "@/components/chat/search/vehicle-detail-search";
 import { generateText } from "ai";
 import { DriverProfile } from "@/components/chat/search/driver-profile-search";
+import AirportStatus from "@/components/chat/airport/airport-status";
+import { airportZones } from "../transvip/config";
 
 export const OPENAI_GPT_3_5 = 'gpt-3.5-turbo' // 'gpt-4'
 export const OPENAI_GPT_4   = 'gpt-4' // 'gpt-4'
@@ -424,6 +426,32 @@ async function submitUserMessage(content: string) {
 					)
 				}
 			},
+			getAirportZone: {
+				description: `Utiliza esta función para obtener el estado de la zona o región iluminada del aeropuerto de una ciudad.`,
+				parameters: z.object({
+					cityName: z
+						.string()
+						.describe(`El nombre de la ciudad del cual se requiere entender el status de la zona iluminada.
+							Si no se entrega ningún valor, asumir que el valor es Santiago`),
+				}).required(),
+				generate: async function* ({ cityName }) {
+					yield <LoadingMessage text={`Obteniendo status, ciudad: ${cityName}`} />
+
+					const filteredConfig = airportZones.filter(city => city.city_name === cityName)
+					const airportConfig = filteredConfig.length ? filteredConfig[0] : null
+
+					if (!airportConfig) return null
+					
+					const services = await getZonaIluminadaServices(airportConfig.zone_id)
+					console.log(services);
+
+					return (
+						<BotCard>
+							<AirportStatus services={services} />
+						</BotCard>
+					)
+				}
+			}
 		},
 	})
 

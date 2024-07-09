@@ -5,14 +5,17 @@ import { VEHICLE_STATUS } from "../utils";
 import { BookingInfoOutputProps, BookingInfoProps, DriverProfileProps, VehicleDetailProps } from "./types";
 
 // URLs
-const VEHICLE_STATUS_API_URL = buildAPIUrl(process.env.GET_VEHICLE_STATUS);
-const VEHICLE_DETAIL_API_URL = buildAPIUrl(process.env.GET_VEHICLE_DETAIL);
-const DRIVER_SEARCH_API_URL  = buildAPIUrl(process.env.SEARCH_DRIVER);
-const DRIVER_PROFILE_API_URL = buildAPIUrl(process.env.GET_DRIVER_PROFILE);
-const DRIVER_RATINGS_API_URL = buildAPIUrl(process.env.GET_DRIVER_RATINGS);
-const BOOKING_DETAIL_URL     = buildAPIUrl(process.env.GET_BOOKING_DETAIL);
-const BOOKING_INFO_FULL_URL  = buildAPIUrl(process.env.GET_BOOKING_INFO_FULL);
-const BOOKING_ID_API_URL     = buildAPIUrl(process.env.GET_BOOKING_BY_ID);
+const VEHICLE_STATUS_API_URL  = buildAPIUrl(process.env.GET_VEHICLE_STATUS);
+const VEHICLE_DETAIL_API_URL  = buildAPIUrl(process.env.GET_VEHICLE_DETAIL);
+const DRIVER_SEARCH_API_URL   = buildAPIUrl(process.env.SEARCH_DRIVER);
+const DRIVER_PROFILE_API_URL  = buildAPIUrl(process.env.GET_DRIVER_PROFILE);
+const DRIVER_RATINGS_API_URL  = buildAPIUrl(process.env.GET_DRIVER_RATINGS);
+const BOOKING_DETAIL_URL      = buildAPIUrl(process.env.GET_BOOKING_DETAIL);
+const BOOKING_INFO_FULL_URL   = buildAPIUrl(process.env.GET_BOOKING_INFO_FULL);
+const BOOKING_ID_API_URL      = buildAPIUrl(process.env.GET_BOOKING_BY_ID);
+const ZONA_ILUMINADA_CITY     = buildAPIUrl(process.env.GET_ZONA_ILUMINADA_CITY);
+const ZONA_ILUMINADA_SERVICES = buildAPIUrl(process.env.GET_ZONA_ILUMINADA_SERVICES);
+const AIRPORT_ZONE_API_URL    = buildAPIUrl(process.env.GET_STATUS_AIRPORT_CITY);
 
 // AUX FUNCTIONS
 function buildAPIUrl(endpoint: string | undefined) {
@@ -413,8 +416,6 @@ export async function getBookings() {
     // const { status, data: { final_data } } = await getResponseFromURL(`${BOOKING_DETAIL_URL}?${params}`)
 
     console.log(response)
-
-
     
 }
 
@@ -575,3 +576,74 @@ export async function getDriverRatings(fleet_id: number) {
 
     return data
 }
+
+// Zona Iluminada
+export async function getZonaIluminada(cityName = 'Santiago') {
+    const session = await getSession()
+    const currentUser = session?.user as any
+    const accessToken = currentUser?.accessToken as string
+
+    const branchId = branches.filter(x => x.name === cityName)[0].branch_id
+    
+    const params = [
+        `access_token=${accessToken}`,
+        `branch_id=${branchId}`,
+    ].join("&")
+
+    const { status, data } = await getResponseFromURL(`${ZONA_ILUMINADA_CITY}?${params}`)
+
+    if (status !== 200) return
+
+    const { data: results } = data
+
+    return {
+        branch_id: branchId,
+        regions: results
+    }
+}
+export async function getZonaIluminadaServices(zone_id: number) {
+    const session = await getSession()
+    const currentUser = session?.user as any
+    const accessToken = currentUser?.accessToken as string
+    
+    const params = [
+        `access_token=${accessToken}`,
+        `zone_id=${zone_id}`,
+    ].join("&")
+
+    const { status, data } = await getResponseFromURL(`${ZONA_ILUMINADA_SERVICES}?${params}`)
+
+    if (status !== 200) return
+
+    const { data: results } = data
+
+    return results
+}
+
+export async function getAirportStatus(zone: any) {
+    const session = await getSession()
+    const currentUser = session?.user as any
+    const accessToken = currentUser?.accessToken as string
+
+    // const branchId = branches.filter(x => x.name === cityName)[0].branch_id
+
+    const params = [
+        `access_token=${accessToken}`,
+        `branch_id=${zone.branch_id}`,
+        `zone_id=${zone.region.region_id}`,
+
+    ].join("&")
+
+    // const { status, data } = await getResponseFromURL(`${AIRPORT_ZONE_API_URL}?${params}`)
+
+    // if (status !== 200) return null
+
+    // const { driver_detail } = data
+//     access_token: 18917535fb6b9366ad8d3650666c26b5
+// branch_id: 1
+// limit: 10
+// offset: 0
+// vehicle_id: [1,5,7]
+// zone_id: 2
+
+} 
