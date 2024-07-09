@@ -47,7 +47,7 @@ export function TransvipPanel({ id, session }) {
 				</header>
 				<main className="grid flex-1 gap-4 overflow-auto p-0 lg:p-4 lg:grid-cols-[1fr_4fr]">
 					<div className="relative hidden flex-col items-start gap-8 lg:flex min-w-[360px]">
-						<div className="grid w-full items-start gap-4 border p-4 rounded-xl">
+						<div className="grid w-full items-start gap-4 border p-4 rounded-xl bg-gray-100">
 							<SystemTools session={session} />
 						</div>
 					</div>

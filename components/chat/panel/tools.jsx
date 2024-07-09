@@ -77,7 +77,7 @@ export default function SystemTools({ session }) {
                     {
                         toolsList.map((tool, index) => (
                             <div key={index + 1} 
-                                className="border p-2 bg-gray-50/50 hover:bg-gray-100 hover:cursor-pointer rounded-md shadow-md w-full flex items-center justify-start gap-3 text-muted-background"
+                                className="border p-2 bg-white hover:bg-gray-200/50 hover:cursor-pointer rounded-md shadow-md w-full flex items-center justify-start gap-3 text-muted-background"
                                 onClick={() => handleClick({ tool })}
                             >
                                 <TransvipLogo logoOnly={true} colored={false} size={20} className="bg-transvip p-1 rounded-md" />
