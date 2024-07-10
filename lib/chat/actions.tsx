@@ -443,7 +443,6 @@ async function submitUserMessage(content: string) {
 					if (!airportConfig) return null
 					
 					const services = await getZonaIluminadaServices(airportConfig.zone_id)
-					console.log(services);
 
 					return (
 						<BotCard>

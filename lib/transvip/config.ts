@@ -13,6 +13,6 @@ export const paymentMethods = {
 }
 
 export const airportZones = [
-    { city_name: 'Santiago', branch_id: 1, zone_id: 2 },
-    { city_name: 'Antofagasta', branch_id: 34, zone_id: 3 },
+    { city_name: 'Santiago', airport_code: 'SCL', branch_id: 1, zone_id: 2 },
+    { city_name: 'Antofagasta', airport_code: 'ANF', branch_id: 34, zone_id: 3 },
 ]
