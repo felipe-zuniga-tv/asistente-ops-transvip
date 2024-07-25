@@ -14,7 +14,7 @@ export default async function LoginFormServer() {
         'use server'
         await login(formData)
 
-        redirect(Routes.START)
+		redirect(Routes.START)
     }
 
     return (

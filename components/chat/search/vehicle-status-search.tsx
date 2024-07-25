@@ -166,7 +166,6 @@ function VehicleStatusBadges({ result, currentStatus, handleDetailClick }: {
                     />
                 </Button> 
             }
-            
         </div>
     )
 }

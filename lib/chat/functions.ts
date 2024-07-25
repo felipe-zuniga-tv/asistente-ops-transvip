@@ -206,6 +206,7 @@ export async function getVehicleDetail(license_plate: string) {
 }
 
 // Bookings
+export const NULL_DATE = '0000-00-00 00:00:00'
 export async function getBookingInfo(bookingId: number, isShared: boolean) {
     const session = await getSession()
     const currentUser = session?.user as any
@@ -228,7 +229,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
             const { job_id } = r;
 
             const { status: status_r, data: data_r } = await getResponseFromURL(`${BOOKING_INFO_FULL_URL}?job_id=${job_id}&access_token=${accessToken}`)
-            console.log(data_r);
+            // console.log(data_r);
 
             if (status_r !== 200) return
 
@@ -252,6 +253,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 job_pickup_address, job_pickup_latitude, job_pickup_longitude,
                 job_address, job_latitude, job_longitude,
                 job_time, job_time_utc,
+                temp_pickup_time,
                 creation_datetime, // UTC time
                 admin_email,
                 assignment_datetime,
@@ -303,16 +305,17 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     ended_identity
                 },
                 dates: {
-                    creation_datetime,
-                    job_time,
-                    job_time_utc,
-                    assignment_datetime,
-                    on_road_datetime,
-                    arrived_datetime,
-                    started_datetime,
-                    completed_datetime,
-                    no_show_datetime,
-                    cancellation_datetime,
+                    creation_datetime: creation_datetime === NULL_DATE ? null : creation_datetime,
+                    job_time: job_time === NULL_DATE ? null : job_time,
+                    job_time_utc: job_time_utc === NULL_DATE ? null : job_time_utc,
+                    temp_pickup_time: temp_pickup_time === NULL_DATE ? null : temp_pickup_time,
+                    assignment_datetime: assignment_datetime === NULL_DATE ? null : assignment_datetime,
+                    on_road_datetime: on_road_datetime === NULL_DATE ? null : on_road_datetime,
+                    arrived_datetime: arrived_datetime === NULL_DATE ? null : arrived_datetime,
+                    started_datetime: started_datetime === NULL_DATE ? null : started_datetime,
+                    completed_datetime: completed_datetime === NULL_DATE ? null : completed_datetime,
+                    no_show_datetime: no_show_datetime === NULL_DATE ? null : no_show_datetime,
+                    cancellation_datetime: cancellation_datetime === NULL_DATE ? null : cancellation_datetime,
                 },
                 branch: branches.find(br => br.branch_id === Number(branch)),
                 directions: {
@@ -360,7 +363,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     email: job_pickup_email,
                 },
             };
-            // console.log(output_item)
+            console.log(output_item)
 
             output.push(output_item);
         }));

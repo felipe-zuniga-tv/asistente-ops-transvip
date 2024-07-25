@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CheckIcon, Clock, GoalIcon, HotelIcon, MailIcon, MapPin, Pencil, PhoneIcon, UserCircleIcon, X } from 'lucide-react';
 import { WhatsappIcon } from '@/components/ui/icons';
-import { buildWhatsappLink } from '@/lib/chat/functions';
+import { buildWhatsappLink, NULL_DATE } from '@/lib/chat/functions';
 import { BookingStatusBadge, CityBadge, CustomerVipBadge, PaymentRouteType, PaymentStatusBadge, ServiceNameBadge } from '../badges/chat-badges';
 import { BookingIdBadge } from '../badges/booking-badge';
 import DriverAvatar from '@/components/driver/driver-avatar';
@@ -122,7 +122,7 @@ function SharedServiceSummary({ result, handleClick } : {
                     <BookingIdBadge result={r} handleClick={handleClick} />
                     <BookingStatusBadge result={r} />
                     <PaymentStatusBadge result={r} />
-                    <span>Fecha: { new Date(r.dates.job_time_utc).toLocaleString() }</span>
+                    <span>Fecha: { r.dates.temp_pickup_time ? new Date(r.dates.temp_pickup_time).toLocaleString() : new Date(r.dates.job_time_utc).toLocaleString() }</span>
                     <CityBadge branch={r.branch} isCode={false} className='ml-auto' />
                 </div>
             ))
@@ -210,8 +210,7 @@ function BookingDates({ result }: {
 }) {
     if (!result.dates) return null
 
-    const NULL_DATE = '0000-00-00 00:00:00'
-    const booking_datetime_local = new Date(result.dates.job_time_utc)
+    const booking_datetime_local = result.dates.temp_pickup_time ? new Date(result.dates.temp_pickup_time) : new Date(result.dates.job_time_utc)
     const days_to_trip = differenceInDays(booking_datetime_local, new Date())
     const minutes_to_trip = differenceInMinutes(booking_datetime_local, new Date())
 
@@ -229,19 +228,19 @@ function BookingDates({ result }: {
                                 <span className='font-semibold'>Faltan: {days_to_trip} días</span>
                             </>
                         )}
-                        {minutes_to_trip >= 0 && (
+                        { minutes_to_trip >= 0 && (
                             <>
                                 <span>·</span>
                                 <span className='font-semibold'>Faltan: {minutes_to_trip} minutos</span>
                             </>
                         )}
-                        {days_to_trip < 0 && (
+                        { days_to_trip < 0 && (
                             <>
                                 <span>·</span>
                                 <span className='font-semibold'>Hace: {-1 * days_to_trip} día{Math.abs(days_to_trip) > 1 ? 's' : ''}</span>
                             </>
                         )}
-                        {minutes_to_trip < 0 && Math.abs(minutes_to_trip) <= 180 && (
+                        { minutes_to_trip < 0 && Math.abs(minutes_to_trip) <= 180 && (
                             <>
                                 <span>·</span>
                                 <span className='font-semibold text-red-500'>Hace: {-1 * minutes_to_trip} minutos</span>

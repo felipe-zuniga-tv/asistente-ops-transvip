@@ -87,6 +87,7 @@ export interface BookingInfoOutputProps {
         creation_datetime: string
         job_time: string
         job_time_utc: string
+        temp_pickup_time: string
         assignment_datetime: string
         on_road_datetime: string
         arrived_datetime: string
