@@ -258,7 +258,7 @@ function BookingDates({ result }: {
                             </>
                         }
                     </div>
-                    { result.dates.assignment_datetime && result.dates.assignment_datetime !== NULL_DATE && 
+                    { result.dates.assignment_datetime && result.dates.assignment_datetime && 
                         <div className='card-info-detail gap-1'>
                             <div className='flex flex-row gap-1 items-center w-full'>
                                 <span className='font-semibold date-tag'>Asignación:</span>
@@ -273,7 +273,7 @@ function BookingDates({ result }: {
                             </div>
                         </div>
                     }
-                    { result.dates.on_road_datetime !== NULL_DATE &&
+                    { result.dates.on_road_datetime &&
                         <div className='card-info-detail gap-1'>
                             <span className='font-semibold date-tag'>En Camino:</span>
                             <span>{ new Date(result.dates.on_road_datetime).toLocaleString() }</span>
@@ -286,7 +286,7 @@ function BookingDates({ result }: {
                             }
                         </div>
                     }
-                    { result.dates.arrived_datetime !== NULL_DATE && 
+                    { result.dates.arrived_datetime && 
                         <div className='card-info-detail gap-1'>
                             <span className='font-semibold date-tag'>En Posición:</span>
                             <span>{ new Date(result.dates.arrived_datetime).toLocaleString() }</span>
@@ -301,7 +301,7 @@ function BookingDates({ result }: {
                             }
                         </div>
                     }
-                    { result.dates.started_datetime !== NULL_DATE &&
+                    { result.dates.started_datetime &&
                         <div className='card-info-detail gap-1'>
                             <span className='font-semibold date-tag'>Inicio de Viaje:</span>
                             <span>{ new Date(result.dates.started_datetime).toLocaleString() }</span>
@@ -314,7 +314,7 @@ function BookingDates({ result }: {
                             }
                         </div>
                     }
-                    { result.dates.completed_datetime !== NULL_DATE &&
+                    { result.dates.completed_datetime &&
                         <div className='card-info-detail gap-1'>
                             <span className='font-semibold date-tag'>Fin de Viaje:</span>
                             <span>{ new Date(result.dates.completed_datetime).toLocaleString() }</span>
@@ -327,7 +327,7 @@ function BookingDates({ result }: {
                             }
                         </div>
                     }
-                    { result.dates.no_show_datetime !== NULL_DATE &&
+                    { result.dates.no_show_datetime &&
                         <div className='card-info-detail gap-1'>
                             <span className='font-semibold date-tag'>Fecha No Show:</span>
                             <span>{ new Date(result.dates.no_show_datetime).toLocaleString() }</span>
