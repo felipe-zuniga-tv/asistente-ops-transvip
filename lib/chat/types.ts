@@ -140,7 +140,11 @@ export interface BookingInfoOutputProps {
         full_name: string
         phone_number: string
         email: string
-    };
+    }
+    rating: {
+        number: number
+        comment: string
+    }
 }
 export interface VehicleDetailProps {
     vehicle_number: number,

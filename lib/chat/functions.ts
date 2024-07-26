@@ -274,7 +274,8 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 total_distance_travelled, // kms
                 total_time_travelled, // segundos
                 route_details,
-                observations
+                observations,
+                fleet_rating, fleet_comment
             } = data_r
 
             // Get more details about the vehicle, such as type
@@ -355,13 +356,17 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     type: vehicleDetail?.type.name
                 },
                 customer: {
-                    vip_flag: is_vip === 1,
                     // first_name: customer_first_name.trim(),
                     // last_name: customer_last_name.trim(),
+                    vip_flag: is_vip === 1,
                     full_name: pax_full_name,
                     phone_number: pax_phone_number,
                     email: job_pickup_email,
                 },
+                rating: {
+                    number: fleet_rating,
+                    comment: fleet_comment
+                }
             };
             console.log(output_item)
 

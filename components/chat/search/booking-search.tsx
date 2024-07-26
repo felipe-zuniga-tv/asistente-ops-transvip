@@ -193,14 +193,39 @@ function BookingMainDetails({ result }: {
                         <span className='font-semibold'>RT:</span>
                         <span>{result.booking.is_round_trip ? 'Sí' : 'No'}</span>
                     </div>
-                    { result.booking.observations && 
-                        <div className='card-info-detail mt-2 p-2 bg-yellow-300 rounded-md'>
-                            <Pencil className='size-4' />
-                            <span>{ result.booking.observations }</span>
-                        </div>
-                    }
+                    <BookingRating result={result} />
+                    <BookingObservations result={result} />
                 </div>
             </div>
+        </div>
+    )
+}
+
+function BookingRating({ result } : {
+    result: BookingInfoOutputProps
+}) {
+    if (result.rating.number === 0) return
+
+    return (
+        <div className='card-info-detail gap-1'>
+            <span className='font-semibold'>Calificación:</span>
+            <span>{result.rating.number.toFixed(1)}</span>
+            <span>·</span>
+            <span className='font-semibold'>Comentario:</span>
+            <span>{result.rating.comment}</span>
+        </div>
+    )
+}
+
+function BookingObservations({ result } : {
+    result: BookingInfoOutputProps
+}) {
+    if (!result.booking.observations) return
+
+    return (
+        <div className='card-info-detail mt-2 p-2 bg-yellow-300 rounded-md'>
+            <Pencil className='size-4' />
+            <span>{ result.booking.observations }</span>
         </div>
     )
 }
