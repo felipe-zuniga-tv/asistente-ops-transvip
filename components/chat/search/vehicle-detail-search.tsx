@@ -17,6 +17,11 @@ import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
 import Image from 'next/image'
 
+const vehicleColor = [
+    { name: 'BLANCO', code: '#ffffff', color: 'bg-white hover:bg-gray-100 text-black' },
+    { name: 'GRIS', code: '#aeaaaa', color: 'bg-gray-100 hover:bg-gray-200 text-black' },
+]
+
 export function VehicleDetail({ session, vehicleInformation, content }: { 
     session: any,
     vehicleInformation: VehicleDetailProps[]
@@ -102,7 +107,10 @@ function VehicleDetailCard({ result, handleDriverClick, handleVehicleStatusClick
 }
 
 function VehicleMainDetails({ result } : { result : VehicleDetailProps }) {
-    const bgColor = result.color.code
+    console.log(result.color);
+    
+    const vehicleColorItem = vehicleColor.filter(bs => bs.code === result.color.code)[0]
+
     return (
         <div className='vehicle-main-details'>
             <div className='flex flex-col gap-2 items-start justify-start'>
@@ -122,20 +130,32 @@ function VehicleMainDetails({ result } : { result : VehicleDetailProps }) {
                                 </Link>
                             </Button>
                         </div>
-                        <div className='flex flex-row gap-2 items-center justify-start w-full'>
-                            <span>Marca: { result.model.name }</span>
+                        <div className='flex flex-row gap-1 items-center justify-start w-full'>
+                            <span className='font-semibold'>Marca:</span>
+                            <span>{ result.model.name }</span>
                             <span>·</span>
-                            <span>Tipo: { result.type.name }</span>
-                            { result.color.name && <Badge variant={'default'} className={cn('text-white shadow-sm bg-gray-200', `bg-[${bgColor}] hover:bg-[${bgColor}]`)}>
-                                { result.color.name.toUpperCase() }
-                            </Badge>}
+                            <span className='font-semibold'>Tipo:</span>
+                            <span>{ result.type.name }</span>
+                            { result.color.name && (
+                                <Badge variant={'outline'} 
+                                    className={cn('ml-4 text-white shadow-sm bg-gray-200 cursor-pointer', 
+                                    `${vehicleColorItem.color}`
+                                    )}>
+                                    { result.color.name.toUpperCase() }
+                                </Badge>
+                            )}
                         </div>
-                        <div className='flex flex-row gap-2 items-center justify-start w-ful'>
-                            <span>Contrato: { result.contract.type }</span>
+                        <div className='flex flex-row gap-1 items-center justify-start w-full'>
+                            <span className='font-semibold'>Contrato:</span>
+                            <span>{ result.contract.type }</span>
                             <span>·</span>
-                            <span>Sociedad: { result.contract.society_name }</span>
+                            <span className='font-semibold'>Sociedad:</span>
+                            <span>{ result.contract.society_name }</span>
                         </div>
-                        <span>Creación: {new Date(result.creation_datetime).toLocaleString()}</span>
+                        <div className='flex flex-row gap-1 items-center justify-start w-full'>
+                            <span className='font-semibold'>Creación:</span>
+                            <span>{new Date(result.creation_datetime).toLocaleString()}</span>
+                        </div>
                     </div>
                 </div>
             </div>

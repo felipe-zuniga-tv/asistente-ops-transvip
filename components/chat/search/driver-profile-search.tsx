@@ -134,7 +134,7 @@ function DriverMainDetails({ result, handleClick } : {
                     </div>
                 </div>
                 <Button variant={'outline'}
-                    className='ml-4 py-1 text-xs bg-slate-700 text-white'
+                    className='py-1 text-xs bg-slate-700 text-white'
                     onClick={() => handleClick(result)}>
                         Ver evaluaciones
                 </Button>
