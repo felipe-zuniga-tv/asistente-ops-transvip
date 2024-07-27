@@ -104,7 +104,7 @@ export function DriverStatusBadge({ result } : { result : DriverProfileProps }) 
 
     return (
         <Badge variant={"default"} 
-            className={cn("py-1 md:py-2 text-white", driverStatusColor)}>
+            className={cn("py-1 md:py-2 text-white cursor-pointer", driverStatusColor)}>
             { driverStatusLabel }
         </Badge>
     )

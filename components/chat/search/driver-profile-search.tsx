@@ -15,6 +15,7 @@ import { CityBadge, DriverStatusBadge, LicenseExpirationBadge } from '../badges/
 import Image from 'next/image';
 import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
+import Link from 'next/link';
 
 export function DriverProfile({ session, driverProfile, content }: { 
     session: any,
@@ -120,7 +121,11 @@ function DriverMainDetails({ result, handleClick } : {
                     <DriverAvatar url={result.personal.image} alt={result.personal.full_name} />
                 </div>
                 <div className='card-info-detail flex flex-col gap-0 items-start justify-start'>
-                    <span className='font-bold titles-font'>{ result.personal.full_name }</span>
+                    <div className='flex flex-row gap-2 items-center justify-start'>
+                        <span className='font-bold titles-font'>{ result.personal.full_name }</span>
+                        <span>·</span>
+                        <span className='font-normal text-xs'>{ result.personal.phone }</span>
+                    </div>
                     <div className='flex flex-row gap-2 items-center justify-start'>
                         <span className='font-normal text-xs'>{ result.personal.email }</span>
                         <span>·</span>
@@ -143,8 +148,8 @@ function DriverDocuments({ result } : { result : DriverProfileProps }) {
         <div className='driver-documents'>
             <div className='flex flex-col gap-2 items-start justify-start text-slate-700'>
                 <span className='font-bold titles-font'>Documentos</span>
-                <div className='info-section flex flex-col gap-3 items-start justify-start w-full'>
-                    <div className='card-info-detail driver-document-rut gap-4 w-full h-12'>
+                <div className='info-section flex flex-col gap-2 items-start justify-start w-full'>
+                    <div className='card-info-detail driver-document-rut gap-4 w-full h-10'>
                         <div className='flex flex-row gap-2 items-center'>
                             <span className='font-semibold'>RUT</span>
                             <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
@@ -172,7 +177,7 @@ function DriverDocuments({ result } : { result : DriverProfileProps }) {
                             </Zoom>
                         </div>
                     </div>
-                    <div className='card-info-detail driver-document-license gap-4 w-full h-12'>
+                    <div className='card-info-detail driver-document-license gap-4 w-full h-10'>
                         <div className='flex flex-row gap-2 items-center'>
                             <span className='font-semibold'>Licencia</span>
                             <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
