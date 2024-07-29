@@ -20,6 +20,21 @@ import Image from 'next/image'
 const vehicleColor = [
     { name: 'BLANCO', code: '#ffffff', color: 'bg-white hover:bg-gray-100 text-black' },
     { name: 'GRIS', code: '#aeaaaa', color: 'bg-gray-100 hover:bg-gray-200 text-black' },
+    { name: 'amarillo', code: '#ffff00', color: 'bg-yellow-200 hover:bg-yellow-300 text-black' },
+    { name: 'azul', code: '#0070c0', color: 'bg-[#0070c0] hover:bg-[#0070c0] text-white' },
+    { name: 'beige', code: '#ffe699', color: 'bg-[#ffe699] text-black' },
+    { name: 'burdeo', code: '#a50021', color: 'bg-[#a50021] text-black' },
+    { name: 'café', code: '#bf8f00', color: 'bg-[#bf8f00] text-black' },
+    { name: 'celeste', code: '#00b0f0', color: 'bg-[#00b0f0] text-black' },
+    { name: 'dorado', code: '#ffcc00', color: 'bg-[#ffcc00] text-black' },
+    { name: 'fucsia', code: '#ff66cc', color: 'bg-[#ff66cc] text-black' },
+    { name: 'morado', code: '#cc3399', color: 'bg-[#cc3399] text-black' },
+    { name: 'naranja', code: '#ed7d31', color: 'bg-[#ed7d31] text-black' },
+    { name: 'negro', code: '#000000', color: 'bg-[#000000] text-black' },
+    { name: 'plata', code: '#d9d9d9', color: 'bg-[#d9d9d9] text-black' },
+    { name: 'rojo', code: '#ff0000', color: 'bg-[#ff0000] text-black' },
+    { name: 'rosa', code: '#ff99ff', color: 'bg-[#ff99ff] text-black' },
+    { name: 'verde', code: '#00b050', color: 'bg-[#00b050] text-black' },
 ]
 
 export function VehicleDetail({ session, vehicleInformation, content }: { 

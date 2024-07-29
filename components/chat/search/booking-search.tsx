@@ -253,7 +253,7 @@ function BookingDates({ result }: {
                                 <span className='font-semibold'>Faltan: {days_to_trip} días</span>
                             </>
                         )}
-                        { minutes_to_trip >= 0 && (
+                        { minutes_to_trip >= 0 && minutes_to_trip <= 180 && (
                             <>
                                 <span>·</span>
                                 <span className='font-semibold'>Faltan: {minutes_to_trip} minutos</span>
