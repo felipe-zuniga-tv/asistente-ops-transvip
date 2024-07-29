@@ -157,6 +157,8 @@ export async function getVehicleDetail(license_plate: string) {
             car_type: vehicle_type_id, carName: vehicle_type_name
         } = result[0]
 
+        console.log(result[0])
+
         const output_item : VehicleDetailProps = {
             vehicle_number: Number(unique_car_id),
             license_plate,

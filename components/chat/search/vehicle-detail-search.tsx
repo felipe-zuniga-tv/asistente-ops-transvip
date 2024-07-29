@@ -10,8 +10,8 @@ import { cn } from '@/lib/utils';
 import { AssistantMessageContent, UserMessage } from '../message';
 import { VehicleDetailDriversProps, VehicleDetailProps } from '@/lib/chat/types';
 import { Badge } from '@/components/ui/badge';
-import ToolsButton from '../tools/tools-button';
 import { Button } from '@/components/ui/button';
+import ToolsButton from '../tools/tools-button';
 import { CityBadge, VehicleStatusBadge } from '../badges/chat-badges';
 import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
@@ -138,8 +138,7 @@ function VehicleMainDetails({ result } : { result : VehicleDetailProps }) {
                             <span>·</span>
                             <span className='font-semibold'>Número de Móvil:</span>
                             <span>{ result.vehicle_number }</span>
-                            <span>·</span>
-                            <Button variant={'outline'} className='h-6 bg-slate-600 text-white text-xs'>
+                            <Button variant={'outline'} className='ml-auto h-6 bg-slate-600 text-white text-xs'>
                                 <Link href="https://apps.mtt.cl/consultaweb/" target='_blank'>
                                     Buscar en MTT
                                 </Link>
@@ -185,15 +184,22 @@ function VehicleDocuments({ result } : { result : VehicleDetailProps }) {
                 <span className='font-bold titles-font'>Documentos</span>
                 <div className='info-section'>
                     { result.documents.permission_of_circulation && 
-                        <div className='card-info-detail'>
-                            <span>Permiso de Circulación</span>
-                            <Zoom>
-                                <Image src={result.documents.permission_of_circulation} 
-                                    width={1200} height={900} 
-                                    className='h-10 w-auto'
-                                    alt={result.license_plate} 
+                        <div className='card-info-detail gap-12 w-full'>
+                            <span className='font-semibold min-w-fit'>Permiso de Circulación</span>
+                            { result.documents.permission_of_circulation.toUpperCase().includes('.PDF') && (
+                                <iframe src={result.documents.permission_of_circulation} 
+                                    className='w-full h-[150px]'
                                 />
-                            </Zoom>
+                            )}
+                            { !result.documents.permission_of_circulation.toUpperCase().includes('.PDF') && (
+                                <Zoom>
+                                    <Image src={result.documents.permission_of_circulation} 
+                                        width={1200} height={900} 
+                                        className='h-10 w-auto'
+                                        alt={result.license_plate} 
+                                    />
+                                </Zoom>
+                            )}
                         </div>
                     }                        
                 </div>
