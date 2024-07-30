@@ -1,5 +1,6 @@
 export const branches = [
     { branch_id: 1, name: 'Santiago', code: 'SCL' },
+    { branch_id: 798, name: 'Valparaiso', code: 'VAP' },
     { branch_id: 179, name: 'Calama', code: 'CJC' },
     { branch_id: 34, name: 'Antofagasta', code: 'ANF' },
 ]
