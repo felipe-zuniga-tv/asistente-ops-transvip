@@ -357,6 +357,9 @@ function BookingDates({ result }: {
                             <span className='font-semibold date-tag'>Fecha No Show:</span>
                             <span>{ new Date(result.dates.no_show_datetime).toLocaleString() }</span>
                             <span>·</span>
+                            <span className='font-semibold'>Usuario:</span>
+                            <span>{ result.booking.no_show_identity }</span>
+                            <span>·</span>
                             <span className='font-semibold'>Comentario:</span>
                             <span>{ result.booking.no_show_reason }</span>
                         </div>

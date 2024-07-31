@@ -158,6 +158,7 @@ async function submitUserMessage(content: string) {
 					
 					// Sort by Job Pickup datetime ascending
 					bookingInformation?.
+					sort((a, b) => String(a.dates.temp_pickup_time).localeCompare(String(b.dates.temp_pickup_time))).
 						sort((a, b) => String(a.booking.job_time_utc).localeCompare(String(b.booking.job_time_utc)))
 						// .sort((a, b) => String(a.booking.id).localeCompare(String(b.booking.id)))
 

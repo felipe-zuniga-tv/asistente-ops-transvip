@@ -76,6 +76,7 @@ export interface BookingInfoOutputProps {
         qr_link: string
         observations?: string
         no_show_reason?: string
+        no_show_identity?: string
         creation_identity: string
         assignment_identity: string
         on_road_identity: string
