@@ -371,7 +371,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     comment: fleet_comment
                 }
             };
-            console.log(output_item)
+            // console.log(output_item)
 
             output.push(output_item);
         }));
