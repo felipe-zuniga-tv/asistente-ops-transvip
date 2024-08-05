@@ -1,17 +1,17 @@
 import { format } from "date-fns"
 
-export const startingMessages = [
-    {
-        heading: 'Quiero ver la conexión',
-        subheading: 'de un móvil',
-        message: `¡Hola! Quiero saber si el vehículo 1633 está online` // 45330
-    },
-    {
-        heading: '¿Qué herramientas',
-        subheading: 'tienes disponibles?',
-        message: `¡Hola! Arma una lista con las herramientas que tienes para ayudarme`
-    },
-]
+// export const startingMessages = [
+//     {
+//         heading: 'Quiero ver la conexión',
+//         subheading: 'de un móvil',
+//         message: `¡Hola! Quiero saber si el vehículo 1633 está online` // 45330
+//     },
+//     {
+//         heading: '¿Qué herramientas',
+//         subheading: 'tienes disponibles?',
+//         message: `¡Hola! Arma una lista con las herramientas que tienes para ayudarme`
+//     },
+// ]
 
 // AI Chat Configuration
 export const SYSTEM_MESSAGE = `
@@ -27,5 +27,6 @@ to understand the whole context and decide whether the driver has good or bad qu
 and how good he or she is at providing transport services to passengers.
 Focus on highlighting and summarizing the reasons behind 1-star ratings, the main area of improvement.
 Consider that a driver is showing signals of bad quality service if their historical average rating is below 4.7.
-Provide also a recommendation about it.
+Transvip has a leasing program, for which this summary is very relevant, to assess whether we should give a new vehicle to a driver or not.
+Provide also a recommendation about whether it's a good candidate for the leasing program.
 `.trim()

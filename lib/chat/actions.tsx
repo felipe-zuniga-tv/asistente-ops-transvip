@@ -344,6 +344,7 @@ async function submitUserMessage(content: string) {
 					
 					const driverRatingsSummary = getDriverRatingSummary(driverRatings)
 					yield <LoadingMessage text={`Armando resumen de las evaluaciones...`} className="text-sm"/>
+					console.log(driverRatingsSummary);
 
 					// Create text response for current search results
 					const content = await generateText({

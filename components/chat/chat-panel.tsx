@@ -1,10 +1,3 @@
-// import { useAIState, useActions, useUIState } from 'ai/rsc'
-// import type { AI, Message } from '@/lib/chat/actions'
-// import { nanoid } from 'nanoid'
-// import { UserMessage } from './message'
-// import { cn } from '@/lib/utils'
-// import { toast } from 'sonner'
-// import { startingMessages } from '@/lib/chat/config'
 import { PromptForm } from './prompt-form'
 import { ButtonScrollToBottom } from '../button-scroll-to-bottom'
 
@@ -27,10 +20,6 @@ export function ChatPanel({
     isAtBottom,
     scrollToBottom
 }: ChatPanelProps) {
-    // const [aiState] = useAIState()
-    // const [messages, setMessages] = useUIState<typeof AI>()
-    // const { submitUserMessage } = useActions()
-    
     return (
         <>
             <ButtonScrollToBottom isAtBottom={isAtBottom} scrollToBottom={scrollToBottom} />
