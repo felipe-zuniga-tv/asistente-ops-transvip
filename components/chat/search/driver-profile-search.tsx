@@ -144,6 +144,8 @@ function DriverMainDetails({ result, handleClick } : {
 }
 
 function DriverDocuments({ result } : { result : DriverProfileProps }) {
+    console.log(result);
+    
     return (
         <div className='driver-documents'>
             <div className='flex flex-col gap-2 items-start justify-start text-slate-700'>
@@ -155,7 +157,7 @@ function DriverDocuments({ result } : { result : DriverProfileProps }) {
                             <Badge variant={'default'} className={"bg-gray-200 text-slate-900 hover:text-white"}>
                                 {result.driver_documents.RUT.number}
                             </Badge>
-                            {result.invoice_rut && 
+                            { result.invoice_rut && result.invoice_rut !== 'NULL' &&
                                 <>
                                     <span>·</span>
                                     <div className='flex flex-row gap-2 items-center'>
