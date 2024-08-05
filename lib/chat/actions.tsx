@@ -345,6 +345,19 @@ async function submitUserMessage(content: string) {
 					const driverRatingsSummary = getDriverRatingSummary(driverRatings)
 					yield <LoadingMessage text={`Armando resumen de las evaluaciones...`} className="text-sm"/>
 
+					// Create text response for current search results
+					const content = await generateText({
+						model: modelInstanceSmart,
+						system: SYSTEM_MESSAGE + CREATE_DRIVER_RATINGS_SUMMARY,
+						messages: [{
+							role: 'assistant',
+							content: `Evaluaciones del conductor ${driverProfile?.personal.full_name}, buscando con ${driverQuery}, últimos 90 días` +
+								`\n\n` + `Resumen: ${JSON.stringify(driverRatingsSummary)}` + 
+								`\n\n` + `Calificaciones bajas: ${JSON.stringify(driverRatingsSummary['1'])}` + 
+								`\n\n` + `Calificación promedio histórica: ${driverProfile?.quality.avg_rating}`
+						}],
+					})
+
 					aiState.done({
 						...aiState.get(),
 						messages: [
@@ -357,19 +370,6 @@ async function submitUserMessage(content: string) {
 									`\n\n` + `Calificación promedio histórica: ${driverProfile?.quality.avg_rating}`
 							}
 						]
-					})
-
-					// Create text response for current search results
-					const content = await generateText({
-						model: modelInstanceSmart,
-						system: SYSTEM_MESSAGE + CREATE_DRIVER_RATINGS_SUMMARY,
-						messages: [{
-							role: 'assistant',
-							content: `Evaluaciones del conductor ${driverProfile?.personal.full_name}, buscando con ${driverQuery}, últimos 90 días` +
-								`\n\n` + `Resumen: ${JSON.stringify(driverRatingsSummary)}` + 
-								`\n\n` + `Calificaciones bajas: ${JSON.stringify(driverRatingsSummary['1'])}` + 
-								`\n\n` + `Calificación promedio histórica: ${driverProfile?.quality.avg_rating}`
-						}],
 					})
 
 					return driverRatings ? (
