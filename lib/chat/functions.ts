@@ -264,7 +264,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 started_datetime, started_identity,
                 completed_datetime, ended_identity,
                 no_show_datetime, noshow_identity,
-                cancellation_datetime,
+                cancellation_datetime, cancellation_identity,
                 estimated_distance,
                 eta,
                 noshow_reason,
@@ -307,6 +307,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     arrived_identity,
                     started_identity,
                     ended_identity,
+                    cancellation_identity
                 },
                 dates: {
                     creation_datetime: creation_datetime === NULL_DATE ? null : creation_datetime,

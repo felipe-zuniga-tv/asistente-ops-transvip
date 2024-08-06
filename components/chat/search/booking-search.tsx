@@ -364,6 +364,15 @@ function BookingDates({ result }: {
                             <span>{ result.booking.no_show_reason }</span>
                         </div>
                     }
+                    { result.dates.cancellation_datetime &&
+                        <div className='card-info-detail gap-1'>
+                            <span className='font-semibold date-tag'>Cancelación:</span>
+                            <span>{ new Date(result.dates.cancellation_datetime).toLocaleString() }</span>
+                            <span>·</span>
+                            <span className='font-semibold'>Usuario:</span>
+                            <span>{ result.booking.cancellation_identity }</span>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

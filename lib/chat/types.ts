@@ -83,6 +83,7 @@ export interface BookingInfoOutputProps {
         arrived_identity: string
         started_identity: string
         ended_identity: string
+        cancellation_identity?: string
     }
     dates: {
         creation_datetime: string
