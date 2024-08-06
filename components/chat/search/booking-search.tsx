@@ -246,7 +246,7 @@ function BookingDates({ result }: {
                 <div className='flex flex-col gap-1 w-full'>
                     <div className='card-info-detail gap-1'>
                         <span className='font-semibold date-tag'>Recogida:</span>
-                        <span>{booking_datetime_local.toLocaleString()}</span>
+                        <span>{ booking_datetime_local.toLocaleString() }</span>
                         { days_to_trip > 0 && (
                             <>
                                 <span>·</span>
