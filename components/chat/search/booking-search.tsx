@@ -17,6 +17,7 @@ import { BookingStatusBadge, CityBadge, CustomerVipBadge, PaymentRouteType, Paym
 import { BookingIdBadge } from '../badges/booking-badge';
 import DriverAvatar from '@/components/driver/driver-avatar';
 import Image from 'next/image';
+import EmailLink from '@/components/ui/email-link';
 
 let chileanPeso = new Intl.NumberFormat('es-CL', {
     style: 'currency',
@@ -436,9 +437,7 @@ function BookingCustomer({ result }: {
                     </div>
                     <div className='card-info-detail'>
                         <MailIcon className='size-4' />
-                        <Link href={`mailto:${result.customer.email}`} className='hover:underline'>
-                            <span>{result.customer.email}</span>
-                        </Link>
+                        <EmailLink address={result.customer.email} />
                         <CustomerVipBadge result={result} />
                     </div>
                 </div>
