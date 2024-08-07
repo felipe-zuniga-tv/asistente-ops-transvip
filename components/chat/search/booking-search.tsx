@@ -371,6 +371,8 @@ function BookingDates({ result }: {
                             <span>·</span>
                             <span className='font-semibold'>Usuario:</span>
                             <span>{ result.booking.cancellation_identity }</span>
+                            <span>·</span>
+                            <span>{ result.booking.cancellation_reason }</span>
                         </div>
                     }
                 </div>
