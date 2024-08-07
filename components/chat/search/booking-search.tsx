@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CheckIcon, Clock, GoalIcon, HotelIcon, MailIcon, MapPin, Pencil, PhoneIcon, UserCircleIcon, X } from 'lucide-react';
 import { WhatsappIcon } from '@/components/ui/icons';
-import { buildWhatsappLink, NULL_DATE } from '@/lib/chat/functions';
+import { buildWhatsappLink } from '@/lib/chat/functions';
 import { BookingStatusBadge, CityBadge, CustomerVipBadge, PaymentRouteType, PaymentStatusBadge, ServiceNameBadge } from '../badges/chat-badges';
 import { BookingIdBadge } from '../badges/booking-badge';
 import DriverAvatar from '@/components/driver/driver-avatar';
