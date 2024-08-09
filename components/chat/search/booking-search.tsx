@@ -540,8 +540,8 @@ function BookingVehicle({ result, handleClick }: {
                 <Button variant={'outline'} className='ml-auto px-2.5 rounded-full bg-green-600 hover:bg-green-800 text-white hover:text-white'>
                     <Link href={whatsappLink}
                         target='_blank'
-                        className='flex flex-row items-center gap-0 lg:gap-2'>
-                        <span className='hidden xl:block'>Contactar</span>
+                        className='flex flex-row items-center gap-0 md:gap-2'>
+                        <span className='hidden md:block'>Contactar</span>
                         <WhatsappIcon />
                     </Link>
                 </Button>
