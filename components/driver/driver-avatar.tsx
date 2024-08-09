@@ -7,7 +7,7 @@ export default function DriverAvatar({ url, alt } : {
     url: string, alt: string 
 }) {
     return (
-        url !== '' ? 
+        url !== '' && url ? 
             <Zoom>
                 <Image src={url}
                     width={400} height={400}

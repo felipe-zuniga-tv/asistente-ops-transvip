@@ -157,7 +157,7 @@ export async function getVehicleDetail(license_plate: string) {
             car_type: vehicle_type_id, carName: vehicle_type_name
         } = result[0]
 
-        console.log(result[0])
+        // console.log(result[0])
 
         const output_item : VehicleDetailProps = {
             vehicle_number: Number(unique_car_id),
@@ -373,7 +373,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     comment: fleet_comment
                 }
             };
-            // console.log(output_item)
+            console.log(output_item)
 
             output.push(output_item);
         }));
