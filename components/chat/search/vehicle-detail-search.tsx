@@ -32,7 +32,7 @@ const vehicleColor = [
     { name: 'naranja', code: '#ed7d31', color: 'bg-[#ed7d31] text-black' },
     { name: 'negro', code: '#000000', color: 'bg-[#000000] text-black' },
     { name: 'plata', code: '#d9d9d9', color: 'bg-[#d9d9d9] text-black' },
-    { name: 'rojo', code: '#ff0000', color: 'bg-[#ff0000] text-black' },
+    { name: 'rojo', code: '#ff0000', color: 'bg-[#ff0000] text-white' },
     { name: 'rosa', code: '#ff99ff', color: 'bg-[#ff99ff] text-black' },
     { name: 'verde', code: '#00b050', color: 'bg-[#00b050] text-black' },
 ]
