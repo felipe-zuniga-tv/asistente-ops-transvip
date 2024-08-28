@@ -1,4 +1,8 @@
-export default function UserDetails({ session } : { session: any }) {
+import { getSession } from "@/lib/auth";
+
+export default async function UserDetails() {
+    const session = await getSession() as any;
+
     if (!session) return null
 
     return (

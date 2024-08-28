@@ -10,7 +10,7 @@ import { BookingInfoOutputProps } from '@/lib/chat/types';
 import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { CheckIcon, Clock, GoalIcon, HotelIcon, MailIcon, MapPin, Pencil, PhoneIcon, UserCircleIcon, X } from 'lucide-react';
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon, Clock, GoalIcon, HotelIcon, MailIcon, MapPin, Pencil, PhoneIcon, UserCircleIcon, X } from 'lucide-react';
 import { WhatsappIcon } from '@/components/ui/icons';
 import { buildWhatsappLink } from '@/lib/chat/functions';
 import { BookingStatusBadge, CityBadge, CustomerVipBadge, PaymentRouteType, PaymentStatusBadge, ServiceNameBadge } from '../badges/chat-badges';
@@ -18,11 +18,23 @@ import { BookingIdBadge } from '../badges/booking-badge';
 import DriverAvatar from '@/components/driver/driver-avatar';
 import Image from 'next/image';
 import EmailLink from '@/components/ui/email-link';
+import { useCallback, useState } from 'react';
+import { CollapsibleSection } from '../collapsible-section';
 
 let chileanPeso = new Intl.NumberFormat('es-CL', {
     style: 'currency',
     currency: 'CLP',
 });
+
+// Vehicle States to Show
+const STATES_TO_SHOW = [2, 4, 12, 0, 1, 15]
+
+// Custom hook for managing section open/close state
+const useSectionState = (initialState = true) => {
+    const [isOpen, setIsOpen] = useState(initialState);
+    const toggle = useCallback(() => setIsOpen(prev => !prev), []);
+    return [isOpen, toggle] as const;
+};
 
 export function BookingIdSearch({ session, searchResults, content }: {
     session: any,
@@ -95,6 +107,16 @@ function BookingIdResultsCard({ keyName, result, handleClick }: {
     result: BookingInfoOutputProps
     handleClick: any
 }) {
+    // const [openDates, toggleDates] = useSectionState(true);
+    // const [openPayment, togglePayment] = useSectionState(true);
+    // const [openCustomer, toggleCustomer] = useSectionState(true);
+    // const [openDirections, toggleDirections] = useSectionState(true);
+    // const [openVehicle, toggleVehicle] = useSectionState(true);
+
+    // const toggleSection = useCallback((setter: React.Dispatch<React.SetStateAction<boolean>>) => {
+    //     setter(prev => !prev);
+    // }, []);
+
     return (
         <div key={keyName + " " + new Date().getMilliseconds()} className='booking-detail main-card'>
             <BookingBadges result={result} handleClick={handleClick} />
@@ -104,6 +126,28 @@ function BookingIdResultsCard({ keyName, result, handleClick }: {
             <BookingCustomer result={result} />
             <BookingDirections result={result} />
             <BookingVehicle result={result} handleClick={handleClick} />
+
+            {/* <CollapsibleSection title='Fechas' isOpen={openDates} onToggle={toggleDates}>
+                <BookingDates result={result} />
+            </CollapsibleSection>
+
+            <CollapsibleSection title='Pago' isOpen={openPayment} onToggle={togglePayment}>
+                <BookingPayment result={result} />
+            </CollapsibleSection>
+            
+            <CollapsibleSection title='Pasajeros' isOpen={openCustomer} onToggle={toggleCustomer}>
+                <BookingCustomer result={result} />
+            </CollapsibleSection>
+            
+            <CollapsibleSection title='Direcciones' isOpen={openDirections} onToggle={toggleDirections}>
+                <BookingDirections result={result} />
+            </CollapsibleSection>
+            
+            { STATES_TO_SHOW.includes(result.booking.status) && 
+                <CollapsibleSection title='Vehículo / Conductor' isOpen={openVehicle} onToggle={toggleVehicle}>
+                    <BookingVehicle result={result} handleClick={handleClick} />
+                </CollapsibleSection>
+            } */}
         </div>
     )
 }
@@ -242,7 +286,7 @@ function BookingDates({ result }: {
 
     return (
         <div className='booking-detail info-customer'>
-            <span className='font-bold titles-font'>Fechas</span>
+            {/* <span className='font-bold titles-font hidden'>Fechas</span> */}
             <div className='info-section'>
                 <div className='flex flex-col gap-1 w-full'>
                     <div className='card-info-detail gap-1'>
@@ -389,7 +433,7 @@ function BookingPayment({ result }: {
 
     return (
         <div className='booking-detail info-customer'>
-            <span className='font-bold titles-font'>Pago</span>
+            {/* <span className='font-bold titles-font'>Pago</span> */}
             <div className='info-section'>
                 <div className='flex flex-col gap-1'>
                     <div className='card-info-detail flex-row gap-1'>
@@ -423,7 +467,7 @@ function BookingCustomer({ result }: {
 
     return (
         <div className='booking-detail info-customer'>
-            <span className='font-bold titles-font'>Pasajeros</span>
+            {/* <span className='font-bold titles-font'>Pasajeros</span> */}
             <div className='info-section flex flex-col lg:flex-row gap-1 lg:gap-4 items-start lg:items-center justify-start w-full'>
                 <div className='flex flex-col gap-1'>
                     <div className='card-info-detail'>
@@ -463,7 +507,7 @@ function BookingDirections({ result }: {
 
     return (
         <div className='booking-detail info-directions'>
-            <span className='font-bold titles-font'>Direcciones</span>
+            {/* <span className='font-bold titles-font'>Direcciones</span> */}
             <div className='info-section gap-0.5'>
                 <div className='card-info-detail'>
                     <MapPin className='size-4' />
@@ -509,7 +553,6 @@ function BookingVehicle({ result, handleClick }: {
     result: BookingInfoOutputProps,
     handleClick: any
 }) {
-    const STATES_TO_SHOW = [2, 4, 12, 0, 1, 15]
     if (!STATES_TO_SHOW.includes(result.booking.status)) return null
 
     const WHATSAPP_TEXT = `Hola ${result.fleet.first_name ? result.fleet.first_name : ''}, te escribimos de Transvip, ¿cómo estás?`
@@ -517,7 +560,7 @@ function BookingVehicle({ result, handleClick }: {
 
     return (
         <div className='booking-detail info-vehicle'>
-            <span className='font-bold titles-font'>Vehículo / Conductor</span>
+            {/* <span className='font-bold titles-font'>Vehículo / Conductor</span> */}
             <div className='info-section flex flex-row items-center justify-start gap-4 w-full'>
                 <div className='card-info-detail'>
                     <DriverAvatar url={result.fleet.image} alt={result.fleet.full_name} />
