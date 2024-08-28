@@ -72,7 +72,7 @@ export default function SystemTools({ session }) {
     return (
         <div className="tools flex flex-col gap-3 items-start justify-center">
             <span className="font-semibold">Selecciona una herramienta</span>
-            <div className="max-h-[450px] overflow-auto w-full">
+            <div className="max-h-[570px] overflow-auto w-full">
                 <div className="flex flex-col gap-2.5 items-start justify-center w-full">
                     {
                         toolsList.map((tool, index) => (
