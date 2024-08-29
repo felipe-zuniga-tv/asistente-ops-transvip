@@ -23,7 +23,7 @@ import AirportStatus from "@/components/chat/airport/airport-status";
 import { airportZones } from "../transvip/config";
 
 export const OPENAI_GPT_3_5 = 'gpt-3.5-turbo' // 'gpt-4'
-export const OPENAI_GPT_4   = 'gpt-4' // 'gpt-4'
+export const OPENAI_GPT_4   = 'gpt-4o' // 'gpt-4'
 const modelInstance = openai(OPENAI_GPT_3_5)
 const modelInstanceSmart = openai(OPENAI_GPT_4)
 

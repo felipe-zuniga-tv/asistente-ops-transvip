@@ -29,12 +29,12 @@ let chileanPeso = new Intl.NumberFormat('es-CL', {
 // Vehicle States to Show
 const STATES_TO_SHOW = [2, 4, 12, 0, 1, 15]
 
-// Custom hook for managing section open/close state
-const useSectionState = (initialState = true) => {
-    const [isOpen, setIsOpen] = useState(initialState);
-    const toggle = useCallback(() => setIsOpen(prev => !prev), []);
-    return [isOpen, toggle] as const;
-};
+// // Custom hook for managing section open/close state
+// const useSectionState = (initialState = true) => {
+//     const [isOpen, setIsOpen] = useState(initialState);
+//     const toggle = useCallback(() => setIsOpen(prev => !prev), []);
+//     return [isOpen, toggle] as const;
+// };
 
 export function BookingIdSearch({ session, searchResults, content }: {
     session: any,
@@ -85,15 +85,15 @@ export function BookingIdSearch({ session, searchResults, content }: {
             <SharedServiceSummary result={searchResults} handleClick={handleClick} />
 
             <div className={'search-results-cards relative w-full flex flex-col gap-4 items-start'}>
-                { searchResults.length > 1 && <span className='-mb-3 mt-2 font-bold'>Detalle de Reservas</span>}
+                { searchResults.length > 1 && <span className='-mb-3 mt-2 font-bold'>Detalle de Reservas</span> }
                 { searchResults.map((result: BookingInfoOutputProps) => (
                     <BookingIdResultsCard key={result.booking.id} keyName={result.booking.id}
                         result={result}
                         handleClick={handleClick}
                     />
-                ))}
+                )) }
             </div>
-            {content && 
+            { content && 
                 <div className='search-results-text mt-4'>
                     <AssistantMessageContent content={content} />
                 </div>

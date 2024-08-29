@@ -136,12 +136,12 @@ export function PromptForm({ session, input, setInput } : {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Button type="submit"
-                                size="icon"
+                                size="default"
                                 disabled={input === ''}
                                 className="bg-transparent shadow-none text-white rounded-full hover:bg-slate-500 bg-slate-800"
                             >
                                 <ArrowRight />
-                                <span className="sr-only">Enviar</span>
+                                <span className="sr-only_">Enviar</span>
                             </Button>
                         </TooltipTrigger>
                         <TooltipContent>Enviar</TooltipContent>
