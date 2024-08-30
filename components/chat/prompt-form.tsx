@@ -122,7 +122,7 @@ export function PromptForm({ session, input, setInput } : {
                     tabIndex={0}
                     onKeyDown={onKeyDown}
                     placeholder="Pregúntame lo que necesites..."
-                    className="text-slate-900 min-h-[60px] max-h-[150px] overflow-auto w-full bg-transparent placeholder:text-slate-900 resize-none py-[1.3rem] pr-12 focus-within:outline-none text-sm md:text-base"
+                    className="text-slate-900 min-h-[60px] max-h-[150px] overflow-auto w-full bg-transparent placeholder:text-slate-500 resize-none py-[1.3rem] pr-12 focus-within:outline-none text-sm md:text-base"
                     autoFocus
                     spellCheck={false}
                     autoComplete="off"
@@ -140,8 +140,8 @@ export function PromptForm({ session, input, setInput } : {
                                 disabled={input === ''}
                                 className="bg-transparent shadow-none text-white rounded-full hover:bg-slate-500 bg-slate-800"
                             >
+                                <span className="mr-2">Enviar</span>
                                 <ArrowRight />
-                                <span className="sr-only_">Enviar</span>
                             </Button>
                         </TooltipTrigger>
                         <TooltipContent>Enviar</TooltipContent>
