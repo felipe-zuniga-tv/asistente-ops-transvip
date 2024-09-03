@@ -1,4 +1,4 @@
-import { format, formatISO } from "date-fns";
+import { format, formatISO, addHours } from "date-fns";
 import { getSession } from "../auth";
 import { branches } from "../transvip/config";
 import { VEHICLE_STATUS } from "../utils";
@@ -38,11 +38,11 @@ async function getResponseFromURL(URL: string) {
         return null
     }
 }
-function addHours(date : Date, hours : number) {
-    const hoursToAdd = hours * 60 * 60 * 1000;
-    date.setTime(date.getTime() + hoursToAdd);
-    return date;
-}
+// function addHours(date : Date, hours : number) {
+//     const hoursToAdd = hours * 60 * 60 * 1000;
+//     date.setTime(date.getTime() + hoursToAdd);
+//     return date;
+// }
 function addMinutes(date : Date, minutes : number) {
     const minutesToAdd = minutes * 60 * 1000;
     date.setTime(date.getTime() + minutesToAdd);
@@ -392,7 +392,6 @@ export async function getBookings() {
     const LIMIT_RESULTS = 25
     const OFFSET_RESULTS = 0
     const HOURS_TO_ADD = 2
-    const DATE_FORMAT = "yyyy-MM-ddTHH:mm:ss"
 
     // DATES
     const START_DATE = new Date()
@@ -403,14 +402,11 @@ export async function getBookings() {
         `limit=${LIMIT_RESULTS}`,
         `offset=${OFFSET_RESULTS}`,
         `search_filter=0`,
-        // `search_value=${license_plate}`,
         `branch_filter=1`,
         `branch_value=1`,
         `date_time_filter=1`,
         `date_time_value1=${formatISO(START_DATE)}`,
         `date_time_value2=${formatISO(END_DATE)}`,
-        // `date_time_value1=${format(START_DATE, DATE_FORMAT)}`,
-        // `date_time_value2=${format(END_DATE, DATE_FORMAT)}`,
         `job_status_filter=1`,
         `job_status_value=%5B0,6,7,17%5D`,
         `aggrement_filter=0`,
@@ -426,8 +422,6 @@ export async function getBookings() {
     console.log(`${BOOKING_DETAIL_URL}?${params}`)
 
     const response = await getResponseFromURL(`${BOOKING_DETAIL_URL}?${params}`)
-    // const { status, data: { final_data } } = await getResponseFromURL(`${BOOKING_DETAIL_URL}?${params}`)
-
     console.log(response)
     
 }

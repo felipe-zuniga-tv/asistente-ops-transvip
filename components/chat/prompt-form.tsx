@@ -139,6 +139,7 @@ export function PromptForm({ session, input, setInput } : {
                                 size="default"
                                 disabled={input === ''}
                                 className="bg-transparent shadow-none text-white rounded-full hover:bg-slate-500 bg-slate-800"
+                                aria-label="Enviar"
                             >
                                 <span className="mr-2">Enviar</span>
                                 <ArrowRight />

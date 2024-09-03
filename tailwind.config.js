@@ -88,7 +88,8 @@ module.exports = {
         sm: 'calc(var(--radius) - 4px)',
       },
       backgroundImage: {
-        'buildings': 'url("/images/bg_buildings.jpeg")'
+        'buildings': 'url("/images/bg_buildings.jpeg")',
+        'desert': 'url("/images/bg_desert.jpg")',
       }
     },
   },

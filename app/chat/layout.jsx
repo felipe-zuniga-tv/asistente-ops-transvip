@@ -4,7 +4,7 @@ import Protected from "@/components/protected/protected-content";
 export default async function ChatLayout({ children }) {
     return (
         <Protected>
-            <div className="flex min-h-screen w-full flex-col bg-buildings bg-cover bg-center overflow-auto">
+            <div className="flex min-h-screen w-full flex-col bg-desert bg-cover bg-center overflow-auto">
                 { children }
             </div>
         </Protected>
