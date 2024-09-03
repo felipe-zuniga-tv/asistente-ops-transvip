@@ -412,7 +412,6 @@ export async function getBookings() {
         `aggrement_filter=0`,
         `booking_status=0`,
         `search_by_agreement_filter=0`,
-        `search_filter=0`,
         `search_user_filter=0`,
         `service_filter=0`,
         `type_of_trip_filter=0`,
