@@ -421,8 +421,12 @@ export async function getBookings() {
     console.log(`${BOOKING_DETAIL_URL}?${params}`)
 
     const response = await getResponseFromURL(`${BOOKING_DETAIL_URL}?${params}`)
-    console.log(response)
     
+    const { status, data: { result } } = response
+
+    if (status !== 200) return null
+
+    return result
 }
 
 // Drivers
