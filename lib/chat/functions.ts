@@ -389,7 +389,7 @@ export async function getBookings() {
     const currentUser = session?.user as any
     const accessToken = currentUser?.accessToken as string
 
-    const LIMIT_RESULTS = 25
+    const LIMIT_RESULTS = 3
     const OFFSET_RESULTS = 0
     const HOURS_TO_ADD = 2
 
@@ -418,13 +418,13 @@ export async function getBookings() {
         `vehicle_filter=0`,
     ].join("&")
 
-    console.log(`${BOOKING_DETAIL_URL}?${params}`)
-
     const response = await getResponseFromURL(`${BOOKING_DETAIL_URL}?${params}`)
     
     const { status, data: { result } } = response
 
     if (status !== 200) return null
+
+    console.log(result);
 
     return result
 }

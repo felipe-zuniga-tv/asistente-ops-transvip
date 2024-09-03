@@ -198,13 +198,7 @@ async function submitUserMessage(content: string) {
 						/>
 
 					const futureBookings = await getBookings()
-					// console.log(`RESERVA: ${bookingId} - IS SHARED: ${isShared}`);
 					
-					// Sort by Job Pickup datetime ascending
-					// bookingInformation?.
-					// 	sort((a, b) => String(a.booking.job_time_utc).localeCompare(String(b.booking.job_time_utc)))
-					// 	.sort((a, b) => String(a.booking.id).localeCompare(String(b.booking.id)))
-
 					aiState.done({
 						...aiState.get(),
 						messages: [
@@ -219,6 +213,7 @@ async function submitUserMessage(content: string) {
 					return futureBookings ? (
 						<BotCard>
 							<div>Información de próximas reservas lista</div>
+							<pre>{ futureBookings.map(b => JSON.stringify(b)) }</pre>
 						</BotCard>
 					) : (
 						<BotCard>
