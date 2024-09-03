@@ -212,7 +212,6 @@ async function submitUserMessage(content: string) {
 
 					return futureBookings ? (
 						<BotCard>
-							<div>Información de próximas reservas lista</div>
 							<pre>{ futureBookings.map(b => JSON.stringify(b)) }</pre>
 						</BotCard>
 					) : (

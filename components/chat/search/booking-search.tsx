@@ -87,7 +87,7 @@ export function BookingIdSearch({ session, searchResults, content }: {
             <div className={'search-results-cards relative w-full flex flex-col gap-4 items-start'}>
                 { searchResults.length > 1 && <span className='-mb-3 mt-2 font-bold'>Detalle de Reservas</span> }
                 { searchResults.map((result: BookingInfoOutputProps) => (
-                    <BookingIdResultsCard key={result.booking.id} keyName={result.booking.id}
+                    <BookingIdResultsCard key={result.booking.id}
                         result={result}
                         handleClick={handleClick}
                     />
@@ -102,10 +102,9 @@ export function BookingIdSearch({ session, searchResults, content }: {
     )
 }
 
-function BookingIdResultsCard({ keyName, result, handleClick }: {
-    keyName: any
+function BookingIdResultsCard({ result, handleClick }: {
     result: BookingInfoOutputProps
-    handleClick: any
+    handleClick?: any
 }) {
     // const [openDates, toggleDates] = useSectionState(true);
     // const [openPayment, togglePayment] = useSectionState(true);
@@ -118,7 +117,7 @@ function BookingIdResultsCard({ keyName, result, handleClick }: {
     // }, []);
 
     return (
-        <div key={keyName + " " + new Date().getMilliseconds()} className='booking-detail main-card'>
+        <div className='booking-detail main-card'>
             <BookingBadges result={result} handleClick={handleClick} />
             <BookingMainDetails result={result} />
             <BookingDates result={result} />
