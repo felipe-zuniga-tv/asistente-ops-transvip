@@ -99,20 +99,20 @@ function DriverProfileCard({ result, handleDriverClick, handleVehicleClick } : {
             <div className='flex flex-col gap-2 md:gap-3 bg-gray-200 p-2 rounded-lg'>
                 <div className='driver-main'>
                     <div className='flex flex-col md:flex-row items-center justify-between gap-2 md:gap-4'>
-                        <DriverMainDetails result={result} handleClick={handleDriverClick} />
+                        <DriverMainDetails result={result} />
+                        <DriverRatings result={result} handleClick={handleDriverClick} />
                         <DriverBadges result={result} handleStatusClick={handleVehicleClick} />
                     </div>
                 </div>
                 <DriverDocuments result={result} />
-                { result.vehicles.length > 0 && <DriverVehicles result={result} handleClick={handleVehicleClick} /> }
+                <DriverVehicles result={result} handleClick={handleVehicleClick} />
             </div>
         </div>
     )
 }
 
-function DriverMainDetails({ result, handleClick } : { 
+function DriverMainDetails({ result } : { 
     result : DriverProfileProps 
-    handleClick: any
 }) {
     return (
         <div className='driver-main-details'>
@@ -123,23 +123,31 @@ function DriverMainDetails({ result, handleClick } : {
                 <div className='card-info-detail flex flex-col gap-0 items-start justify-start'>
                     <div className='flex flex-row gap-2 items-center justify-start'>
                         <span className='font-bold titles-font'>{ result.personal.full_name }</span>
-                        <span>·</span>
-                        <span className='font-normal text-xs'>{ result.personal.phone }</span>
                     </div>
                     <div className='flex flex-row gap-2 items-center justify-start'>
                         <span className='font-normal text-xs'>{ result.personal.email }</span>
                         <span>·</span>
+                        <span className='font-normal text-xs'>{ result.personal.phone }</span>
+                    </div>
+                    <div className='flex flex-row gap-2 items-center justify-start'>
                         <span className='text-xs font-bold'>Nota:</span>
                         <span className='text-xs -ml-1'>{ result.quality.avg_rating.toFixed(2) }</span>
                     </div>
                 </div>
-                <Button variant={'outline'}
-                    className='py-1 text-xs bg-slate-700 text-white'
-                    onClick={() => handleClick(result)}>
-                        Ver evaluaciones
-                </Button>
             </div>
         </div>
+    )
+}
+
+function DriverRatings({ result, handleClick } : { 
+    result : DriverProfileProps
+    handleClick: any
+ }) {
+    return (
+        <Button variant={'outline'} className='py-1 text-xs bg-slate-700 text-white'
+            onClick={() => handleClick(result)}>
+                Ver evaluaciones
+        </Button>
     )
 }
 
@@ -210,6 +218,8 @@ function DriverVehicles({ result, handleClick } : {
     result : DriverProfileProps 
     handleClick: any
 }) {
+    if (result.vehicles.length === 0) return null
+
     return (
         <div className='driver-vehicles'>
             <div className='flex flex-col gap-2 items-start justify-start text-slate-700'>

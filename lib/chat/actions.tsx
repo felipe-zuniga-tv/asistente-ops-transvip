@@ -198,6 +198,9 @@ async function submitUserMessage(content: string) {
 						/>
 
 					const futureBookings = await getBookings()
+
+					console.log(futureBookings);
+					
 					
 					aiState.done({
 						...aiState.get(),

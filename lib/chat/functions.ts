@@ -424,9 +424,13 @@ export async function getBookings() {
 
     if (status !== 200) return null
 
-    console.log(result);
+    const output: BookingInfoOutputProps[] = []
 
-    return result
+    await Promise.all(result.map(async (r: any) => {
+        console.log(r)
+    }));
+
+    return output
 }
 
 // Drivers
