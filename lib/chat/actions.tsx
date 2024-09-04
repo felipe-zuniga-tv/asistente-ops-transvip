@@ -352,7 +352,7 @@ async function submitUserMessage(content: string) {
 							content: `Evaluaciones del conductor ${driverProfile?.personal.full_name}, buscando con ${driverQuery}, últimos 90 días` +
 								`\n\n` + `Resumen: ${JSON.stringify(driverRatingsSummary)}` + 
 								`\n\n` + `Calificaciones bajas: ${JSON.stringify(driverRatingsSummary['1'])}` + 
-								`\n\n` + `Calificación promedio histórica: ${driverProfile?.quality.avg_rating}`
+								`\n\n` + `Calificación promedio histórica: ${driverProfile?.quality.avg_rating.toFixed(2)}`
 						}],
 					})
 
@@ -365,7 +365,7 @@ async function submitUserMessage(content: string) {
 								content: `Evaluaciones del conductor ${driverProfile?.personal.full_name}, buscando con ${driverQuery}, últimos 90 días` +
 									`\n\n` + `Resumen: ${JSON.stringify(driverRatingsSummary)}` + 
 									`\n\n` + `Calificaciones bajas: ${JSON.stringify(driverRatingsSummary['1'])}` + 
-									`\n\n` + `Calificación promedio histórica: ${driverProfile?.quality.avg_rating}`
+									`\n\n` + `Calificación promedio histórica: ${driverProfile?.quality.avg_rating.toFixed(2)}`
 							}
 						]
 					})
@@ -374,7 +374,7 @@ async function submitUserMessage(content: string) {
 						<AssistantMessage content={content.text} session={session} />
 					) : (
 						<BotCard>
-							<div>No se pudo encontrar el conductor de email {driverEmail}.</div>
+							<div>No se pudo encontrar el conductor de email <span className="rounded-full py-0.5">{ driverEmail }</span>.</div>
 						</BotCard>
 					)
 				}
