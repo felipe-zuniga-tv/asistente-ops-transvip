@@ -11,7 +11,7 @@ import { z } from "zod";
 import { openai } from "@ai-sdk/openai";
 import { getSession } from "../auth";
 import { VEHICLE_STATUS, getAirportZone, getDriverRatingSummary, nanoid } from "@/lib/utils";
-import { CREATE_DRIVER_RATINGS_SUMMARY, SYSTEM_MESSAGE } from "./config";
+import { CREATE_DRIVER_RATINGS_SUMMARY, CREATE_TEXT_PROMPT, EMAIL_TEXT_OPS_EXAMPLE, SYSTEM_MESSAGE } from "./config";
 import { getVehicleStatus, getBookingInfo, getVehicleDetail, getDriverProfile, searchDriver, getDriverRatings, getBookings, getZonaIluminada, getAirportStatus, getZonaIluminadaServices } from "./functions";
 import { BotCard, AssistantMessage, LoadingMessage, UserMessage } from "@/components/chat/message";
 import { VehicleStatusSearch } from "@/components/chat/search/vehicle-status-search";
@@ -22,10 +22,10 @@ import { DriverProfile } from "@/components/chat/search/driver-profile-search";
 import AirportStatus from "@/components/chat/airport/airport-status";
 import { airportZones } from "../transvip/config";
 
-export const OPENAI_GPT_3_5 = 'gpt-3.5-turbo' // 'gpt-4'
-export const OPENAI_GPT_4   = 'gpt-4o' // 'gpt-4'
-const modelInstance = openai(OPENAI_GPT_3_5)
-const modelInstanceSmart = openai(OPENAI_GPT_4)
+export const OPENAI_GPT_4o_MINI = 'gpt-4o-mini' // 'gpt-4'
+export const OPENAI_GPT_4o      = 'gpt-4o' // 'gpt-4'
+const modelInstance = openai(OPENAI_GPT_4o_MINI)
+const modelInstanceSmart = openai(OPENAI_GPT_4o)
 
 async function submitUserMessage(content: string) {
 	"use server";
@@ -44,10 +44,13 @@ async function submitUserMessage(content: string) {
 		],
 	});
 
+	console.log('modelInstance:', modelInstance);
+	console.log('Messages:', aiState.get().messages);
+
 	const ui = await streamUI({
 		model: modelInstance,
 		system: SYSTEM_MESSAGE,
-		messages: [...aiState.get().messages.filter(m => m.role !== 'function')],
+		messages: aiState.get().messages.filter(m => m.role !== 'function'),
 		text: ({ content, done }) => {
 			if (done) {
 				aiState.done({
@@ -56,13 +59,12 @@ async function submitUserMessage(content: string) {
 						...aiState.get().messages,
 						{
 							role: "assistant",
-							content: `${content.trim()}`,
+							content: content.trim(),
 						},
 					],
-				})
+				});
 			}
-
-			return <AssistantMessage content={content.trim()} />
+			return <AssistantMessage content={content.trim()} />;
 		},
 		tools: {
 			getVehicleStatus: {
@@ -134,6 +136,43 @@ async function submitUserMessage(content: string) {
 					) : (
 						<BotCard>
 							<div>El móvil {vehicleNumber} está desconectado de la app de Transvip.</div>
+						</BotCard>
+					)
+				}
+			},
+			createText: {
+				description: `Utiliza esta función para escribir un texto que solicite el usuario.
+					Puede ser un email (lo más probable), pero podría ser también otro tipo de texto,
+					como un whatsapp, un texto para un proveedor, etc.`,
+				generate: async function* () {
+					yield <LoadingMessage text={`Redactando un texto para el usuario...`} />
+
+					// Create text response for current search results
+					const content = await generateText({
+						model: modelInstanceSmart,
+						system: SYSTEM_MESSAGE + CREATE_TEXT_PROMPT + EMAIL_TEXT_OPS_EXAMPLE,
+						messages: [{
+							role: 'assistant',
+							content: `Redactando un texto para el usuario...`
+						}],
+					})
+
+					aiState.done({
+						...aiState.get(),
+						messages: [
+							...aiState.get().messages,
+							{
+								role: 'assistant',
+								content: content.text.trim()
+							}
+						]
+					})
+
+					return content.text.length > 0 ? (
+						<AssistantMessage content={content.text} session={session} />
+					) : (
+						<BotCard>
+							<div>No se pudo escribir el texto solicitado.</div>
 						</BotCard>
 					)
 				}

@@ -6,6 +6,11 @@ import { TransvipLogo } from "@/components/transvip/transvip-logo"
 
 const toolsList = [
     {
+        name: 'Escribir un texto',
+        hint: 'Email, whatsapp, etc.',
+        search: 'Necesito escribir un texto para los proveedores',
+    },
+    {
         name: 'Zona Iluminada Santiago',
         hint: 'Status por tipo de vehículo',
         search: 'Quiero ver la zona iluminada del aeropuerto de Santiago',
