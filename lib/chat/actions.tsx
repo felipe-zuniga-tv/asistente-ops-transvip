@@ -4,7 +4,7 @@ import {
 	getMutableAIState,
 	getAIState,
 	createAI,
-	streamUI,
+	streamUI
 } from "ai/rsc";
 
 import { z } from "zod";
@@ -44,9 +44,6 @@ async function submitUserMessage(content: string) {
 		],
 	});
 
-	console.log('modelInstance:', modelInstance);
-	console.log('Messages:', aiState.get().messages);
-
 	const ui = await streamUI({
 		model: modelInstance,
 		system: SYSTEM_MESSAGE,
@@ -64,17 +61,17 @@ async function submitUserMessage(content: string) {
 					],
 				});
 			}
-			return <AssistantMessage content={content.trim()} />;
+			return <AssistantMessage content={content.trim()} />
 		},
 		tools: {
 			getVehicleStatus: {
 				description: `Útil para responder sobre el estado de un vehículo o móvil, es decir, para saber 
-					si un vehículo o móvil se encuentra conectado a la aplicaciónd de Transvip (online)
-					o si no está conectado (offline)`,
+					si un vehículo o móvil se encuentra conectado a la aplicación de Transvip (online)
+					o si no está conectado (offline)`.trim(),
 				parameters: z.object({
 					vehicleNumber: z
 						.number()
-						.describe("El número del vehículo o móvil del cual se necesita saber su status"),
+						.describe("El número del vehículo o móvil del cual se necesita saber su status")
 				}).required(),
 				generate: async function* ({ vehicleNumber }) {
 					yield <LoadingMessage text={`Buscando el status del móvil #${vehicleNumber}...`} />
@@ -92,39 +89,6 @@ async function submitUserMessage(content: string) {
 							},
 						]
 					})
-
-					// 	aiState.done({
-					// 		...aiState.get(),
-					// 		// interactions: [],
-					// 		messages: [
-					// 			...aiState.get().messages,
-					// 			{
-					// 				role: 'function',
-					// 				name: 'getVehicleStatus',
-					// 				content: JSON.stringify(vehicleStatus)
-					// 			},
-					// 		]
-					// 	})
-
-					// // Create text response for current search results
-					// const content = await generateText({
-					// 	model: modelInstance,
-					// 	system: SYSTEM_MESSAGE,
-					// 	// + "\n\nCreate 3 follow-up questions with the title FOLLOW UP",
-					// 	messages: [...aiState.get().messages.filter(m => m.role !== "function")],
-					// })
-
-					// // Update AI State
-					// aiState.update({
-					// 	...aiState.get(),
-					// 	messages: [
-					// 		...aiState.get().messages.slice(0, -1),
-					// 		{
-					// 			role: 'assistant',
-					// 			content: content.text.trim()
-					// 		},
-					// 	],
-					// });
 
 					return vehicleStatus.status !== VEHICLE_STATUS.OFFLINE ? (
 						<BotCard>
@@ -144,7 +108,12 @@ async function submitUserMessage(content: string) {
 				description: `Utiliza esta función para escribir un texto que solicite el usuario.
 					Puede ser un email (lo más probable), pero podría ser también otro tipo de texto,
 					como un whatsapp, un texto para un proveedor, etc.`,
-				generate: async function* () {
+				parameters: z.object({
+					addressedTo: z
+						.string()
+						.describe("El nombre de la persona a la que se le redacta el texto. Si no se conoce, se puede dejar en blanco")
+				}).required(),
+				generate: async function* ({ addressedTo}) {
 					yield <LoadingMessage text={`Redactando un texto para el usuario...`} />
 
 					// Create text response for current search results

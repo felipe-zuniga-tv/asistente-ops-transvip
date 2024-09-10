@@ -8,7 +8,7 @@ export default function NotFoundComponent() {
   const path = usePathname();
 
   return (
-    <main className="bg-buildings min-h-screen flex flex-col items-center justify-center">
+    <main className="bg-desert min-h-screen flex flex-col items-center justify-center">
         <div className="p-24 rounded-xl text-lg bg-white/90 text-center gap-4 flex flex-col">
         <span className="text-xl font-semibold">¡Hola!</span>
             <span className="text-lg font-normal">No pudimos encontrar la ruta {`"${path}"`}</span>
