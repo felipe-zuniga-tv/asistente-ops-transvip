@@ -113,18 +113,20 @@ async function submitUserMessage(content: string) {
 						.string()
 						.describe("El nombre de la persona a la que se le redacta el texto. Si no se conoce, se puede dejar en blanco")
 				}).required(),
-				generate: async function* ({ addressedTo}) {
+				generate: async function* ({ addressedTo }) {
 					yield <LoadingMessage text={`Redactando un texto para el usuario...`} />
 
 					// Create text response for current search results
 					const content = await generateText({
 						model: modelInstanceSmart,
-						system: SYSTEM_MESSAGE + CREATE_TEXT_PROMPT + EMAIL_TEXT_OPS_EXAMPLE,
+						system: SYSTEM_MESSAGE + CREATE_TEXT_PROMPT(EMAIL_TEXT_OPS_EXAMPLE),
 						messages: [{
 							role: 'assistant',
 							content: `Redactando un texto para el usuario...`
 						}],
 					})
+
+					console.log(content);
 
 					aiState.done({
 						...aiState.get(),

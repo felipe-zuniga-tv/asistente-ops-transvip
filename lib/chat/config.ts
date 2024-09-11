@@ -33,15 +33,21 @@ Transvip has a leasing program, for which this summary is very relevant, to asse
 Provide also a recommendation about whether it's a good candidate for the leasing program.
 `.trim()
 
-export const CREATE_TEXT_PROMPT = `
-Create a text based on the provided example, imitating the style and tone used in it.
+export const CREATE_TEXT_PROMPT = (example: string) => {
+    return `
+        Create a text based on the provided example, imitating the style and tone used in it.
+        Sign always as "Gerencia de Operaciones Transvip".
+        
+        Example:
+        ${example}
 
-Example:
-
-`.trim()
+        `.trim()
+    }
 
 export const EMAIL_TEXT_OPS_EXAMPLE = `
-Asunto: Aumento de tarifas Spot Junio 2024
+Subject: Aumento de tarifas Spot Junio 2024
+
+Content:
 Estimado proveedor,
 Queremos comunicarle una importante actualización respecto a las tarifas del convenio personal.
 A partir del día 21 de junio de 2024, las tarifas de este convenio han sido aumentadas en aproximadamente un 2%, para los servicios compartidos y exclusivos, tanto en Recogida como en Zarpe. A modo de complemento, en casos donde también existan factores multiplicadores, éstos se aplicarán sobre estas nuevas tarifas. Considere que aún se podrá encontrar con reservas con los valores anteriores, pues este cambio aplica sólo para reservas nuevas creadas a partir de la fecha mencionada.
