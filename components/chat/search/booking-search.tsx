@@ -29,12 +29,13 @@ let chileanPeso = new Intl.NumberFormat('es-CL', {
 // Vehicle States to Show
 const STATES_TO_SHOW = [2, 4, 12, 0, 1, 15]
 
-// // Custom hook for managing section open/close state
-// const useSectionState = (initialState = true) => {
-//     const [isOpen, setIsOpen] = useState(initialState);
-//     const toggle = useCallback(() => setIsOpen(prev => !prev), []);
-//     return [isOpen, toggle] as const;
-// };
+enum BookingSearchRequest {
+    BOOKING = 'booking',
+    VEHICLE = 'vehicle',
+    LICENSE = 'license',
+    DRIVER = 'driver',
+    SHARED_SERVICE = 'shared_service'
+}
 
 export function BookingIdSearch({ session, searchResults, content }: {
     session: any,
@@ -44,16 +45,18 @@ export function BookingIdSearch({ session, searchResults, content }: {
     const [_, setMessages] = useUIState()
     const { submitUserMessage } = useActions()
 
-    const handleClick = async (result: BookingInfoOutputProps, request: string) => {
+    const handleClick = async (result: BookingInfoOutputProps, request: BookingSearchRequest) => {
         let userMessageContent = ""
-        if (request === 'booking') {
+        if (request === BookingSearchRequest.BOOKING) {
             userMessageContent = `Me gustaría buscar la reserva ${result.booking.id}.`
-        } else if (request === 'vehicle') {
+        } else if (request === BookingSearchRequest.VEHICLE) {
             userMessageContent = `Me gustaría saber si el vehículo ${result.vehicle.vehicle_number} está online.`
-        } else if (request === 'license') {
+        } else if (request === BookingSearchRequest.LICENSE) {
             userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${result.vehicle.license_plate}.`
-        } else if (request === 'driver') {
+        } else if (request === BookingSearchRequest.DRIVER) {
             userMessageContent = `Me gustaría saber más información sobre el conductor con el teléfono ${result.fleet.phone_number}.`
+        } else if (request === BookingSearchRequest.SHARED_SERVICE) {
+            userMessageContent = `Me gustaría buscar el paquete ${result.booking.shared_service_id}.`
         } else {
             userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${result.vehicle.license_plate}.`
         }
@@ -106,47 +109,15 @@ function BookingIdResultsCard({ result, handleClick }: {
     result: BookingInfoOutputProps
     handleClick?: any
 }) {
-    // const [openDates, toggleDates] = useSectionState(true);
-    // const [openPayment, togglePayment] = useSectionState(true);
-    // const [openCustomer, toggleCustomer] = useSectionState(true);
-    // const [openDirections, toggleDirections] = useSectionState(true);
-    // const [openVehicle, toggleVehicle] = useSectionState(true);
-
-    // const toggleSection = useCallback((setter: React.Dispatch<React.SetStateAction<boolean>>) => {
-    //     setter(prev => !prev);
-    // }, []);
-
     return (
         <div className='booking-detail main-card'>
             <BookingBadges result={result} handleClick={handleClick} />
-            <BookingMainDetails result={result} />
+            <BookingMainDetails result={result} handleClick={handleClick} />
             <BookingDates result={result} />
             <BookingPayment result={result} />
             <BookingCustomer result={result} />
             <BookingDirections result={result} />
             <BookingVehicle result={result} handleClick={handleClick} />
-
-            {/* <CollapsibleSection title='Fechas' isOpen={openDates} onToggle={toggleDates}>
-                <BookingDates result={result} />
-            </CollapsibleSection>
-
-            <CollapsibleSection title='Pago' isOpen={openPayment} onToggle={togglePayment}>
-                <BookingPayment result={result} />
-            </CollapsibleSection>
-            
-            <CollapsibleSection title='Pasajeros' isOpen={openCustomer} onToggle={toggleCustomer}>
-                <BookingCustomer result={result} />
-            </CollapsibleSection>
-            
-            <CollapsibleSection title='Direcciones' isOpen={openDirections} onToggle={toggleDirections}>
-                <BookingDirections result={result} />
-            </CollapsibleSection>
-            
-            { STATES_TO_SHOW.includes(result.booking.status) && 
-                <CollapsibleSection title='Vehículo / Conductor' isOpen={openVehicle} onToggle={toggleVehicle}>
-                    <BookingVehicle result={result} handleClick={handleClick} />
-                </CollapsibleSection>
-            } */}
         </div>
     )
 }
@@ -202,8 +173,9 @@ function SharedServiceTotals({ result } : {
     )
 }
 
-function BookingMainDetails({ result }: {
+function BookingMainDetails({ result, handleClick }: {
     result: BookingInfoOutputProps
+    handleClick: any
 }) {
     if (!result.booking) return null
 
@@ -216,7 +188,13 @@ function BookingMainDetails({ result }: {
                             <>
                                 <div className='card-info-detail gap-1'>
                                     <span className='font-semibold'>Paquete:</span>
-                                    <span>{result.booking.shared_service_id}</span>
+                                    <Badge 
+                                        variant="outline"
+                                        className='cursor-pointer bg-gray-400/50 hover:bg-secondary/80'
+                                        onClick={() => handleClick(result, BookingSearchRequest.SHARED_SERVICE)}
+                                    >
+                                        {result.booking.shared_service_id}
+                                    </Badge>
                                 </div>
                                 <span>·</span>
                             </>
@@ -567,15 +545,15 @@ function BookingVehicle({ result, handleClick }: {
                 <div className='flex flex-col gap-2'>
                     <div className='card-info-detail'>
                         <Badge variant={'default'} className='flex flex-row gap-2 bg-gray-200 hover:bg-gray-300 text-black items-center justify-start md:text-sm'>
-                            <span onClick={() => handleClick(result, 'driver')} className='cursor-pointer'>{result.fleet.full_name}</span>
+                            <span onClick={() => handleClick(result, BookingSearchRequest.DRIVER)} className='cursor-pointer'>{result.fleet.full_name}</span>
                         </Badge>
                     </div>
                     <div className='card-info-detail items-center gap-2'>
                         <Badge variant={'default'} className='flex flex-row gap-2 items-center justify-start md:text-sm'>
-                            <span onClick={() => handleClick(result, 'license')} className='hover:underline cursor-pointer'>PPU: {result.vehicle.license_plate}</span>
+                            <span onClick={() => handleClick(result, BookingSearchRequest.LICENSE)} className='hover:underline cursor-pointer'>PPU: {result.vehicle.license_plate}</span>
                         </Badge>
                         <Badge variant={'default'} className='flex flex-row gap-2 items-center justify-start md:text-sm'>
-                            <span onClick={() => handleClick(result, 'vehicle')} className='hover:underline cursor-pointer'>Móvil: {result.vehicle.vehicle_number}</span>
+                            <span onClick={() => handleClick(result, BookingSearchRequest.VEHICLE)} className='hover:underline cursor-pointer'>Móvil: {result.vehicle.vehicle_number}</span>
                         </Badge>
                     </div>
                 </div>

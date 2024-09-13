@@ -384,7 +384,7 @@ async function submitUserMessage(content: string) {
 						<AssistantMessage content={content.text} session={session} />
 					) : (
 						<BotCard>
-							<div>No se pudo encontrar el conductor de email <span className="rounded-full py-0.5">{ driverEmail }</span>.</div>
+							<div>No se pudo encontrar el conductor <span className="rounded-full py-0.5">{ driverQueryClean }</span>.</div>
 						</BotCard>
 					)
 				}
@@ -459,6 +459,17 @@ async function submitUserMessage(content: string) {
 			}
 		},
 	})
+
+	aiState.done({
+		...aiState.get(),
+		messages: [
+			...aiState.get().messages,
+			{
+				role: "assistant",
+				content: content.trim(),
+			},
+		],
+	});
 
 	return {
 		display: ui.value
