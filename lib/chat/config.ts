@@ -33,7 +33,7 @@ Transvip has a leasing program, for which this summary is very relevant, to asse
 Provide also a recommendation about whether it's a good candidate for the leasing program.
 `.trim()
 
-export const CREATE_TEXT_PROMPT = (example: string) => {
+export const CREATE_TEXT_PROMPT = (example: string, subject: string) => {
     return `
         Create a text based on the provided example, imitating the style and tone used in it.
         Sign always as "Gerencia de Operaciones Transvip".
@@ -41,6 +41,7 @@ export const CREATE_TEXT_PROMPT = (example: string) => {
         Example:
         ${example}
 
+        Intended subject: ${subject}
         `.trim()
     }
 

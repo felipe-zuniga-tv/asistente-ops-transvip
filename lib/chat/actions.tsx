@@ -111,15 +111,18 @@ async function submitUserMessage(content: string) {
 				parameters: z.object({
 					addressedTo: z
 						.string()
-						.describe("El nombre de la persona a la que se le redacta el texto. Si no se conoce, se puede dejar en blanco")
+						.describe("El nombre de la persona que recibirá el texto. Si no se conoce, se puede dejar en blanco"),
+					subject: z
+						.string()
+						.describe("El asunto de la comunicación, si aplica"),
 				}).required(),
-				generate: async function* ({ addressedTo }) {
+				generate: async function* ({ addressedTo, subject }) {
 					yield <LoadingMessage text={`Redactando un texto para el usuario...`} />
 
 					// Create text response for current search results
 					const content = await generateText({
 						model: modelInstanceSmart,
-						system: SYSTEM_MESSAGE + CREATE_TEXT_PROMPT(EMAIL_TEXT_OPS_EXAMPLE),
+						system: SYSTEM_MESSAGE + CREATE_TEXT_PROMPT(EMAIL_TEXT_OPS_EXAMPLE, subject),
 						messages: [{
 							role: 'assistant',
 							content: `Redactando un texto para el usuario...`
