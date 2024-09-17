@@ -27,10 +27,10 @@ Then reply always in spanish.\
 export const CREATE_DRIVER_RATINGS_SUMMARY = `
 Create a summary with the provided information and comments, in order to make it easy for the user
 to understand the whole context and decide whether the driver has good or bad qualifications,
-and how good he or she is at providing transport services to passengers.
-Focus on highlighting and summarizing the reasons behind 1-star ratings, the main area of improvement.
-Consider that a driver is showing signals of bad quality service if their historical average rating is below 4.7.
-Transvip has a leasing program, for which this summary is very relevant, to assess whether we should give a new vehicle to a driver or not.
+and how good he or she is at providing transport services to passengers.\
+Focus on highlighting and summarizing the reasons behind 1-star ratings, the main area of improvement.\
+Consider that a driver is showing signals of bad quality service if their historical average rating is below 4.8.\
+Transvip has a leasing program, for which this summary is very relevant, to assess whether we should give a new vehicle to a driver or not.\
 Provide also a recommendation about whether it's a good candidate for the leasing program.
 `.trim()
 
