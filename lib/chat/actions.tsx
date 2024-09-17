@@ -119,17 +119,17 @@ async function submitUserMessage(content: string) {
 				generate: async function* ({ addressedTo, subject }) {
 					yield <LoadingMessage text={`Redactando un texto para el usuario...`} />
 
+					console.log(CREATE_TEXT_PROMPT(EMAIL_TEXT_OPS_EXAMPLE, subject))
+
 					// Create text response for current search results
 					const content = await generateText({
 						model: modelInstanceSmart,
-						system: SYSTEM_MESSAGE + CREATE_TEXT_PROMPT(EMAIL_TEXT_OPS_EXAMPLE, subject),
+						system: SYSTEM_MESSAGE + "\n\n" + CREATE_TEXT_PROMPT(EMAIL_TEXT_OPS_EXAMPLE, subject),
 						messages: [{
 							role: 'assistant',
 							content: `Redactando un texto para el usuario...`
 						}],
 					})
-
-					console.log(content);
 
 					aiState.done({
 						...aiState.get(),
