@@ -81,13 +81,15 @@ export default function SystemTools({ session }) {
             <span className="font-semibold">Selecciona una herramienta</span>
             <div className="max-h-[570px] overflow-auto w-full">
                 <div className="flex flex-col gap-2.5 items-start justify-center w-full">
-                    <div className="border p-2 bg-white hover:bg-gray-200/50 hover:cursor-pointer rounded-md shadow-md w-full flex items-center justify-start gap-3 text-muted-background">
-                        <TransvipLogo logoOnly={true} colored={false} size={20} className="bg-transvip p-1 rounded-md" />
-                        <div className="grid gap-0.5">
-                            <Link href="/qr">Generar QR</Link>
-                            <p className="text-xs text-muted-foreground" data-description>Ingresa el número de reserva</p>
+                    <Link href="/qr" className="w-full">
+                        <div className="border p-2 bg-white hover:bg-gray-200/50 hover:cursor-pointer rounded-md shadow-md w-full flex items-center justify-start gap-3 text-muted-background">
+                            <TransvipLogo logoOnly={true} colored={false} size={20} className="bg-transvip p-1 rounded-md" />
+                            <div className="grid gap-0.5">
+                                <span>Generar QR</span>
+                                <p className="text-xs text-muted-foreground" data-description>Ingresa el número de reserva</p>
+                            </div>
                         </div>
-                    </div>
+                    </Link>
                     {
                         toolsList.map((tool, index) => (
                             <div key={index + 1} 
