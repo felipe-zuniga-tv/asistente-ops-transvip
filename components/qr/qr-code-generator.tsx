@@ -1,8 +1,8 @@
 'use client'
 
-import { ArrowDownRight, ArrowDownRightFromCircle, RotateCw } from 'lucide-react';
+import { RotateCw } from 'lucide-react';
 import Image from 'next/image';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from '../ui/button';
 
 interface QRCodeGeneratorProps { }
@@ -50,20 +50,18 @@ export const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = () => {
                 <div id="welcome-title" className="text-lg md:text-2xl font-bold text-gray-800">Genera tu código QR</div>
             </div>
 
-            <div className='flex justify-center items-center gap-4'>
-                <input
-                    type="text"
+            <div className='flex justify-center items-center gap-4'> 
+                <input type="text"
                     value={bookingNumber}
                     onChange={(e) => setBookingNumber(e.target.value)}
                     placeholder="Ingresa el número de reserva"
                     className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
                 />
-                <button
-                    onClick={generateQRCode}
+                <Button variant={"default"} onClick={generateQRCode}
                     className="mx-auto px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition duration-300 min-w-fit"
                 >
                     Generar QR
-                </button>
+                </Button>
             </div>
 
             <div className='flex justify-start'>
