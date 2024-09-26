@@ -4,6 +4,7 @@ export const Routes = Object.freeze({
     CONTROL: '/control',
     CHAT: '/chat',
     START: '/chat',
+    QR_GEN: '/qr',
 })
 
 export const HeaderLinks = [
@@ -24,3 +25,18 @@ export const HeaderLinks = [
         href: '#'
     },
 ]
+
+export const NavbarLinks = [
+    {
+        label: 'Inicio',
+        href: Routes.HOME
+    },
+    {
+        label: 'Jarvip',
+        href: Routes.CHAT
+    },
+    {
+        label: 'QR',
+        href: Routes.QR_GEN
+    },
+];
