@@ -1,5 +1,5 @@
 import { Routes } from "@/utils/routes";
-import { Link } from "lucide-react";
+import Link from 'next/link'
 import { TransvipLogo } from "../transvip/transvip-logo";
 
 export default function QRCodeGeneratorLink() {
