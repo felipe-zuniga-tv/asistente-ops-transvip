@@ -51,7 +51,7 @@ export function TransvipOpsChat({ id, className, session }: ChatProps) {
 
     return (
         <div ref={scrollRef} className="flex flex-col size-full overflow-auto justify-between">
-            <div className={cn('flex-1 pb-[120px] overflow-auto max-h-[76vh]', className)} ref={messagesRef}>
+            <div className={cn('flex-1 pb-[120px] overflow-auto max-h-[76vh]', className as string)} ref={messagesRef}>
                 {messages.length ? 
                     (<MessagesList messages={messages} isShared={false} session={session} />) :
                     (<EmptyScreen session={session} />)

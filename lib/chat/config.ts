@@ -1,17 +1,7 @@
+import { Routes } from "@/utils/routes"
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons"
 import { format } from "date-fns"
-
-// export const startingMessages = [
-//     {
-//         heading: 'Quiero ver la conexión',
-//         subheading: 'de un móvil',
-//         message: `¡Hola! Quiero saber si el vehículo 1633 está online` // 45330
-//     },
-//     {
-//         heading: '¿Qué herramientas',
-//         subheading: 'tienes disponibles?',
-//         message: `¡Hola! Arma una lista con las herramientas que tienes para ayudarme`
-//     },
-// ]
+import { CarTaxiFrontIcon, CircleUser, Clock12Icon, FileDigitIcon, MapIcon, PencilIcon, PlaneTakeoffIcon, QrCodeIcon, User } from "lucide-react"
 
 // AI Chat Configuration
 export const SYSTEM_MESSAGE = `
@@ -63,3 +53,69 @@ Si tiene alguna duda o requiere más información sobre este ajuste en las tarif
 Atentamente,
 Gerencia de Operaciones Transvip
 `.trim()
+
+// TOOLS
+export const toolsList = [
+    {
+        name: 'Generar QR',
+        hint: 'Ingresa el número de reserva',
+        search: 'Necesito crear un código QR',
+        icon: QrCodeIcon,
+        href: Routes.QR_GEN
+
+    },
+    {
+        name: 'Escribir un texto',
+        hint: 'Email, whatsapp, etc.',
+        search: 'Necesito escribir un texto para los proveedores',
+        icon: PencilIcon
+    },
+    {
+        name: 'Zona Iluminada Santiago',
+        hint: 'Status por tipo de vehículo',
+        search: 'Quiero ver la zona iluminada del aeropuerto de Santiago',
+        icon: PlaneTakeoffIcon,
+    },
+    {
+        name: 'Conexión de un móvil',
+        hint: 'Utiliza el número de móvil para la búsqueda',
+        search: 'Me gustaría saber si un vehículo específico se encuentra conectado',
+        icon: CarTaxiFrontIcon
+    },
+    {
+        name: 'Detalle de un móvil',
+        hint: 'Busca utilizando la patente',
+        search: 'Quiero saber más detalles sobre un móvil en particular',
+        icon: MagnifyingGlassIcon
+    },
+    {
+        name: 'Detalle por reserva o paquete',
+        hint: 'Busca una reserva o paquete usando su código',
+        search: 'Me gustaría saber más información sobre una reserva o paquete',
+        icon: FileDigitIcon
+    },
+    {
+        name: 'Reservas programadas',
+        hint: 'Busca reservas para las próximas horas',
+        search: 'Me gustaría buscar reservas programadas para las próximas horas',
+        icon: Clock12Icon
+    },
+    {
+        name: 'Perfil de un conductor',
+        hint: 'Busca usando el email o teléfono',
+        search: 'Quiero ver el perfil de un conductor en particular',
+        icon: User
+    },
+    {
+        name: 'Evaluaciones de un conductor',
+        hint: 'Busca usando el email o teléfono',
+        search: 'Quiero armar un resumen de las evaluaciones de un conductor en particular',
+        icon: CircleUser
+    },
+    {
+        name: 'Gestión de Geocercas',
+        hint: 'Invierte las coordenadas',
+        search: 'Necesito invertir las coordenadas de un texto en GeoJSON',
+        icon: MapIcon
+    },
+]

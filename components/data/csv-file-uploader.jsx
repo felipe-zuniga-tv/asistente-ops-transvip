@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Icon } from "../ui/icons"
+import { UploadIcon } from "lucide-react"
 
 useState
 
@@ -133,7 +134,7 @@ export function FileUpload({ client, handleFileChange, inputFileRef, afterUpload
 
         return (
             <button onClick={handleUploadCSVFile} className="content-header-btn bg-btn-kyon hover:bg-btn-kyon-dark md:self-end">
-                <Icon icon={"Upload"} title="Subir archivo" className="mr-2" />
+                <UploadIcon className="size-4 mr-2"/> Subir archivo
             </button>
         )
     }

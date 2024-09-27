@@ -15,7 +15,7 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from 
 export function TransvipPanel({ id, session }) {
 	return (
 		<div className="grid h-screen w-full xs:pl-[56px] bg-white">
-			<SidebarOptions className="" />
+			<SidebarOptions session={session} />
 			<div className="flex flex-col">
 				<header className="sticky top-0 z-10 flex h-[56px] items-center gap-1 border-b_ bg-background px-4">
 					<div className="flex flex-row gap-2 text-xl font-semibold mr-4">

@@ -23,7 +23,7 @@ export function ButtonScrollToBottom({
         'button-scroll-to-bottom',
         'absolute right-4 top-[80%] bg-slate-200 transition-opacity duration-300',
         isAtBottom ? 'opacity-0' : 'opacity-100',
-        className
+        className as string
       )}
       onClick={() => scrollToBottom()}
       {...props}
