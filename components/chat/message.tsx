@@ -39,7 +39,7 @@ export function AssistantMessage({ content, className, showAvatar = true }: {
 	showAvatar?: boolean
 }) {
 	return (
-		<div className={cn('chat-message assistant flex items-start', className)}>
+		<div className={cn('chat-message assistant flex items-start', className as string)}>
 			<div className="flex flex-col gap-3 w-full">
 				<AssistantMessageContent content={content} />
 				
@@ -92,7 +92,7 @@ export function LoadingMessage({ text = 'Espera...', className } :{
 	className?: string
 }) {
 	return (
-		<div className={cn(`loading-message bg-slate-700 text-white rounded-md shadow-md flex flex-col gap-3 whitespace-pre-wrap mb-2 animate-pulse justify-center items-center bg-gradient-to-r from-gray-100 via-white to-slate-100 p-3`, className)}>
+		<div className={cn(`loading-message bg-slate-700 text-white rounded-md shadow-md flex flex-col gap-3 whitespace-pre-wrap mb-2 animate-pulse justify-center items-center bg-gradient-to-r from-gray-100 via-white to-slate-100 p-3`, className as string)}>
 			<div className="flex gap-3 items-center text-gray-700">
 				<TransvipLogo className="assistant-logo rounded-md self-start" />
 				{ text }

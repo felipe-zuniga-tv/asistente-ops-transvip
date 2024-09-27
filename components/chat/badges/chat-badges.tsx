@@ -38,7 +38,7 @@ const vehicleStatus = [
 export function CityBadge({ branch, className, isCode = false }: { branch?: BranchProps, className?: string, isCode?: boolean }) {
     return (
         <Badge variant={"default"} 
-            className={cn("py-1 md:py-2 bg-slate-600 hover:bg-slate-700 text-xs text-white cursor-pointer", className)}>
+            className={cn("py-1 md:py-2 bg-slate-600 hover:bg-slate-700 text-xs text-white cursor-pointer", className as string)}>
             { isCode ? branch?.code : branch?.name}
         </Badge>
     )

@@ -9,7 +9,7 @@ export default function ToolsButton({ item, handleClick, label, className }: {
 }) {
     return (
         <Button variant={'outline'} 
-            className={cn('tools-btn', className)}
+            className={cn('tools-btn', className as string)}
             onClick={() => handleClick({ item })}>
             { label }
         </Button>

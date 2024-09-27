@@ -10,7 +10,7 @@ import { BookingInfoOutputProps } from '@/lib/chat/types';
 import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon, Clock, GoalIcon, HotelIcon, MailIcon, MapPin, Pencil, PhoneIcon, UserCircleIcon, X } from 'lucide-react';
+import { CheckIcon, Clock, GoalIcon, HotelIcon, MailIcon, MapPin, Pencil, PhoneIcon, UserCircleIcon, X } from 'lucide-react';
 import { WhatsappIcon } from '@/components/ui/icons';
 import { buildWhatsappLink } from '@/lib/chat/functions';
 import { BookingStatusBadge, CityBadge, CustomerVipBadge, PaymentRouteType, PaymentStatusBadge, ServiceNameBadge } from '../badges/chat-badges';
@@ -18,8 +18,6 @@ import { BookingIdBadge } from '../badges/booking-badge';
 import DriverAvatar from '@/components/driver/driver-avatar';
 import Image from 'next/image';
 import EmailLink from '@/components/ui/email-link';
-import { useCallback, useState } from 'react';
-import { CollapsibleSection } from '../collapsible-section';
 
 let chileanPeso = new Intl.NumberFormat('es-CL', {
     style: 'currency',
