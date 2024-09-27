@@ -25,7 +25,7 @@ export function TransvipPanel({ id, session }) {
 						</Badge>
 					</div>
 					<Drawer>
-						<DrawerTrigger asChild>
+						<DrawerTrigger asChild className="hidden">
 							<Button variant="outline" size="icon" className="lg:hidden w-12 bg-slate-800 hover:bg-slate-700">
 								<SettingsIcon className="size-4 text-white" />
 								<span className="sr-only">Herramientas</span>
