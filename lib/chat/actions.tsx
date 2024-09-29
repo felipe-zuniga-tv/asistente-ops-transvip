@@ -21,6 +21,7 @@ import { generateText } from "ai";
 import { DriverProfile } from "@/components/chat/search/driver-profile-search";
 import AirportStatus from "@/components/chat/airport/airport-status";
 import { airportZones } from "../transvip/config";
+import QRCode from "react-qr-code";
 
 export const OPENAI_GPT_4o_MINI = 'gpt-4o-mini' // 'gpt-4'
 export const OPENAI_GPT_4o      = 'gpt-4o' // 'gpt-4'
@@ -147,6 +148,48 @@ async function submitUserMessage(content: string) {
 					) : (
 						<BotCard>
 							<div>No se pudo escribir el texto solicitado.</div>
+						</BotCard>
+					)
+				}
+			},
+			createBookingQrCode: {
+				description: `Útil para crear un código QR a partir un número de reserva`,
+				parameters: z.object({
+					bookingId: z
+						.number()
+						.describe("El número o código de la reserva para el cual se creará un código QR"),
+				}).required(),
+				generate: async function* ({ bookingId }) {
+					yield <LoadingMessage text={`Creando código QR para la reserva ${bookingId}...`} 
+							className="text-xs md:text-base"
+						/>
+
+					const qrCodeValue = `{ "booking_id": ${bookingId}, "url": "www.transvip.cl/" }`
+
+					aiState.done({
+						...aiState.get(),
+						messages: [
+							...aiState.get().messages,
+							{
+								role: 'assistant',
+								content: `Mostrando información de la reserva: ${bookingId}`
+							},
+						]
+					})
+
+					return qrCodeValue ? (
+						<BotCard>
+							<div className="h-[300px] bg-white p-6">
+								<QRCode size={256}
+									className="h-[300px] w-full"
+									value={qrCodeValue}
+									viewBox={`0 0 256 256`}
+								/>
+							</div>
+						</BotCard>
+					) : (
+						<BotCard>
+							<div>No se pudo encontrar la reserva o paquete con el código <span className="font-bold">{bookingId}</span>.</div>
 						</BotCard>
 					)
 				}

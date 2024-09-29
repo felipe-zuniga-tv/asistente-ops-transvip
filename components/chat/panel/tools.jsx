@@ -38,7 +38,7 @@ export default function SystemTools({ session }) {
                                 className="border p-2 bg-white hover:bg-gray-200/50 hover:cursor-pointer rounded-md shadow-md w-full flex items-center justify-start gap-3 text-muted-background"
                                 onClick={() => handleClick({ tool })}
                             >
-                                <TransvipLogo logoOnly={true} colored={false} size={20} className="bg-transvip p-1 rounded-md" />
+                                <tool.icon className="size-5 text-transvip" />
                                 <div className="grid gap-0.5">
                                     <span>{ tool.name }</span>
                                     <p className="text-xs text-muted-foreground" data-description>{ tool.hint }</p>

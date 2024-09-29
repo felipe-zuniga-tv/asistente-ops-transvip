@@ -1,7 +1,6 @@
 import { Routes } from "@/utils/routes"
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons"
 import { format } from "date-fns"
-import { CarTaxiFrontIcon, CircleUser, Clock12Icon, FileDigitIcon, MapIcon, PencilIcon, PlaneTakeoffIcon, QrCodeIcon, User } from "lucide-react"
+import { CarIcon, CarTaxiFrontIcon, Clock12Icon, FileDigitIcon, MapIcon, PencilIcon, PlaneTakeoffIcon, QrCodeIcon, User, UserSearch } from "lucide-react"
 
 // AI Chat Configuration
 export const SYSTEM_MESSAGE = `
@@ -57,11 +56,18 @@ Gerencia de Operaciones Transvip
 // TOOLS
 export const toolsList = [
     {
-        name: 'Generar QR',
+        name: 'Generar QR (con front)',
         hint: 'Ingresa el número de reserva',
         search: 'Necesito crear un código QR',
         icon: QrCodeIcon,
         href: Routes.QR_GEN
+
+    },
+    {
+        name: 'Generar QR (Chat)',
+        hint: 'Ingresa el número de reserva',
+        search: 'Necesito crear un código QR a partir de un número de reserva',
+        icon: QrCodeIcon,
 
     },
     {
@@ -86,7 +92,7 @@ export const toolsList = [
         name: 'Detalle de un móvil',
         hint: 'Busca utilizando la patente',
         search: 'Quiero saber más detalles sobre un móvil en particular',
-        icon: MagnifyingGlassIcon
+        icon: CarIcon
     },
     {
         name: 'Detalle por reserva o paquete',
@@ -110,7 +116,7 @@ export const toolsList = [
         name: 'Evaluaciones de un conductor',
         hint: 'Busca usando el email o teléfono',
         search: 'Quiero armar un resumen de las evaluaciones de un conductor en particular',
-        icon: CircleUser
+        icon: UserSearch
     },
     {
         name: 'Gestión de Geocercas',
