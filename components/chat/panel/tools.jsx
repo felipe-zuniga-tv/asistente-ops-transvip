@@ -31,7 +31,7 @@ export default function SystemTools({ session }) {
         <div className="tools flex flex-col gap-3 items-start justify-center">
             <span className="font-semibold">Selecciona una herramienta</span>
             <div className="max-h-[570px] overflow-auto w-full">
-                <div className="flex flex-col gap-2.5 items-start justify-center w-full">
+                <div className="flex flex-col gap-2 items-start justify-center w-full">
                     {
                         toolsList.map((tool, index) => (
                             <div key={index + 1} 
@@ -40,7 +40,7 @@ export default function SystemTools({ session }) {
                             >
                                 <tool.icon className="size-5 text-transvip" />
                                 <div className="grid gap-0.5">
-                                    <span>{ tool.name }</span>
+                                    <span className="text-sm">{ tool.name }</span>
                                     <p className="text-xs text-muted-foreground" data-description>{ tool.hint }</p>
                                 </div>
                             </div>

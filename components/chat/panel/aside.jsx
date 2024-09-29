@@ -47,7 +47,7 @@ export default function SidebarOptions({ session, className = "" }) {
                     <Button
                       variant="outline"
                       size="icon"
-                      className="rounded-lg hover:bg-slate-700 hover:text-white border-0"
+                      className="rounded-lg hover:bg-slate-700 text-transvip-dark hover:text-white border-0"
                       aria-label={item.name}
                     >
                       <item.icon className="size-5" />
@@ -57,7 +57,7 @@ export default function SidebarOptions({ session, className = "" }) {
                   <Button
                     variant="outline"
                     size="icon"
-                    className="rounded-lg hover:bg-slate-700 hover:text-white border-0"
+                    className="rounded-lg hover:bg-slate-700 text-transvip-dark hover:text-white border-0"
                     aria-label={item.name}
                     onClick={() => handleToolClick(item)} // Call handleToolClick
                   >
