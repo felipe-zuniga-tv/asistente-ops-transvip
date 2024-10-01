@@ -7,7 +7,7 @@ export default function Home() {
       <div className="mx-auto flex flex-col items-center justify-center text-lg md:text-lg h-full bg-gray-900/70 p-6 py-8 text-black rounded-xl">
         <TransvipLogo colored={false} size={100} />
         <section className="flex flex-col items-center justify-center p-4 sm:px-8">
-          <LoginFormServer />
+          <LoginFormServer /> {/* Pass error handler */}
         </section>
       </div>
     </div>
