@@ -2,7 +2,6 @@
 import { useActions, useUIState } from "ai/rsc"
 import { UserMessage } from "../message"
 import { nanoid } from "nanoid"
-import { TransvipLogo } from "@/components/transvip/transvip-logo"
 import { toolsList } from "@/lib/chat/config"
 
 export default function SystemTools({ session }) {
