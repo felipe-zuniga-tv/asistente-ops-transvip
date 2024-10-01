@@ -36,9 +36,9 @@ export default function SystemTools({ session }) {
                     {
                         toolsList.map((tool, index) => (
                             tool.href ? (
-                                <Link key={index + 1} 
+                                <Link key={index + 1} href={tool.href}
                                     className="border p-2 bg-white hover:bg-gray-200/50 hover:cursor-pointer rounded-md shadow-md w-full flex items-center justify-start gap-3 text-muted-background"
-                                    href={tool.href}>
+                                >
                                     <tool.icon className="size-5 text-transvip" />
                                     <div className="grid gap-0.5">
                                         <span className="text-sm">{ tool.name }</span>
@@ -47,8 +47,8 @@ export default function SystemTools({ session }) {
                                 </Link>
                             ) : (
                                 <div key={index + 1} 
-                                    className="border p-2 bg-white hover:bg-gray-200/50 hover:cursor-pointer rounded-md shadow-md w-full flex items-center justify-start gap-3 text-muted-background"
                                     onClick={() => handleClick({ tool })}
+                                    className="border p-2 bg-white hover:bg-gray-200/50 hover:cursor-pointer rounded-md shadow-md w-full flex items-center justify-start gap-3 text-muted-background" 
                                 >
                                     <tool.icon className="size-5 text-transvip" />
                                     <div className="grid gap-0.5">
