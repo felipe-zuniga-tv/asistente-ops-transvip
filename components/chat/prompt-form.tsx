@@ -98,7 +98,7 @@ export function PromptForm({ session, input, setInput } : {
             />
             <div className={cn(
                 "relative flex flex-col grow w-full max-h-60 overflow-hidden",
-                `${SHOW_FILE_BUTTON ? 'pl-4': 'pl-4'}`
+                `${SHOW_FILE_BUTTON ? 'pl-4': 'pl-4 md:pl-8'}`
             )}>
                 <Button variant="outline" size="icon"
                     className={cn(`${SHOW_FILE_BUTTON ? '': 'hidden'}`,
