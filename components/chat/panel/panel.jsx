@@ -21,11 +21,11 @@ export function TransvipPanel({ id, session }) {
 					<div className="flex flex-row gap-2 text-xl font-semibold mr-4">
 						<span className="hidden lg:block">Operaciones</span>
 						<Badge variant={"default"} className="bg-transvip">
-							<TransvipLogo colored={false} className="py-1" size={60} />
+							<TransvipLogo logoOnly={true} colored={true} className="py-1" size={18} />
 						</Badge>
 					</div>
 					<Drawer>
-						<DrawerTrigger asChild className="hidden">
+						<DrawerTrigger asChild className="block xs:hidden">
 							<Button variant="outline" size="icon" className="lg:hidden w-12 bg-slate-800 hover:bg-slate-700">
 								<SettingsIcon className="size-4 text-white" />
 								<span className="sr-only">Herramientas</span>
@@ -51,7 +51,7 @@ export function TransvipPanel({ id, session }) {
 							<SystemTools session={session} />
 						</div>
 					</div>
-					<div className="relative border flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2_">
+					<div className="relative border flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-2 md:p-4 lg:col-span-2_">
 						<TransvipOpsChat id={id} session={session} />
 					</div>
 				</main>

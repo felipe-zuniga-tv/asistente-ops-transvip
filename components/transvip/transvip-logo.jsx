@@ -12,7 +12,7 @@ export function TransvipLogo({ logoOnly = false, colored = true, size = 40, clas
                 alt="Transvip Logo" 
             /> :
             <Image
-                src={colored ? "/images/transvip-logo.jpeg" : "/images/transvip-logo-bnw.png"} 
+                src={colored ? "/images/transvip-logo-only-color.png" : "/images/transvip-logo-bnw.png"} 
                 width={size}
                 height={size}
                 className={cn("object-fit h-auto", className)}

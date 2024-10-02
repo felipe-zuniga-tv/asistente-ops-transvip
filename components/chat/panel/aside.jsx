@@ -43,7 +43,7 @@ export default function SidebarOptions({ session, className = "" }) {
             <Tooltip key={item.name}> {/* Added key for Tooltip */}
               <TooltipTrigger asChild>
                 { item.href ? (
-                  <Link href={item.href} onClick={() => handleToolClick(item)}> {/* Call handleToolClick */}
+                  <Link href={item.href}>
                     <Button
                       variant="outline"
                       size="icon"

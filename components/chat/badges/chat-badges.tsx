@@ -35,7 +35,7 @@ const vehicleStatus = [
 
 
 // Components
-export function CityBadge({ branch, className, isCode = false }: { branch?: BranchProps, className?: string, isCode?: boolean }) {
+export function CityBadge({ branch, className, isCode = true }: { branch?: BranchProps, className?: string, isCode?: boolean }) {
     return (
         <Badge variant={"default"} 
             className={cn("py-1 md:py-2 bg-slate-600 hover:bg-slate-700 text-xs text-white cursor-pointer", className as string)}>
@@ -89,9 +89,12 @@ export function PaymentStatusBadge({ result } : { result : BookingInfoOutputProp
     )
 }
 
-export function PaymentRouteType({ result } : { result : BookingInfoOutputProps }) {
+export function PaymentRouteType({ result, className } : { 
+    result : BookingInfoOutputProps, 
+    className?: string 
+}) {
     return (
-        <Badge variant={'outline'} className='ml-2 bg-slate-700 text-white'>
+        <Badge variant={'outline'} className={cn('ml-2 bg-slate-700 text-white', className || "")}>
             {result.payment.fare_route_type === 1 ? 'Fija' : 'Variable'}
         </Badge>
     )

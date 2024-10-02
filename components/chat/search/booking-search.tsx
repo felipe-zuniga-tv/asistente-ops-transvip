@@ -10,12 +10,13 @@ import { BookingInfoOutputProps } from '@/lib/chat/types';
 import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { CheckIcon, Clock, GoalIcon, HotelIcon, MailIcon, MapPin, Pencil, PhoneIcon, UserCircleIcon, X } from 'lucide-react';
+import { CheckIcon, Clock, GoalIcon, HotelIcon, MailIcon, MapPin, Pencil, PhoneIcon, SearchIcon, UserCircleIcon, X } from 'lucide-react';
 import { WhatsappIcon } from '@/components/ui/icons';
 import { buildWhatsappLink } from '@/lib/chat/functions';
 import { BookingStatusBadge, CityBadge, CustomerVipBadge, PaymentRouteType, PaymentStatusBadge, ServiceNameBadge } from '../badges/chat-badges';
 import { BookingIdBadge } from '../badges/booking-badge';
 import DriverAvatar from '@/components/driver/driver-avatar';
+import Zoom from 'react-medium-image-zoom'
 import Image from 'next/image';
 import EmailLink from '@/components/ui/email-link';
 
@@ -76,12 +77,10 @@ export function BookingIdSearch({ session, searchResults, content }: {
 
     return (
         <div className="booking-search-results flex flex-col gap-2">
-            <div className='flex flex-row gap-2 items-center justify-start'>
-                <HotelIcon className='h-4' />
-                <span className='font-bold'>Resultados</span>
+            <div className='flex flex-row gap-1 items-center justify-start'>
+                <SearchIcon className='h-4' />
+                <span className='font-semibold'>He encontrado {searchResults.length} reserva{searchResults.length > 1 ? 's' : ''}</span>
             </div>
-            {/* // Ejemplo, paquete 1235058 */}
-            <span>He encontrado {searchResults.length} reserva{searchResults.length > 1 ? 's' : ''}:</span>
             
             <SharedServiceSummary result={searchResults} handleClick={handleClick} />
 
@@ -111,9 +110,9 @@ function BookingIdResultsCard({ result, handleClick }: {
         <div className='booking-detail main-card'>
             <BookingBadges result={result} handleClick={handleClick} />
             <BookingMainDetails result={result} handleClick={handleClick} />
+            <BookingCustomer result={result} />
             <BookingDates result={result} />
             <BookingPayment result={result} />
-            <BookingCustomer result={result} />
             <BookingDirections result={result} />
             <BookingVehicle result={result} handleClick={handleClick} />
         </div>
@@ -407,17 +406,18 @@ function BookingPayment({ result }: {
     if (!result.payment) return null
 
     return (
-        <div className='booking-detail info-customer'>
+        <div className='booking-detail info-payment'>
             {/* <span className='font-bold titles-font'>Pago</span> */}
             <div className='info-section'>
-                <div className='flex flex-col gap-1'>
+                <div className='flex flex-col gap-1 w-full'>
                     <div className='card-info-detail flex-row gap-1'>
                         <span className='font-semibold'>Monto Estimado:</span>
                         <span className=''>{chileanPeso.format(result.payment.estimated_payment)}</span>
-                        <span className=''>·</span>
+                        <PaymentRouteType result={result} />
+                    </div>
+                    <div className='card-info-detail flex-row gap-1'>
                         <span className='font-semibold'>Monto Real:</span>
                         <span className=''>{chileanPeso.format(result.payment.actual_payment)}</span>
-                        <PaymentRouteType result={result} />
                     </div>
                     <div className='card-info-detail flex-row gap-1'>
                         <span className='font-semibold'>Forma de Pago:</span>
@@ -448,27 +448,29 @@ function BookingCustomer({ result }: {
                     <div className='card-info-detail'>
                         <UserCircleIcon className='size-4' />
                         <span>{result.customer.full_name}</span>
-                        <span>·</span>
+                        <CustomerVipBadge result={result} />
+                    </div>
+                    <div className='card-info-detail'>
+                        <MailIcon className='size-4' />
+                        <EmailLink address={result.customer.email} />
+                    </div>
+                    <div className='card-info-detail'>
                         <PhoneIcon className='size-4' />
                         <Link href={`tel:${result.customer.phone_number}`} className='hover:underline'>
                             <span>{result.customer.phone_number}</span>
                         </Link>
                     </div>
-                    <div className='card-info-detail'>
-                        <MailIcon className='size-4' />
-                        <EmailLink address={result.customer.email} />
-                        <CustomerVipBadge result={result} />
-                    </div>
                 </div>
-                { 
-                    result.booking.qr_link && 
-                        <div className='qr-link hidden ml-auto lg:flex flex-row items-center justify-center'>
-                            <span className='font-bold text-sm'>Código QR</span>
+                { result.booking.qr_link && 
+                    <div className='qr-link hidden ml-auto lg:flex flex-col items-center justify-center'>
+                        <span className='font-bold text-sm'>Código QR</span>
+                        <Zoom>
                             <Image src={result.booking.qr_link} 
                                 width={70} height={70}
                                 alt={result.booking.id.toString()}
                                 />
-                        </div>
+                        </Zoom>
+                    </div>
                 }
             </div>
         </div>
@@ -515,12 +517,14 @@ function BookingBadges({ result, handleClick }: {
     handleClick: any
 }) {
     return (
-        <div className='booking-detail booking-badges'>
-            <BookingIdBadge result={result} handleClick={handleClick} />
-            <BookingStatusBadge result={result} />
-            <PaymentStatusBadge result={result} />
-            <CityBadge branch={result.branch} className='ml-auto' />
-        </div>
+        <>
+            <div className='hidden md:block booking-detail booking-badges'>
+                <BookingIdBadge result={result} handleClick={handleClick} />
+                <BookingStatusBadge result={result} />
+                <PaymentStatusBadge result={result} />
+                <CityBadge branch={result.branch} className='ml-auto' />
+            </div>
+        </>
     )
 }
 
@@ -547,19 +551,21 @@ function BookingVehicle({ result, handleClick }: {
                         </Badge>
                     </div>
                     <div className='card-info-detail items-center gap-2'>
-                        <Badge variant={'default'} className='flex flex-row gap-2 items-center justify-start md:text-sm'>
-                            <span onClick={() => handleClick(result, BookingSearchRequest.LICENSE)} className='hover:underline cursor-pointer'>PPU: {result.vehicle.license_plate}</span>
+                        <Badge variant={'default'} className='flex flex-row gap-2 bg-slate-500 hover:bg-slate-600 text-white items-center justify-start md:text-sm'>
+                            <span onClick={() => handleClick(result, BookingSearchRequest.LICENSE)} className='hidden md:block hover:underline cursor-pointer'>PPU: {result.vehicle.license_plate}</span>
+                            <span onClick={() => handleClick(result, BookingSearchRequest.LICENSE)} className='block md:hidden hover:underline cursor-pointer'>{result.vehicle.license_plate}</span>
                         </Badge>
-                        <Badge variant={'default'} className='flex flex-row gap-2 items-center justify-start md:text-sm'>
-                            <span onClick={() => handleClick(result, BookingSearchRequest.VEHICLE)} className='hover:underline cursor-pointer'>Móvil: {result.vehicle.vehicle_number}</span>
+                        <Badge variant={'default'} className='flex flex-row gap-2 bg-slate-500 hover:bg-slate-600 text-white items-center justify-start md:text-sm'>
+                            <span onClick={() => handleClick(result, BookingSearchRequest.VEHICLE)} className='hidden md:block hover:underline cursor-pointer'>Móvil: {result.vehicle.vehicle_number}</span>
+                            <span onClick={() => handleClick(result, BookingSearchRequest.VEHICLE)} className='block md:hidden hover:underline cursor-pointer'>{result.vehicle.vehicle_number}</span>
                         </Badge>
                     </div>
                 </div>
                 <Button variant={'outline'} className='ml-auto px-2.5 rounded-full bg-green-600 hover:bg-green-800 text-white hover:text-white'>
                     <Link href={whatsappLink}
                         target='_blank'
-                        className='flex flex-row items-center gap-0 md:gap-2'>
-                        <span className='hidden md:block'>Contactar</span>
+                        className='flex flex-row items-center gap-0 sm:gap-2'>
+                        <span className='hidden sm:block'>Contactar</span>
                         <WhatsappIcon />
                     </Link>
                 </Button>
