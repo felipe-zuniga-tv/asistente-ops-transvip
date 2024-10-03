@@ -1,4 +1,5 @@
 'use client'
+
 import { useEffect, useRef } from 'react'
 import Textarea from 'react-textarea-autosize'
 
@@ -10,7 +11,6 @@ import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { useEnterSubmit } from '@/lib/hooks/use-enter-submit'
 import { nanoid } from 'nanoid'
-import { toast } from 'sonner'
 import { ArrowRight, PlusCircleIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
