@@ -15,6 +15,6 @@ export default function DriverAvatar({ url, alt } : {
                     alt={alt}
                     /> 
             </Zoom>
-            : <UserIcon className='size-12 rounded-full shadow-md bg-gray-100 text-black p-2' />           
+            : <UserIcon className='size-12 rounded-full shadow-md bg-gray-100 text-black p-2' />
     )
 }

@@ -38,7 +38,7 @@ const vehicleStatus = [
 export function CityBadge({ branch, className, isCode = true }: { branch?: BranchProps, className?: string, isCode?: boolean }) {
     return (
         <Badge variant={"default"} 
-            className={cn("py-1 md:py-2 bg-slate-600 hover:bg-slate-700 text-xs text-white cursor-pointer", className as string)}>
+            className={cn("py-1 bg-slate-600 hover:bg-slate-700 text-xs text-white cursor-pointer", className as string)}>
             { isCode ? branch?.code : branch?.name}
         </Badge>
     )
@@ -51,7 +51,7 @@ export function BookingStatusBadge({ result } : { result : BookingInfoOutputProp
 
     return (
         <Badge variant={"default"} 
-            className={cn("py-1 md:py-2 w-[100px] text-white justify-center cursor-pointer", bookingStatusColorValue)}>
+            className={cn("py-1 w-[100px] text-white justify-center cursor-pointer", bookingStatusColorValue)}>
             { bookingStatusLabel }
         </Badge>
     )
@@ -59,17 +59,20 @@ export function BookingStatusBadge({ result } : { result : BookingInfoOutputProp
 
 export function ServiceNameBadge({ result } : { result : BookingInfoOutputProps }) {
     return (
-        <Badge variant={'outline'} className={'ml-2 bg-slate-700 text-white'}>
+        <Badge variant={'default'} className={'ml-2 bg-slate-700 text-white'}>
             {result.booking.service_name}
         </Badge>
     )
 }
 
-export function CustomerVipBadge({ result } : { result : BookingInfoOutputProps }) {
+export function CustomerVipBadge({ result, className = "" } : { 
+    result : BookingInfoOutputProps, 
+    className?: string
+}) {
     const vipFlagLabel = result.customer.vip_flag ? 'VIP' : 'NO VIP'
     const vipFlagColor = result.customer.vip_flag ? 'bg-orange-200' : 'bg-slate-700 text-white'
     return (
-        <Badge variant={'outline'} className={cn('ml-2', vipFlagColor)}>
+        <Badge variant={'default'} className={cn('', vipFlagColor, className)}>
             { vipFlagLabel }
         </Badge>
     )
@@ -82,7 +85,7 @@ export function PaymentStatusBadge({ result } : { result : BookingInfoOutputProp
 
     return (
         <Badge variant={"default"} 
-            className={cn("py-1 md:py-2 text-white flex flex-row gap-2 items-center cursor-pointer", paymentStatusColor)}>
+            className={cn("py-1 text-white flex flex-row gap-2 items-center cursor-pointer", paymentStatusColor)}>
             <span>{ paymentStatusLabel }</span>
             <PaymentAvatar result={result} />
         </Badge>
@@ -94,7 +97,7 @@ export function PaymentRouteType({ result, className } : {
     className?: string 
 }) {
     return (
-        <Badge variant={'outline'} className={cn('ml-2 bg-slate-700 text-white', className || "")}>
+        <Badge variant={'default'} className={cn('ml-2 bg-slate-700 text-white', className || "")}>
             {result.payment.fare_route_type === 1 ? 'Fija' : 'Variable'}
         </Badge>
     )
