@@ -93,8 +93,8 @@ export function LoadingMessage({ text = 'Espera...', className } :{
 }) {
 	return (
 		<div className={cn(`loading-message bg-slate-700 text-white rounded-md shadow-md flex flex-col gap-3 whitespace-pre-wrap mb-2 animate-pulse justify-center items-center bg-gradient-to-r from-gray-100 via-white to-slate-100 p-3`, className as string)}>
-			<div className="flex gap-3 items-center text-gray-700">
-				<TransvipLogo className="assistant-logo rounded-md self-start" />
+			<div className="flex flex-row gap-3 justify-center items-center text-gray-700">
+				<TransvipLogo size={20} className="assistant-logo rounded-md self-start" />
 				{ text }
 			</div>
 		</div>

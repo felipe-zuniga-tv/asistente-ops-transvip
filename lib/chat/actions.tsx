@@ -202,7 +202,8 @@ async function submitUserMessage(content: string) {
 						.describe("El número o código de la reserva o servicio del cual se necesita saber su detalle"),
 					isShared: z
 						.boolean()
-						.describe('Este campo es TRUE en caso de que se pregunte por un paquete, package o ID de un servicio compartido o agrupado'),
+						.describe('Este campo es TRUE en caso de que se pregunte por un paquete, package o ID de un servicio compartido o agrupado')
+						.default(false),
 				}).required(),
 				generate: async function* ({ bookingId, isShared }) {
 					yield <LoadingMessage text={`Buscando la reserva/paquete ${bookingId}...`} 

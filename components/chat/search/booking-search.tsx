@@ -504,7 +504,7 @@ function BookingDirections({ result }: {
             <div className='info-section gap-4 md:gap-0.5 flex flex-col md:flex-row items-center'>
                 <div className='w-full md:w-3/4 flex flex-col gap-1'>
                     <div className='card-info-detail'>
-                        <MapPin className='size-4' />
+                        <MapPin className='h-4 w-4' />
                         <div className="flex flex-row gap-1 items-center justify-start">
                             <span className='font-semibold'>Origen:</span>
                             <span className='line-clamp-1'>{result.directions.origin.address}</span>
@@ -526,13 +526,10 @@ function BookingDirections({ result }: {
                     </div>
                 </div>
                 <div className="w-fit md:w-1/4 flex items-center justify-center text-sm">
-                    <Button 
-                        variant="default" 
-                        className="w-full px-8 bg-green-600 hover:bg-green-800" 
-                        onClick={() => window.open(googleMapsUrl, '_blank')}
-                    >
+                    <Button variant="default" className="px-6 py-0.5 bg-green-600 hover:bg-green-800"
+                        onClick={() => window.open(googleMapsUrl, '_blank')}>
                         Ver ruta
-                        <MapIcon className='size-4 ml-2' />
+                        <MapIcon className='h-4 w-4 ml-2' />
                     </Button>
                 </div>
             </div>
