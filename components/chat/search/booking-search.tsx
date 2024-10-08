@@ -159,7 +159,7 @@ function SharedServiceTotals({ result }: {
                 <span className='font-semibold'>Pago Total:</span>
                 <span>{chileanPeso.format(totalPayment)}</span>
             </div>
-            <span>·</span>
+            {/* <span>·</span>
             <div className='shared-service-total-estimated-distance flex flex-row gap-1'>
                 <span className='font-semibold'>Distancia Estimada:</span>
                 <span>{totalEstimatedDistance.toFixed(2)} kms</span>
@@ -168,7 +168,7 @@ function SharedServiceTotals({ result }: {
             <div className='shared-service-total-actual-distance flex flex-row gap-1'>
                 <span className='font-semibold'>Distancia Real:</span>
                 <span>{totalActualDistance.toFixed(2)} kms</span>
-            </div>
+            </div> */}
         </div>
     )
 }
@@ -525,7 +525,7 @@ function BookingDirections({ result }: {
                         </div>
                     </div>
                 </div>
-                <div className="w-fit md:w-1/4 flex items-center justify-center text-sm">
+                <div className="w-fit md:w-1/4 flex items-center justify-end text-sm">
                     <Button variant="default" className="px-6 py-0.5 bg-green-600 hover:bg-green-800"
                         onClick={() => window.open(googleMapsUrl, '_blank')}>
                         Ver ruta

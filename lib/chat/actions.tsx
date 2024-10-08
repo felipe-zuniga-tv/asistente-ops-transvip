@@ -199,19 +199,16 @@ async function submitUserMessage(content: string) {
 				parameters: z.object({
 					bookingId: z
 						.number()
-						.describe("El número o código de la reserva o servicio del cual se necesita saber su detalle"),
-					isShared: z
-						.boolean()
-						.describe('Este campo es TRUE en caso de que se pregunte por un paquete, package o ID de un servicio compartido o agrupado')
-						.default(false),
+						.describe("El número o código de la reserva, servicio o paquete del cual se necesita saber su detalle"),
 				}).required(),
-				generate: async function* ({ bookingId, isShared }) {
+				generate: async function* ({ bookingId }) {
 					yield <LoadingMessage text={`Buscando la reserva/paquete ${bookingId}...`} 
 							className="text-xs md:text-base"
 						/>
 
-					const bookingInformation = await getBookingInfo(bookingId, isShared)
-					// console.log(`RESERVA: ${bookingId} - IS SHARED: ${isShared}`);
+					const not_shared_booking = await getBookingInfo(bookingId, false) // NOT SHARED
+					const shared_booking     = await getBookingInfo(bookingId, true)  // SHAREDs
+					const bookingInformation = not_shared_booking ? not_shared_booking : shared_booking
 					
 					// Sort by Job Pickup datetime ascending
 					bookingInformation?.
