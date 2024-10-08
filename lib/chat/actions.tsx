@@ -222,7 +222,7 @@ async function submitUserMessage(content: string) {
 							...aiState.get().messages,
 							{
 								role: 'assistant',
-								content: `Mostrando información ${isShared ? 'del paquete' : 'la reserva'}: ${bookingId}`
+								content: `Mostrando información ${shared_booking ? 'del paquete' : 'la reserva'}: ${bookingId}`
 							},
 						]
 					})
