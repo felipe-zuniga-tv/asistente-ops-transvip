@@ -251,10 +251,10 @@ function VehicleBadges({ result, handleStatusClick } : {
     handleStatusClick: any
 }) {
     return (
-        <div className='gap-2 flex flex-row items-end'>
+        <div className='gap-2 flex flex-row items-center'>
             <VehicleStatusBadge result={result} />
             <ToolsButton item={result} handleClick={() => handleStatusClick({ result })} label={'Ver si el móvil está online'} />
-            <CityBadge branch={result.branch} className='ml-auto' />
+            <CityBadge isCode={false} branch={result.branch} className='ml-auto' />
         </div>
     )
 }

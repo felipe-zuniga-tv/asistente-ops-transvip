@@ -10,7 +10,7 @@ import { BookingInfoOutputProps } from '@/lib/chat/types';
 import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { CheckIcon, ChevronDown, ChevronUp, Clock, GoalIcon, HotelIcon, Mail, MailIcon, Map, MapIcon, MapPin, Pencil, Phone, PhoneIcon, SearchIcon, UserCircleIcon, X } from 'lucide-react';
+import { CheckIcon, Clock, GoalIcon, MailIcon, MapIcon, MapPin, Pencil, PhoneIcon, SearchIcon, UserCircleIcon, X } from 'lucide-react';
 import { WhatsappIcon } from '@/components/ui/icons';
 import { buildWhatsappLink } from '@/lib/chat/functions';
 import { BookingStatusBadge, CityBadge, CustomerVipBadge, PaymentRouteType, PaymentStatusBadge, ServiceNameBadge } from '../badges/chat-badges';
@@ -19,10 +19,6 @@ import DriverAvatar from '@/components/driver/driver-avatar';
 import Zoom from 'react-medium-image-zoom'
 import Image from 'next/image';
 import EmailLink from '@/components/ui/email-link';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { useState } from 'react';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 let chileanPeso = new Intl.NumberFormat('es-CL', {
     style: 'currency',
@@ -586,7 +582,7 @@ function BookingVehicle({ result, handleClick }: {
                         </Badge>
                     </div>
                 </div>
-                <Button variant={'outline'} className='ml-auto px-2.5 rounded-full bg-green-600 hover:bg-green-800 text-white hover:text-white'>
+                <Button variant={'outline'} className='ml-auto px-4 rounded-full bg-green-600 hover:bg-green-800 text-white hover:text-white'>
                     <Link href={whatsappLink}
                         target='_blank'
                         className='flex flex-row items-center gap-0 sm:gap-2'>

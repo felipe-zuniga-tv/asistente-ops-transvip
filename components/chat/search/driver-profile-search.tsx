@@ -9,8 +9,8 @@ import { UserCircle } from 'lucide-react';
 import { DriverProfileProps, DriverVehiclesProps } from '@/lib/chat/types';
 import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
-import DriverAvatar from '@/components/driver/driver-avatar';
 import { Button } from '@/components/ui/button';
+import DriverAvatar from '@/components/driver/driver-avatar';
 import { CityBadge, DriverStatusBadge, LicenseExpirationBadge } from '../badges/chat-badges';
 import Image from 'next/image';
 import Zoom from 'react-medium-image-zoom'
@@ -262,7 +262,7 @@ function DriverBadges({ result, handleStatusClick } : {
     return (
         <div className='gap-2 flex flex-row items-end'>
             <DriverStatusBadge result={result} />
-            <CityBadge branch={result.branch} className='ml-auto' />
+            <CityBadge branch={result.branch} className='ml-auto' isCode={false} />
             {/* <ToolsButton item={result} handleClick={() => handleStatusClick({ result })} label={'Ver si está online'} /> */}
         </div>
     )

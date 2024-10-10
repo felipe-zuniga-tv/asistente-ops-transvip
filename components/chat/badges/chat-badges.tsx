@@ -1,8 +1,8 @@
 import { BookingInfoOutputProps, BranchProps, DriverProfileProps, VehicleDetailProps } from "@/lib/chat/types";
 import { cn } from "@/lib/utils";
-import { Badge } from "../../ui/badge";
 import PaymentAvatar from "../payment/payment-avatar";
 import { differenceInDays } from "date-fns";
+import { Badge } from "@/components/ui/badge";
 
 // Badge Configurations
 const bookingStatus = [
@@ -38,7 +38,7 @@ const vehicleStatus = [
 export function CityBadge({ branch, className, isCode = true }: { branch?: BranchProps, className?: string, isCode?: boolean }) {
     return (
         <Badge variant={"default"} 
-            className={cn("py-1 bg-slate-600 hover:bg-slate-700 text-xs text-white cursor-pointer", className as string)}>
+            className={cn("py-1 bg-slate-600 hover:bg-slate-700 text-xs text-white", className as string)}>
             { isCode ? branch?.code : branch?.name}
         </Badge>
     )
@@ -70,7 +70,7 @@ export function CustomerVipBadge({ result, className = "" } : {
     className?: string
 }) {
     const vipFlagLabel = result.customer.vip_flag ? 'VIP' : 'NO VIP'
-    const vipFlagColor = result.customer.vip_flag ? 'bg-orange-200' : 'bg-slate-700 text-white'
+    const vipFlagColor = result.customer.vip_flag ? 'bg-orange-200 text-black hover:bg-orange-200' : 'bg-slate-700 text-white'
     return (
         <Badge variant={'default'} className={cn('', vipFlagColor, className)}>
             { vipFlagLabel }
