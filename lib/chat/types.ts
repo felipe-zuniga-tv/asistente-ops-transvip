@@ -288,3 +288,13 @@ export interface DriverProfileProps {
     vehicles: DriverVehiclesProps[]
     assigned_cars: DriverAssignedVehiclesProps[]
 }
+
+// UI
+export interface User {
+    full_name: string;
+    email: string;
+}
+
+export interface Session {
+    user: User;
+}
