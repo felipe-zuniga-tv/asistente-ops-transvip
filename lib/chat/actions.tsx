@@ -322,13 +322,16 @@ async function submitUserMessage(content: string) {
 			},
 			getDriverProfile: {
 				description: `Utiliza esta función para obtener información general del perfil de un conductor
-					de Transvip, como su nombre, teléfono, y otros. Se realiza la búsqueda sólo por email.`,
+					de Transvip, como su nombre, teléfono, y otros. NO utilizar si se quiere armar un resumen de
+					las evaluaciones del conductor.`,
 				parameters: z.object({
 					driverQuery: z
 						.string()
 						.describe(`El email o teléfono del conductor del cual se quiere buscar su perfil.`),
 				}).required(),
 				generate: async function* ({ driverQuery }) {
+					console.log(driverQuery)
+					
 					// Clean query
 					let driverQueryClean = driverQuery.trim().replace("+", "").replace("  ", "")
 
@@ -338,6 +341,8 @@ async function submitUserMessage(content: string) {
 
 					const fleetId = await searchDriver(driverQueryClean)
 					const driverProfile = await getDriverProfile(fleetId)
+
+					console.log(driverProfile)
 					
 					aiState.update({
 						...aiState.get(),
@@ -363,8 +368,8 @@ async function submitUserMessage(content: string) {
 			},
 			getDriverRatings: {
 				description: `Utiliza esta función para construir un resumen de las evaluaciones que este conductor
-					ha recibido de parte de los pasajeros en los últimos 90 días.
-					Se realiza la búsqueda sólo por email o por teléfono.`,
+					ha recibido de parte de los pasajeros en los últimos 90 días. Se realiza la búsqueda sólo por 
+					email o por teléfono. NO utilizar si sólo se quiere obtener el perfil del conductor.`,
 				parameters: z.object({
 					driverQuery: z
 						.string()

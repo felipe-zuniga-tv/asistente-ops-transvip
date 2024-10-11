@@ -260,7 +260,7 @@ function DriverBadges({ result, handleStatusClick } : {
     handleStatusClick?: any
 }) {
     return (
-        <div className='gap-2 flex flex-row items-end'>
+        <div className='gap-2 flex flex-row items-center'>
             <DriverStatusBadge result={result} />
             <CityBadge branch={result.branch} className='ml-auto' isCode={false} />
             {/* <ToolsButton item={result} handleClick={() => handleStatusClick({ result })} label={'Ver si está online'} /> */}
