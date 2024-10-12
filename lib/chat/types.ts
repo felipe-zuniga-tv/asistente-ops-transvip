@@ -293,6 +293,7 @@ export interface DriverProfileProps {
 export interface User {
     full_name: string;
     email: string;
+    accessToken?: string
 }
 
 export interface Session {

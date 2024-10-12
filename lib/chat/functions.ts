@@ -634,7 +634,7 @@ export async function getZonaIluminadaServices(zone_id: number) {
     return results
 }
 
-export async function getAirportStatus(zone: any) {
+export async function getAirportStatus(branchId : number, zoneId: number, vehicle_id_list: string) {
     const session = await getSession()
     const currentUser = session?.user as any
     const accessToken = currentUser?.accessToken as string
@@ -643,21 +643,18 @@ export async function getAirportStatus(zone: any) {
 
     const params = [
         `access_token=${accessToken}`,
-        `branch_id=${zone.branch_id}`,
-        `zone_id=${zone.region.region_id}`,
-
+        `branch_id=${branchId}`,
+        `zone_id=${zoneId}`,
+        'offset=0',
+        'limit=200',
+        `vehicle_id=${vehicle_id_list}`
     ].join("&")
 
-    // const { status, data } = await getResponseFromURL(`${AIRPORT_ZONE_API_URL}?${params}`)
+    const { status, data } = await getResponseFromURL(`${AIRPORT_ZONE_API_URL}?${params}`)
 
-    // if (status !== 200) return null
+    if (status !== 200) return null
 
-    // const { driver_detail } = data
-//     access_token: 18917535fb6b9366ad8d3650666c26b5
-// branch_id: 1
-// limit: 10
-// offset: 0
-// vehicle_id: [1,5,7]
-// zone_id: 2
+    const { result } = data
 
+    return result
 } 

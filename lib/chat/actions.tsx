@@ -331,7 +331,7 @@ async function submitUserMessage(content: string) {
 				}).required(),
 				generate: async function* ({ driverQuery }) {
 					console.log(driverQuery)
-					
+
 					// Clean query
 					let driverQueryClean = driverQuery.trim().replace("+", "").replace("  ", "")
 
