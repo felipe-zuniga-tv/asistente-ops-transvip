@@ -11,18 +11,19 @@ const AIRPORT_ZONES = [
     { city_name: 'Antofagasta', airport_code: 'ANF', branch_id: 34, zone_id: 3 }
 ]
 
-interface AirportVehicle {
+interface AirportVehicleType {
     id: number[]
     count: number
     vehicle_image: string
     name: string
 }
 
-export default function AirportStatusClient({ initialData, zoneId: initialZoneId }: {
-    initialData: AirportVehicle[]
+export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZoneId }: {
+    vehicleTypesList: AirportVehicleType[]
     zoneId: number
 }) {
-    const [vehicleData, setVehicleData] = useState(initialData)
+    const [vehicleTypes, setvehicleTypes] = useState(vehicleTypesList)
+    const [vehicleList, setvehicleList] = useState([])
     const [selectedZone, setSelectedZone] = useState(AIRPORT_ZONES.find(zone => zone.zone_id === initialZoneId) || AIRPORT_ZONES[0])
     const [selectedType, setSelectedType] = useState<string | null>(null); // Update state type
 
@@ -32,7 +33,7 @@ export default function AirportStatusClient({ initialData, zoneId: initialZoneId
             const response = await fetch(`/api/airport/refresh-dashboard?zoneId=${selectedZone.zone_id}`)
             if (response.ok) {
                 const data = await response.json()
-                setVehicleData(data)
+                setvehicleTypes(data)
                 if (data.length > 0) {
                     setSelectedType(data[0].name) // Automatically select the first vehicle type
                 }
@@ -51,7 +52,7 @@ export default function AirportStatusClient({ initialData, zoneId: initialZoneId
             const response = await fetch(`/api/airport/get-vehicles-dashboard?branchId=${selectedZone.branch_id}&zoneId=${selectedZone.zone_id}&vehicleId=[2,6]`)
             if (response.ok) {
                 const data = await response.json()
-                // setVehicleData(data)
+                // setvehicleTypes(data)
             }
         }
 
@@ -94,8 +95,8 @@ export default function AirportStatusClient({ initialData, zoneId: initialZoneId
 
             {/* Vehicle Type Buttons */}
             <div className="bg-white shadow-sm p-4 flex justify-center space-x-4 h-1/5 min-h-fit">
-                { vehicleData.length === 0 && (<span className=''>No hay vehículos en la Zona iluminada</span>)}
-                { vehicleData.map((vType : AirportVehicle) => (
+                { vehicleTypes.length === 0 && (<span className=''>No hay vehículos en la Zona iluminada</span>)}
+                { vehicleTypes.map((vType : AirportVehicleType) => (
                     <Button
                         key={vType.name}
                         onClick={() => setSelectedType(vType.name)}
@@ -125,7 +126,7 @@ export default function AirportStatusClient({ initialData, zoneId: initialZoneId
                         </tr>
                     </thead>
                     <tbody>
-                        {vehicleData.vehicles.map((vehicle, index) => (
+                        {vehicleList.vehicles.map((vehicle, index) => (
                             <tr key={vehicle.id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
                                 <td className="py-4 px-4">{index + 1}</td>
                                 <td className="py-4 px-4">{vehicle.id}</td>
