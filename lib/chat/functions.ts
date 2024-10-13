@@ -647,7 +647,7 @@ export async function getAirportStatus(branchId : number, zoneId: number, vehicl
         `zone_id=${zoneId}`,
         'offset=0',
         'limit=200',
-        `vehicle_id=${vehicle_id_list}`
+        `vehicle_id=%5B${vehicle_id_list}%5D`
     ].join("&")
 
     const { status, data } = await getResponseFromURL(`${AIRPORT_ZONE_API_URL}?${params}`)

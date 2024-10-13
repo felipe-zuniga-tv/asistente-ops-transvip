@@ -13,7 +13,7 @@ export default function DashboardPage() {
 
 async function AirportStatusDashboard({ zoneId }: { zoneId: number }) {
     const data = await getZonaIluminadaServices(zoneId)
-    console.log(data);
+    // console.log(data);
     
     return <AirportStatusClient vehicleTypesList={data} zoneId={zoneId} />
   }

@@ -18,25 +18,41 @@ interface AirportVehicleType {
     name: string
 }
 
+interface AirportVehicleDetail {
+    unique_car_id: string
+    tipo_contrato: string
+    name: string
+    action: number
+    fleet_id: number
+    fleet_name: string
+    entry_time: string
+    total_passengers: number
+    passenger_entry_time: string
+}
+
 export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZoneId }: {
     vehicleTypesList: AirportVehicleType[]
     zoneId: number
 }) {
-    const [vehicleTypes, setvehicleTypes] = useState(vehicleTypesList)
-    const [vehicleList, setvehicleList] = useState([])
+    const [vehicleTypes, setVehicleTypes] = useState(vehicleTypesList)
+    const [vehicleList, setVehicleList] = useState<AirportVehicleDetail[]>([]) // Changed initial state from null to an empty array
     const [selectedZone, setSelectedZone] = useState(AIRPORT_ZONES.find(zone => zone.zone_id === initialZoneId) || AIRPORT_ZONES[0])
     const [selectedType, setSelectedType] = useState<string | null>(null); // Update state type
 
+    const fetchVehicles = async (vehicleId : string) => {
+        const response = await fetch(`/api/airport/get-vehicles-dashboard?branchId=${selectedZone.branch_id}&zoneId=${selectedZone.zone_id}&vehicleId=${vehicleId}`)
+        if (response.ok) {
+            const data = await response.json()
+            setVehicleList(data)
+        }
+    }
+
     useEffect(() => {
         const fetchUpdates = async () => {
-            console.log(selectedZone)
             const response = await fetch(`/api/airport/refresh-dashboard?zoneId=${selectedZone.zone_id}`)
             if (response.ok) {
                 const data = await response.json()
-                setvehicleTypes(data)
-                if (data.length > 0) {
-                    setSelectedType(data[0].name) // Automatically select the first vehicle type
-                }
+                setVehicleTypes(data)
             }
         }
 
@@ -46,27 +62,44 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
         return () => clearInterval(interval)
     }, [selectedZone])
 
+    // First Render
     useEffect(() => {
         const fetchVehicles = async () => {
             console.log(`Selected Type: ${selectedType}`)
-            const response = await fetch(`/api/airport/get-vehicles-dashboard?branchId=${selectedZone.branch_id}&zoneId=${selectedZone.zone_id}&vehicleId=[2,6]`)
+            const response = await fetch(`/api/airport/get-vehicles-dashboard?branchId=${selectedZone.branch_id}&zoneId=${selectedZone.zone_id}&vehicleId=${vehicleTypes[0].id}`)
             if (response.ok) {
                 const data = await response.json()
-                // setvehicleTypes(data)
+                setVehicleList(data)
             }
         }
 
-        fetchVehicles() // Fetch immediately when component mounts or zone changes
-        const interval = setInterval(fetchVehicles, 10000) // Then every 10 seconds
+        // New effect to select the first vehicle type on render
+        if (vehicleTypes.length > 0 && !selectedType) {
+            setSelectedType(vehicleTypes[0].name); // Select the first vehicle type on initial render
+            fetchVehicles()
+        }
+    }, []) // Dependency on vehicleTypes
 
-        return () => clearInterval(interval)
-    }, [selectedType])
+    useEffect(() => {
+        const fetchVehicles = async () => {
+            console.log(`Selected Type: ${selectedType}`)
+            const response = await fetch(`/api/airport/get-vehicles-dashboard?branchId=${selectedZone.branch_id}&zoneId=${selectedZone.zone_id}&vehicleId=${vehicleTypes.find(v => v.name === selectedType)?.id}`)
+            if (response.ok) {
+                const data = await response.json()
+                setVehicleList(data)
+            }
+        }
+        // Fetch vehicles whenever selectedType changes
+        if (selectedType) {
+            fetchVehicles()
+        }
+    }, [selectedType, vehicleTypes]) // Dependency on selectedType and vehicleTypes
 
     const calculateDuration = (entryTime: String) => {
         const entry = new Date(entryTime as string)
         const now = new Date()
         const diffInMinutes = Math.floor((now.getTime() - entry.getTime()) / 60000)
-        return `${entryTime} (${diffInMinutes} min)`
+        return `${entry.toLocaleString('es-CL')} (${diffInMinutes} min)`
     }
 
     return (
@@ -113,32 +146,35 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
             </div>
 
             {/* Vehicle List */}
-            {/* <div className="flex-grow overflow-auto p-4 h-4/5_">
+            <div className="flex-grow overflow-auto p-4">
                 <table className="w-full bg-white shadow-lg rounded-lg overflow-hidden">
                     <thead className="bg-gray-200 text-gray-700">
                         <tr>
-                            <th className="py-4 px-4 text-left">#</th>
-                            <th className="py-4 px-4 text-left">MÓVIL</th>
-                            <th className="py-4 px-4 text-left">CONDUCTOR</th>
-                            <th className="py-4 px-4 text-left">ENTRADA</th>
-                            <th className="py-4 px-4 text-left">CON PAX</th>
-                            <th className="py-4 px-4 text-left">PAX</th>
+                            <th className="p-4 text-center">#</th>
+                            <th className="p-4 text-center">MÓVIL</th>
+                            <th className="hidden p-4 text-center">CONTRATO</th>
+                            <th className="p-4 text-center">CONDUCTOR</th>
+                            <th className="p-4 text-center">ENTRADA</th>
+                            <th className="p-4 text-center">CON PAX</th>
+                            <th className="p-4 text-center">PAX</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {vehicleList.vehicles.map((vehicle, index) => (
-                            <tr key={vehicle.id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                                <td className="py-4 px-4">{index + 1}</td>
-                                <td className="py-4 px-4">{vehicle.id}</td>
-                                <td className="py-4 px-4">{vehicle.driver}</td>
-                                <td className="py-4 px-4">{calculateDuration(vehicle.entryTime)}</td>
-                                <td className="py-4 px-4">{vehicle.duration}</td>
-                                <td className="py-4 px-4">{vehicle.passengers}</td>
+                        {vehicleList.length === 0 && <tr className='p-4'>Sin resultados</tr>}
+                        {vehicleList.map((vehicle, index) => (
+                            <tr key={vehicle.unique_car_id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                                <td className="p-4 text-center">{index + 1}</td>
+                                <td className="p-4 text-center">{vehicle.unique_car_id}{vehicle.tipo_contrato === 'Leasing' ? 'L': ''}</td>
+                                <td className="hidden p-4 text-center">{vehicle.tipo_contrato}</td>
+                                <td className="p-4 text-center">{vehicle.fleet_name}</td>
+                                <td className="p-4 text-center">{calculateDuration(vehicle.entry_time)}</td>
+                                <td className="p-4 text-center">{vehicle.passenger_entry_time ? new Date(vehicle.passenger_entry_time).toLocaleString('es-CL') : '-'}</td>
+                                <td className="p-4 text-center">{vehicle.total_passengers ? vehicle.total_passengers : 0}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-            </div> */}
+            </div>
         </div>
     )
 }
