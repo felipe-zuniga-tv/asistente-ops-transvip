@@ -152,6 +152,7 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
                         <tr>
                             <th className="p-4 text-center">#</th>
                             <th className="p-4 text-center">MÓVIL</th>
+                            <th className="p-4 text-center"></th>
                             <th className="hidden p-4 text-center">CONTRATO</th>
                             <th className="p-4 text-center">CONDUCTOR</th>
                             <th className="p-4 text-center">ENTRADA</th>
@@ -160,15 +161,17 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
                         </tr>
                     </thead>
                     <tbody>
-                        {vehicleList.length === 0 && <tr className='p-4'>Sin resultados</tr>}
-                        {vehicleList.map((vehicle, index) => (
+                        { vehicleList.length === 0 && <tr className='p-4'>Sin resultados</tr>}
+                        { vehicleList.map((vehicle, index) => (
                             <tr key={vehicle.unique_car_id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
                                 <td className="p-4 text-center">{index + 1}</td>
                                 <td className="p-4 text-center">{vehicle.unique_car_id}{vehicle.tipo_contrato === 'Leasing' ? 'L': ''}</td>
+                                <td className="p-4 text-center">{vehicle.name.includes('*') ? 'D80' : ''}</td>
                                 <td className="hidden p-4 text-center">{vehicle.tipo_contrato}</td>
-                                <td className="p-4 text-center">{vehicle.fleet_name}</td>
+                                <td className="p-4 text-center">{vehicle.fleet_name.trim()}</td>
                                 <td className="p-4 text-center">{calculateDuration(vehicle.entry_time)}</td>
-                                <td className="p-4 text-center">{vehicle.passenger_entry_time ? new Date(vehicle.passenger_entry_time).toLocaleString('es-CL') : '-'}</td>
+                                <td className="p-4 text-center">{vehicle.passenger_entry_time ? calculateDuration(vehicle.passenger_entry_time) : '-'}</td>
+                                <td className="hidden p-4 text-center">{vehicle.passenger_entry_time ? new Date(vehicle.passenger_entry_time).toLocaleString('es-CL') : '-'}</td>
                                 <td className="p-4 text-center">{vehicle.total_passengers ? vehicle.total_passengers : 0}</td>
                             </tr>
                         ))}

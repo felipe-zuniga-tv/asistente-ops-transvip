@@ -3,7 +3,7 @@ import { Button } from "./button";
 import { Card, CardContent } from "./card";
 import { ArrowRightCircle } from "lucide-react";
 
-export default function SidebarList({ className }) {
+export default function SidebarList({ className } : { className : string }) {
     return (
         <div className={cn("hidden md:block overflow-auto border-l border-gray-200 dark:border-gray-800", className)}>
             <div className="p-6 py-4 text-white">

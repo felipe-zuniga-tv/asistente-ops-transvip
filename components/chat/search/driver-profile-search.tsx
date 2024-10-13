@@ -5,7 +5,6 @@ import {
 } from 'ai/rsc'
 import { nanoid } from 'nanoid';
 import { UserCircle } from 'lucide-react';
-// import { cn } from '@/lib/utils';
 import { DriverProfileProps, DriverVehiclesProps } from '@/lib/chat/types';
 import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
@@ -15,7 +14,6 @@ import { CityBadge, DriverStatusBadge, LicenseExpirationBadge } from '../badges/
 import Image from 'next/image';
 import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
-import Link from 'next/link';
 
 export function DriverProfile({ session, driverProfile, content }: { 
     session: any,

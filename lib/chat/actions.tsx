@@ -10,9 +10,9 @@ import {
 import { z } from "zod";
 import { openai } from "@ai-sdk/openai";
 import { getSession } from "../auth";
-import { VEHICLE_STATUS, getAirportZone, getDriverRatingSummary, nanoid } from "@/lib/utils";
+import { VEHICLE_STATUS, getDriverRatingSummary, nanoid } from "@/lib/utils";
 import { CREATE_DRIVER_RATINGS_SUMMARY, CREATE_TEXT_PROMPT, EMAIL_TEXT_OPS_EXAMPLE, SYSTEM_MESSAGE } from "./config";
-import { getVehicleStatus, getBookingInfo, getVehicleDetail, getDriverProfile, searchDriver, getDriverRatings, getBookings, getZonaIluminada, getAirportStatus, getZonaIluminadaServices } from "./functions";
+import { getVehicleStatus, getBookingInfo, getVehicleDetail, getDriverProfile, searchDriver, getDriverRatings, getBookings, getZonaIluminadaServices } from "./functions";
 import { BotCard, AssistantMessage, LoadingMessage, UserMessage } from "@/components/chat/message";
 import { VehicleStatusSearch } from "@/components/chat/search/vehicle-status-search";
 import { BookingIdSearch } from "@/components/chat/search/booking-search";
