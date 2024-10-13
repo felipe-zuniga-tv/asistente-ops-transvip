@@ -5,6 +5,9 @@ import { Car, Users } from 'lucide-react'
 import { TransvipLogo } from '../transvip/transvip-logo'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { Button } from '../ui/button'
+import { calculateDuration, cn } from '@/lib/utils'
+import Image from 'next/image'
+import { LiveClock } from '../ui/live-clock'
 
 const AIRPORT_ZONES = [
     { city_name: 'Santiago', airport_code: 'SCL', branch_id: 1, zone_id: 2 },
@@ -34,18 +37,10 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
     vehicleTypesList: AirportVehicleType[]
     zoneId: number
 }) {
-    const [vehicleTypes, setVehicleTypes] = useState(vehicleTypesList)
-    const [vehicleList, setVehicleList] = useState<AirportVehicleDetail[]>([]) // Changed initial state from null to an empty array
     const [selectedZone, setSelectedZone] = useState(AIRPORT_ZONES.find(zone => zone.zone_id === initialZoneId) || AIRPORT_ZONES[0])
+    const [vehicleTypes, setVehicleTypes] = useState(vehicleTypesList)
     const [selectedType, setSelectedType] = useState<string | null>(null); // Update state type
-
-    const fetchVehicles = async (vehicleId : string) => {
-        const response = await fetch(`/api/airport/get-vehicles-dashboard?branchId=${selectedZone.branch_id}&zoneId=${selectedZone.zone_id}&vehicleId=${vehicleId}`)
-        if (response.ok) {
-            const data = await response.json()
-            setVehicleList(data)
-        }
-    }
+    const [vehicleList, setVehicleList] = useState<AirportVehicleDetail[]>([]) // Changed initial state from null to an empty array
 
     useEffect(() => {
         const fetchUpdates = async () => {
@@ -77,12 +72,19 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
         if (vehicleTypes.length > 0 && !selectedType) {
             setSelectedType(vehicleTypes[0].name); // Select the first vehicle type on initial render
             fetchVehicles()
+        } else {
+            setSelectedType(null)
         }
     }, []) // Dependency on vehicleTypes
 
     useEffect(() => {
         const fetchVehicles = async () => {
             console.log(`Selected Type: ${selectedType}`)
+            if (!selectedType) {
+                setVehicleList([])
+                return
+            }
+            
             const response = await fetch(`/api/airport/get-vehicles-dashboard?branchId=${selectedZone.branch_id}&zoneId=${selectedZone.zone_id}&vehicleId=${vehicleTypes.find(v => v.name === selectedType)?.id}`)
             if (response.ok) {
                 const data = await response.json()
@@ -94,13 +96,6 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
             fetchVehicles()
         }
     }, [selectedType, vehicleTypes]) // Dependency on selectedType and vehicleTypes
-
-    const calculateDuration = (entryTime: String) => {
-        const entry = new Date(entryTime as string)
-        const now = new Date()
-        const diffInMinutes = Math.floor((now.getTime() - entry.getTime()) / 60000)
-        return `${entry.toLocaleString('es-CL')} (${diffInMinutes} min)`
-    }
 
     return (
         <div className="flex flex-col h-screen bg-gray-100">
@@ -124,60 +119,106 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
                     </div>
                 </div>
                 <h1 className="text-2xl font-bold text-white">Zona Iluminada</h1>
+                <LiveClock />
             </header>
-
             {/* Vehicle Type Buttons */}
-            <div className="bg-white shadow-sm p-4 flex justify-center space-x-4 h-1/5 min-h-fit">
-                { vehicleTypes.length === 0 && (<span className=''>No hay vehículos en la Zona iluminada</span>)}
-                { vehicleTypes.map((vType : AirportVehicleType) => (
-                    <Button
-                        key={vType.name}
-                        onClick={() => setSelectedType(vType.name)}
-                        className={`flex flex-col items-center justify-center p-4 rounded-lg transition-colors w-48 h-32 ${selectedType === vType.name
-                            ? 'bg-transvip hover:bg-transvip-dark text-white'
-                            : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
-                            }`}
-                    >
-                        {vType.name.toLowerCase() === 'minibus' ? <Users className="w-12 h-12 mb-2" /> : <Car className="w-12 h-12 mb-2" />}
-                        <span className="text-xl font-semibold">{vType.name}</span>
-                        <span className="text-2xl font-bold">{vType.count}</span>
-                    </Button>
-                ))}
-            </div>
+            <VehicleTypes vehicleTypes={vehicleTypes}
+                selectedType={selectedType || ''} 
+                handleSelectedType={(type) => setSelectedType(type)} />
+
+            <VehicleListSummary vehicleList={vehicleList} />
 
             {/* Vehicle List */}
-            <div className="flex-grow overflow-auto p-4">
-                <table className="w-full bg-white shadow-lg rounded-lg overflow-hidden">
-                    <thead className="bg-gray-200 text-gray-700">
-                        <tr>
-                            <th className="p-4 text-center">#</th>
-                            <th className="p-4 text-center">MÓVIL</th>
-                            <th className="p-4 text-center"></th>
-                            <th className="hidden p-4 text-center">CONTRATO</th>
-                            <th className="p-4 text-center">CONDUCTOR</th>
-                            <th className="p-4 text-center">ENTRADA</th>
-                            <th className="p-4 text-center">CON PAX</th>
-                            <th className="p-4 text-center">PAX</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        { vehicleList.length === 0 && <tr className='p-4'>Sin resultados</tr>}
-                        { vehicleList.map((vehicle, index) => (
-                            <tr key={vehicle.unique_car_id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                                <td className="p-4 text-center">{index + 1}</td>
-                                <td className="p-4 text-center">{vehicle.unique_car_id}{vehicle.tipo_contrato === 'Leasing' ? 'L': ''}</td>
-                                <td className="p-4 text-center">{vehicle.name.includes('*') ? 'D80' : ''}</td>
-                                <td className="hidden p-4 text-center">{vehicle.tipo_contrato}</td>
-                                <td className="p-4 text-center">{vehicle.fleet_name.trim()}</td>
-                                <td className="p-4 text-center">{calculateDuration(vehicle.entry_time)}</td>
-                                <td className="p-4 text-center">{vehicle.passenger_entry_time ? calculateDuration(vehicle.passenger_entry_time) : '-'}</td>
-                                <td className="hidden p-4 text-center">{vehicle.passenger_entry_time ? new Date(vehicle.passenger_entry_time).toLocaleString('es-CL') : '-'}</td>
-                                <td className="p-4 text-center">{vehicle.total_passengers ? vehicle.total_passengers : 0}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            <VehicleListDetail vehicleList={vehicleList} />
+        </div>
+    )
+}
+
+function VehicleTypes({ vehicleTypes, handleSelectedType, selectedType }: { 
+    vehicleTypes: AirportVehicleType[]
+    handleSelectedType: (arg0: string) => void
+    selectedType: string
+}) {
+    if (!vehicleTypes || vehicleTypes.length === 0) {
+        return <span className='font-semibold'>No hay vehículos en la Zona iluminada</span>
+    }
+
+    return (
+        <div className="bg-white shadow-sm p-4 flex justify-center space-x-4 min-h-fit text-xl lg:text-base">
+            { vehicleTypes.map((vType : AirportVehicleType) => (
+                <Button key={vType.name}
+                    onClick={() => handleSelectedType(vType.name)}
+                    className={`flex flex-col items-center justify-center p-4 rounded-lg transition-colors w-48 h-auto ${selectedType === vType.name
+                        ? 'bg-transvip hover:bg-transvip-dark text-white'
+                        : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                        }`}
+                >
+                    {/* <Image src={vType.vehicle_image} height={50} width={50} className='h-12 w-auto' alt={vType.name} /> */}
+                    { vType.name.toLowerCase() === 'minibus' ? <Users className="w-12 h-12 mb-2" /> : <Car className="w-12 h-12 mb-2" />}
+                    <div className='flex flex-row items-center gap-2 justify-center'>
+                        <span className="text-2xl font-semibold">{vType.name}</span>
+                        <span className="font-semibold">·</span>
+                        <span className="text-2xl font-semibold">{vType.count}</span>
+                    </div>
+                </Button>
+            ))}
+        </div>
+    )
+}
+
+function VehicleListSummary({ vehicleList }: { vehicleList : AirportVehicleDetail[] }) {
+    const vehicles_with_passengers = !vehicleList ? 0 : vehicleList.filter(v => v.total_passengers > 0).length
+    const vehicles_without_passengers = !vehicleList ? 0 : vehicleList.filter(v => v.total_passengers === 0 || !v.total_passengers).length
+
+    return (
+        <div className='w-full p-3 bg-white flex justify-center items-center gap-3 text-xl lg:text-base'>
+            <div className='flex flex-row gap-1 justify-center items-center'>
+                <span className='font-semibold'>Con Pasajeros:</span>
+                <span>{vehicles_with_passengers}</span>
             </div>
+            <span>·</span>
+            <div className='flex flex-row gap-1 justify-center items-center'>
+                <span className='font-semibold'>Sin Pasajeros:</span>
+                <span>{ vehicles_without_passengers }</span>
+            </div>
+        </div>
+    )
+}
+
+function VehicleListDetail({ vehicleList } : { vehicleList: AirportVehicleDetail[] }) {
+    if (!vehicleList || vehicleList.length === 0) {
+        return <div className='w-full p-3 font-bold'>Sin resultados</div>
+    }
+
+    return (
+        <div className="flex-grow overflow-auto p-3">
+            <table className="w-full bg-white shadow-lg rounded-lg overflow-hidden">
+                <thead className="bg-gray-200 text-gray-700">
+                    <tr className='text-xl lg:text-base'>
+                        <th className="p-4 text-center">#</th>
+                        <th className="p-4 text-center">Móvil</th>
+                        <th className="p-4 text-center"></th>
+                        <th className="p-4 text-center">Conductor</th>
+                        <th className="p-4 text-center">Entrada ZI</th>
+                        <th className="p-4 text-center min-w-[100px]">Con Pax</th>
+                        <th className="p-4 text-center">Pax</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    { vehicleList.map((vehicle, index) => (
+                        <tr key={vehicle.unique_car_id} className={cn('text-xl lg:text-base', index % 2 === 0 ? 'bg-gray-50' : 'bg-white')}>
+                            <td className="p-4 text-center">{index + 1}</td>
+                            <td className="p-4 text-center">{vehicle.unique_car_id}{vehicle.tipo_contrato === 'Leasing' ? 'L': ''}</td>
+                            <td className="p-4 text-center">{vehicle.name.includes('*') ? 'D80' : ''}</td>
+                            <td className="p-4 text-center">{vehicle.fleet_name.trim()}</td>
+                            <td className="p-4 text-center">{calculateDuration(vehicle.entry_time, false)}</td>
+                            <td className="p-4 text-center">{vehicle.passenger_entry_time ? calculateDuration(vehicle.passenger_entry_time) : '-'}</td>
+                            <td className="hidden p-4 text-center">{vehicle.passenger_entry_time ? new Date(vehicle.passenger_entry_time).toLocaleString('es-CL') : '-'}</td>
+                            <td className="p-4 text-center">{vehicle.total_passengers ? vehicle.total_passengers : 0}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     )
 }
