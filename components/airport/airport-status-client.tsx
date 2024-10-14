@@ -144,21 +144,21 @@ function VehicleTypes({ vehicleTypes, handleSelectedType, selectedType }: {
     }
 
     return (
-        <div className="bg-white shadow-sm p-4 flex justify-center space-x-4 min-h-fit text-xl lg:text-base">
+        <div className="bg-white shadow-sm p-4 flex justify-center space-x-4 min-h-fit text-3xl lg:text-xl">
             { vehicleTypes.map((vType : AirportVehicleType) => (
                 <Button key={vType.name}
                     onClick={() => handleSelectedType(vType.name)}
-                    className={`flex flex-col items-center justify-center p-4 rounded-lg transition-colors w-48 h-auto ${selectedType === vType.name
-                        ? 'bg-transvip hover:bg-transvip-dark text-white'
+                    className={`flex flex-col items-center justify-center p-4 rounded-lg transition-colors w-48 h-32 ${selectedType === vType.name
+                        ? 'bg-slate-700 hover:bg-slate-500 text-white'
                         : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
                         }`}
                 >
-                    {/* <Image src={vType.vehicle_image} height={50} width={50} className='h-12 w-auto' alt={vType.name} /> */}
-                    { vType.name.toLowerCase() === 'minibus' ? <Users className="w-12 h-12 mb-2" /> : <Car className="w-12 h-12 mb-2" />}
-                    <div className='flex flex-row items-center gap-2 justify-center'>
-                        <span className="text-2xl font-semibold">{vType.name}</span>
-                        <span className="font-semibold">·</span>
-                        <span className="text-2xl font-semibold">{vType.count}</span>
+                    {/* <Image src={vType.vehicle_image} height={50} width={50} className='h-12 w-auto' alt={vType.name} />
+                    { vType.name.toLowerCase() === 'minibus' ? <Users className="w-12 h-12 mb-2" /> : <Car className="w-12 h-12 mb-2" />} */}
+                    <div className='flex flex-col items-center gap-2 justify-center'>
+                        <span className="text-3xl font-semibold">{vType.name}</span>
+                        <span className="hidden font-semibold">·</span>
+                        <span className="text-3xl font-semibold">{vType.count}</span>
                     </div>
                 </Button>
             ))}
@@ -171,7 +171,7 @@ function VehicleListSummary({ vehicleList }: { vehicleList : AirportVehicleDetai
     const vehicles_without_passengers = !vehicleList ? 0 : vehicleList.filter(v => v.total_passengers === 0 || !v.total_passengers).length
 
     return (
-        <div className='w-full p-3 bg-white flex justify-center items-center gap-3 text-xl lg:text-base'>
+        <div className='w-full p-3 bg-white flex justify-center items-center gap-3 text-2xl lg:text-xl'>
             <div className='flex flex-row gap-1 justify-center items-center'>
                 <span className='font-semibold'>Con Pasajeros:</span>
                 <span>{vehicles_with_passengers}</span>
@@ -187,38 +187,91 @@ function VehicleListSummary({ vehicleList }: { vehicleList : AirportVehicleDetai
 
 function VehicleListDetail({ vehicleList } : { vehicleList: AirportVehicleDetail[] }) {
     if (!vehicleList || vehicleList.length === 0) {
-        return <div className='w-full p-3 font-bold'>Sin resultados</div>
+        return <div className='w-full p-4 font-bold text-center text-3xl'>Sin resultados</div>
     }
 
+    const maxWaitTime = 15
+
     return (
-        <div className="flex-grow overflow-auto p-3">
-            <table className="w-full bg-white shadow-lg rounded-lg overflow-hidden">
-                <thead className="bg-gray-200 text-gray-700">
-                    <tr className='text-xl lg:text-base'>
-                        <th className="p-4 text-center">#</th>
-                        <th className="p-4 text-center">Móvil</th>
-                        <th className="p-4 text-center"></th>
-                        <th className="p-4 text-center">Conductor</th>
-                        <th className="p-4 text-center">Entrada ZI</th>
-                        <th className="p-4 text-center min-w-[100px]">Con Pax</th>
-                        <th className="p-4 text-center">Pax</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    { vehicleList.map((vehicle, index) => (
-                        <tr key={vehicle.unique_car_id} className={cn('text-xl lg:text-base', index % 2 === 0 ? 'bg-gray-50' : 'bg-white')}>
-                            <td className="p-4 text-center">{index + 1}</td>
-                            <td className="p-4 text-center">{vehicle.unique_car_id}{vehicle.tipo_contrato === 'Leasing' ? 'L': ''}</td>
-                            <td className="p-4 text-center">{vehicle.name.includes('*') ? 'D80' : ''}</td>
-                            <td className="p-4 text-center">{vehicle.fleet_name.trim()}</td>
-                            <td className="p-4 text-center">{calculateDuration(vehicle.entry_time, false)}</td>
-                            <td className="p-4 text-center">{vehicle.passenger_entry_time ? calculateDuration(vehicle.passenger_entry_time) : '-'}</td>
-                            <td className="hidden p-4 text-center">{vehicle.passenger_entry_time ? new Date(vehicle.passenger_entry_time).toLocaleString('es-CL') : '-'}</td>
-                            <td className="p-4 text-center">{vehicle.total_passengers ? vehicle.total_passengers : 0}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div className="flex-grow overflow-auto p-3 w-full text-xl lg:text-base">
+            { vehicleList.map((vehicle, index) => {
+                const waitTime = vehicle.passenger_entry_time ? calculateDuration(vehicle.passenger_entry_time) : null
+
+                // Determine background color based on wait time
+                let bgColor = index % 2 === 0 ? 'bg-gray-50' : 'bg-white'; // Default color
+                
+                if (waitTime && waitTime >= 10 && waitTime < maxWaitTime) {
+                    const intensity = Math.min((waitTime - 10) / (maxWaitTime - 10), 1); // Calculate intensity from 0 to 1
+                    bgColor = `bg-gradient-to-r from-yellow-200 to-red-200 opacity-${Math.round(intensity * 100)}`; // Gradually change to red
+                } else if (waitTime && waitTime >= maxWaitTime) {
+                    bgColor = 'bg-gradient-to-r from-red-200 to-red-400/80'; // Full red if over max wait time
+                }
+
+                return (
+                    <div key={vehicle.unique_car_id} 
+                        className={cn(`mb-4 p-4 shadow-md rounded-lg w-full flex flex-row gap-8 items-center justify-start ${bgColor}`
+                    )}>
+                        <div className='vehicle-index font-semibold text-2xl w-[50px] text-center'>{index + 1}</div>
+                        <div className='vehicle-driver flex flex-col gap-1 justify-center items-center w-[220px]'>
+                            <div className='flex flex-row gap-1 justify-center items-center'>
+                                <span className="">{vehicle.unique_car_id}{vehicle.tipo_contrato === 'Leasing' ? 'L': ''}</span>
+                                { vehicle.name.includes('*') && (
+                                    <>
+                                        <span>·</span>
+                                        <span className="text-blue-600 font-bold">{vehicle.name.includes('*') ? 'D80' : ''}</span>
+                                    </>
+                                )}
+                            </div>
+                            <span className="text-base text-center">{vehicle.fleet_name.trim()}</span>
+                        </div>
+                        <div className='ml-auto flex flex-col gap-1 justify-start items-center'>
+                            <span className='font-semibold'>Tiempo en ZI</span>
+                            <span className="text-center">{new Date(vehicle.entry_time).toLocaleString('es-CL')}</span>
+                            <span className="text-center">({calculateDuration(vehicle.entry_time, false)} min)</span>
+                        </div>
+                        <div className='ml-auto flex flex-col gap-1 justify-start items-center'>
+                            <span className='font-semibold'>Tiempo con Pax</span>
+                            <span className="text-center">{vehicle.passenger_entry_time ? `${calculateDuration(vehicle.passenger_entry_time)} min` : '-'}</span>
+                        </div>
+                        <div className='ml-auto flex flex-col gap-1 justify-start items-center'>
+                            <span className='font-semibold'>Pasajeros</span>
+                            <span className="text-center">{vehicle.total_passengers ? vehicle.total_passengers : 0}</span>
+                        </div>
+                    </div>
+                )
+            })}
         </div>
     )
+
+    // return (
+    //     <div className="flex-grow overflow-auto p-3">
+    //         <table className="w-full bg-white shadow-lg rounded-lg overflow-hidden">
+    //             <thead className="bg-gray-200 text-gray-700">
+    //                 <tr className='text-xl lg:text-base'>
+    //                     <th className="p-4 text-center">#</th>
+    //                     <th className="p-4 text-center">Móvil</th>
+    //                     <th className="p-4 text-center"></th>
+    //                     <th className="p-4 text-center">Conductor</th>
+    //                     <th className="p-4 text-center">Entrada ZI</th>
+    //                     <th className="p-4 text-center min-w-[100px]">Con Pax</th>
+    //                     <th className="p-4 text-center">Pax</th>
+    //                 </tr>
+    //             </thead>
+    //             <tbody>
+    //                 { vehicleList.map((vehicle, index) => (
+    //                     <tr key={vehicle.unique_car_id} className={cn('text-xl lg:text-base', index % 2 === 0 ? 'bg-gray-50' : 'bg-white')}>
+    //                         <td className="p-4 text-center">{index + 1}</td>
+    //                         <td className="p-4 text-center">{vehicle.unique_car_id}{vehicle.tipo_contrato === 'Leasing' ? 'L': ''}</td>
+    //                         <td className="p-4 text-center">{vehicle.name.includes('*') ? 'D80' : ''}</td>
+    //                         <td className="p-4 text-center">{vehicle.fleet_name.trim()}</td>
+    //                         <td className="p-4 text-center">{calculateDuration(vehicle.entry_time, false)}</td>
+    //                         <td className="p-4 text-center">{vehicle.passenger_entry_time ? calculateDuration(vehicle.passenger_entry_time) : '-'}</td>
+    //                         <td className="hidden p-4 text-center">{vehicle.passenger_entry_time ? new Date(vehicle.passenger_entry_time).toLocaleString('es-CL') : '-'}</td>
+    //                         <td className="p-4 text-center">{vehicle.total_passengers ? vehicle.total_passengers : 0}</td>
+    //                     </tr>
+    //                 ))}
+    //             </tbody>
+    //         </table>
+    //     </div>
+    // )
 }

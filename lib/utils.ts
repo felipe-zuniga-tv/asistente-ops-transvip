@@ -71,5 +71,5 @@ export const calculateDuration = (entryTime: String, onlyDuration = true) => {
   const entry = new Date(entryTime as string)
   const now = new Date()
   const diffInMinutes = Math.floor((now.getTime() - entry.getTime()) / 60000)
-  return onlyDuration ? `${diffInMinutes} min` : `${entry.toLocaleString('es-CL')} (${diffInMinutes} min)`
+  return diffInMinutes
 }
