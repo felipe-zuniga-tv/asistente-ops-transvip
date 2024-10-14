@@ -138,10 +138,6 @@ function VehicleTypes({ vehicleTypes, handleSelectedType, selectedType }: {
     handleSelectedType: (arg0: string) => void
     selectedType: string
 }) {
-    if (!vehicleTypes || vehicleTypes.length === 0) {
-        return <span className='font-semibold'>No hay vehículos en la Zona iluminada</span>
-    }
-
     return (
         <div className="bg-white shadow-sm p-4 flex justify-start space-x-4 min-h-fit text-base md:text-2xl lg:text-xl overflow-x-auto snap-start">
             { vehicleTypes.map((vType : AirportVehicleType) => (
@@ -164,10 +160,10 @@ function VehicleTypes({ vehicleTypes, handleSelectedType, selectedType }: {
 
 function VehicleListSummary({ vehicleList }: { vehicleList : AirportVehicleDetail[] }) {
     const vehicles_with_passengers = !vehicleList ? 0 : vehicleList.filter(v => v.total_passengers > 0).length
-    const vehicles_without_passengers = !vehicleList ? 0 : vehicleList.filter(v => v.total_passengers === 0 || !v.total_passengers).length
+    const vehicles_without_passengers = !vehicleList ? 0 : vehicleList.filter(v => v.total_passengers <= 0 || !v.total_passengers).length
 
     return (
-        <div className='w-full p-3 bg-slate-500 text-white flex justify-center items-center gap-3 text-base md:text-2xl lg:text-xl'>
+        <div className='w-full p-3 bg-slate-500 text-white flex justify-center items-center gap-3 text-xl md:text-2xl lg:text-3xl'>
             <div className='flex flex-row gap-1 justify-center items-center'>
                 <span className='font-semibold'>Con Pasajeros:</span>
                 <span>{vehicles_with_passengers}</span>
@@ -205,7 +201,7 @@ function VehicleListDetail({ vehicleList } : { vehicleList: AirportVehicleDetail
 
                 return (
                     <div key={vehicle.unique_car_id} 
-                        className={cn(`mb-4 p-4 shadow-md rounded-lg w-full flex flex-row gap-4 items-center justify-center ${bgColor}`
+                        className={cn(`mb-4 p-4 shadow-md rounded-lg w-full flex flex-row gap-4 items-center justify-center text-slate-900 ${bgColor}`
                     )}>
                         <div className='vehicle-index font-semibold text-2xl w-[50px] text-center'>{index + 1}</div>
                         <div className='vehicle-detail w-full flex flex-col sm:flex-row items-center gap-4'>
