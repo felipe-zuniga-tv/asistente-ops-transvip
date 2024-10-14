@@ -231,8 +231,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
             const { job_id } = r;
 
             const { status: status_r, data: data_r } = await getResponseFromURL(`${BOOKING_INFO_FULL_URL}?job_id=${job_id}&access_token=${accessToken}`)
-            // console.log(data_r);
-
+            
             if (status_r !== 200) return
 
             const {
@@ -240,7 +239,8 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 is_round_trip, 
                 estimated_payment_cost, payment_amount,
                 branch,
-                is_vip,
+                // is_vip, 
+                customer_category_name,
                 payment_status, 
                 fleet_first_name, fleet_last_name, 
                 fleet_country_code, fleet_phone_number,
@@ -363,7 +363,8 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 customer: {
                     // first_name: customer_first_name.trim(),
                     // last_name: customer_last_name.trim(),
-                    vip_flag: is_vip === 1,
+                    vip_flag: customer_category_name.toUpperCase() === 'VIP' || customer_category_name.toUpperCase() === 'SUPERVIP',
+                    vip_label: customer_category_name === '' ? 'NO VIP' : customer_category_name.toUpperCase(),
                     full_name: pax_full_name,
                     phone_number: pax_phone_number,
                     email: job_pickup_email,

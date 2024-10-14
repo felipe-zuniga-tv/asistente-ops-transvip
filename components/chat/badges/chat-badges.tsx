@@ -69,7 +69,7 @@ export function CustomerVipBadge({ result, className = "" } : {
     result : BookingInfoOutputProps, 
     className?: string
 }) {
-    const vipFlagLabel = result.customer.vip_flag ? 'VIP' : 'NO VIP'
+    const vipFlagLabel = result.customer.vip_label
     const vipFlagColor = result.customer.vip_flag ? 'bg-orange-200 text-black hover:bg-orange-200' : 'bg-slate-700 text-white'
     return (
         <Badge variant={'default'} className={cn('', vipFlagColor, className)}>

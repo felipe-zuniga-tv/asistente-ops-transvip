@@ -138,6 +138,7 @@ export interface BookingInfoOutputProps {
     }
     customer: {
         vip_flag: boolean
+        vip_label: string
         first_name?: string
         last_name?: string
         full_name: string

@@ -150,8 +150,6 @@ function DriverRatings({ result, handleClick } : {
 }
 
 function DriverDocuments({ result } : { result : DriverProfileProps }) {
-    console.log(result);
-    
     return (
         <div className='driver-documents'>
             <div className='flex flex-col gap-2 items-start justify-start text-slate-700'>
