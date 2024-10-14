@@ -40,98 +40,96 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
 }) {
     const [selectedZone, setSelectedZone] = useState(AIRPORT_ZONES.find(zone => zone.zone_id === initialZoneId) || AIRPORT_ZONES[0])
     const [vehicleTypes, setVehicleTypes] = useState(vehicleTypesList)
-    const [selectedType, setSelectedType] = useState<string | null>(null); // Update state type
-    const [vehicleList, setVehicleList] = useState<AirportVehicleDetail[]>([]) // Changed initial state from null to an empty array
+    const [selectedType, setSelectedType] = useState<string>(vehicleTypesList[0]?.name || ''); // Initialize with first vehicle type
+    const [vehicleList, setVehicleList] = useState<AirportVehicleDetail[]>([])
 
     useEffect(() => {
         const fetchUpdates = async () => {
-            const response = await fetch(`/api/airport/refresh-dashboard?zoneId=${selectedZone.zone_id}`)
-            if (response.ok) {
-                const data = await response.json()
-                setVehicleTypes(data)
+            try {
+                const response = await fetch(`/api/airport/refresh-dashboard?zoneId=${selectedZone.zone_id}`)
+                if (response.ok) {
+                    const data = await response.json()
+                    setVehicleTypes(data)
+                } else {
+                    console.error('Failed to fetch vehicle types');
+                }
+            } catch (error) {
+                console.error('Error fetching vehicle types:', error);
             }
         }
 
-        fetchUpdates() // Fetch immediately when component mounts or zone changes
-        const interval = setInterval(fetchUpdates, 10000) // Then every 10 seconds
+        fetchUpdates()
+        const interval = setInterval(fetchUpdates, 10000)
 
         return () => clearInterval(interval)
     }, [selectedZone])
 
-    // First Render
     useEffect(() => {
         const fetchVehicles = async () => {
-            console.log(`Selected Type: ${selectedType}`)
-            const response = await fetch(`/api/airport/get-vehicles-dashboard?branchId=${selectedZone.branch_id}&zoneId=${selectedZone.zone_id}&vehicleId=${vehicleTypes[0].id}`)
-            if (response.ok) {
-                const data = await response.json()
-                setVehicleList(data)
-            }
-        }
-
-        // New effect to select the first vehicle type on render
-        if (vehicleTypes.length > 0 && !selectedType) {
-            setSelectedType(vehicleTypes[0].name); // Select the first vehicle type on initial render
-            fetchVehicles()
-        } else {
-            setSelectedType(null)
-        }
-    }, []) // Dependency on vehicleTypes
-
-    useEffect(() => {
-        const fetchVehicles = async () => {
-            console.log(`Selected Type: ${selectedType}`)
             if (!selectedType) {
                 setVehicleList([])
                 return
             }
-            
-            const response = await fetch(`/api/airport/get-vehicles-dashboard?branchId=${selectedZone.branch_id}&zoneId=${selectedZone.zone_id}&vehicleId=${vehicleTypes.find(v => v.name === selectedType)?.id}`)
-            if (response.ok) {
-                const data = await response.json()
-                setVehicleList(data)
+
+            try {
+                const response = await fetch(`/api/airport/get-vehicles-dashboard?branchId=${selectedZone.branch_id}&zoneId=${selectedZone.zone_id}&vehicleId=${vehicleTypes.find(v => v.name === selectedType)?.id}`)
+                if (response.ok) {
+                    const data = await response.json()
+                    setVehicleList(data)
+                } else {
+                    console.error('Failed to fetch vehicle list');
+                }
+            } catch (error) {
+                console.error('Error fetching vehicle list:', error);
             }
         }
-        // Fetch vehicles whenever selectedType changes
-        if (selectedType) {
-            fetchVehicles()
-        }
+
+        fetchVehicles()
     }, [selectedType, vehicleTypes]) // Dependency on selectedType and vehicleTypes
 
     return (
         <div className="flex flex-col h-screen bg-gray-100">
             {/* Header */}
-            <header className="bg-transvip/90 shadow-md p-4 flex flex-col-reverse md:flex-row justify-start items-center gap-2 md:gap-8">
-                <div className='flex flex-row items-center justify-start gap-4'>
-                    <TransvipLogo size={30} colored={false} logoOnly={true} />
-                    <div className="flex items-center space-x-4">
-                        <Select onValueChange={(value) => setSelectedZone(AIRPORT_ZONES.find(zone => zone.zone_id.toString() === value) || AIRPORT_ZONES[0])}>
-                            <SelectTrigger className="w-[230px] bg-white">
-                                <SelectValue placeholder={`${AIRPORT_ZONES[0].city_name} (${AIRPORT_ZONES[0].airport_code})`} />
-                            </SelectTrigger>
-                            <SelectContent>
-                                { AIRPORT_ZONES.map((zone) => (
-                                    <SelectItem value={zone.zone_id.toString()} key={zone.zone_id}>
-                                        {zone.city_name} ({zone.airport_code})
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-                </div>
-                <h1 className="text-2xl font-bold text-white">Zona Iluminada</h1>
-                <LiveClock />
-            </header>
+            <AirportHeader setSelectedZone={setSelectedZone} />
+
             {/* Vehicle Type Buttons */}
             <VehicleTypes vehicleTypes={vehicleTypes}
                 selectedType={selectedType || ''} 
                 handleSelectedType={(type) => setSelectedType(type)} />
-
+                
+            {/* Vehicle List Summary / With - without pax */}
             <VehicleListSummary vehicleList={vehicleList} />
 
             {/* Vehicle List */}
             <VehicleListDetail vehicleList={vehicleList} />
         </div>
+    )
+}
+
+// New component for the header
+function AirportHeader({ setSelectedZone }: { setSelectedZone: (zone: typeof AIRPORT_ZONES[number]) => void }) {
+    return (
+        <header className="bg-transvip/90 shadow-md p-4 flex flex-col-reverse sm:flex-row justify-start items-center gap-2 md:gap-8">
+            <div className='flex flex-row items-center justify-start gap-4'>
+                <TransvipLogo size={30} colored={false} logoOnly={true} />
+                <div className="flex items-center space-x-4">
+                    <Select onValueChange={(value) => setSelectedZone(AIRPORT_ZONES.find(zone => zone.zone_id.toString() === value) || AIRPORT_ZONES[0])}>
+                        <SelectTrigger className="w-[230px] bg-white">
+                            <SelectValue placeholder={`${AIRPORT_ZONES[0].city_name} (${AIRPORT_ZONES[0].airport_code})`} />
+                        </SelectTrigger>
+                        <SelectContent>
+                            { AIRPORT_ZONES.map((zone) => (
+                                <SelectItem value={zone.zone_id.toString()} key={zone.zone_id}>
+                                    {zone.city_name} ({zone.airport_code})
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
+            <h1 className="text-2xl font-bold text-white sm:ml-2">Zona Iluminada</h1>
+            <LiveClock className='ml-auto' />
+        </header>
     )
 }
 
@@ -149,13 +147,9 @@ function VehicleTypes({ vehicleTypes, handleSelectedType, selectedType }: {
             { vehicleTypes.map((vType : AirportVehicleType) => (
                 <div key={vType.name} className='w-[192px] h-[128px]'>
                     <Button onClick={() => handleSelectedType(vType.name)}
-                        className={`w-[192px] h-[128px] flex flex-col items-center justify-center p-4 rounded-lg transition-colors ${selectedType === vType.name
-                            ? 'bg-slate-700 hover:bg-slate-500 text-white'
-                            : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
-                            }`}
-                    >
-                        {/* <Image src={vType.vehicle_image} height={50} width={50} className='h-12 w-auto' alt={vType.name} />
-                        { vType.name.toLowerCase() === 'minibus' ? <Users className="w-12 h-12 mb-2" /> : <Car className="w-12 h-12 mb-2" />} */}
+                        className={cn('w-[192px] h-[128px] flex flex-col items-center justify-center p-4 rounded-lg transition-colors',
+                            selectedType === vType.name ? 'bg-slate-700 hover:bg-slate-500 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                        )}>
                         <div className='flex flex-col items-center gap-2 justify-center'>
                             <span className="text-3xl font-semibold">{vType.name}</span>
                             <span className="hidden font-semibold">·</span>
@@ -173,7 +167,7 @@ function VehicleListSummary({ vehicleList }: { vehicleList : AirportVehicleDetai
     const vehicles_without_passengers = !vehicleList ? 0 : vehicleList.filter(v => v.total_passengers === 0 || !v.total_passengers).length
 
     return (
-        <div className='w-full p-3 bg-white flex justify-center items-center gap-3 text-base md:text-2xl lg:text-xl'>
+        <div className='w-full p-3 bg-slate-500 text-white flex justify-center items-center gap-3 text-base md:text-2xl lg:text-xl'>
             <div className='flex flex-row gap-1 justify-center items-center'>
                 <span className='font-semibold'>Con Pasajeros:</span>
                 <span>{vehicles_with_passengers}</span>
@@ -250,36 +244,4 @@ function VehicleListDetail({ vehicleList } : { vehicleList: AirportVehicleDetail
             })}
         </div>
     )
-
-    // return (
-    //     <div className="flex-grow overflow-auto p-3">
-    //         <table className="w-full bg-white shadow-lg rounded-lg overflow-hidden">
-    //             <thead className="bg-gray-200 text-gray-700">
-    //                 <tr className='text-xl lg:text-base'>
-    //                     <th className="p-4 text-center">#</th>
-    //                     <th className="p-4 text-center">Móvil</th>
-    //                     <th className="p-4 text-center"></th>
-    //                     <th className="p-4 text-center">Conductor</th>
-    //                     <th className="p-4 text-center">Entrada ZI</th>
-    //                     <th className="p-4 text-center min-w-[100px]">Con Pax</th>
-    //                     <th className="p-4 text-center">Pax</th>
-    //                 </tr>
-    //             </thead>
-    //             <tbody>
-    //                 { vehicleList.map((vehicle, index) => (
-    //                     <tr key={vehicle.unique_car_id} className={cn('text-xl lg:text-base', index % 2 === 0 ? 'bg-gray-50' : 'bg-white')}>
-    //                         <td className="p-4 text-center">{index + 1}</td>
-    //                         <td className="p-4 text-center">{vehicle.unique_car_id}{vehicle.tipo_contrato === 'Leasing' ? 'L': ''}</td>
-    //                         <td className="p-4 text-center">{vehicle.name.includes('*') ? 'D80' : ''}</td>
-    //                         <td className="p-4 text-center">{vehicle.fleet_name.trim()}</td>
-    //                         <td className="p-4 text-center">{calculateDuration(vehicle.entry_time, false)}</td>
-    //                         <td className="p-4 text-center">{vehicle.passenger_entry_time ? calculateDuration(vehicle.passenger_entry_time) : '-'}</td>
-    //                         <td className="hidden p-4 text-center">{vehicle.passenger_entry_time ? new Date(vehicle.passenger_entry_time).toLocaleString('es-CL') : '-'}</td>
-    //                         <td className="p-4 text-center">{vehicle.total_passengers ? vehicle.total_passengers : 0}</td>
-    //                     </tr>
-    //                 ))}
-    //             </tbody>
-    //         </table>
-    //     </div>
-    // )
 }
