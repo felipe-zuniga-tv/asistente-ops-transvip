@@ -8,6 +8,7 @@ import { LiveClock } from '../ui/live-clock'
 import { format } from 'date-fns'
 import SuspenseLoading from '../ui/suspense'
 import { Clock, Users } from 'lucide-react'
+import { Spinner } from '../ui/loading'
 
 const AIRPORT_ZONES = [
     { city_name: 'Santiago', airport_code: 'SCL', branch_id: 1, zone_id: 2 },
@@ -41,6 +42,7 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
     const [vehicleTypes, setVehicleTypes] = useState(vehicleTypesList)
     const [selectedType, setSelectedType] = useState<string>(vehicleTypesList[0]?.name || ''); // Initialize with first vehicle type
     const [vehicleList, setVehicleList] = useState<AirportVehicleDetail[]>([])
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     useEffect(() => {
         const fetchUpdates = async () => {
@@ -70,6 +72,8 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
                 return
             }
 
+            setIsLoading(true)
+
             try {
                 const response = await fetch(`/api/airport/get-vehicles-dashboard?branchId=${selectedZone.branch_id}&zoneId=${selectedZone.zone_id}&vehicleId=${vehicleTypes.find(v => v.name === selectedType)?.id}`)
                 if (response.ok) {
@@ -80,6 +84,8 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
                 }
             } catch (error) {
                 console.error('Error fetching vehicle list:', error);
+            } finally {
+                setIsLoading(false)
             }
         }
 
@@ -100,9 +106,15 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
             <VehicleListSummary vehicleList={vehicleList} />
 
             {/* Vehicle List */}
-            <Suspense fallback={<SuspenseLoading />}>
+            {/* Loading Indicator */}
+            {isLoading ? (
+                <div className="flex justify-center items-center h-full">
+                    <span className="text-xl font-bold">Cargando...</span>
+                </div>
+            ) : (
+                /* Vehicle List */
                 <VehicleListDetail vehicleList={vehicleList} />
-            </Suspense>
+            )}
         </div>
     )
 }
@@ -139,8 +151,6 @@ function VehicleTypes({ vehicleTypes, handleSelectedType, selectedType }: {
     handleSelectedType: (arg0: string) => void
     selectedType: string
 }) {
-    const numVehicleTypes = vehicleTypes.length
-    // flex justify-start gap-4
     return (
         <div className={`bg-white p-4 min-h-fit text-base md:text-2xl lg:text-xl grid grid-rows-1 grid-flow-col gap-4 overflow-x-auto snap-start`}>
             { vehicleTypes.map((vType : AirportVehicleType) => (
@@ -164,7 +174,7 @@ function VehicleListSummary({ vehicleList }: { vehicleList : AirportVehicleDetai
     const vehicles_without_passengers = !vehicleList ? 0 : vehicleList.filter(v => v.total_passengers <= 0 || !v.total_passengers).length
 
     return (
-        <div className='w-full p-3 bg-slate-500 text-white flex justify-center items-center gap-3 text-xl md:text-2xl lg:text-3xl'>
+        <div className='w-full p-3 bg-slate-500 text-white flex justify-center items-center gap-3 text-base md:text-2xl lg:text-xl'>
             <div className='flex flex-row gap-1 justify-center items-center'>
                 <span className='font-semibold'>Con Pasajeros:</span>
                 <span>{ vehicles_with_passengers }</span>
@@ -205,7 +215,7 @@ function VehicleListDetail({ vehicleList } : { vehicleList: AirportVehicleDetail
                         className={`vehicle-detail-card w-full flex flex-row gap-4 items-center justify-between p-4 mb-4 shadow-md rounded-lg text-slate-900 ${bgColor}`}>
                         <div className='flex flex-row gap-2 items-center justify-start'>
                             <div className='vehicle-index font-semibold text-2xl w-[30px] text-center'>{index + 1}</div>
-                            <div className='vehicle-driver flex flex-col gap-1 justify-center items-center w-[220px]'>
+                            <div className='vehicle-driver flex flex-col gap-1 justify-center items-center w-[220px] lg:w-[300px]'>
                                 <div className='flex flex-row gap-1 justify-center items-center'>
                                     <span className="font-semibold">{vehicle.unique_car_id}{vehicle.tipo_contrato === 'Leasing' ? 'L': ''}</span>
                                     { vehicle.name.includes('*') && (
