@@ -109,10 +109,11 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
 // New component for the header
 function AirportHeader({ setSelectedZone }: { setSelectedZone: (zone: typeof AIRPORT_ZONES[number]) => void }) {
     return (
-        <header className="bg-transvip/90 shadow-md p-4 flex flex-col-reverse sm:flex-row justify-start items-center gap-2 md:gap-8">
-            <div className='flex flex-row items-center justify-start gap-4'>
-                <TransvipLogo size={30} colored={false} logoOnly={true} />
-                <div className="flex items-center space-x-4">
+        <header className="bg-transvip/90 shadow-md p-4 flex flex-col sm:flex-row justify-start items-center gap-2 md:gap-8">
+            <div className='w-full flex flex-row items-center justify-start gap-4'>
+                <TransvipLogo size={36} colored={false} logoOnly={true} />
+                <div className='flex flex-col gap-2 items-center justify-center mx-auto'>
+                    <span className="text-2xl font-bold text-white sm:ml-2">Zona Iluminada</span>
                     <Select onValueChange={(value) => setSelectedZone(AIRPORT_ZONES.find(zone => zone.zone_id.toString() === value) || AIRPORT_ZONES[0])}>
                         <SelectTrigger className="w-[230px] bg-white">
                             <SelectValue placeholder={`${AIRPORT_ZONES[0].city_name} (${AIRPORT_ZONES[0].airport_code})`} />
@@ -126,9 +127,8 @@ function AirportHeader({ setSelectedZone }: { setSelectedZone: (zone: typeof AIR
                         </SelectContent>
                     </Select>
                 </div>
+                <LiveClock className='ml-auto' />
             </div>
-            <h1 className="text-2xl font-bold text-white sm:ml-2">Zona Iluminada</h1>
-            <LiveClock className='ml-auto' />
         </header>
     )
 }
@@ -138,17 +138,18 @@ function VehicleTypes({ vehicleTypes, handleSelectedType, selectedType }: {
     handleSelectedType: (arg0: string) => void
     selectedType: string
 }) {
+    const numVehicleTypes = vehicleTypes.length
+    // flex justify-start gap-4
     return (
-        <div className="bg-white shadow-sm p-4 flex justify-start space-x-4 min-h-fit text-base md:text-2xl lg:text-xl overflow-x-auto snap-start">
+        <div className={`bg-white shadow-sm p-4 min-h-fit text-base md:text-2xl lg:text-xl grid grid-rows-1 grid-flow-col gap-4 overflow-x-auto snap-start`}>
             { vehicleTypes.map((vType : AirportVehicleType) => (
                 <div key={vType.name}
                     onClick={() => handleSelectedType(vType.name)}
-                    className={cn('w-[210px] h-[128px] flex flex-col items-center justify-center p-4 rounded-lg transition-colors',
+                    className={cn('w-[212px] h-[128px] flex flex-col items-center justify-center p-4 rounded-lg transition-colors',
                         selectedType === vType.name ? 'bg-slate-700 hover:bg-slate-500 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
                 )}>
                     <div className='flex flex-col items-center gap-2 justify-center'>
-                        <span className="text-center text-3xl font-semibold">{vType.name}</span>
-                        <span className="hidden font-semibold">·</span>
+                        <span className="text-center text-2xl font-semibold">{vType.name}</span>
                         <span className="text-3xl font-semibold">{vType.count}</span>
                     </div>
                 </div>
@@ -193,17 +194,16 @@ function VehicleListDetail({ vehicleList } : { vehicleList: AirportVehicleDetail
                 
                 if (waitTime && waitTime >= 10 && waitTime < maxWaitTime) {
                     const intensity = Math.min((waitTime - 10) / (maxWaitTime - 10), 1); // Calculate intensity from 0 to 1
-                    bgColor = `bg-gradient-to-r from-yellow-200 to-red-200 opacity-${Math.round(intensity * 100)}`; // Gradually change to red
+                    bgColor = `bg-gradient-to-r from-yellow-200 to-red-200 opacity-${Math.max(10, Math.round(intensity * 100))}`; // Gradually change to red
                 } else if (waitTime && waitTime >= maxWaitTime) {
                     bgColor = 'bg-gradient-to-r from-red-200 to-red-400/80'; // Full red if over max wait time
                 }
 
                 return (
                     <div key={vehicle.unique_car_id} 
-                        className={cn(`mb-4 p-4 shadow-md rounded-lg w-full flex flex-row gap-4 items-center justify-center text-slate-900 ${bgColor}`
-                    )}>
-                        <div className='vehicle-index font-semibold text-2xl w-[50px] text-center'>{index + 1}</div>
-                        <div className='vehicle-detail w-full flex flex-col sm:flex-row items-center gap-4'>
+                        className={`vehicle-detail-card w-full flex flex-row gap-4 items-center justify-between p-4 mb-4 shadow-md rounded-lg text-slate-900 ${bgColor}`}>
+                        <div className='vehicle-index font-semibold text-2xl w-[30px] text-center'>{index + 1}</div>
+                        <div className='vehicle-info flex flex-row items-center gap-4'>
                             <div className='vehicle-driver flex flex-col gap-1 justify-center items-center w-[220px]'>
                                 <div className='flex flex-row gap-1 justify-center items-center'>
                                     <span className="font-semibold">{vehicle.unique_car_id}{vehicle.tipo_contrato === 'Leasing' ? 'L': ''}</span>
@@ -216,22 +216,22 @@ function VehicleListDetail({ vehicleList } : { vehicleList: AirportVehicleDetail
                                 </div>
                                 <span className="text-base text-center">{vehicle.fleet_name.trim()}</span>
                             </div>
-                            <div className='sm:mx-auto flex flex-col gap-1 justify-center items-center'>
+                            <div className='vehicle-in-zone mx-auto flex flex-col gap-1 justify-center items-center'>
                                 <span className='text-center font-semibold'>Tiempo en ZI</span>
-                                <div className='flex flex-col md:flex-row gap-2 items-center justify-center'>
+                                <div className='flex flex-col md:flex-row gap-1 items-center justify-center'>
                                     <span className="text-center">{format(new Date(vehicle.entry_time), 'dd-MM HH:mm')}</span>
-                                    <span className="text-center">({calculateDuration(vehicle.entry_time)} min)</span>
+                                    <span className="text-center text-base text-slate-600">({calculateDuration(vehicle.entry_time)} min)</span>
                                 </div>
                             </div>
-                            <div className='flex flex-col gap-4 items-center justify-start '>
-                                <div className='flex flex-row gap-1 justify-start items-center'>
-                                    <span className='text-center font-semibold'>Con Pax:</span>
-                                    <span className="text-center">{vehicle.passenger_entry_time ? `${calculateDuration(vehicle.passenger_entry_time)} min` : '- min'}</span>
-                                </div>
-                                <div className='flex flex-row gap-1 justify-start items-center'>
-                                    <span className='text-center font-semibold'>Pasajeros:</span>
-                                    <span className="text-center">{vehicle.total_passengers ? Math.max(0, vehicle.total_passengers) : 0}</span>
-                                </div>
+                        </div>
+                        <div className='vehicle-pax flex flex-col gap-4 items-center justify-start w-[130px]'>
+                            <div className='flex flex-row gap-1 justify-start items-center'>
+                                <span className='text-center font-semibold'>Con Pax:</span>
+                                <span className="text-center">{vehicle.passenger_entry_time ? `${calculateDuration(vehicle.passenger_entry_time)} min` : '- min'}</span>
+                            </div>
+                            <div className='flex flex-row gap-1 justify-start items-center'>
+                                <span className='text-center font-semibold'>Pasajeros:</span>
+                                <span className="text-center">{vehicle.total_passengers ? Math.max(0, vehicle.total_passengers) : 0}</span>
                             </div>
                         </div>
                     </div>
