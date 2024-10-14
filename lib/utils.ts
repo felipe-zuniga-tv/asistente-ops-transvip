@@ -67,7 +67,7 @@ export const getAirportZone = (zones: Zone) => {
   }
 }
 
-export const calculateDuration = (entryTime: String, onlyDuration = true) => {
+export const calculateDuration = (entryTime: String) => {
   const entry = new Date(entryTime as string)
   const now = new Date()
   const diffInMinutes = Math.floor((now.getTime() - entry.getTime()) / 60000)
