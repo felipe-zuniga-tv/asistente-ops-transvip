@@ -1,14 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Car, Users } from 'lucide-react'
+import { useState, useEffect, Suspense } from 'react'
 import { TransvipLogo } from '../transvip/transvip-logo'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
-import { Button } from '../ui/button'
 import { calculateDuration, cn } from '@/lib/utils'
-import Image from 'next/image'
 import { LiveClock } from '../ui/live-clock'
 import { format } from 'date-fns'
+import SuspenseLoading from '../ui/suspense'
 
 const AIRPORT_ZONES = [
     { city_name: 'Santiago', airport_code: 'SCL', branch_id: 1, zone_id: 2 },
@@ -101,7 +99,9 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
             <VehicleListSummary vehicleList={vehicleList} />
 
             {/* Vehicle List */}
-            <VehicleListDetail vehicleList={vehicleList} />
+            <Suspense fallback={<SuspenseLoading />}>
+                <VehicleListDetail vehicleList={vehicleList} />
+            </Suspense>
         </div>
     )
 }
@@ -141,17 +141,16 @@ function VehicleTypes({ vehicleTypes, handleSelectedType, selectedType }: {
     return (
         <div className="bg-white shadow-sm p-4 flex justify-start space-x-4 min-h-fit text-base md:text-2xl lg:text-xl overflow-x-auto snap-start">
             { vehicleTypes.map((vType : AirportVehicleType) => (
-                <div key={vType.name} className='w-[192px] h-[128px]'>
-                    <Button onClick={() => handleSelectedType(vType.name)}
-                        className={cn('w-[192px] h-[128px] flex flex-col items-center justify-center p-4 rounded-lg transition-colors',
-                            selectedType === vType.name ? 'bg-slate-700 hover:bg-slate-500 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
-                        )}>
-                        <div className='flex flex-col items-center gap-2 justify-center'>
-                            <span className="text-3xl font-semibold">{vType.name}</span>
-                            <span className="hidden font-semibold">·</span>
-                            <span className="text-3xl font-semibold">{vType.count}</span>
-                        </div>
-                    </Button>
+                <div key={vType.name}
+                    onClick={() => handleSelectedType(vType.name)}
+                    className={cn('w-[210px] h-[128px] flex flex-col items-center justify-center p-4 rounded-lg transition-colors',
+                        selectedType === vType.name ? 'bg-slate-700 hover:bg-slate-500 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                )}>
+                    <div className='flex flex-col items-center gap-2 justify-center'>
+                        <span className="text-center text-3xl font-semibold">{vType.name}</span>
+                        <span className="hidden font-semibold">·</span>
+                        <span className="text-3xl font-semibold">{vType.count}</span>
+                    </div>
                 </div>
             ))}
         </div>
@@ -166,7 +165,7 @@ function VehicleListSummary({ vehicleList }: { vehicleList : AirportVehicleDetai
         <div className='w-full p-3 bg-slate-500 text-white flex justify-center items-center gap-3 text-xl md:text-2xl lg:text-3xl'>
             <div className='flex flex-row gap-1 justify-center items-center'>
                 <span className='font-semibold'>Con Pasajeros:</span>
-                <span>{vehicles_with_passengers}</span>
+                <span>{ vehicles_with_passengers }</span>
             </div>
             <span>·</span>
             <div className='flex flex-row gap-1 justify-center items-center'>
@@ -231,7 +230,7 @@ function VehicleListDetail({ vehicleList } : { vehicleList: AirportVehicleDetail
                                 </div>
                                 <div className='flex flex-row gap-1 justify-start items-center'>
                                     <span className='text-center font-semibold'>Pasajeros:</span>
-                                    <span className="text-center">{vehicle.total_passengers ? vehicle.total_passengers : 0}</span>
+                                    <span className="text-center">{vehicle.total_passengers ? Math.max(0, vehicle.total_passengers) : 0}</span>
                                 </div>
                             </div>
                         </div>

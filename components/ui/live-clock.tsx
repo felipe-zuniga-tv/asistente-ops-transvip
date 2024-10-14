@@ -7,11 +7,11 @@ import { useEffect, useState } from 'react';
 const everyXseconds = 1
 
 export function LiveClock({ className }: { className?: string }) {
-    const [time, setTime] = useState(new Date().toLocaleTimeString('es-CL'));
+    const [time, setTime] = useState(new Date().toLocaleTimeString('es-CL', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true }));
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setTime(new Date().toLocaleTimeString('es-CL'));
+            setTime(new Date().toLocaleTimeString('es-CL', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true }));
         }, 1000 * everyXseconds);
 
         return () => clearInterval(interval);
