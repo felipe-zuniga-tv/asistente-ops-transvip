@@ -152,7 +152,7 @@ function VehicleTypes({ vehicleTypes, handleSelectedType, selectedType }: {
     selectedType: string
 }) {
     return (
-        <div className={`bg-white p-4 min-h-fit text-base md:text-2xl lg:text-xl grid grid-rows-1 grid-flow-col gap-4 overflow-x-auto snap-start`}>
+        <div className={`bg-white p-4 min-h-fit text-base md:text-2xl lg:text-xl grid grid-rows-1 grid-flow-col md:flex md:flex-row md:justify-center md:items-center gap-4 overflow-x-auto snap-start`}>
             { vehicleTypes.map((vType : AirportVehicleType) => (
                 <div key={vType.name}
                     onClick={() => handleSelectedType(vType.name)}
@@ -161,7 +161,7 @@ function VehicleTypes({ vehicleTypes, handleSelectedType, selectedType }: {
                 )}>
                     <div className='flex flex-col items-center gap-2 justify-center'>
                         <span className="text-center text-2xl font-semibold">{vType.name}</span>
-                        <span className="text-3xl font-semibold">{vType.count}</span>
+                        <span className="text-4xl font-semibold">{vType.count}</span>
                     </div>
                 </div>
             ))}
@@ -196,7 +196,7 @@ function VehicleListDetail({ vehicleList } : { vehicleList: AirportVehicleDetail
     const maxWaitTime = 15
 
     return (
-        <div className="flex-grow overflow-auto p-3 w-full text-base sm:text-lg xl:text-xl">
+        <div className="flex-grow overflow-auto p-3 w-full text-base lg:text-xl xl:text-2xl">
             { vehicleList.map((vehicle, index) => {
                 const waitTime = vehicle.passenger_entry_time ? calculateDuration(vehicle.passenger_entry_time) : null
 
@@ -213,9 +213,9 @@ function VehicleListDetail({ vehicleList } : { vehicleList: AirportVehicleDetail
                 return (
                     <div key={vehicle.unique_car_id} 
                         className={`vehicle-detail-card w-full flex flex-row gap-4 items-center justify-between p-4 mb-4 shadow-md rounded-lg text-slate-900 ${bgColor}`}>
-                        <div className='flex flex-row gap-2 items-center justify-start'>
-                            <div className='vehicle-index font-semibold text-2xl w-[30px] text-center'>{index + 1}</div>
-                            <div className='vehicle-driver flex flex-col gap-1 justify-center items-center w-[220px] lg:w-[300px]'>
+                        <div className='vehicle-index-driver flex flex-row gap-2 items-center justify-start'>
+                            <div className='vehicle-index font-semibold text-3xl w-[30px] text-center'>{index + 1}</div>
+                            <div className='vehicle-driver flex flex-col gap-1 justify-center items-center w-[320px] lg:w-[400px]'>
                                 <div className='flex flex-row gap-1 justify-center items-center'>
                                     <span className="font-semibold">{vehicle.unique_car_id}{vehicle.tipo_contrato === 'Leasing' ? 'L': ''}</span>
                                     { vehicle.name.includes('*') && (
@@ -225,19 +225,20 @@ function VehicleListDetail({ vehicleList } : { vehicleList: AirportVehicleDetail
                                         </>
                                     )}
                                 </div>
-                                <span className="text-base text-center">{vehicle.fleet_name.trim()}</span>
+                                <span className="text-base lg:text-xl xl:text-2xl text-center">{vehicle.fleet_name.trim()}</span>
                             </div>
                         </div>
                         <div className='vehicle-info flex flex-row items-center gap-4'>
                             <div className='vehicle-in-zone mx-auto flex flex-col gap-1 justify-center items-center'>
                                 <span className='text-center font-semibold'>Tiempo en ZI</span>
-                                <div className='flex flex-col_ flex-row gap-1 items-center justify-center'>
+                                <div className='flex flex-row gap-1 items-center justify-center'>
                                     <span className="text-center">{format(new Date(vehicle.entry_time), 'dd-MM HH:mm')}</span>
-                                    <span className="text-center text-base text-slate-600">({calculateDuration(vehicle.entry_time)} min)</span>
+                                    <span className="">·</span>
+                                    <span className="text-center text-slate-600">{calculateDuration(vehicle.entry_time)} min</span>
                                 </div>
                             </div>
                         </div>
-                        <div className='vehicle-pax flex flex-col gap-2 items-center justify-center w-[170px]'>
+                        <div className='vehicle-pax flex flex-col gap-2 items-center justify-center w-[170px] lg:w-[220px]'>
                             <span className='font-semibold'>Pasajeros</span>
                             <div className='flex flex-row gap-4 items-center'>
                                 <div className='flex flex-row gap-1 justify-start items-center'>
