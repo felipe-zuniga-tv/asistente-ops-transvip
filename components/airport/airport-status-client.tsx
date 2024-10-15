@@ -1,14 +1,12 @@
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect } from 'react'
 import { TransvipLogo } from '../transvip/transvip-logo'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { calculateDuration, cn } from '@/lib/utils'
 import { LiveClock } from '../ui/live-clock'
 import { format } from 'date-fns'
-import SuspenseLoading from '../ui/suspense'
 import { Clock, Users } from 'lucide-react'
-import { Spinner } from '../ui/loading'
 
 const AIRPORT_ZONES = [
     { city_name: 'Santiago', airport_code: 'SCL', branch_id: 1, zone_id: 2 },
@@ -33,6 +31,8 @@ interface AirportVehicleDetail {
     total_passengers: number
     passenger_entry_time: string
 }
+
+const secondsToUpdate = 30
 
 export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZoneId }: {
     vehicleTypesList: AirportVehicleType[]
@@ -60,7 +60,7 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
         }
 
         fetchUpdates()
-        const interval = setInterval(fetchUpdates, 10000)
+        const interval = setInterval(fetchUpdates, secondsToUpdate * 1000)
 
         return () => clearInterval(interval)
     }, [selectedZone])

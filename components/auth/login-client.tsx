@@ -29,7 +29,7 @@ export function LoginFormClient() {
     return (
         <div className="flex flex-col w-full sm:max-w-md justify-center gap-4">
             <span className='mx-auto text-xl text-white'>Ingresa aquí</span>
-            <form onSubmit={handleSubmit} className="auth-form auth-widths">
+            <form onSubmit={handleSubmit} method='POST' className="auth-form auth-widths">
                 <input
                     type="email"
                     name="email"
