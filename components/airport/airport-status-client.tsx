@@ -7,11 +7,7 @@ import { calculateDuration, cn } from '@/lib/utils'
 import { LiveClock } from '../ui/live-clock'
 import { format } from 'date-fns'
 import { Clock, Users } from 'lucide-react'
-
-const AIRPORT_ZONES = [
-    { city_name: 'Santiago', airport_code: 'SCL', branch_id: 1, zone_id: 2 },
-    { city_name: 'Antofagasta', airport_code: 'ANF', branch_id: 34, zone_id: 3 }
-]
+import { airportZones } from '@/lib/transvip/config'
 
 interface AirportVehicleType {
     id: number[]
@@ -38,7 +34,7 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
     vehicleTypesList: AirportVehicleType[]
     zoneId: number
 }) {
-    const [selectedZone, setSelectedZone] = useState(AIRPORT_ZONES.find(zone => zone.zone_id === initialZoneId) || AIRPORT_ZONES[0])
+    const [selectedZone, setSelectedZone] = useState(airportZones.find(zone => zone.zone_id === initialZoneId) || airportZones[0])
     const [vehicleTypes, setVehicleTypes] = useState(vehicleTypesList)
     const [selectedType, setSelectedType] = useState<string>(vehicleTypesList[0]?.name || ''); // Initialize with first vehicle type
     const [vehicleList, setVehicleList] = useState<AirportVehicleDetail[]>([])
@@ -120,19 +116,19 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
 }
 
 // New component for the header
-function AirportHeader({ setSelectedZone }: { setSelectedZone: (zone: typeof AIRPORT_ZONES[number]) => void }) {
+function AirportHeader({ setSelectedZone }: { setSelectedZone: (zone: typeof airportZones[number]) => void }) {
     return (
         <header className="bg-transvip/90 shadow-md p-4 flex flex-col sm:flex-row justify-start items-center gap-2 md:gap-8">
             <div className='w-full flex flex-row items-center justify-start gap-4'>
                 <TransvipLogo size={36} colored={false} logoOnly={true} />
-                <div className='flex flex-col gap-2 items-center justify-center mx-auto'>
-                    <span className="text-2xl font-bold text-white sm:ml-2">Zona Iluminada</span>
-                    <Select onValueChange={(value) => setSelectedZone(AIRPORT_ZONES.find(zone => zone.zone_id.toString() === value) || AIRPORT_ZONES[0])}>
+                <span className="text-2xl font-bold text-white sm:ml-2">Zona Iluminada</span>
+                <div className='flex flex-col xl:flex-row gap-2 items-center justify-center mx-auto'>
+                    <Select onValueChange={(value) => setSelectedZone(airportZones.find(zone => zone.zone_id.toString() === value) || airportZones[0])}>
                         <SelectTrigger className="w-[230px] bg-white">
-                            <SelectValue placeholder={`${AIRPORT_ZONES[0].city_name} (${AIRPORT_ZONES[0].airport_code})`} />
+                            <SelectValue placeholder={`${airportZones[0].city_name} (${airportZones[0].airport_code})`} />
                         </SelectTrigger>
                         <SelectContent>
-                            { AIRPORT_ZONES.map((zone) => (
+                            { airportZones.map((zone) => (
                                 <SelectItem value={zone.zone_id.toString()} key={zone.zone_id}>
                                     {zone.city_name} ({zone.airport_code})
                                 </SelectItem>

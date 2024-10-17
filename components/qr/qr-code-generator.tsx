@@ -27,9 +27,9 @@ export const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = () => {
         setIsQrVisible(true);
 
         // Hide QR code after 5 seconds
-        setTimeout(() => {
-            setIsQrVisible(false);
-        }, 5000);
+        // setTimeout(() => {
+        //     setIsQrVisible(false);
+        // }, 5000);
     };
 
     const handleStartOver = () => {
