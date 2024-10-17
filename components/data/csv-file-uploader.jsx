@@ -4,8 +4,6 @@ import { useState, useEffect } from "react"
 import { Icon } from "../ui/icons"
 import { UploadIcon } from "lucide-react"
 
-useState
-
 export function FileUpload({ client, handleFileChange, inputFileRef, afterUpload, refresh, setStateMessage }) {
     const [selectedFile, setSelectedFile] = useState(inputFileRef)
     const [uploading, setUploading] = useState(false)
@@ -129,7 +127,7 @@ export function FileUpload({ client, handleFileChange, inputFileRef, afterUpload
     // Markdown
     if (selectedFile) {
         if (uploading) {
-            return <LoadingButton text="Subiendo..." small={true} />
+            return true
         }
 
         return (

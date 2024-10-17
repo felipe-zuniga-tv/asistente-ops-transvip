@@ -128,8 +128,9 @@ function SharedServiceSummary({ result, handleClick }: {
 
     return (
         <div className='shared-service-summary bg-white p-2 rounded-md text-slate-900 flex flex-col gap-1.5'>
-            <SharedServiceTotals result={result} />            {result.map(r => (
-                <div className='shared-service-booking flex flex-row gap-2 items-center text-sm'>
+            <SharedServiceTotals result={result} />            
+            {result.map(r => (
+                <div key={r.booking.id.toString()} className='shared-service-booking flex flex-row gap-2 items-center text-sm'>
                     <BookingIdBadge result={r} handleClick={handleClick} />
                     <BookingStatusBadge result={r} />
                     <PaymentStatusBadge result={r} />

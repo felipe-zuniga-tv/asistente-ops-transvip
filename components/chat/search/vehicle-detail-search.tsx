@@ -218,7 +218,7 @@ function VehicleDrivers({ result, handleClick } : {
             <ul className='info-section w-full flex flex-col gap-1 max-h-[250px] overflow-auto'>
                 {
                     result.drivers.map((driver: VehicleDetailDriversProps) => 
-                        <li className='flex flex-row gap-2 w-full'>
+                        <li key={driver.fleet_id} className='flex flex-row gap-2 w-full'>
                             <div className='card-info-detail text-sm'>
                                 <UserCircleIcon className='size-4' />
                                 <span>{driver.first_name.trim() + " " + driver.last_name.trim()}</span>

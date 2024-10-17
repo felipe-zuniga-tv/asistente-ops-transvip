@@ -61,7 +61,7 @@ export function VehicleStatusSearch({ session, searchResults, content }: {
             </div>
             <div className={'search-results-cards relative w-full flex gap-4 snap-x overflow-x-auto'}>
                 { searchResults.map((result) => (
-                    <VehicleStatusResultsCard keyName={result.vehicle_number} result={result} handleClick={handleClick} />
+                    <VehicleStatusResultsCard key={result.vehicle_number} result={result} handleClick={handleClick} />
                 ))}
             </div>
             { content && <div className='search-results-text mt-4'>
@@ -71,15 +71,14 @@ export function VehicleStatusSearch({ session, searchResults, content }: {
     )
 }
 
-function VehicleStatusResultsCard({ keyName, result, handleClick } : { 
-    keyName: string
+function VehicleStatusResultsCard({ result, handleClick } : { 
     result: VehicleStatusSearchResultProps
     handleClick: any 
 }) {
     const currentStatus = (result.status === VEHICLE_STATUS.ONLINE_AVAILABLE || result.status === VEHICLE_STATUS.ONLINE_BUSY) ? 'ONLINE' : 'OFFLINE'
 
     return (
-        <div key={keyName} className='search-results-card w-full'>
+        <div className='search-results-card w-full'>
             <div className={cn(
                 'h-fit p-3 flex flex-col gap-2 md:gap-4 justify-between text-white rounded-xl hover:text-white',
                 `${currentStatus === 'ONLINE' ? 'bg-emerald-700' : 'bg-red-400' }`
