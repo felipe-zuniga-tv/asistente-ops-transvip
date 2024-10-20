@@ -1,10 +1,12 @@
+import { LucideIcon } from "lucide-react";
+
 // DATA TYPES
-export interface BranchProps {
+export interface IBranch {
     branch_id: number;
     name: string;
     code: string;
 }
-export interface VehicleStatusSearchResultProps {
+export interface IVehicleStatusSearchResult {
     vehicle_number: string;
     message: string;
     status: number
@@ -21,12 +23,12 @@ export interface VehicleStatusSearchResultProps {
     license_plate: string;
     job_id?: number;
     pax_count: number;
-    branch: BranchProps;
+    branch: IBranch;
     contract_name: string;
     service_name: string;
     vehicle_image: string
 }
-export interface BookingInfoProps {
+export interface IBookingInfo {
     job_id: number
     job_status: number
     type_of_trip: string
@@ -62,7 +64,7 @@ export interface BookingInfoProps {
     shared_service_id: string | undefined
 }
 
-export interface BookingInfoOutputProps {
+export interface IBookingInfoOutput {
     booking: {
         id: number
         status: number
@@ -99,7 +101,7 @@ export interface BookingInfoOutputProps {
         no_show_datetime: string
         cancellation_datetime: string
     }
-    branch: BranchProps | undefined
+    branch: IBranch | undefined
     directions: {
         origin: {
             address: string
@@ -150,12 +152,12 @@ export interface BookingInfoOutputProps {
         comment: string
     }
 }
-export interface VehicleDetailProps {
+export interface IVehicleDetail {
     vehicle_number: number,
     license_plate: string,
-    branch: BranchProps,
+    branch: IBranch,
     status: number,
-    drivers: VehicleDetailDriversProps[],
+    drivers: IVehicleDetailDrivers[],
     creation_datetime: string,
     owner: {
         id: number,
@@ -192,7 +194,7 @@ export interface VehicleDetailProps {
         code: string,
     }
 }
-export interface VehicleDetailDriversProps {
+export interface IVehicleDetailDrivers {
     fleet_id: number,
     first_name: string
     last_name: string,
@@ -201,7 +203,7 @@ export interface VehicleDetailDriversProps {
 }
 
 // Drivers
-export interface DriverVehiclesProps {
+export interface IDriverVehicles {
     id: number,
     car_type: number,
     car_photo: string | undefined,
@@ -217,7 +219,7 @@ export interface DriverVehiclesProps {
     is_deleted: number,
     car_name: string // Tipo de vehículo
 }
-export interface DriverAssignedVehiclesProps {
+export interface IDriverAssignedVehicles {
     mapping_id: number, // No se utiliza
     status: number, // 1 - Activo?
     car_number: string, // Patente
@@ -231,11 +233,11 @@ export interface DriverAssignedVehiclesProps {
     unique_car_id: string, // Este sirve
     car_name: string // Tipo de vehículo
 }
-export interface DriverProfileProps {
+export interface IDriverProfile {
     id: number,
     created_at: string,
     last_login: string,
-    branch: BranchProps,
+    branch: IBranch,
     current_license_plate: string,
     invoice_rut: string,
     personal: {
@@ -286,8 +288,8 @@ export interface DriverProfileProps {
             image: string
         }
     }
-    vehicles: DriverVehiclesProps[]
-    assigned_cars: DriverAssignedVehiclesProps[]
+    vehicles: IDriverVehicles[]
+    assigned_cars: IDriverAssignedVehicles[]
 }
 
 // UI
@@ -299,4 +301,13 @@ export interface User {
 
 export interface Session {
     user: User;
+}
+
+// Tools
+export interface Tool {
+    title: string;
+    hint?: string;
+    search?: string;
+    icon?: LucideIcon
+    url?: string; // Optional property for the URL
 }

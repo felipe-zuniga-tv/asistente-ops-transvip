@@ -6,7 +6,7 @@ import {
 import { nanoid } from 'nanoid';
 import Link from 'next/link';
 import { addMinutes, differenceInDays, differenceInMinutes } from 'date-fns';
-import { BookingInfoOutputProps } from '@/lib/chat/types';
+import { IBookingInfoOutput } from '@/lib/chat/types';
 import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -38,13 +38,13 @@ enum BookingSearchRequest {
 
 export function BookingIdSearch({ session, searchResults, content }: {
     session: any,
-    searchResults: BookingInfoOutputProps[],
+    searchResults: IBookingInfoOutput[],
     content: string
 }) {
     const [_, setMessages] = useUIState()
     const { submitUserMessage } = useActions()
 
-    const handleClick = async (result: BookingInfoOutputProps, request: BookingSearchRequest) => {
+    const handleClick = async (result: IBookingInfoOutput, request: BookingSearchRequest) => {
         let userMessageContent = ""
         if (request === BookingSearchRequest.BOOKING) {
             userMessageContent = `Me gustaría buscar la reserva ${result.booking.id}.`
@@ -86,7 +86,7 @@ export function BookingIdSearch({ session, searchResults, content }: {
 
             <div className={'search-results-cards relative w-full flex flex-col gap-4 items-start'}>
                 {searchResults.length > 1 && <span className='-mb-3 mt-2 font-bold'>Detalle de Reservas</span>}
-                {searchResults.map((result: BookingInfoOutputProps) => (
+                {searchResults.map((result: IBookingInfoOutput) => (
                     <BookingCard key={result.booking.id}
                         result={result}
                         handleClick={handleClick}
@@ -103,7 +103,7 @@ export function BookingIdSearch({ session, searchResults, content }: {
 }
 
 function BookingCard({ result, handleClick }: {
-    result: BookingInfoOutputProps
+    result: IBookingInfoOutput
     handleClick?: any
 }) {
     return (
@@ -120,7 +120,7 @@ function BookingCard({ result, handleClick }: {
 }
 
 function SharedServiceSummary({ result, handleClick }: {
-    result: BookingInfoOutputProps[]
+    result: IBookingInfoOutput[]
     handleClick: any
 }) {
 
@@ -144,7 +144,7 @@ function SharedServiceSummary({ result, handleClick }: {
 }
 
 function SharedServiceTotals({ result }: {
-    result: BookingInfoOutputProps[]
+    result: IBookingInfoOutput[]
 }) {
     const totalPayment = result.reduce((acc, curr) => acc + curr.payment.actual_payment, 0)
     const totalEstimatedDistance = result.reduce((acc, curr) => acc + curr.directions.estimated_travel_kms, 0)
@@ -171,7 +171,7 @@ function SharedServiceTotals({ result }: {
 }
 
 function BookingMainDetails({ result, handleClick }: {
-    result: BookingInfoOutputProps
+    result: IBookingInfoOutput
     handleClick: any
 }) {
     if (!result.booking) return null
@@ -226,7 +226,7 @@ function BookingMainDetails({ result, handleClick }: {
 }
 
 function BookingRating({ result }: {
-    result: BookingInfoOutputProps
+    result: IBookingInfoOutput
 }) {
     if (result.rating.number === 0) return
 
@@ -242,7 +242,7 @@ function BookingRating({ result }: {
 }
 
 function BookingObservations({ result }: {
-    result: BookingInfoOutputProps
+    result: IBookingInfoOutput
 }) {
     if (!result.booking.observations) return
 
@@ -255,7 +255,7 @@ function BookingObservations({ result }: {
 }
 
 function BookingDates({ result }: {
-    result: BookingInfoOutputProps
+    result: IBookingInfoOutput
 }) {
     if (!result.dates) return null
 
@@ -406,7 +406,7 @@ function BookingDates({ result }: {
 }
 
 function BookingPayment({ result }: {
-    result: BookingInfoOutputProps
+    result: IBookingInfoOutput
 }) {
     if (!result.payment) return null
 
@@ -441,7 +441,7 @@ function BookingPayment({ result }: {
 }
 
 function BookingCustomer({ result }: {
-    result: BookingInfoOutputProps
+    result: IBookingInfoOutput
 }) {
     if (!result.customer) return null
 
@@ -487,7 +487,7 @@ function BookingCustomer({ result }: {
 }
 
 function BookingDirections({ result }: {
-    result: BookingInfoOutputProps
+    result: IBookingInfoOutput
 }) {
     if (!result.directions) return null
 
@@ -535,7 +535,7 @@ function BookingDirections({ result }: {
 }
 
 function BookingBadges({ result, handleClick }: {
-    result: BookingInfoOutputProps
+    result: IBookingInfoOutput
     handleClick: any
 }) {
     return (
@@ -551,7 +551,7 @@ function BookingBadges({ result, handleClick }: {
 }
 
 function BookingVehicle({ result, handleClick }: {
-    result: BookingInfoOutputProps,
+    result: IBookingInfoOutput,
     handleClick: any
 }) {
     if (!STATES_TO_SHOW.includes(result.booking.status)) return null
@@ -597,7 +597,7 @@ function BookingVehicle({ result, handleClick }: {
 }
 
 function BookingOnTimeArrival({ result, booking_datetime_local }: {
-    result: BookingInfoOutputProps,
+    result: IBookingInfoOutput,
     booking_datetime_local: Date
 }) {
     const minutes_arrived_trip = differenceInMinutes(new Date(result.dates.arrived_datetime), booking_datetime_local)

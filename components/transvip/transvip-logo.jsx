@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
-export function TransvipLogo({ logoOnly = false, colored = true, size = 40, className = "" }) {
+export function TransvipLogo({ logoOnly = true, colored = true, size = 40, className = "" }) {
     return (
         logoOnly ? 
             <Image

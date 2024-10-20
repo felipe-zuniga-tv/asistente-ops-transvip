@@ -1,4 +1,6 @@
+import { Routes } from "@/utils/routes";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function AirportStatus({ services }: { services: any[] }) {
 
@@ -8,9 +10,9 @@ export default function AirportStatus({ services }: { services: any[] }) {
     )
 
     return (
-        <div className="grid grid-cols-2 gap-2 w-full text-slate-700">
-            
-            { services.map(srv => (
+        <div className="flex flex-col gap-2 items-start justify-start">
+            <div className="grid grid-cols-2 gap-2 w-full text-slate-700">
+                { services.map(srv => (
                     <div key={srv.name} className="flex grow flex-row items-center gap-4 bg-gray-200 hover:bg-gray-100 rounded-md p-2 px-4">
                         <Image src={srv.vehicle_image}
                             width={40} height={40}
@@ -20,8 +22,9 @@ export default function AirportStatus({ services }: { services: any[] }) {
                         <span className="font-semibold">{ srv.name }</span>
                         <span className="font-normal">{ srv.count }</span>
                     </div>
-                ))
-            }
+                ))}
+            </div>
+            <span>Más detalle <Link href={Routes.AIRPORT} className="underline">aquí</Link>.</span>
         </div>
     )
 }

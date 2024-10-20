@@ -4,7 +4,6 @@ import { UserMessage } from "../message"
 import { nanoid } from "nanoid"
 import { toolsList } from "@/lib/chat/config"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
 
 export default function SystemTools({ session }) {
     const [_, setMessages] = useUIState()
@@ -41,7 +40,7 @@ export default function SystemTools({ session }) {
                                 >
                                     <tool.icon className="size-5 text-transvip" />
                                     <div className="grid gap-0.5">
-                                        <span className="text-sm">{ tool.name }</span>
+                                        <span className="text-sm">{ tool.title }</span>
                                         <p className="text-xs text-muted-foreground" data-description>{ tool.hint }</p>
                                     </div>
                                 </Link>

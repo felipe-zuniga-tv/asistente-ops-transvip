@@ -2,7 +2,6 @@
 
 import { login } from '@/lib/auth'
 import { Routes } from "@/utils/routes"
-import { redirect } from 'next/navigation'
 
 export async function loginAction(formData: FormData) {
   try {

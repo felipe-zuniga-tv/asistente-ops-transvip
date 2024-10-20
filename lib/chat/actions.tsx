@@ -16,9 +16,9 @@ import { getVehicleStatus, getBookingInfo, getVehicleDetail, getDriverProfile, s
 import { BotCard, AssistantMessage, LoadingMessage, UserMessage } from "@/components/chat/message";
 import { VehicleStatusSearch } from "@/components/chat/search/vehicle-status-search";
 import { BookingIdSearch } from "@/components/chat/search/booking-search";
-import { VehicleDetail } from "@/components/chat/search/vehicle-detail-search";
+import { IVehicleDetail, VehicleDetail } from "@/components/chat/search/vehicle-detail-search";
 import { generateText } from "ai";
-import { DriverProfile } from "@/components/chat/search/driver-profile-search";
+import { DriverProfile, IDriverProfile } from "@/components/chat/search/driver-profile-search";
 import AirportStatus from "@/components/chat/airport/airport-status";
 import { airportZones } from "../transvip/config";
 import QRCode from "react-qr-code";
@@ -119,8 +119,6 @@ async function submitUserMessage(content: string) {
 				}).required(),
 				generate: async function* ({ addressedTo, subject }) {
 					yield <LoadingMessage text={`Redactando un texto para el usuario...`} />
-
-					console.log(CREATE_TEXT_PROMPT(EMAIL_TEXT_OPS_EXAMPLE, subject))
 
 					// Create text response for current search results
 					const content = await generateText({
@@ -295,7 +293,6 @@ async function submitUserMessage(content: string) {
 
 					if (lpRegex.test(licensePlate.toUpperCase())) {
 						vehicleInformation = await getVehicleDetail(licensePlate)
-						// console.log(vehicleInformation);
 					}
 
 					aiState.done({
@@ -400,7 +397,6 @@ async function submitUserMessage(content: string) {
 					
 					const driverRatingsSummary = getDriverRatingSummary(driverRatings)
 					yield <LoadingMessage text={`Armando resumen de las evaluaciones...`} className="text-sm"/>
-					console.log(driverRatingsSummary);
 
 					// Create text response for current search results
 					const content = await generateText({

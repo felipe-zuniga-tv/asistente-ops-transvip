@@ -1,4 +1,4 @@
-import { BookingInfoOutputProps, BranchProps, DriverProfileProps, VehicleDetailProps } from "@/lib/chat/types";
+import { IBookingInfoOutput, IBranch, IDriverProfile, IVehicleDetail } from "@/lib/chat/types";
 import { cn } from "@/lib/utils";
 import PaymentAvatar from "../payment/payment-avatar";
 import { differenceInDays } from "date-fns";
@@ -35,7 +35,7 @@ const vehicleStatus = [
 
 
 // Components
-export function CityBadge({ branch, className, isCode = true }: { branch?: BranchProps, className?: string, isCode?: boolean }) {
+export function CityBadge({ branch, className, isCode = true }: { branch?: IBranch, className?: string, isCode?: boolean }) {
     return (
         <Badge variant={"default"} 
             className={cn("py-1 bg-slate-600 hover:bg-slate-700 text-xs text-white", className as string)}>
@@ -44,7 +44,7 @@ export function CityBadge({ branch, className, isCode = true }: { branch?: Branc
     )
 }
 
-export function BookingStatusBadge({ result } : { result : BookingInfoOutputProps }) {
+export function BookingStatusBadge({ result } : { result : IBookingInfoOutput }) {
     const bookingStatusItem = bookingStatus.filter(bs => bs.status === result.booking.status)[0]
     const bookingStatusLabel = bookingStatusItem ? bookingStatusItem.label : result.booking.status
     const bookingStatusColorValue = bookingStatusItem.color
@@ -57,7 +57,7 @@ export function BookingStatusBadge({ result } : { result : BookingInfoOutputProp
     )
 }
 
-export function ServiceNameBadge({ result } : { result : BookingInfoOutputProps }) {
+export function ServiceNameBadge({ result } : { result : IBookingInfoOutput }) {
     return (
         <Badge variant={'default'} className={'ml-2 bg-slate-700 text-white'}>
             {result.booking.service_name}
@@ -66,7 +66,7 @@ export function ServiceNameBadge({ result } : { result : BookingInfoOutputProps 
 }
 
 export function CustomerVipBadge({ result, className = "" } : { 
-    result : BookingInfoOutputProps, 
+    result : IBookingInfoOutput, 
     className?: string
 }) {
     const vipFlagLabel = result.customer.vip_label
@@ -78,7 +78,7 @@ export function CustomerVipBadge({ result, className = "" } : {
     )
 }
 
-export function PaymentStatusBadge({ result } : { result : BookingInfoOutputProps }) {
+export function PaymentStatusBadge({ result } : { result : IBookingInfoOutput }) {
     const paymentStatusItem = paymentStatus.filter(ps => ps.status === result.payment.status)[0]
     const paymentStatusLabel = paymentStatusItem ? paymentStatusItem.label : result.payment.status
     const paymentStatusColor = paymentStatusItem.color
@@ -93,7 +93,7 @@ export function PaymentStatusBadge({ result } : { result : BookingInfoOutputProp
 }
 
 export function PaymentRouteType({ result, className } : { 
-    result : BookingInfoOutputProps, 
+    result : IBookingInfoOutput, 
     className?: string 
 }) {
     return (
@@ -103,7 +103,7 @@ export function PaymentRouteType({ result, className } : {
     )
 }
 
-export function DriverStatusBadge({ result } : { result : DriverProfileProps }) {
+export function DriverStatusBadge({ result } : { result : IDriverProfile }) {
     const driverStatusItem = driverStatus.filter(ds => ds.status === result.status.current)[0]
     const driverStatusLabel = driverStatusItem ? driverStatusItem.label : result.status.current
     const driverStatusColor = driverStatusItem.color
@@ -116,7 +116,7 @@ export function DriverStatusBadge({ result } : { result : DriverProfileProps }) 
     )
 }
 
-export function VehicleStatusBadge({ result } : { result : VehicleDetailProps }) {
+export function VehicleStatusBadge({ result } : { result : IVehicleDetail }) {
     const vehicleStatusItem = vehicleStatus.filter(vs => vs.status === result.status)[0]
     const vehicleStatusLabel = vehicleStatusItem.label
     const vehicleStatusColor = vehicleStatusItem.color
@@ -129,7 +129,7 @@ export function VehicleStatusBadge({ result } : { result : VehicleDetailProps })
     )
 }
 
-export function LicenseExpirationBadge({ result } : { result : DriverProfileProps }) {
+export function LicenseExpirationBadge({ result } : { result : IDriverProfile }) {
     let days_to_expiration_license = null
     if (result.driver_documents.license.expiration_date) {
         const _aux_license_expiration_date = result.driver_documents.license.expiration_date?.substring(0, result.driver_documents.license.expiration_date.indexOf("T")) as string

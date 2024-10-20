@@ -5,6 +5,7 @@ export const Routes = Object.freeze({
     CHAT: '/chat',
     START: '/chat',
     QR_GEN: '/qr',
+    AIRPORT: '/airport'
 })
 
 export const HeaderLinks = [

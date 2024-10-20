@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { CarIcon, PhoneIcon, UserCircleIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { AssistantMessageContent, UserMessage } from '../message';
-import { VehicleDetailDriversProps, VehicleDetailProps } from '@/lib/chat/types';
+import { IVehicleDetailDrivers, IVehicleDetail } from '@/lib/chat/types';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import ToolsButton from '../tools/tools-button';
@@ -39,13 +39,13 @@ const vehicleColor = [
 
 export function VehicleDetail({ session, vehicleInformation, content }: { 
     session: any,
-    vehicleInformation: VehicleDetailProps[]
+    vehicleInformation: IVehicleDetail[]
     content: string 
 }) {
     const [_, setMessages] = useUIState()
     const { submitUserMessage } = useActions()
 
-    const handleDriverClick = async(driver : VehicleDetailDriversProps) => {
+    const handleDriverClick = async(driver : IVehicleDetailDrivers) => {
         const userMessageContent = `Búscame el perfil del conductor de teléfono ${driver.country_code.replace('+', '').trim()}${driver.phone.trim()}.`
     
         setMessages((currentMessages: any) => [
@@ -89,7 +89,7 @@ export function VehicleDetail({ session, vehicleInformation, content }: {
             </div>
             {/* // 1235058 */}
             <div className={'search-results-cards relative w-full flex flex-col gap-2 items-start'}>
-                { vehicleInformation.map((result: VehicleDetailProps) => (
+                { vehicleInformation.map((result: IVehicleDetail) => (
                     <VehicleDetailCard key={result.license_plate} 
                         result={result}
                         handleDriverClick={handleDriverClick}
@@ -105,7 +105,7 @@ export function VehicleDetail({ session, vehicleInformation, content }: {
 }
 
 function VehicleDetailCard({ result, handleDriverClick, handleVehicleStatusClick } : {
-    result: VehicleDetailProps,
+    result: IVehicleDetail,
     handleDriverClick?: any
     handleVehicleStatusClick?: any
 }) {
@@ -121,7 +121,7 @@ function VehicleDetailCard({ result, handleDriverClick, handleVehicleStatusClick
     )
 }
 
-function VehicleMainDetails({ result } : { result : VehicleDetailProps }) {
+function VehicleMainDetails({ result } : { result : IVehicleDetail }) {
     console.log(result.color);
     
     const vehicleColorItem = vehicleColor.filter(bs => bs.code === result.color.code)[0]
@@ -177,7 +177,7 @@ function VehicleMainDetails({ result } : { result : VehicleDetailProps }) {
     )
 }
 
-function VehicleDocuments({ result } : { result : VehicleDetailProps }) {
+function VehicleDocuments({ result } : { result : IVehicleDetail }) {
     return (
         <div className='vehicle-documents'>
             <div className='flex flex-col gap-2 items-start justify-start'>
@@ -209,7 +209,7 @@ function VehicleDocuments({ result } : { result : VehicleDetailProps }) {
 }
 
 function VehicleDrivers({ result, handleClick } : { 
-    result : VehicleDetailProps 
+    result : IVehicleDetail 
     handleClick: any
 }) {
     return (
@@ -217,7 +217,7 @@ function VehicleDrivers({ result, handleClick } : {
             <span className='font-bold titles-font'>Conductores: { result.drivers.length } </span>
             <ul className='info-section w-full flex flex-col gap-1 max-h-[250px] overflow-auto'>
                 {
-                    result.drivers.map((driver: VehicleDetailDriversProps) => 
+                    result.drivers.map((driver: IVehicleDetailDrivers) => 
                         <li key={driver.fleet_id} className='flex flex-row gap-2 w-full'>
                             <div className='card-info-detail text-sm'>
                                 <UserCircleIcon className='size-4' />
@@ -247,7 +247,7 @@ function VehicleDrivers({ result, handleClick } : {
 }
 
 function VehicleBadges({ result, handleStatusClick } : { 
-    result : VehicleDetailProps,
+    result : IVehicleDetail,
     handleStatusClick: any
 }) {
     return (

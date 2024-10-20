@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid';
 import Image from 'next/image';
 import { CheckCircle, SparklesIcon, UserIcon } from 'lucide-react';
 import { AssistantMessageContent, UserMessage } from '../message';
-import { VehicleStatusSearchResultProps } from '@/lib/chat/types';
+import { IVehicleStatusSearchResult } from '@/lib/chat/types';
 import { VEHICLE_STATUS, cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import ToolsButton from '../tools/tools-button';
@@ -16,8 +16,8 @@ import { CityBadge } from '../badges/chat-badges';
 // import * as Whatsapp from '../../../public/images/whatsapp-logo.svg'
 
 export interface VehicleStatusSearchResults {
-    map(arg0: (result: VehicleStatusSearchResultProps) => import("react").JSX.Element): import("react").ReactNode;
-    searchResults: VehicleStatusSearchResultProps[];
+    map(arg0: (result: IVehicleStatusSearchResult) => import("react").JSX.Element): import("react").ReactNode;
+    searchResults: IVehicleStatusSearchResult[];
 }
 
 export function VehicleStatusSearch({ session, searchResults, content }: { 
@@ -28,7 +28,7 @@ export function VehicleStatusSearch({ session, searchResults, content }: {
     const [_, setMessages] = useUIState()
     const { submitUserMessage } = useActions()
 
-    const handleClick = async (result : VehicleStatusSearchResultProps, request: string) => {
+    const handleClick = async (result : IVehicleStatusSearchResult, request: string) => {
         let userMessageContent = ""
         if (request === 'booking') {
             userMessageContent = `Me gustaría saber más detalles de la reserva ${result.job_id}.`
@@ -72,7 +72,7 @@ export function VehicleStatusSearch({ session, searchResults, content }: {
 }
 
 function VehicleStatusResultsCard({ result, handleClick } : { 
-    result: VehicleStatusSearchResultProps
+    result: IVehicleStatusSearchResult
     handleClick: any 
 }) {
     const currentStatus = (result.status === VEHICLE_STATUS.ONLINE_AVAILABLE || result.status === VEHICLE_STATUS.ONLINE_BUSY) ? 'ONLINE' : 'OFFLINE'
@@ -110,7 +110,7 @@ function VehicleStatusResultsCard({ result, handleClick } : {
 }
 
 function VehicleStatusHeader({ result }: {
-    result: VehicleStatusSearchResultProps
+    result: IVehicleStatusSearchResult
 }) {
     return (
         <div className='result-fleet-header flex flex-row items-center justify-start gap-4'>
@@ -145,7 +145,7 @@ function VehicleStatusHeader({ result }: {
 }
 
 function VehicleStatusBadges({ result, currentStatus, handleDetailClick }: {
-    result: VehicleStatusSearchResultProps
+    result: IVehicleStatusSearchResult
     currentStatus: string
     handleDetailClick: any
 }) {

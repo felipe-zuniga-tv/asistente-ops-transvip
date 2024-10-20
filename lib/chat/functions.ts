@@ -2,7 +2,7 @@ import { format, formatISO, addHours } from "date-fns";
 import { getSession } from "../auth";
 import { branches } from "../transvip/config";
 import { VEHICLE_STATUS } from "../utils";
-import { BookingInfoOutputProps, BookingInfoProps, DriverProfileProps, VehicleDetailProps } from "./types";
+import { IBookingInfoOutput, IBookingInfo, IDriverProfile, IVehicleDetail } from "./types";
 
 // URLs
 const VEHICLE_STATUS_API_URL  = buildAPIUrl(process.env.GET_VEHICLE_STATUS);
@@ -159,7 +159,7 @@ export async function getVehicleDetail(license_plate: string) {
 
         // console.log(result[0])
 
-        const output_item : VehicleDetailProps = {
+        const output_item : IVehicleDetail = {
             vehicle_number: Number(unique_car_id),
             license_plate,
             branch: branches.filter(br => br.name.toUpperCase() === branch)[0],
@@ -225,9 +225,9 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
     const { totalCount, result } = data
 
     if (totalCount > 0) {
-        const output: BookingInfoOutputProps[] = []
+        const output: IBookingInfoOutput[] = []
 
-        await Promise.all(result.map(async (r: BookingInfoProps) => {
+        await Promise.all(result.map(async (r: IBookingInfo) => {
             const { job_id } = r;
 
             const { status: status_r, data: data_r } = await getResponseFromURL(`${BOOKING_INFO_FULL_URL}?job_id=${job_id}&access_token=${accessToken}`)
@@ -286,7 +286,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
             const pax_full_name = booking_for === 1 ? job_pickup_name : [customer_first_name.trim(), customer_last_name.trim()].join(" ")
             const pax_phone_number = booking_for === 1 ? customer_country_code.trim() + job_pickup_phone : [customer_country_code.trim(), customer_phone_number.trim()].join("")
         
-            const output_item: BookingInfoOutputProps = {
+            const output_item: IBookingInfoOutput = {
                 booking: {
                     id: job_id,
                     status: job_status,
@@ -425,7 +425,7 @@ export async function getBookings() {
 
     if (status !== 200) return null
 
-    const output: BookingInfoOutputProps[] = []
+    const output: IBookingInfoOutput[] = []
 
     await Promise.all(result.map(async (r: any) => {
         console.log(r)
@@ -503,7 +503,7 @@ export async function getDriverProfile(fleet_id: number) {
         assigned_cars, // []
     } = driver_detail
 
-    const output_item : DriverProfileProps = {
+    const output_item : IDriverProfile = {
         id: driver_id,
         created_at: creation_datetime,
         last_login,

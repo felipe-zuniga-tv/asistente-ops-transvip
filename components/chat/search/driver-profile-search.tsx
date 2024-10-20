@@ -5,7 +5,7 @@ import {
 } from 'ai/rsc'
 import { nanoid } from 'nanoid';
 import { UserCircle } from 'lucide-react';
-import { DriverProfileProps, DriverVehiclesProps } from '@/lib/chat/types';
+import { IDriverProfile, IDriverVehicles } from '@/lib/chat/types';
 import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -23,7 +23,7 @@ export function DriverProfile({ session, driverProfile, content }: {
     const [_, setMessages] = useUIState()
     const { submitUserMessage } = useActions()
 
-    const handleDriverClick = async (result : DriverProfileProps) => {
+    const handleDriverClick = async (result : IDriverProfile) => {
         let userMessageContent = `Me gustaría construir un resumen de las evaluaciones del conductor ${result.personal.email}.`
 
         setMessages((currentMessages: any) => [
@@ -41,7 +41,7 @@ export function DriverProfile({ session, driverProfile, content }: {
         ])
     }
 
-    const handleVehicleClick = async (result : DriverVehiclesProps, request : string) => {
+    const handleVehicleClick = async (result : IDriverVehicles, request : string) => {
 
         let userMessageContent = ""
         if (request === 'online') {
@@ -110,7 +110,7 @@ function DriverProfileCard({ result, handleDriverClick, handleVehicleClick } : {
 }
 
 function DriverMainDetails({ result } : { 
-    result : DriverProfileProps 
+    result : IDriverProfile 
 }) {
     return (
         <div className='driver-main-details'>
@@ -138,7 +138,7 @@ function DriverMainDetails({ result } : {
 }
 
 function DriverRatings({ result, handleClick } : { 
-    result : DriverProfileProps
+    result : IDriverProfile
     handleClick: any
  }) {
     return (
@@ -149,7 +149,7 @@ function DriverRatings({ result, handleClick } : {
     )
 }
 
-function DriverDocuments({ result } : { result : DriverProfileProps }) {
+function DriverDocuments({ result } : { result : IDriverProfile }) {
     return (
         <div className='driver-documents'>
             <div className='flex flex-col gap-2 items-start justify-start text-slate-700'>
@@ -211,7 +211,7 @@ function DriverDocuments({ result } : { result : DriverProfileProps }) {
 }
 
 function DriverVehicles({ result, handleClick } : {
-    result : DriverProfileProps 
+    result : IDriverProfile 
     handleClick: any
 }) {
     if (result.vehicles.length === 0) return null
@@ -222,7 +222,7 @@ function DriverVehicles({ result, handleClick } : {
                 <span className='font-bold titles-font'>Vehículos Propios</span>
                 <div className='info-section flex flex-col gap-2 items-center justify-start w-full text-sm'>
                     {
-                        result.vehicles.map((vehicle: DriverVehiclesProps) => 
+                        result.vehicles.map((vehicle: IDriverVehicles) => 
                             <div key={vehicle.registration_number} className='flex flex-row gap-3 justify-start items-center w-full'>
                                 <span>Móvil: { vehicle.unique_car_id }</span>
                                 <span>PPU: { vehicle.registration_number }</span>
@@ -252,7 +252,7 @@ function DriverVehicles({ result, handleClick } : {
 }
 
 function DriverBadges({ result, handleStatusClick } : { 
-    result : DriverProfileProps
+    result : IDriverProfile
     handleStatusClick?: any
 }) {
     return (
