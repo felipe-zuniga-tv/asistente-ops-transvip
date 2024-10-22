@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { loginAction } from '@/lib/auth/actions'
 import { SubmitButton } from '../ui/form-submit'
+import { KeySquare, Mail } from 'lucide-react'
 
 export function LoginFormClient() {
     const [error, setError] = useState<string | null>(null)
@@ -30,20 +31,30 @@ export function LoginFormClient() {
         <div className="flex flex-col w-full sm:max-w-md justify-center gap-4">
             <span className='mx-auto text-xl text-white'>Ingresa aquí</span>
             <form onSubmit={handleSubmit} method='POST' className="auth-form auth-widths">
-                <input
-                    type="email"
-                    name="email"
-                    className="auth-input-field"
-                    placeholder="Email"
-                    required
-                />
-                <input
-                    type="password"
-                    name="password"
-                    className="auth-input-field"
-                    placeholder="Password"
-                    required
-                />
+                <div className="relative">
+                    <input
+                        type="email"
+                        name="email"
+                        className="auth-input-field"
+                        placeholder="Email"
+                        required
+                    />
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center justify-center pr-3 text-muted-foreground/80 peer-disabled:opacity-50">
+                        <Mail size={20} strokeWidth={2} aria-hidden="true" role="presentation" />
+                    </div>
+                </div>
+                <div className="relative">
+                    <input
+                        type="password"
+                        name="password"
+                        className="auth-input-field"
+                        placeholder="Password"
+                        required
+                    />
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center justify-center pr-3 text-muted-foreground/80 peer-disabled:opacity-50">
+                        <KeySquare size={20} strokeWidth={2} aria-hidden="true" role="presentation" />
+                    </div>
+                </div>
 
                 <SubmitButton pendingState={'Ingresando...'} className='auth-btn' isLoading={isLoading}>
                     Ingresar

@@ -77,9 +77,9 @@ export function AssistantMessageContent({ content }: {
 				a({ children, ...props }) {
 					return <a {...props} target="_blank" className="font-bold underline">{children}</a>
 				},
-				img({ children }) {
-					return <img className="h-[120px] w-auto">{children}</img>
-				},
+				// img({ children }) {
+				// 	return <img className="h-[120px] w-auto">{children}</img>
+				// },
 			}}
 		>
 			{text}
