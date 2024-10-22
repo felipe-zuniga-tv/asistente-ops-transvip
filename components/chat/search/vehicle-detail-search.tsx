@@ -121,9 +121,7 @@ function VehicleDetailCard({ result, handleDriverClick, handleVehicleStatusClick
     )
 }
 
-function VehicleMainDetails({ result } : { result : IVehicleDetail }) {
-    console.log(result.color);
-    
+function VehicleMainDetails({ result } : { result : IVehicleDetail }) {    
     const vehicleColorItem = vehicleColor.filter(bs => bs.code === result.color.code)[0]
 
     return (
@@ -133,6 +131,9 @@ function VehicleMainDetails({ result } : { result : IVehicleDetail }) {
                 <div className='info-section'>
                     <div className='card-info-detail flex flex-col gap-2 items-start justify-start w-full'>
                         <div className='flex flex-row gap-1 items-center justify-start w-full'>
+                            <span className='font-semibold'>Titular:</span>
+                            <span>{ result.owner.first_name } { result.owner.last_name }</span>
+                            <span>·</span>
                             <span className='font-semibold'>PPU:</span>
                             <span>{ result.license_plate }</span>
                             <span>·</span>

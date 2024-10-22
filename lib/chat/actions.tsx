@@ -425,6 +425,9 @@ async function submitUserMessage(content: string) {
 						]
 					})
 
+					// console.log(driverRatings)
+					console.log(driverRatingsSummary)
+
 					return driverRatings ? (
 						<AssistantMessage content={content.text} session={session} />
 					) : (

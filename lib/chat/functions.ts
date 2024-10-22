@@ -43,11 +43,6 @@ async function getResponseFromURL(URL: string) {
 //     date.setTime(date.getTime() + hoursToAdd);
 //     return date;
 // }
-function addMinutes(date : Date, minutes : number) {
-    const minutesToAdd = minutes * 60 * 1000;
-    date.setTime(date.getTime() + minutesToAdd);
-    return date;
-}
 export function buildWhatsappLink(phone_number : string, text: string) {
     return encodeURI(`https://wa.me/${phone_number.replace('+', '').trim()}?text=${text.trim()}`)
 }
@@ -157,20 +152,18 @@ export async function getVehicleDetail(license_plate: string) {
             car_type: vehicle_type_id, carName: vehicle_type_name
         } = result[0]
 
-        // console.log(result[0])
-
         const output_item : IVehicleDetail = {
             vehicle_number: Number(unique_car_id),
             license_plate,
             branch: branches.filter(br => br.name.toUpperCase() === branch)[0],
             status: working_status,
-            drivers: assigned_drivers,
+            drivers: assigned_drivers.map((d: any) => cleanDriverInfo(d)),
             creation_datetime: added_at,
             owner: {
                 id: owner_id,
                 fleet_id,
-                first_name,
-                last_name,
+                first_name: first_name.trim(),
+                last_name: last_name.trim(),
             },
             documents: {
                 registration_image,
@@ -205,6 +198,16 @@ export async function getVehicleDetail(license_plate: string) {
     }
 
     return null
+}
+
+function cleanDriverInfo(d: any) {
+    return {
+        country_code: d.country_code.trim(),
+        phone: d.phone.trim(),
+        first_name: d.first_name.trim(),
+        last_name: d.last_name.trim(),
+        fleet_id: d.fleet_id,
+    }
 }
 
 // Bookings
