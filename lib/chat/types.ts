@@ -1,4 +1,5 @@
 import { LucideIcon } from "lucide-react";
+import { number } from "zod";
 
 // DATA TYPES
 export interface IBranch {
@@ -220,18 +221,10 @@ export interface IDriverVehicles {
     car_name: string // Tipo de vehículo
 }
 export interface IDriverAssignedVehicles {
-    mapping_id: number, // No se utiliza
-    status: number, // 1 - Activo?
-    car_number: string, // Patente
-    car_type: number, // No sirve?
-    fleet_id: number,
-    fleet_first_name: string,
-    fleet_last_name: string,
-    added_date_time: string, // Fecha de agregar el vehículo
-    car_id: number,
-    is_deleted: number,
-    unique_car_id: string, // Este sirve
-    car_name: string // Tipo de vehículo
+    active: boolean,
+    license_plate: string, // Patente
+    vehicle_type_name: string // Tipo de vehículo
+    vehicle_number: number // Este sirve
 }
 export interface IDriverProfile {
     id: number,
@@ -289,7 +282,7 @@ export interface IDriverProfile {
         }
     }
     vehicles: IDriverVehicles[]
-    assigned_cars: IDriverAssignedVehicles[]
+    assigned_vehicles: IDriverAssignedVehicles[]
 }
 
 // UI

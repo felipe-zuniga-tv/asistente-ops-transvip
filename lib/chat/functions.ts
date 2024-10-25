@@ -562,10 +562,19 @@ export async function getDriverProfile(fleet_id: number) {
             }
         },
         vehicles: car_details,
-        assigned_cars,
+        assigned_vehicles: assigned_cars.map((c: any) => getAssignedVehicles(c)),
     }
 
     return output_item
+}
+
+function getAssignedVehicles(c: any) {
+    return {
+        active: c.status === 1,
+        license_plate: c.car_number,
+        vehicle_type_name: c.car_name,
+        vehicle_number: parseInt(c.unique_car_id),
+    }
 }
 
 export async function getDriverRatings(fleet_id: number) {

@@ -7,8 +7,10 @@ import {
 	BotIcon,
 	Drill,
 	GanttChart,
+	Hammer,
 	LucideIcon,
 	PlaneTakeoff,
+	QrCodeIcon,
 	Settings2,
 } from "lucide-react"
 
@@ -28,6 +30,7 @@ import { useActions, useUIState } from "ai/rsc"
 import { nanoid } from "@/lib/utils"
 import { UserMessage } from "../message"
 import { Tool } from "@/lib/chat/types"
+import { Routes } from "@/utils/routes"
 
 
 // Define a new interface for sidebar items
@@ -43,7 +46,20 @@ export interface SidebarItem {
 const sidebarData : { navMain: SidebarItem[] } = {
 	navMain: [
 		{
-			title: "Herramientas",
+			title: "Secciones",
+			url: "#",
+			icon: Hammer,
+			isActive: true,
+			items: [
+				{
+					title: 'Genera tu código QR',
+					icon: QrCodeIcon,
+					url: Routes.QR_GEN
+				},
+			],
+		},
+		{
+			title: "Herramientas Jarvip",
 			url: "#",
 			icon: Drill,
 			isActive: true,

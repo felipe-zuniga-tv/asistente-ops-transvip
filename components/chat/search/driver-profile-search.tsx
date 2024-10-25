@@ -5,7 +5,7 @@ import {
 } from 'ai/rsc'
 import { nanoid } from 'nanoid';
 import { UserCircle } from 'lucide-react';
-import { IDriverProfile, IDriverVehicles } from '@/lib/chat/types';
+import { IDriverAssignedVehicles, IDriverProfile, IDriverVehicles } from '@/lib/chat/types';
 import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -41,17 +41,21 @@ export function DriverProfile({ session, driverProfile, content }: {
         ])
     }
 
-    const handleVehicleClick = async (result : IDriverVehicles, request : string) => {
-
+    const handleVehicleClick = async (result: IDriverVehicles | IDriverAssignedVehicles, request: string) => {
         let userMessageContent = ""
-        if (request === 'online') {
-            userMessageContent = `Me gustaría saber si el móvil ${result.unique_car_id} está online.`
-        } else if (request === 'details') {
-            userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${result.registration_number}.`
-        } else {
-            userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${result.registration_number}.`
+        if ('unique_car_id' in result) { // Type guard for IDriverVehicles
+            if (request === 'online') {
+                userMessageContent = `Me gustaría saber si el móvil ${result.unique_car_id} está online.`
+            } else if (request === 'details') {
+                userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${result.registration_number}.`
+            }
+        } else if ('vehicle_number' in result) { // Type guard for IDriverAssignedVehicles
+            if (request === 'online') {
+                userMessageContent = `Me gustaría saber si el vehículo ${result.vehicle_number} está online.`
+            } else if (request === 'details') {
+                userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${result.license_plate}.`
+            }
         }
-
         setMessages((currentMessages: any) => [
             ...currentMessages,
             {
@@ -103,6 +107,7 @@ function DriverProfileCard({ result, handleDriverClick, handleVehicleClick } : {
                     </div>
                 </div>
                 <DriverDocuments result={result} />
+                <DriverOwnVehicles result={result} handleClick={handleVehicleClick} />
                 <DriverVehicles result={result} handleClick={handleVehicleClick} />
             </div>
         </div>
@@ -210,7 +215,7 @@ function DriverDocuments({ result } : { result : IDriverProfile }) {
     )
 }
 
-function DriverVehicles({ result, handleClick } : {
+function DriverOwnVehicles({ result, handleClick } : {
     result : IDriverProfile 
     handleClick: any
 }) {
@@ -230,6 +235,48 @@ function DriverVehicles({ result, handleClick } : {
                                     className={vehicle.working_status === 1 ? 'bg-green-700 hover:bg-green-700' :
                                     'bg-red-400 hover:bg-red-400' }>
                                     { vehicle.working_status === 1 ? 'Activo': 'Inactivo' }
+                                </Badge>
+                                <div className='vehicle-actions flex-row flex gap-x-1 ml-auto'>
+                                    <Button variant={'outline'} className='text-xs text-white py-[1px] h-7 bg-slate-600'
+                                        onClick={() => handleClick(vehicle, 'details')}>
+                                        Más detalles
+                                    </Button>
+                                    <Button variant={'outline'} className='text-xs text-white py-[1px] h-7 bg-slate-600'
+                                        onClick={() => handleClick(vehicle, 'online')}>
+                                        Ver si está online
+                                    </Button>
+                                </div>
+
+                            </div>
+                        )
+                    }
+                </div>
+            </div>
+        </div>
+    )
+}
+
+function DriverVehicles({ result, handleClick } : {
+    result : IDriverProfile 
+    handleClick: any
+}) {
+    if (result.assigned_vehicles.length === 0) return null
+
+    return (
+        <div className='driver-vehicles'>
+            <div className='flex flex-col gap-2 items-start justify-start text-slate-700'>
+                <span className='font-bold titles-font'>Vehículos que conduce</span>
+                <div className='info-section flex flex-col gap-2 items-center justify-start w-full text-sm'>
+                    {
+                        result.assigned_vehicles.map((vehicle: IDriverAssignedVehicles) => 
+                            <div key={vehicle.license_plate} className='flex flex-row gap-2 justify-start items-center w-full'>
+                                <span>Móvil: { vehicle.vehicle_number }</span>
+                                <span>·</span>
+                                <span>PPU: { vehicle.license_plate }</span>
+                                <Badge variant={'default'} 
+                                    className={vehicle.active ? 'bg-green-700 hover:bg-green-700' :
+                                    'bg-red-400 hover:bg-red-400' }>
+                                    { vehicle.active ? 'Activo': 'Inactivo' }
                                 </Badge>
                                 <div className='vehicle-actions flex-row flex gap-x-1 ml-auto'>
                                     <Button variant={'outline'} className='text-xs text-white py-[1px] h-7 bg-slate-600'
