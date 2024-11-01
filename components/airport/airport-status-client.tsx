@@ -2,12 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import { TransvipLogo } from '../transvip/transvip-logo'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { calculateDuration, cn } from '@/lib/utils'
 import { LiveClock } from '../ui/live-clock'
 import { format } from 'date-fns'
 import { Clock, Users } from 'lucide-react'
-import { airportZones } from '@/lib/transvip/config'
+import { AirportZone, airportZones } from '@/lib/transvip/config'
 
 interface AirportVehicleType {
     id: number[]
@@ -30,11 +29,11 @@ interface AirportVehicleDetail {
 
 const secondsToUpdate = 30
 
-export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZoneId }: {
+export default function AirportStatusClient({ vehicleTypesList, zone: initialZoneId }: {
     vehicleTypesList: AirportVehicleType[]
-    zoneId: number
+    zone: AirportZone
 }) {
-    const [selectedZone, setSelectedZone] = useState(airportZones.find(zone => zone.zone_id === initialZoneId) || airportZones[0])
+    const [selectedZone, _] = useState(initialZoneId || airportZones[0])
     const [vehicleTypes, setVehicleTypes] = useState(vehicleTypesList)
     const [selectedType, setSelectedType] = useState<string>(vehicleTypesList[0]?.name || ''); // Initialize with first vehicle type
     const [vehicleList, setVehicleList] = useState<AirportVehicleDetail[]>([])
@@ -91,7 +90,7 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
     return (
         <div className="flex flex-col h-screen bg-gray-100">
             {/* Header */}
-            <AirportHeader setSelectedZone={setSelectedZone} />
+            <AirportHeader selectedZone={selectedZone} />
 
             {/* Vehicle Type Buttons */}
             <VehicleTypes vehicleTypes={vehicleTypes}
@@ -116,28 +115,20 @@ export default function AirportStatusClient({ vehicleTypesList, zoneId: initialZ
 }
 
 // New component for the header
-function AirportHeader({ setSelectedZone }: { setSelectedZone: (zone: typeof airportZones[number]) => void }) {
+function AirportHeader({ selectedZone }: { 
+    selectedZone: AirportZone
+}) {
     return (
-        <header className="bg-transvip/90 shadow-md p-4 flex flex-col sm:flex-row justify-start items-center gap-2 md:gap-8">
-            <div className='w-full flex flex-row items-center justify-start gap-4'>
+        <header className="bg-transvip/90 shadow-md p-4 flex flex-col md:flex-row justify-center md:justify-start items-center gap-2 md:gap-8">
+            <div className='w-full flex flex-row items-center justify-center md:justify-between gap-4'>
                 <TransvipLogo size={36} colored={false} logoOnly={true} />
-                <span className="text-2xl font-bold text-white sm:ml-2">Zona Iluminada</span>
-                <div className='flex flex-col xl:flex-row gap-2 items-center justify-center mx-auto'>
-                    <Select onValueChange={(value) => setSelectedZone(airportZones.find(zone => zone.zone_id.toString() === value) || airportZones[0])}>
-                        <SelectTrigger className="w-[230px] bg-white">
-                            <SelectValue placeholder={`${airportZones[0].city_name} (${airportZones[0].airport_code})`} />
-                        </SelectTrigger>
-                        <SelectContent>
-                            { airportZones.map((zone) => (
-                                <SelectItem value={zone.zone_id.toString()} key={zone.zone_id}>
-                                    {zone.city_name} ({zone.airport_code})
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                <div className='flex flex-row gap-0 items-center justify-center md:justify-start w-full'>
+                    <span className="text-xl lg:text-2xl font-bold text-white sm:ml-2">Zona Iluminada</span>
+                    <span className="text-xl lg:text-2xl font-bold text-white sm:ml-2">·</span>
+                    <span className="text-xl lg:text-2xl font-bold text-white sm:ml-2">{selectedZone.city_name}</span>
                 </div>
-                <LiveClock className='ml-auto' />
             </div>
+            <LiveClock className='mx-auto md:ml-auto' />
         </header>
     )
 }
@@ -148,7 +139,7 @@ function VehicleTypes({ vehicleTypes, handleSelectedType, selectedType }: {
     selectedType: string
 }) {
     return (
-        <div className={`bg-white p-4 min-h-fit text-base md:text-2xl lg:text-xl grid grid-rows-1 grid-flow-col md:flex md:flex-row md:justify-center md:items-center gap-4 overflow-x-auto snap-start`}>
+        <div className={`bg-white p-4 min-h-fit text-base md:text-2xl lg:text-xl flex flex-row justify-center items-center gap-4 overflow-x-auto snap-start`}>
             { vehicleTypes.map((vType : AirportVehicleType) => (
                 <div key={vType.name}
                     onClick={() => handleSelectedType(vType.name)}
@@ -192,7 +183,7 @@ function VehicleListDetail({ vehicleList } : { vehicleList: AirportVehicleDetail
     const maxWaitTime = 15
 
     return (
-        <div className="flex-grow overflow-auto p-3 w-full text-base lg:text-xl xl:text-2xl">
+        <div className="flex flex-col flex-grow overflow-auto p-3 w-full text-base gap-4 lg:text-xl xl:text-2xl">
             { vehicleList.map((vehicle, index) => {
                 const waitTime = vehicle.passenger_entry_time ? calculateDuration(vehicle.passenger_entry_time) : null
 
@@ -208,8 +199,8 @@ function VehicleListDetail({ vehicleList } : { vehicleList: AirportVehicleDetail
 
                 return (
                     <div key={vehicle.unique_car_id} 
-                        className={`vehicle-detail-card w-full flex flex-row gap-4 items-center justify-between p-4 mb-4 shadow-md rounded-lg text-slate-900 ${bgColor}`}>
-                        <div className='vehicle-index-driver flex flex-row gap-2 items-center justify-start'>
+                        className={`vehicle-detail-card w-full flex flex-col md:flex-row gap-4 items-center justify-between p-4 shadow-md rounded-lg text-slate-900 ${bgColor}`}>
+                        <div className='vehicle-index-driver flex flex-row gap-2 items-center justify-start z-10'>
                             <div className='vehicle-index font-semibold text-3xl w-[30px] text-center'>{index + 1}</div>
                             <div className='vehicle-driver flex flex-col gap-1 justify-center items-center w-[320px] lg:w-[400px]'>
                                 <div className='flex flex-row gap-1 justify-center items-center'>

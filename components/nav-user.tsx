@@ -94,7 +94,7 @@ export function NavUser({ user }: {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem className="hidden">
               <LogOut />
               Salir
             </DropdownMenuItem>

@@ -56,13 +56,6 @@ Gerencia de Operaciones Transvip
 
 // TOOLS
 export const toolsList: Tool[] = [
-    //{
-    //    title: 'Generar QR (con front)',
-    //    hint: 'Ingresa el número de reserva',
-    //    search: 'Necesito crear un código QR',
-    //    icon: QrCodeIcon,
-    //    url: Routes.QR_GEN
-    //},
     {
         title: 'Generar QR en el chatbot',
         hint: 'Ingresa el número de reserva',

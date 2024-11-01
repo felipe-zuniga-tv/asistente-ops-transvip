@@ -227,9 +227,10 @@ function DriverOwnVehicles({ result, handleClick } : {
                 <span className='font-bold titles-font'>Vehículos Propios</span>
                 <div className='info-section flex flex-col gap-2 items-center justify-start w-full text-sm'>
                     {
-                        result.vehicles.map((vehicle: IDriverVehicles) => 
-                            <div key={vehicle.registration_number} className='flex flex-row gap-3 justify-start items-center w-full'>
+                        result.vehicles.filter(v => v.working_status === 1).map((vehicle: IDriverVehicles) => 
+                            <div key={vehicle.registration_number} className='flex flex-row gap-2 justify-start items-center w-full'>
                                 <span>Móvil: { vehicle.unique_car_id }</span>
+                                <span>·</span>
                                 <span>PPU: { vehicle.registration_number }</span>
                                 <Badge variant={'default'} 
                                     className={vehicle.working_status === 1 ? 'bg-green-700 hover:bg-green-700' :
@@ -268,7 +269,7 @@ function DriverVehicles({ result, handleClick } : {
                 <span className='font-bold titles-font'>Vehículos que conduce</span>
                 <div className='info-section flex flex-col gap-2 items-center justify-start w-full text-sm'>
                     {
-                        result.assigned_vehicles.map((vehicle: IDriverAssignedVehicles) => 
+                        result.assigned_vehicles.filter(v => v.active).map((vehicle: IDriverAssignedVehicles) => 
                             <div key={vehicle.license_plate} className='flex flex-row gap-2 justify-start items-center w-full'>
                                 <span>Móvil: { vehicle.vehicle_number }</span>
                                 <span>·</span>
