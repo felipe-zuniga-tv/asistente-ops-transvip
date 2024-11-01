@@ -57,9 +57,9 @@ const sidebarData : { navMain: SidebarItem[] } = {
 					url: Routes.QR_GEN
 				},
 				{
-					title: 'Zona Iluminada',
+					title: 'Herramientas Aeropuerto',
 					icon: PlaneTakeoff,
-					url: Routes.AIRPORT
+					url: Routes.AIRPORT.HOME
 				},
 			],
 		},

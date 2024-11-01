@@ -24,7 +24,7 @@ export default function AirportStatus({ services }: { services: any[] }) {
                     </div>
                 ))}
             </div>
-            <span>Más detalle <Link href={Routes.AIRPORT} className="underline">aquí</Link>.</span>
+            <span>Más detalle <Link href={Routes.AIRPORT.HOME} className="underline">aquí</Link>.</span>
         </div>
     )
 }

@@ -5,7 +5,13 @@ export const Routes = Object.freeze({
     CHAT: '/chat',
     START: '/chat',
     QR_GEN: '/qr',
-    AIRPORT: '/aeropuerto'
+    AIRPORT: {
+        HOME: '/aeropuerto',
+        ZI: '/aeropuerto/zi',
+        ZI_SCL: '/aeropuerto/zi/scl',
+        ZI_ANF: '/aeropuerto/zi/anf',
+        ZI_CJC: '/aeropuerto/zi/cjc',
+    }
 })
 
 export const HeaderLinks = [
