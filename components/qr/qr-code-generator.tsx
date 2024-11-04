@@ -41,7 +41,7 @@ export const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = () => {
 
     return (
         <div className='p-4'>
-            <div className="max-w-2xl mx-auto sm:mt-10 bg-white rounded-lg shadow-lg flex flex-col gap-6 px-6 pb-4">
+            <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg flex flex-col gap-6 px-6 pb-4">
                 <div className="flex flex-col gap-2 md:gap-4 justify-center items-center px-6 md:px-8 pt-6 md:pt-8">
                     <Image src="/images/transvip-logo-only-color.png"
                         alt="Transvip Logo"

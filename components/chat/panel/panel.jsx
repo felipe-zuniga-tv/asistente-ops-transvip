@@ -1,6 +1,5 @@
-import LogoutButton from "../../auth/logout"
+import LogoutButton from "@/components/auth/logout"
 import { TransvipOpsChat } from "../chat"
-// import UserDetails from "@/components/ui/navigation/user-details"
 
 export function TransvipPanel({ id, session }) {
 	return (

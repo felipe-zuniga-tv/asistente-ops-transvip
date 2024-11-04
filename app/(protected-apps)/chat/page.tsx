@@ -1,4 +1,3 @@
-import { AI } from "@/lib/chat/actions";
 import { nanoid } from "@/lib/utils";
 import { getSession } from "@/lib/auth";
 import { TransvipPanel } from "@/components/chat/panel/panel";

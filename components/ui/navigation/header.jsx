@@ -1,6 +1,6 @@
-import LogoutButton from "../../auth/logout";
-import SheetNavigation from "./sheet";
+import LogoutButton from "@/components/auth/logout";
 import UserDetails from "./user-details";
+import SheetNavigation from "./sheet";
 
 export default async function Header() {
     return (
