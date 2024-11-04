@@ -50,7 +50,7 @@ export function NavUser({ user }: {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name || user.full_name} />
+                <AvatarImage src={'/images/transvip-logo-only-color.png'} alt={user.name || user.full_name} className="p-0.5" />
                 <AvatarFallback className="rounded-full bg-slate-700 text-white">{ getInitials(user.full_name || "") }</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -69,7 +69,7 @@ export function NavUser({ user }: {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name || user.full_name} />
+                <AvatarImage src={'/images/transvip-logo-only-color.png'} alt={user.name || user.full_name} className="p-0.5" />
                   <AvatarFallback className="rounded-full bg-slate-700 text-white">{ getInitials(user.full_name || "") }</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
@@ -93,7 +93,7 @@ export function NavUser({ user }: {
                 Alertas
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator className="hidden" />
             <DropdownMenuItem className="hidden">
               <LogOut />
               Salir

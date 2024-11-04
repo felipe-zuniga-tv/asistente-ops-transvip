@@ -109,29 +109,6 @@ const sidebarData : { navMain: SidebarItem[] } = {
 			],
 		},
 		{
-			title: "Configuración",
-			url: "#",
-			icon: Settings2,
-			items: [
-				{
-					title: "General",
-					url: "#",
-				},
-				{
-					title: "Team",
-					url: "#",
-				},
-				{
-					title: "Billing",
-					url: "#",
-				},
-				{
-					title: "Limits",
-					url: "#",
-				},
-			],
-		},
-		{
 			title: "Proyectos",
 			url: "#",
 			icon: GanttChart,
@@ -176,14 +153,15 @@ export function AppSidebar({ session, ...props }: { session: any & React.Compone
 	return (
 		<Sidebar collapsible="icon" {...props}>
 			<SidebarHeader>
-				<TeamSwitcher teams={opsTeams} />
+				{/* <TeamSwitcher teams={opsTeams} /> */}
+				<NavUser user={session.user} />
 			</SidebarHeader>
 			<SidebarContent>
 				<NavMain items={sidebarData.navMain} handleClick={handleClick} />
 			</SidebarContent>
-			<SidebarFooter>
+			{/* <SidebarFooter>
 				<NavUser user={session.user} />
-			</SidebarFooter>
+			</SidebarFooter> */}
 			<SidebarRail />
 		</Sidebar>
 	)
