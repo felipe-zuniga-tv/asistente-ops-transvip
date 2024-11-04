@@ -11,6 +11,7 @@ import {
 	LucideIcon,
 	PlaneTakeoff,
 	QrCodeIcon,
+	Send,
 	Settings2,
 } from "lucide-react"
 
@@ -31,19 +32,20 @@ import { nanoid } from "@/lib/utils"
 import { UserMessage } from "../message"
 import { Tool } from "@/lib/chat/types"
 import { Routes } from "@/utils/routes"
+import { NavSecondary } from "./nav-secondary"
 
 
 // Define a new interface for sidebar items
 export interface SidebarItem {
 	title: string;
 	url: string;
-	icon?: LucideIcon;
+	icon: LucideIcon;
 	isActive?: boolean;
 	items?: Tool[]; // Recursive type for nested items
 }
 
 // Sidebar content
-const sidebarData : { navMain: SidebarItem[] } = {
+const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] } = {
 	navMain: [
 		{
 			title: "Secciones",
@@ -126,6 +128,13 @@ const sidebarData : { navMain: SidebarItem[] } = {
 			],
 		},
 	],
+	navSecondary: [
+		{
+			title: "Feedback",
+			url: "#",
+			icon: Send,
+		},
+	]
 }
 
 export function AppSidebar({ session, ...props }: { session: any & React.ComponentProps<typeof Sidebar> }) {
@@ -159,9 +168,9 @@ export function AppSidebar({ session, ...props }: { session: any & React.Compone
 			<SidebarContent>
 				<NavMain items={sidebarData.navMain} handleClick={handleClick} />
 			</SidebarContent>
-			{/* <SidebarFooter>
-				<NavUser user={session.user} />
-			</SidebarFooter> */}
+			<SidebarFooter>
+				<NavSecondary items={sidebarData.navSecondary} className="mt-auto" />
+			</SidebarFooter>
 			<SidebarRail />
 		</Sidebar>
 	)

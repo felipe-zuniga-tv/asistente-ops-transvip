@@ -9,7 +9,7 @@ export default function LogoutButton({ ...props }) {
 		'use server'
 		await logout()
 
-		redirect(Routes.HOME)
+		return redirect(Routes.HOME)
 	}
 
     return (
