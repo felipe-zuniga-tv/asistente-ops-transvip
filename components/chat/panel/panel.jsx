@@ -11,7 +11,7 @@ export function TransvipPanel({ id, session }) {
 					</div>
 				</header>
 				<div className="flex-1 overflow-auto p-0 md:p-3 md:pt-1">
-					<div className="border flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-2 md:p-3">
+					<div className="border flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50  max-w-5xl mx-auto p-2 md:p-3">
 						<TransvipOpsChat id={id} session={session} />
 					</div>
 				</div>

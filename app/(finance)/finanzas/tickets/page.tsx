@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from "react"; // Import useState for managing state and useEffect for cleanup
+import { useState, useEffect, useRef } from "react"; // Import useState for managing state and useEffect for cleanup
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -12,19 +12,19 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, Trash2, Upload } from "lucide-react";
+import { PlusCircle, Trash2, Upload, X } from "lucide-react";
 import { TransvipLogo } from "@/components/transvip/transvip-logo";
 import Image from "next/image";
-import Zoom from 'react-medium-image-zoom'
-import 'react-medium-image-zoom/dist/styles.css'
+import TicketCards from "@/components/finance/tickets/ticket-cards";
 
-interface FileWithPreview extends File {
+export interface FileWithPreview extends File {
     preview?: string;
 }
 
 export default function ParkingTickets() {
     const [files, setFiles] = useState<FileWithPreview[]>([]); // State to hold selected files
     const [results, setResults] = useState<string[]>([]); // State to hold processing results
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -59,6 +59,8 @@ export default function ParkingTickets() {
     const handleUpload = async () => {
         if (files.length === 0) return; // Prevent upload if no files are selected
 
+        console.log(files)
+
         const promises = files.map(async (file) => {
             const formData = new FormData();
             formData.append("image", file);
@@ -76,10 +78,14 @@ export default function ParkingTickets() {
         setResults(results); // Update results state with processed data
     };
 
+    const handleFileInputClick = () => {
+        fileInputRef.current?.click();
+    };
+
     return (
         <div className="w-full max-w-4xl mx-auto mt-4 p-2 md:p-0">
-            <Card className="mb-4">
-                <CardHeader>
+            <div className="mb-0">
+                <CardHeader className="">
                     <CardTitle className="flex flex-col md:flex-row gap-2 justify-between items-center">
                         <div className="flex flex-row items-center gap-2">
                             <TransvipLogo colored={true} size={20} />
@@ -89,62 +95,12 @@ export default function ParkingTickets() {
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-1 gap-4">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex justify-between items-center">
-                                    <span>Archivos</span>
-                                    {files.length > 0 && <span className="text-muted-foreground text-sm">{files.length} archivos</span>}
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                {files.length === 0 ? (
-                                    <div className="flex flex-col items-center gap-4">
-                                        <p>No se ha subido ninguna imagen.</p>
-                                    </div>
-                                ) : (
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[450px] overflow-y-auto">
-                                        {files.map((file, index) => (
-                                            <div key={index} className="bg-slate-200 p-2 rounded-md relative group flex items-center justify-between gap-2">
-                                                <span className="font-bold text-sm p-1 rounded-full bg-slate-700 text-white w-[40px] text-center">{index + 1}</span>
-                                                <span className="text-xs mt-1 max-w-[80%] truncate">{file.name}</span>
-                                                <div className="aspect-square rounded-lg overflow-hidden border bg-muted justify-end">
-                                                    <Image
-                                                        src={file.preview || ''}
-                                                        alt={file.name}
-                                                        width={300}
-                                                        height={300}
-                                                        className="h-auto w-[100px] object-cover"
-                                                    />
-                                                </div>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    className="h-6 w-6 ml-2"
-                                                    onClick={() => handleRemoveFile(index)}
-                                                >
-                                                    <Trash2 className="h-4 w-4 text-destructive" />
-                                                </Button>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </CardContent>
-                            <CardFooter className="flex justify-center">
-                                <Button onClick={() => document.getElementById('file-input')?.click()} className="flex items-center gap-2">
-                                    <PlusCircle />
-                                    <span className="text-sm">Subir boleta</span>
-                                </Button>
-                            </CardFooter>
-                        </Card>
-
-                        {files.length > 0 && (
-                            <div className="flex justify-center">
-                                <Button onClick={handleUpload} className="flex items-center gap-2">
-                                    <Upload size={16} />
-                                    Procesar
-                                </Button>
-                            </div>
-                        )}
+                        <TicketCards 
+                            files={files} 
+                            handleRemoveFile={handleRemoveFile} 
+                            handleUpload={handleUpload}
+                            onFileInputClick={handleFileInputClick}
+                        />
 
                         {results.length > 0 && <Card className="mb-4">
                             <CardHeader>
@@ -160,8 +116,16 @@ export default function ParkingTickets() {
                         </Card>}
                     </div>
                 </CardContent>
-            </Card>
-            <Input id="file-input" type="file" accept="image/*" multiple onChange={handleFileChange} className="hidden" />
+            </div>
+            <Input 
+                ref={fileInputRef}
+                id="file-input" 
+                type="file" 
+                accept="image/*" 
+                multiple 
+                onChange={handleFileChange} 
+                className="hidden" 
+            />
         </div>
     );
 }
