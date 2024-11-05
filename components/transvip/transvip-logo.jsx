@@ -5,7 +5,7 @@ export function TransvipLogo({ logoOnly = true, colored = true, size = 40, class
     return (
         logoOnly ? 
             <Image
-                src={"/images/transvip-logo-only-bnw.png"} 
+                src={colored ? "/images/transvip-logo-only-color.png" : "/images/transvip-logo-only-bnw.png"} 
                 width={size}
                 height={size}
                 className={cn("object-fit h-auto", className)}
