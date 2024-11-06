@@ -1,4 +1,4 @@
-import { airportZones } from '@/lib/transvip/config';
+import { airportZones } from '@/lib/config/airport'
 import { Routes } from '@/utils/routes';
 import Link from 'next/link'; // Import Link from Next.js
 

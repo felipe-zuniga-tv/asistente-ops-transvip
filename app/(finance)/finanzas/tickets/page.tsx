@@ -2,7 +2,10 @@
 
 import { useState, useEffect, useRef } from "react"; // Import useState for managing state and useEffect for cleanup
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+// import { Label } from "@/components/ui/label";
+// import { Button } from "@/components/ui/button";
+// import { PlusCircle, Trash2, Upload, X } from "lucide-react";
+// import Image from "next/image";
 import {
     Card,
     CardContent,
@@ -11,10 +14,8 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { PlusCircle, Trash2, Upload, X } from "lucide-react";
+
 import { TransvipLogo } from "@/components/transvip/transvip-logo";
-import Image from "next/image";
 import TicketCards from "@/components/finance/tickets/ticket-cards";
 
 export interface FileWithPreview extends File {
@@ -25,6 +26,7 @@ export default function ParkingTickets() {
     const [files, setFiles] = useState<FileWithPreview[]>([]); // State to hold selected files
     const [results, setResults] = useState<string[]>([]); // State to hold processing results
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [isUploading, setIsUploading] = useState(false);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -57,25 +59,32 @@ export default function ParkingTickets() {
     };
 
     const handleUpload = async () => {
-        if (files.length === 0) return; // Prevent upload if no files are selected
-
-        console.log(files)
-
-        const promises = files.map(async (file) => {
+        if (files.length === 0) return;
+        
+        setIsUploading(true);
+        try {
             const formData = new FormData();
-            formData.append("image", file);
+            // Append all files with the same field name
+            files.forEach(file => {
+                formData.append('files', file);
+            });
 
             const response = await fetch("/api/image/parking", {
                 method: "POST",
                 body: formData,
             });
 
-            const data = await response.json();
-            return data.result; // Assuming the API returns a result field
-        });
+            if (!response.ok) {
+                throw new Error(`HTTP error. Status: ${response.status}`);
+            }
 
-        const results = await Promise.all(promises);
-        setResults(results); // Update results state with processed data
+            const data = await response.json();
+            setResults(data.results);
+        } catch (error) {
+            console.error('Upload failed:', error);
+        } finally {
+            setIsUploading(false);
+        }
     };
 
     const handleFileInputClick = () => {
@@ -107,11 +116,14 @@ export default function ParkingTickets() {
                                 <CardTitle>Resultados</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <ul>
-                                    {results.map((result, index) => (
-                                        <li key={index}>{result}</li>
-                                    ))}
-                                </ul>
+                                { isUploading ? 
+                                    (<div>Cargando...</div>) : 
+                                    (<ul>
+                                        {results.map((result, index) => (
+                                            <li key={index}>{result}</li>
+                                        ))}
+                                    </ul>)
+                                }
                             </CardContent>
                         </Card>}
                     </div>

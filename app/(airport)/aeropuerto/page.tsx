@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { airportTools } from '@/lib/transvip/config';
+import { airportTools } from '@/lib/config/airport'
 
 export default function AirportStartPage() {
     return (

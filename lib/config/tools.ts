@@ -1,5 +1,5 @@
 import { CarIcon, CarTaxiFrontIcon, Clock12Icon, FileDigitIcon, MapIcon, PencilIcon, PlaneTakeoffIcon, QrCodeIcon, User, UserSearch } from "lucide-react";
-import { Tool } from "../types";
+import { Tool } from "../chat/types";
 
 // TOOLS
 export const toolsList: Tool[] = [

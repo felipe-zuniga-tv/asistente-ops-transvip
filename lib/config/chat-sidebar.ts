@@ -1,4 +1,3 @@
-import { toolsList } from "@/lib/chat/tools/config";
 import { Tool } from "@/lib/chat/types";
 import { Routes } from "@/utils/routes";
 import {
@@ -14,6 +13,7 @@ import {
 	Send,
 	Bot,
 } from "lucide-react"
+import { toolsList } from "./tools";
 
 // Define a new interface for sidebar items
 export interface SidebarItem {

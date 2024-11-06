@@ -2,7 +2,7 @@
 import { useActions, useUIState } from "ai/rsc"
 import { UserMessage } from "../message"
 import { nanoid } from "nanoid"
-import { toolsList } from "@/lib/chat/tools/config"
+import { toolsList } from "@/lib/config/tools"
 import Link from "next/link"
 
 export default function SystemTools({ session }) {

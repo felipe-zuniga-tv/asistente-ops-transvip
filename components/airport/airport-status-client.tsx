@@ -6,7 +6,7 @@ import { calculateDuration, cn } from '@/lib/utils'
 import { LiveClock } from '../ui/live-clock'
 import { format } from 'date-fns'
 import { ArrowLeft, Clock, Users } from 'lucide-react'
-import { AirportZone, airportZones } from '@/lib/transvip/config'
+import { AirportZone, airportZones } from '@/lib/config/airport'
 import { Routes } from '@/utils/routes'
 import Link from 'next/link'
 

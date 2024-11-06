@@ -18,7 +18,7 @@ import { nanoid } from "@/lib/utils"
 import { UserMessage } from "../message"
 import { Routes } from "@/utils/routes"
 import { usePathname } from "next/navigation"
-import { sidebarData, chatbotItem } from "@/lib/transvip/sidebar/config"
+import { sidebarData, chatbotItem } from "@/lib/config/chat-sidebar"
 
 export function AppSidebar({ session, ...props }: { session: any & React.ComponentProps<typeof Sidebar> }) {
 	const [_, setMessages] = useUIState()

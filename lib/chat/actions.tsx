@@ -11,7 +11,7 @@ import { z } from "zod";
 import { openai } from "@ai-sdk/openai";
 import { getSession } from "../auth";
 import { VEHICLE_STATUS, getDriverRatingSummary, nanoid } from "@/lib/utils";
-import { CREATE_DRIVER_RATINGS_SUMMARY, CREATE_TEXT_PROMPT, EMAIL_TEXT_OPS_EXAMPLE, SYSTEM_MESSAGE } from "./config";
+import { CREATE_DRIVER_RATINGS_SUMMARY, CREATE_TEXT_PROMPT, EMAIL_TEXT_OPS_EXAMPLE, SYSTEM_MESSAGE } from "../config/chat";
 import { getVehicleStatus, getBookingInfo, getVehicleDetail, getDriverProfile, searchDriver, getDriverRatings, getBookings, getZonaIluminadaServices } from "./functions";
 import { BotCard, AssistantMessage, LoadingMessage, UserMessage } from "@/components/chat/message";
 import { VehicleStatusSearch } from "@/components/chat/search/vehicle-status-search";
@@ -20,7 +20,7 @@ import { IVehicleDetail, VehicleDetail } from "@/components/chat/search/vehicle-
 import { generateText } from "ai";
 import { DriverProfile, IDriverProfile } from "@/components/chat/search/driver-profile-search";
 import AirportStatus from "@/components/chat/airport/airport-status";
-import { airportZones } from "../transvip/config";
+import { airportZones } from "../config/airport";
 import QRCode from "react-qr-code";
 
 export const OPENAI_GPT_4o_MINI = 'gpt-4o-mini' // 'gpt-4'

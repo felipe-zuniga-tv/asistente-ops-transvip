@@ -1,6 +1,6 @@
 import { format, formatISO, addHours } from "date-fns";
 import { getSession } from "../auth";
-import { branches } from "../transvip/config";
+import { branches } from "../config/transvip-general";
 import { VEHICLE_STATUS } from "../utils";
 import { IBookingInfoOutput, IBookingInfo, IDriverProfile, IVehicleDetail } from "./types";
 
