@@ -17,6 +17,8 @@ import {
 
 import { TransvipLogo } from "@/components/transvip/transvip-logo";
 import TicketCards from "@/components/finance/tickets/ticket-cards";
+import { LoadingMessage } from "@/components/chat/message";
+import TicketResults from "@/components/finance/tickets/ticket-results";
 
 export interface FileWithPreview extends File {
     preview?: string;
@@ -62,6 +64,7 @@ export default function ParkingTickets() {
         if (files.length === 0) return;
         
         setIsUploading(true);
+        setResults([])
         try {
             const formData = new FormData();
             // Append all files with the same field name
@@ -109,23 +112,11 @@ export default function ParkingTickets() {
                             handleRemoveFile={handleRemoveFile} 
                             handleUpload={handleUpload}
                             onFileInputClick={handleFileInputClick}
+                            isUploading={isUploading}
                         />
 
-                        {results.length > 0 && <Card className="mb-4">
-                            <CardHeader>
-                                <CardTitle>Resultados</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                { isUploading ? 
-                                    (<div>Cargando...</div>) : 
-                                    (<ul>
-                                        {results.map((result, index) => (
-                                            <li key={index}>{result}</li>
-                                        ))}
-                                    </ul>)
-                                }
-                            </CardContent>
-                        </Card>}
+                        { isUploading && <div className="w-full text-center">Cargando...</div> }
+                        { !isUploading && <TicketResults results={results} /> }
                     </div>
                 </CardContent>
             </div>

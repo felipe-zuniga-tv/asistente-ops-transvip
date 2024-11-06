@@ -6,11 +6,9 @@ import { TICKET_OCR_SYSTEM_MESSAGE } from "@/lib/config/finance";
 const MODEL_NAME = 'gpt-4o'
 
 export async function POST(request: NextRequest) {
-    try {
-        const formData = await request.formData();
-        const files = formData.getAll('image') as File[];
-
-        console.log(files)
+    try {        
+        const formData = await request.formData()
+        const files = formData.getAll('files') as File[];
 
         if (!files.length) {
             return Response.json(
@@ -35,7 +33,7 @@ export async function POST(request: NextRequest) {
                             role: "user",
                             content: [{
                                 type: 'image',
-                                image: `data:${file.type};base64,${base64Image}`,
+                                image: `${base64Image}`,
                             }],
                         },
                     ],

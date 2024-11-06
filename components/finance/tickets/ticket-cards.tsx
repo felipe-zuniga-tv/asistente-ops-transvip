@@ -4,11 +4,12 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/componen
 import { Trash2, X, PlusCircle, Upload } from "lucide-react";
 import Image from "next/image";
 
-export default function TicketCards({ files, handleRemoveFile, handleUpload, onFileInputClick }: { 
+export default function TicketCards({ files, handleRemoveFile, handleUpload, onFileInputClick, isUploading }: { 
     files: FileWithPreview[] 
     handleRemoveFile: (indexToRemove: number) => void
     handleUpload: () => Promise<void>
     onFileInputClick: () => void
+    isUploading: boolean
 }) {
     return (
         <>
@@ -25,7 +26,7 @@ export default function TicketCards({ files, handleRemoveFile, handleUpload, onF
                             <p>No se ha subido ninguna imagen.</p>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 max-h-[450px] overflow-y-auto">
+                        <div className={`grid grid-cols-1 lg:grid-cols-${files.length > 1 ? 2 : 1} gap-4 max-h-[450px] overflow-y-auto`}>
                             { files.map((file, index) => (
                                 <div key={index} className="bg-slate-200 p-3 rounded-md relative group flex flex-col items-center justify-between gap-2">
                                     <div className="flex flex-row justify-between w-full px-2">
@@ -65,9 +66,9 @@ export default function TicketCards({ files, handleRemoveFile, handleUpload, onF
 
             {files.length > 0 && (
                 <div className="flex justify-center">
-                    <Button onClick={handleUpload} className="flex items-center gap-2">
+                    <Button onClick={handleUpload} disabled={isUploading} className="flex items-center gap-2">
                         <Upload size={16} />
-                        Procesar
+                        { isUploading ? 'Procesando...' : 'Procesar' }
                     </Button>
                 </div>
             )}
