@@ -299,6 +299,7 @@ export interface Session {
 // Tools
 export interface Tool {
     title: string;
+    active?: boolean;
     hint?: string;
     search?: string;
     icon?: LucideIcon

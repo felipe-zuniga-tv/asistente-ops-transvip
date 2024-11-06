@@ -56,7 +56,7 @@ export function NavMain({ items, handleClick }: {
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
                         { subItem.url ? (
-                          <Link href={subItem.url}>
+                          <Link href={subItem.url} aria-disabled={!subItem.active}>
                             { subItem.icon && <subItem.icon />}
                             <span>{subItem.title}</span>
                           </Link>

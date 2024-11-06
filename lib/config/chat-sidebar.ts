@@ -12,6 +12,7 @@ import {
 	QrCodeIcon,
 	Send,
 	Bot,
+	Ticket,
 } from "lucide-react"
 import { toolsList } from "./tools";
 
@@ -44,17 +45,26 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 				{
 					title: 'Chatbot Operaciones',
 					icon: Bot,
-					url: Routes.CHAT
+					url: Routes.CHAT,
+					active: true
 				},
 				{
 					title: 'Genera tu código QR',
 					icon: QrCodeIcon,
-					url: Routes.QR_GEN
+					url: Routes.QR_GEN,
+					active: true
 				},
 				{
 					title: 'Herramientas Aeropuerto',
 					icon: PlaneTakeoff,
-					url: Routes.AIRPORT.HOME
+					url: Routes.AIRPORT.HOME,
+					active: true
+				},
+				{
+					title: 'Tickets Aeropuerto',
+					icon: Ticket,
+					url: Routes.FINANCE.TICKETS,
+					active: false
 				},
 			],
 		},

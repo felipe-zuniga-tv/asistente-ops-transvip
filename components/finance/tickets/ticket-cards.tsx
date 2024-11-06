@@ -1,12 +1,13 @@
 import { FileWithPreview } from "@/app/(finance)/finanzas/tickets/page";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
-import { Trash2, X, PlusCircle, Upload } from "lucide-react";
+import { X, PlusCircle, Upload } from "lucide-react";
 import Image from "next/image";
 
-export default function TicketCards({ files, handleRemoveFile, handleUpload, onFileInputClick, isUploading }: { 
-    files: FileWithPreview[] 
+export default function TicketCards({ files, handleRemoveFile, handleClearFiles, handleUpload, onFileInputClick, isUploading }: {
+    files: FileWithPreview[]
     handleRemoveFile: (indexToRemove: number) => void
+    handleClearFiles: () => void
     handleUpload: () => Promise<void>
     onFileInputClick: () => void
     isUploading: boolean
@@ -15,9 +16,18 @@ export default function TicketCards({ files, handleRemoveFile, handleUpload, onF
         <>
             <Card>
                 <CardHeader>
-                    <CardTitle className="flex justify-between items-center">
-                        <span>Archivos</span>
-                        {files.length > 0 && <span className="text-muted-foreground text-sm">{files.length} archivo { files.length > 1 ? 's' : '' }</span>}
+                    <CardTitle className="flex justify-start items-center">
+                        <div className="flex flex-row items-center gap-2">
+                            <span>Archivos</span>
+                            { files.length > 0 &&
+                            <>
+                                <span>·</span>
+                                <span className="text-muted-foreground text-sm">{files.length} archivo{files.length > 1 ? 's' : ''}</span>
+                            </>}
+                        </div>
+                        <Button disabled={files.length === 0} onClick={handleClearFiles} className="ml-auto">
+                            <span className="text-sm">Vaciar lista</span>
+                        </Button>
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -26,8 +36,8 @@ export default function TicketCards({ files, handleRemoveFile, handleUpload, onF
                             <p>No se ha subido ninguna imagen.</p>
                         </div>
                     ) : (
-                        <div className={`grid grid-cols-1 lg:grid-cols-${files.length > 1 ? 2 : 1} gap-4 max-h-[450px] overflow-y-auto`}>
-                            { files.map((file, index) => (
+                        <div className={`grid grid-cols-1 md:grid-cols-${files.length > 1 ? 2 : 1} gap-4 max-h-[450px] overflow-y-auto`}>
+                            {files.map((file, index) => (
                                 <div key={index} className="bg-slate-200 p-3 rounded-md relative group flex flex-col items-center justify-between gap-2">
                                     <div className="flex flex-row justify-between w-full px-2">
                                         <span className="font-semibold text-sm">Archivo #{index + 1}</span>
@@ -68,7 +78,7 @@ export default function TicketCards({ files, handleRemoveFile, handleUpload, onF
                 <div className="flex justify-center">
                     <Button onClick={handleUpload} disabled={isUploading} className="flex items-center gap-2">
                         <Upload size={16} />
-                        { isUploading ? 'Procesando...' : 'Procesar' }
+                        {isUploading ? 'Procesando...' : 'Procesar'}
                     </Button>
                 </div>
             )}

@@ -16,13 +16,12 @@ The expected elements to parse are:
 - Valor Estacionamiento
 
 # Output Format
-
 Provide the output as a JSON object with consistent fields. If any fields cannot be found, use null.
 Ensure the returned JSON is not wrapped in code blocks.
 
 The JSON structure should be as follows:
 {
-  "booking_id": "[bookingId]",
+  "booking_id": [bookingId],
   "nro_boleta": "[Nro. Boleta]",
   "date_issued": "[Fecha]",
   "time_issued": "[Hora]",
@@ -30,7 +29,7 @@ The JSON structure should be as follows:
   "entry_time": "[Entrada => Hora]",
   "exit_date": "[Salida]",
   "exit_time": "[Salida => Hora]",
-  "valor": "[Valor Estacionamiento]",
+  "valor": [Valor Estacionamiento],
 }
 
 # Example
@@ -47,7 +46,7 @@ Output:
   "entry_time": "17:34",
   "exit_date": "17/10/2024",
   "exit_time": "17:45",
-  "valor": "500",
+  "valor": 500,
 }
 
 # Notes

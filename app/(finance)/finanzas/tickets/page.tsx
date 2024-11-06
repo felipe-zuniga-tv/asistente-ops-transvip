@@ -1,32 +1,39 @@
 'use client'
 
-import { useState, useEffect, useRef } from "react"; // Import useState for managing state and useEffect for cleanup
+import { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
-// import { Label } from "@/components/ui/label";
-// import { Button } from "@/components/ui/button";
-// import { PlusCircle, Trash2, Upload, X } from "lucide-react";
-// import Image from "next/image";
 import {
     Card,
-    CardContent,
     CardDescription,
     CardFooter,
+    CardContent,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
 
 import { TransvipLogo } from "@/components/transvip/transvip-logo";
 import TicketCards from "@/components/finance/tickets/ticket-cards";
-import { LoadingMessage } from "@/components/chat/message";
 import TicketResults from "@/components/finance/tickets/ticket-results";
 
 export interface FileWithPreview extends File {
     preview?: string;
 }
 
+export interface TicketResultType {
+    booking_id: number
+    nro_boleta: string
+    date_issued: string
+    time_issued: string
+    entry_date: string
+    entry_time: string
+    exit_date: string
+    exit_time: string
+    valor: number
+}
+
 export default function ParkingTickets() {
     const [files, setFiles] = useState<FileWithPreview[]>([]); // State to hold selected files
-    const [results, setResults] = useState<string[]>([]); // State to hold processing results
+    const [results, setResults] = useState<TicketResultType[]>([]); // State to hold processing results
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isUploading, setIsUploading] = useState(false);
 
@@ -58,11 +65,13 @@ export default function ParkingTickets() {
             }
             return prevFiles.filter((_, index) => index !== indexToRemove);
         });
+
+        if (files.length === 0) setResults([])
     };
 
     const handleUpload = async () => {
         if (files.length === 0) return;
-        
+
         setIsUploading(true);
         setResults([])
         try {
@@ -82,9 +91,14 @@ export default function ParkingTickets() {
             }
 
             const data = await response.json();
-            setResults(data.results);
+            const parsedResults = data.results.map((r: string) => JSON.parse(r));
+            console.log(parsedResults)
+
+            setResults(parsedResults);
+
         } catch (error) {
             console.error('Upload failed:', error);
+            setResults([])
         } finally {
             setIsUploading(false);
         }
@@ -92,6 +106,14 @@ export default function ParkingTickets() {
 
     const handleFileInputClick = () => {
         fileInputRef.current?.click();
+    };
+
+    const handleClearFiles = () => {
+        setFiles([])
+    };
+
+    const handleClearResults = () => {
+        setResults([]);
     };
 
     return (
@@ -107,27 +129,28 @@ export default function ParkingTickets() {
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-1 gap-4">
-                        <TicketCards 
-                            files={files} 
-                            handleRemoveFile={handleRemoveFile} 
+                        <TicketCards
+                            files={files}
+                            handleClearFiles={handleClearFiles}
+                            handleRemoveFile={handleRemoveFile}
                             handleUpload={handleUpload}
                             onFileInputClick={handleFileInputClick}
                             isUploading={isUploading}
                         />
 
-                        { isUploading && <div className="w-full text-center">Cargando...</div> }
-                        { !isUploading && <TicketResults results={results} /> }
+                        {isUploading && <div className="w-full text-center">Cargando...</div>}
+                        {!isUploading && <TicketResults results={results} handleClearResults={handleClearResults} />}
                     </div>
                 </CardContent>
             </div>
-            <Input 
+            <Input
                 ref={fileInputRef}
-                id="file-input" 
-                type="file" 
-                accept="image/*" 
-                multiple 
-                onChange={handleFileChange} 
-                className="hidden" 
+                id="file-input"
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleFileChange}
+                className="hidden"
             />
         </div>
     );

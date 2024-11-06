@@ -11,6 +11,9 @@ export const Routes = Object.freeze({
         ZI_SCL: '/aeropuerto/zi/scl',
         ZI_ANF: '/aeropuerto/zi/anf',
         ZI_CJC: '/aeropuerto/zi/cjc',
+    },
+    FINANCE: {
+        TICKETS: '/finanzas/tickets',
     }
 })
 
