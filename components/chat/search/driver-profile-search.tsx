@@ -261,7 +261,7 @@ function DriverVehicles({ result, handleClick } : {
     result : IDriverProfile 
     handleClick: any
 }) {
-    if (result.assigned_vehicles.length === 0) return null
+    if (result.assigned_vehicles.length === 0 || result.assigned_vehicles.filter(v => v.active).length === 0) return
 
     return (
         <div className='driver-vehicles'>

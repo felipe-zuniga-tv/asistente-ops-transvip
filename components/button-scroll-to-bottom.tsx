@@ -21,7 +21,7 @@ export function ButtonScrollToBottom({
       size="icon"
       className={cn(
         'button-scroll-to-bottom',
-        'absolute right-4 top-[80%] bg-slate-200 transition-opacity duration-300',
+        'absolute right-4 top-[80%] bg-slate-200 transition-opacity duration-300 z-20',
         isAtBottom ? 'opacity-0' : 'opacity-100',
         className as string
       )}
