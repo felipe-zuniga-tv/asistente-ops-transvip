@@ -219,7 +219,7 @@ function DriverOwnVehicles({ result, handleClick } : {
     result : IDriverProfile 
     handleClick: any
 }) {
-    if (result.vehicles.length === 0) return null
+    if (result.vehicles.length === 0 || result.vehicles.filter(v => v.working_status === 1).length === 0) return null
 
     return (
         <div className='driver-vehicles'>
@@ -261,24 +261,24 @@ function DriverVehicles({ result, handleClick } : {
     result : IDriverProfile 
     handleClick: any
 }) {
-    if (result.assigned_vehicles.length === 0 || result.assigned_vehicles.filter(v => v.active).length === 0) return
+    // if (result.assigned_vehicles.length === 0 || result.assigned_vehicles.filter(v => v.active).length === 0) return
 
     return (
         <div className='driver-vehicles'>
             <div className='flex flex-col gap-2 items-start justify-start text-slate-700'>
-                <span className='font-bold titles-font'>Vehículos que conduce</span>
+                <span className='font-bold titles-font'>Vehículos que conduce: { result.assigned_vehicles.length }</span>
                 <div className='info-section flex flex-col gap-2 items-center justify-start w-full text-sm'>
                     {
-                        result.assigned_vehicles.filter(v => v.active).map((vehicle: IDriverAssignedVehicles) => 
+                        result.assigned_vehicles.map((vehicle: IDriverAssignedVehicles) => 
                             <div key={vehicle.license_plate} className='flex flex-row gap-2 justify-start items-center w-full'>
                                 <span>Móvil: { vehicle.vehicle_number }</span>
                                 <span>·</span>
                                 <span>PPU: { vehicle.license_plate }</span>
-                                <Badge variant={'default'} 
+                                {/* <Badge variant={'default'} 
                                     className={vehicle.active ? 'bg-green-700 hover:bg-green-700' :
                                     'bg-red-400 hover:bg-red-400' }>
                                     { vehicle.active ? 'Activo': 'Inactivo' }
-                                </Badge>
+                                </Badge> */}
                                 <div className='vehicle-actions flex-row flex gap-x-1 ml-auto'>
                                     <Button variant={'outline'} className='text-xs text-white py-[1px] h-7 bg-slate-600'
                                         onClick={() => handleClick(vehicle, 'details')}>
