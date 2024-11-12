@@ -7,7 +7,7 @@ export async function loginAction(formData: FormData) {
   try {
     const results = await login(formData)
     
-    if (results.status === 200)
+    if (results.status === 200 || results.status === 201)
         return { success: true, redirectTo: Routes.START }
 
     return { success: false, redirectTo: Routes.HOME, data: results }
