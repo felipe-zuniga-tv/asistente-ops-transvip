@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { loginAction } from '@/lib/auth/actions'
 import { SubmitButton } from '../ui/form-submit'
 import { KeySquare, Mail } from 'lucide-react'
+import { login } from '@/lib/auth'
+import { Routes } from '@/utils/routes'
 
 export function LoginFormClient() {
     const [error, setError] = useState<string | null>(null)
@@ -17,12 +19,12 @@ export function LoginFormClient() {
         setError(null)
 
         const formData = new FormData(event.currentTarget)
-        const result = await loginAction(formData)
+        const { status, data } = await login(formData)
 
-        if (result.success) {
-            router.push(result.redirectTo)
+        if (status === 200 || status === 201) {
+            router.push(Routes.START)
         } else {
-            setError(result.error || 'Ocurrió un error. Conectado a VPN?')
+            setError('Ocurrió un error. Conectado a VPN?')
             setIsLoading(false)
         }
     }
