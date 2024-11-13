@@ -22,6 +22,9 @@ export function LoginFormClient() {
             const formData = new FormData(event.currentTarget)
             const { status, data } = await login(formData)
 
+            console.log(status);
+            console.log(data);
+
             if (status === 200) {
                 router.push(Routes.START)
             } else {
