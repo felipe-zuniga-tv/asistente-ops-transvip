@@ -18,13 +18,19 @@ export function LoginFormClient() {
         setIsLoading(true)
         setError(null)
 
-        const formData = new FormData(event.currentTarget)
-        const { status, data } = await login(formData)
+        try {
+            const formData = new FormData(event.currentTarget)
+            const { status, data } = await login(formData)
 
-        if (status === 200 || status === 201) {
-            router.push(Routes.START)
-        } else {
-            setError('Ocurrió un error. Conectado a VPN?')
+            if (status === 200 || status === 201) {
+                router.push(Routes.START)
+            } else {
+                setError('Ocurrió un error. Conectado a VPN?')
+            }
+        } catch (err) {
+            setError('Error de conexión. Por favor intente nuevamente.')
+            console.error('Login error:', err)
+        } finally {
             setIsLoading(false)
         }
     }
