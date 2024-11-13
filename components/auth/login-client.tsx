@@ -22,7 +22,7 @@ export function LoginFormClient() {
             const formData = new FormData(event.currentTarget)
             const { status, data } = await login(formData)
 
-            if (status === 200 || status === 201) {
+            if (status === 200) {
                 router.push(Routes.START)
             } else {
                 setError('Ocurrió un error. Conectado a VPN?')
