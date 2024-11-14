@@ -34,7 +34,6 @@ export function LoginFormClient() {
                 throw new Error('No response from server')
             }
 
-            console.log(formData)
             console.log(email)
             console.log(password)
             console.log(response)
