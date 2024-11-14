@@ -27,8 +27,10 @@ export function LoginFormClient() {
 
             if (status === 200) {
                 router.push(Routes.START)
+            } else if (status === 201) {
+                setError('¿Estás conectado a VPN?')
             } else {
-                setError('Ocurrió un error. Conectado a VPN?')
+                setError('Ocurrió un error. No se ha podido iniciar sesión.')
             }
         } catch (err) {
             setError('Error de conexión. Por favor intente nuevamente.')
