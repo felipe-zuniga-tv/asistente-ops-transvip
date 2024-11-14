@@ -2,11 +2,11 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { loginAction } from '@/lib/auth/actions'
 import { SubmitButton } from '../ui/form-submit'
 import { KeySquare, Mail } from 'lucide-react'
 import { login } from '@/lib/auth'
 import { Routes } from '@/utils/routes'
+import { loginAction } from '@/lib/auth/actions'
 
 export function LoginFormClient() {
     const [error, setError] = useState<string | null>(null)
@@ -28,7 +28,8 @@ export function LoginFormClient() {
                 return
             }
 
-            const response = await login(formData)
+            // const response = await login(formData)
+            const response = await loginAction(formData)
 
             if (!response) {
                 throw new Error('No response from server')
