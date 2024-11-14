@@ -20,21 +20,37 @@ export function LoginFormClient() {
 
         try {
             const formData = new FormData(event.currentTarget)
-            const { status, data } = await login(formData)
+            const email = formData.get('email')?.toString()
+            const password = formData.get('password')?.toString()
 
-            console.log(status);
-            console.log(data);
+            if (!email || !password) {
+                setError('Por favor complete todos los campos')
+                return
+            }
 
-            if (status === 200) {
-                router.push(Routes.START)
-            } else if (status === 201) {
-                setError('¿Estás conectado a VPN?')
-            } else {
-                setError('Ocurrió un error. No se ha podido iniciar sesión.')
+            const response = await login(formData)
+
+            if (!response) {
+                throw new Error('No response from server')
+            }
+
+            switch (response.status) {
+                case 200:
+                    router.refresh()
+                    router.push(Routes.START)
+                    break
+                case 201:
+                    setError('¿Estás conectado a VPN?')
+                    break
+                case 401:
+                    setError('Credenciales inválidas')
+                    break
+                default:
+                    setError('Ocurrió un error. No se ha podido iniciar sesión.')
             }
         } catch (err) {
-            setError('Error de conexión. Por favor intente nuevamente.')
             console.error('Login error:', err)
+            setError('Error de conexión. Por favor intente nuevamente.')
         } finally {
             setIsLoading(false)
         }
