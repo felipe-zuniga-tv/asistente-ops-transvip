@@ -38,102 +38,77 @@ export async function loginAction(formData: FormData): Promise<ActionResponse> {
   const LOGIN_URL = `${process.env.API_BASE_URL}/${process.env.API_ADMIN_LOGIN_ROUTE}`
   const ADMIN_ID_URL = `${process.env.API_BASE_URL}/${process.env.API_ADMIN_IDENTITY}`
 
-  console.log('API URLs:', {
-    LOGIN_URL,
-    ADMIN_ID_URL,
-    COOKIE_KEY: !!COOKIE_KEY
-  })
+  const email = formData.get('email')?.toString()
+  const password = formData.get('password')?.toString()
 
-  let loginResponse
+  if (!email?.includes('@') || !password?.length) {
+    return { status: 400, error: 'Invalid credentials format' }
+  }
 
   try {
-    const email = formData.get('email')?.toString()
-    const password = formData.get('password')?.toString()
+    const loginData = await fetchLoginData(LOGIN_URL, email, password)
+    if (!loginData || !loginData.data) return { status: 400, error: 'Authentication failed' }
 
-    if (!email?.includes('@') || !password?.length) {
-      return { status: 400, error: 'Invalid credentials format' }
-    }
+    const userData = await fetchUserData(ADMIN_ID_URL, loginData.data.id)
+    if (!userData) return { status: 400, error: 'Failed to fetch user details' }
 
-    // First API call - Login
-    loginResponse = await fetch(LOGIN_URL, {
-      method: 'POST',
-      body: JSON.stringify({ email, password }),
-      headers: API_HEADERS,
-    })
+    const session = await createSession(email, loginData.data.access_token, userData.fullName)
+    setCookie(session)
 
-    if (!loginResponse.ok) {
-      const errorText = await loginResponse.text();
-      console.error('Login API error:', { status: loginResponse.status, body: errorText });
-      return { status: loginResponse.status, error: 'Authentication failed' };
-    }
+    return { status: 200, data: loginData.data }
+  } catch (error) {
+    return handleError(error)
+  }
+}
 
-    const loginData = await loginResponse.json() as LoginResponse
+// Helper functions
+async function fetchLoginData(url: string, email: string, password: string): Promise<LoginResponse> {
+  const response = await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify({ email, password }),
+    headers: API_HEADERS,
+  })
+  if (!response.ok) throw new Error('Login failed')
+  return await response.json() as LoginResponse
+}
 
-    if (loginData.status !== 200 || !loginData.data?.id) {
-      return {
-        status: loginData.status || 400,
-        error: 'Authentication failed'
-      }
-    }
+async function fetchUserData(url: string, adminId: string): Promise<{ fullName: string }> {
+  const response = await fetch(`${url}?admin_id=${adminId}&limit=0&offset=0`, { headers: API_HEADERS })
+  if (!response.ok) throw new Error('User data fetch failed')
+  const data = await response.json() as UserResponse
+  return data.data?.result?.[0] || { fullName: 'Unknown' }
+}
 
-    // Second API call - Get user details
-    const userResponse = await fetch(
-      `${ADMIN_ID_URL}?admin_id=${loginData.data.id}&limit=0&offset=0`,
-      { headers: API_HEADERS }
-    )
+async function createSession(email: string, accessToken: string, fullName: string) {
+  const expires = new Date(Date.now() + secondsToExpire * 1000)
+  const user = { email, accessToken, full_name: fullName }
+  return await encrypt({ user, expires })
+}
 
-    const userData = await userResponse.json() as UserResponse
+function setCookie(session: string) {
+  const expires = new Date(Date.now() + secondsToExpire * 1000);
+  
+  if (!COOKIE_KEY) {
+    console.error('COOKIE_KEY is not defined');
+    return;
+  }
 
-    if (!userData.data?.result?.[0]?.fullName) {
-      return { status: 400, error: 'Failed to fetch user details' }
-    }
-
-    // Create session
-    const user = {
-      email,
-      accessToken: loginData.data.access_token,
-      full_name: userData.data.result[0].fullName
-    }
-
-    const expires = new Date(Date.now() + secondsToExpire * 1000)
-    const session = await encrypt({ user, expires })
-
-    console.log('Attempting to set cookie with session data', {
-      expiresAt: expires.toISOString(),
-      hasUserData: !!user,
-      cookieOptions: {
-        expires,
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax'
-      }
-    })
-
-    if (!COOKIE_KEY) {
-      throw new Error('COOKIE_KEY environment variable is not set')
-    }
-
-    // Set cookie with modified options for production
+  try {
     cookies().set(COOKIE_KEY, session, {
       expires,
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/'
-    })
-
-    return { status: 200, data: loginData.data }
+    });
   } catch (error) {
-    console.error('Login action error:', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined,
-      phase: 'cookie-setting',
-      loginResponse: await loginResponse?.text(),
-    })
-
-    return {
-      status: 500,
-      error: error instanceof Error ? error.message : 'Internal server error'
-    }
+    console.error('Error setting cookie:', error);
   }
+}
+
+function handleError(error: unknown): ActionResponse {
+  console.error('Login action error:', {
+    error: error instanceof Error ? error.message : 'Unknown error',
+  })
+  return { status: 500, error: error instanceof Error ? error.message : 'Internal server error' }
 }
