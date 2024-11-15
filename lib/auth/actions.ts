@@ -37,12 +37,14 @@ const API_HEADERS = {
 export async function loginAction(formData: FormData): Promise<ActionResponse> {
   const LOGIN_URL = `${process.env.API_BASE_URL}/${process.env.API_ADMIN_LOGIN_ROUTE}`
   const ADMIN_ID_URL = `${process.env.API_BASE_URL}/${process.env.API_ADMIN_IDENTITY}`
-  
+
   console.log('API URLs:', {
     LOGIN_URL,
     ADMIN_ID_URL,
     COOKIE_KEY: !!COOKIE_KEY
   })
+
+  let loginResponse
 
   try {
     const email = formData.get('email')?.toString()
@@ -53,18 +55,24 @@ export async function loginAction(formData: FormData): Promise<ActionResponse> {
     }
 
     // First API call - Login
-    const loginResponse = await fetch(LOGIN_URL, {
+    loginResponse = await fetch(LOGIN_URL, {
       method: 'POST',
       body: JSON.stringify({ email, password }),
       headers: API_HEADERS,
     })
 
+    if (!loginResponse.ok) {
+      const errorText = await loginResponse.text();
+      console.error('Login API error:', { status: loginResponse.status, body: errorText });
+      return { status: loginResponse.status, error: 'Authentication failed' };
+    }
+
     const loginData = await loginResponse.json() as LoginResponse
 
     if (loginData.status !== 200 || !loginData.data?.id) {
-      return { 
-        status: loginData.status || 400, 
-        error: 'Authentication failed' 
+      return {
+        status: loginData.status || 400,
+        error: 'Authentication failed'
       }
     }
 
@@ -106,11 +114,11 @@ export async function loginAction(formData: FormData): Promise<ActionResponse> {
     }
 
     // Set cookie with modified options for production
-    cookies().set(COOKIE_KEY, session, { 
+    cookies().set(COOKIE_KEY, session, {
       expires,
       httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
       path: '/'
     })
 
@@ -119,11 +127,12 @@ export async function loginAction(formData: FormData): Promise<ActionResponse> {
     console.error('Login action error:', {
       error: error instanceof Error ? error.message : 'Unknown error',
       stack: error instanceof Error ? error.stack : undefined,
-      phase: 'cookie-setting'
+      phase: 'cookie-setting',
+      loginResponse: await loginResponse?.text(),
     })
-    
-    return { 
-      status: 500, 
+
+    return {
+      status: 500,
       error: error instanceof Error ? error.message : 'Internal server error'
     }
   }
