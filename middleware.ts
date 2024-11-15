@@ -1,19 +1,18 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { updateSession } from "@/lib/auth";
 
 export async function middleware(request: NextRequest) {
-  return await updateSession(request);
+  try {
+    const response = await updateSession(request);
+    return response;
+  } catch (error) {
+    console.error('Middleware session update error:', error);
+    return NextResponse.next(); // Proceed without updating session if there's an error
+  }
 }
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
 }
