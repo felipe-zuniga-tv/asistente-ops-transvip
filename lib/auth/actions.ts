@@ -97,9 +97,9 @@ function setCookie(session: string) {
     cookies().set(COOKIE_KEY, session, {
       expires,
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/'
+      secure: true, // process.env.NODE_ENV === 'production',
+      // sameSite: 'lax',
+      // path: '/'
     });
   } catch (error) {
     console.error('Error setting cookie:', error);
