@@ -38,6 +38,12 @@ export async function loginAction(formData: FormData): Promise<ActionResponse> {
   const LOGIN_URL = `${process.env.API_BASE_URL}/${process.env.API_ADMIN_LOGIN_ROUTE}`
   const ADMIN_ID_URL = `${process.env.API_BASE_URL}/${process.env.API_ADMIN_IDENTITY}`
   
+  console.log('API URLs:', {
+    LOGIN_URL,
+    ADMIN_ID_URL,
+    COOKIE_KEY: !!COOKIE_KEY
+  })
+
   try {
     const email = formData.get('email')?.toString()
     const password = formData.get('password')?.toString()
@@ -84,21 +90,38 @@ export async function loginAction(formData: FormData): Promise<ActionResponse> {
     const expires = new Date(Date.now() + secondsToExpire * 1000)
     const session = await encrypt({ user, expires })
 
+    console.log('Attempting to set cookie with session data', {
+      expiresAt: expires.toISOString(),
+      hasUserData: !!user,
+      cookieOptions: {
+        expires,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax'
+      }
+    })
+
     if (!COOKIE_KEY) {
       throw new Error('COOKIE_KEY environment variable is not set')
     }
 
-    // Set cookie
+    // Set cookie with modified options for production
     cookies().set(COOKIE_KEY, session, { 
       expires,
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax'
+      secure: true,
+      sameSite: 'strict',
+      path: '/'
     })
 
     return { status: 200, data: loginData.data }
   } catch (error) {
-    console.error('Login error:', error)
+    console.error('Login action error:', {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      phase: 'cookie-setting'
+    })
+    
     return { 
       status: 500, 
       error: error instanceof Error ? error.message : 'Internal server error'

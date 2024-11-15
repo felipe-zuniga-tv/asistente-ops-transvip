@@ -19,27 +19,22 @@ export function LoginFormClient() {
 
         try {
             const formData = new FormData(event.currentTarget)
-            const email = formData.get('email')?.toString()
-            const password = formData.get('password')?.toString()
-
-            if (!email || !password) {
-                setError('Por favor complete todos los campos')
-                return
-            }
-
-            // const response = await login(formData)
             const response = await loginAction(formData)
 
             if (!response) {
                 throw new Error('No response from server')
             }
 
-            // console.log(email)
-            // console.log(password)
-            console.log(response)
+            if (response.error) {
+                console.error('Login error details:', response.error)
+                setError(`Error: ${response.error}`)
+                return
+            }
 
             switch (response.status) {
                 case 200:
+                    await new Promise(resolve => setTimeout(resolve, 500))
+                    router.refresh()
                     router.push(Routes.START)
                     break
                 case 201:
