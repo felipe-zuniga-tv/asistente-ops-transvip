@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { SubmitButton } from '../ui/form-submit'
 import { KeySquare, Mail } from 'lucide-react'
-import { login } from '@/lib/auth'
 import { Routes } from '@/utils/routes'
 import { loginAction } from '@/lib/auth/actions'
 
@@ -35,13 +34,12 @@ export function LoginFormClient() {
                 throw new Error('No response from server')
             }
 
-            console.log(email)
-            console.log(password)
+            // console.log(email)
+            // console.log(password)
             console.log(response)
 
             switch (response.status) {
                 case 200:
-                    router.refresh()
                     router.push(Routes.START)
                     break
                 case 201:
