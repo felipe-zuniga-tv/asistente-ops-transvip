@@ -3,11 +3,10 @@ import { updateSession } from "@/lib/auth";
 
 export async function middleware(request: NextRequest) {
   try {
-    const response = await updateSession(request);
-    return response;
+    return await updateSession(request);
   } catch (error) {
     console.error('Middleware session update error:', error);
-    return NextResponse.next(); // Proceed without updating session if there's an error
+    return NextResponse.next();
   }
 }
 
