@@ -21,6 +21,8 @@ export function LoginFormClient() {
             const formData = new FormData(event.currentTarget)
             const email = formData.get("email")?.toString()
             const password = formData.get("password")?.toString()
+
+            console.log(`Logging in with email: ${email}`)
             
             const response = await login(email, password)
 
