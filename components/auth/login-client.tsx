@@ -26,6 +26,8 @@ export function LoginFormClient() {
             
             const response = await login(email, password)
 
+            console.log(response)
+
             if (!response) {
                 throw new Error('No response from server')
             }
