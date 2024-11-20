@@ -7,6 +7,8 @@ import { KeySquare, Mail } from 'lucide-react'
 import { Routes } from '@/utils/routes'
 import { login } from '@/lib/auth'
 
+const LOGIN_URL = `${process.env.API_BASE_URL}/${process.env.API_ADMIN_LOGIN_ROUTE}`
+
 export function LoginFormClient() {
     const [error, setError] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false)
@@ -18,13 +20,31 @@ export function LoginFormClient() {
         setError(null)
 
         try {
+            if (!process.env.API_BASE_URL || !process.env.API_ADMIN_LOGIN_ROUTE) {
+                return { status: 500, data: null, error: 'API configuration missing' }
+            }
+
             const formData = new FormData(event.currentTarget)
             const email = formData.get("email")?.toString()
             const password = formData.get("password")?.toString()
 
             console.log(`Logging in with email: ${email}`)
             
-            const response = await login(email, password)
+            // const response = await login(email, password)
+
+            if (!email || !password) {
+                return { status: 400, data: null, error: 'Missing credentials' }
+            }
+
+            const response = await fetch(LOGIN_URL, {
+                method: "POST",
+                body: JSON.stringify({ email, password }),
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Language": "es",
+                    "Content-Type": "application/json;charset=UTF-8",
+                },
+            })
 
             console.log(response)
 
@@ -32,11 +52,11 @@ export function LoginFormClient() {
                 throw new Error('No response from server')
             }
 
-            if (response.error) {
-                console.error('Login error details:', response.error)
-                setError(`Error: ${response.error}`)
-                return
-            }
+            // if (response.error) {
+            //     console.error('Login error details:', response.error)
+            //     setError(`Error: ${response.error}`)
+            //     return
+            // }
 
             switch (response.status) {
                 case 200:
