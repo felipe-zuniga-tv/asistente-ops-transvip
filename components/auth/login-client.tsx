@@ -7,7 +7,8 @@ import { KeySquare, Mail } from 'lucide-react'
 import { Routes } from '@/utils/routes'
 import { login } from '@/lib/auth'
 
-const LOGIN_URL = `${process.env.API_BASE_URL}/${process.env.API_ADMIN_LOGIN_ROUTE}`
+// const LOGIN_URL = `${process.env.API_BASE_URL}/${process.env.API_ADMIN_LOGIN_ROUTE}`
+const LOGIN_URL = 'https://liveapi.transvip.cl/admin_login'
 
 export function LoginFormClient() {
     const [error, setError] = useState<string | null>(null)
@@ -21,11 +22,13 @@ export function LoginFormClient() {
         try {
             setIsLoading(true)
             setError(null)
+
+            console.log(process.env)
             
-            if (!process.env.API_BASE_URL || !process.env.API_ADMIN_LOGIN_ROUTE) {
-                console.error('API configuration missing');
-                return { status: 500, data: null, error: 'API configuration missing' }
-            }
+            // if (!process.env.API_BASE_URL || !process.env.API_ADMIN_LOGIN_ROUTE) {
+            //     console.error('API configuration missing');
+            //     return { status: 500, data: null, error: 'API configuration missing' }
+            // }
 
             const formData = new FormData(event.currentTarget)
             const email = formData.get("email")?.toString()
