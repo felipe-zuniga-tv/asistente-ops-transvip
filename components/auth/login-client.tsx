@@ -16,10 +16,11 @@ export function LoginFormClient() {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        setIsLoading(true)
-        setError(null)
-
+        
         try {
+            setIsLoading(true)
+            setError(null)
+            
             if (!process.env.API_BASE_URL || !process.env.API_ADMIN_LOGIN_ROUTE) {
                 return { status: 500, data: null, error: 'API configuration missing' }
             }
