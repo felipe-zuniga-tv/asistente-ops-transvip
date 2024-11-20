@@ -15,6 +15,7 @@ export function LoginFormClient() {
     const router = useRouter()
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        console.log('Form submitted');
         event.preventDefault()
         
         try {
@@ -22,6 +23,7 @@ export function LoginFormClient() {
             setError(null)
             
             if (!process.env.API_BASE_URL || !process.env.API_ADMIN_LOGIN_ROUTE) {
+                console.error('API configuration missing');
                 return { status: 500, data: null, error: 'API configuration missing' }
             }
 
