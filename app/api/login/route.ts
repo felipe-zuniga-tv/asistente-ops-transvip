@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 
-const ADMIN_LOGIN_URL = `${process.env.API_BASE_URL}/${process.env.API_ADMIN_LOGIN_ROUTE}`;
+const ADMIN_LOGIN_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${process.env.NEXT_PUBLIC_API_ADMIN_LOGIN_ROUTE}`;
 
 export async function POST(request: NextRequest) {
     try {

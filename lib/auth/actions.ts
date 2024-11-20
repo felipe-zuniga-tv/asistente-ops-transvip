@@ -34,10 +34,13 @@ const API_HEADERS = {
   'Content-Type': 'application/json;charset=UTF-8',
 } as const
 
-export async function loginAction(formData: FormData): Promise<ActionResponse> {
-  const LOGIN_URL = `${process.env.API_BASE_URL}/${process.env.API_ADMIN_LOGIN_ROUTE}`
-  const ADMIN_ID_URL = `${process.env.API_BASE_URL}/${process.env.API_ADMIN_IDENTITY}`
+const LOGIN_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${process.env.NEXT_PUBLIC_API_ADMIN_LOGIN_ROUTE}`
+const ADMIN_ID_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${process.env.NEXT_PUBLIC_API_ADMIN_IDENTITY}`
 
+console.log(LOGIN_URL)
+console.log(ADMIN_ID_URL)
+
+export async function loginAction(formData: FormData): Promise<ActionResponse> {
   const email = formData.get('email')?.toString()
   const password = formData.get('password')?.toString()
 

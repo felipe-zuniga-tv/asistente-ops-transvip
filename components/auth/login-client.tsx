@@ -6,12 +6,14 @@ import { SubmitButton } from '../ui/form-submit'
 import { KeySquare, Mail } from 'lucide-react'
 import { Routes } from '@/utils/routes'
 import { login } from '@/lib/auth'
+import { loginAction } from '@/lib/auth/actions'
 
 export function LoginFormClient() {
     const [error, setError] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
 
+    /* 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         console.log('Form submitted');
         event.preventDefault()
@@ -64,11 +66,13 @@ export function LoginFormClient() {
             setIsLoading(false)
         }
     }
-
+    */
+   
     return (
         <div className="flex flex-col w-full sm:max-w-md justify-center gap-4">
             <span className='mx-auto text-xl text-white'>Ingresa aquí</span>
-            <form onSubmit={handleSubmit} method='POST' className="auth-form auth-widths">
+            {/* <form onSubmit={handleSubmit} method='POST' className="auth-form auth-widths"> */ }
+            <form action={loginAction} method='POST' className="auth-form auth-widths">
                 <div className="relative">
                     <input
                         type="email"
