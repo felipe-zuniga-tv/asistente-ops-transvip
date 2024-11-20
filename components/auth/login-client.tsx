@@ -20,13 +20,6 @@ export function LoginFormClient() {
             setIsLoading(true)
             setError(null)
 
-            console.log(process.env)
-            
-            if (!process.env.API_BASE_URL || !process.env.API_ADMIN_LOGIN_ROUTE) {
-                console.error('API configuration missing');
-                return { status: 500, data: null, error: 'API configuration missing' }
-            }
-
             const formData = new FormData(event.currentTarget)
             const email = formData.get("email")?.toString()
             const password = formData.get("password")?.toString()
