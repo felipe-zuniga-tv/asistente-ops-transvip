@@ -19,7 +19,7 @@ const AIRPORT_ZONE_API_URL    = buildAPIUrl(process.env.GET_STATUS_AIRPORT_CITY)
 
 // AUX FUNCTIONS
 function buildAPIUrl(endpoint: string | undefined) {
-    return `${process.env.API_BASE_URL}/${endpoint}`
+    return `${process.env.NEXT_PUBLIC_API_BASE_URL}/${endpoint}`
 }
 async function getResponseFromURL(URL: string) {
     try {

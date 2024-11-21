@@ -67,12 +67,12 @@ export function LoginFormClient() {
         }
     }
     */
-   
+
     return (
         <div className="flex flex-col w-full sm:max-w-md justify-center gap-4">
             <span className='mx-auto text-xl text-white'>Ingresa aquí</span>
             {/* <form onSubmit={handleSubmit} method='POST' className="auth-form auth-widths"> */ }
-            <form action={loginAction} method='POST' className="auth-form auth-widths">
+            <form action={loginAction} className="auth-form auth-widths">
                 <div className="relative">
                     <input
                         type="email"

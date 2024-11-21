@@ -32,6 +32,7 @@ export function TransvipOpsChat({ id, className, session }: ChatProps) {
         if (session?.user) {
             if (!path.includes('chat') && messages.length === 1) {
                 window.history.replaceState({}, '', `/chat/${id}`)
+                console.log("redirigir")
             }
         }
     }, [id, path, session?.user, messages])
@@ -45,7 +46,7 @@ export function TransvipOpsChat({ id, className, session }: ChatProps) {
 
     useEffect(() => {
         setNewChatId(id)
-    })
+    }, [id])
 
     const { messagesRef, scrollRef, visibilityRef, isAtBottom, scrollToBottom } = useScrollAnchor()
 

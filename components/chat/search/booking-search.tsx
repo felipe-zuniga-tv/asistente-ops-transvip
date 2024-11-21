@@ -53,7 +53,7 @@ export function BookingIdSearch({ session, searchResults, content }: {
         } else if (request === BookingSearchRequest.LICENSE) {
             userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${result.vehicle.license_plate}.`
         } else if (request === BookingSearchRequest.DRIVER) {
-            userMessageContent = `Me gustaría saber más información sobre el conductor con el teléfono ${result.fleet.phone_number}.`
+            userMessageContent = `Me gustaría buscar sólo el perfil del conductor con el teléfono ${result.fleet.phone_number}.`
         } else if (request === BookingSearchRequest.SHARED_SERVICE) {
             userMessageContent = `Me gustaría buscar el paquete ${result.booking.shared_service_id}.`
         } else {
