@@ -2,6 +2,7 @@
 
 import { cookies } from 'next/headers'
 import { encrypt } from '../auth'
+import { config } from '../config/general'
 
 interface LoginResponse {
   data?: {
@@ -25,7 +26,7 @@ interface ActionResponse {
   data?: Record<string, unknown>
 }
 
-const COOKIE_KEY = process.env.COOKIE_KEY
+const COOKIE_KEY = config.COOKIES.COOKIE_KEY
 const secondsToExpire = 60 * 10
 
 const API_HEADERS = {

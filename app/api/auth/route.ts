@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { login, logout, getSession, encrypt } from "@/lib/auth"; // Adjust the import path as necessary
 import { cookies } from "next/headers";
+import { config } from "@/lib/config/general";
 
 const validActions = ["login", "logout", "getSession"]; // List of valid actions
 
@@ -19,7 +20,7 @@ export async function POST(request: NextRequest) {
         if (status === 200) {
             const expires = new Date(Date.now() + 60 * 10 * 1000); // 10 minutes
             const session = await encrypt({ user: data.user, expires }); // Ensure encrypt function is available
-            const cookieKey = process.env.COOKIE_KEY;
+            const cookieKey = config.COOKIES.COOKIE_KEY;
 
             // Ensure cookieKey is defined
             if (!cookieKey) {
