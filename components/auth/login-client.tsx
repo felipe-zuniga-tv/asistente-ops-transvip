@@ -13,6 +13,18 @@ export function LoginFormClient() {
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
 
+    const handleSubmit = async (formData: FormData) => {
+        try {
+            setIsLoading(true)
+            const response = await loginAction(formData)
+        } catch (error) {
+            console.error('Login error:', error)
+            setError('Error de conexión. Por favor intente nuevamente.')
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     /* 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         console.log('Form submitted');
@@ -72,7 +84,7 @@ export function LoginFormClient() {
         <div className="flex flex-col w-full sm:max-w-md justify-center gap-4">
             <span className='mx-auto text-xl text-white'>Ingresa aquí</span>
             {/* <form onSubmit={handleSubmit} method='POST' className="auth-form auth-widths"> */ }
-            <form action={loginAction} className="auth-form auth-widths">
+            <form action={handleSubmit} className="auth-form auth-widths">
                 <div className="relative">
                     <input
                         type="email"
