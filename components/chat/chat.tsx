@@ -28,14 +28,14 @@ export function TransvipOpsChat({ id, className, session }: ChatProps) {
 
     const [_, setNewChatId] = useLocalStorage('newChatId', id)
 
-    useEffect(() => {
-        if (session?.user) {
-            if (!path.includes('chat') && messages.length === 1) {
-                window.history.replaceState({}, '', `/chat/${id}`)
-                console.log("redirigir")
-            }
-        }
-    }, [id, path, session?.user, messages])
+    // useEffect(() => {
+    //     if (session?.user) {
+    //         if (!path.includes('chat') && messages.length === 1) {
+    //             window.history.replaceState({}, '', `/chat/${id}`)
+    //             console.log("redirigir")
+    //         }
+    //     }
+    // }, [id, path, session?.user, messages])
 
     useEffect(() => {
         const messagesLength = aiState.messages?.length

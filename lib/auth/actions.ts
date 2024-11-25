@@ -54,6 +54,7 @@ export async function loginAction(formData: FormData): Promise<ActionResponse> {
     if (!userData) return { status: 400, error: 'Failed to fetch user details' }
 
     const session = await createSession(email, loginData.data.access_token, userData.fullName)
+    console.log(session)
     setCookie(session)
 
     return { status: 200, data: loginData.data }
