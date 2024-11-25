@@ -5,6 +5,7 @@ import { TransvipPanel } from "@/components/chat/panel/panel";
 export default async function TransvipChat() {
 	const id = nanoid()
 	const session = await getSession()
+	console.log(session)
 
 	return (
 		<div className="min-h-screen flex flex-col gap-4 items-center -mt-8">
