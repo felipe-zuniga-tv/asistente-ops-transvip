@@ -11,6 +11,9 @@ export default async function ProtectedAppsLayout({ children }: { children: Reac
 	const session = await getSession() as unknown;
 	const accessToken = (session as Session)?.user?.accessToken || null;
 
+	console.log(session)
+	console.log(accessToken)
+
 	if (!accessToken) {
 		return redirect(Routes.LOGIN);
 	}
