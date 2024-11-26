@@ -5,125 +5,129 @@ import { encrypt } from '../auth'
 import { config } from '../config/general'
 
 interface LoginResponse {
-  data?: {
-    id: string
-    access_token: string
-  }
-  status: number
+	data?: {
+		id: string
+		access_token: string
+	}
+	status: number
 }
 
 interface UserResponse {
-  data: {
-    result: Array<{
-      fullName: string
-    }>
-  }
+	data: {
+		result: Array<{
+			fullName: string
+		}>
+	}
 }
 
 interface ActionResponse {
-  status: number
-  error?: string
-  data?: Record<string, unknown>
+	status: number
+	error?: string
+	data?: Record<string, unknown>
 }
 
 const COOKIE_KEY = config.COOKIES.COOKIE_KEY
 const secondsToExpire = 60 * 10
 
 const API_HEADERS = {
-  'Accept': 'application/json',
-  'Content-Language': 'es',
-  'Content-Type': 'application/json;charset=UTF-8',
+	'Accept': 'application/json',
+	'Content-Language': 'es',
+	'Content-Type': 'application/json;charset=UTF-8',
 } as const
 
 const LOGIN_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${process.env.NEXT_PUBLIC_API_ADMIN_LOGIN_ROUTE}`
 const ADMIN_ID_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${process.env.NEXT_PUBLIC_API_ADMIN_IDENTITY}`
 
 export async function loginAction(formData: FormData): Promise<ActionResponse> {
-  const email = formData.get('email')?.toString()
-  const password = formData.get('password')?.toString()
+	const email = formData.get('email')?.toString()
+	const password = formData.get('password')?.toString()
 
-  if (!email?.includes('@') || !password?.length) {
-    return { status: 400, error: 'Invalid credentials format' }
-  }
+	if (!email?.includes('@') || !password?.length) {
+		return { status: 400, error: 'Invalid credentials format' }
+	}
 
-  try {
-    const loginData = await fetchLoginData(LOGIN_URL, email, password)
-    if (!loginData || !loginData.data) return { status: 400, error: 'Authentication failed' }
-    console.log("loginData")
-    console.log(loginData)
+	try {
+		const loginData = await fetchLoginData(LOGIN_URL, email, password)
+		if (!loginData || !loginData.data) return { status: 400, error: 'Authentication failed' }
+		console.log("loginData")
+		console.log(loginData)
 
-    const userData = await fetchUserData(ADMIN_ID_URL, loginData.data.id)
-    if (!userData) return { status: 400, error: 'Failed to fetch user details' }
-    console.log("userData")
-    console.log(userData)
+		const userData = await fetchUserData(ADMIN_ID_URL, loginData.data.id)
+		if (!userData) return { status: 400, error: 'Failed to fetch user details' }
+		console.log("userData")
+		console.log(userData)
 
-    const session = await createSession(email, loginData.data.access_token, userData.fullName)
-    setCookie(session)
-    
-    console.log(session)
+		const session = await createSession(email, loginData.data.access_token, userData.fullName)
+		setCookie(session)
 
-    return { status: 200, data: loginData.data }
-  } catch (error) {
-    return handleError(error)
-  }
+		console.log(session)
+
+		return { status: 200, data: loginData.data }
+	} catch (error) {
+		return handleError(error)
+	}
 }
 
 // Helper functions
 async function fetchLoginData(url: string, email: string, password: string): Promise<LoginResponse> {
-  const response = await fetch(url, {
-    method: 'POST',
-    body: JSON.stringify({ email, password }),
-    headers: API_HEADERS,
-  })
-  if (!response.ok) throw new Error('Login failed')
-  return await response.json() as LoginResponse
+	const response = await fetch(url, {
+		method: 'POST',
+		body: JSON.stringify({ email, password }),
+		headers: API_HEADERS,
+	})
+	if (!response.ok) throw new Error('Login failed')
+
+	const loginResponse = await response.json() as LoginResponse
+	if (!loginResponse.data) throw new Error('Login failed')
+
+		return loginResponse
 }
 
 async function fetchUserData(url: string, adminId: string): Promise<{ fullName: string }> {
-  const response = await fetch(`${url}?admin_id=${adminId}&limit=0&offset=0`, { headers: API_HEADERS })
-  if (!response.ok) throw new Error('User data fetch failed')
-  const data = await response.json() as UserResponse
-  return data.data?.result?.[0] || { fullName: 'Unknown' }
+	const response = await fetch(`${url}?admin_id=${adminId}&limit=0&offset=0`, { headers: API_HEADERS })
+	if (!response.ok) throw new Error('User data fetch failed')
+	const data = await response.json() as UserResponse
+	return data.data?.result?.[0] || { fullName: 'Unknown' }
 }
 
 async function createSession(email: string, accessToken: string, fullName: string) {
-  const expires = new Date(Date.now() + secondsToExpire * 1000)
-  const user = { 
-    email: email,
-    accessToken: accessToken,
-    full_name: fullName 
-  }
-  
-  console.log('user object')
-  console.log(user)
+	const expires = new Date(Date.now() + secondsToExpire * 1000)
+	const user = {
+		email: email,
+		accessToken: accessToken,
+		full_name: fullName
+	}
 
-  return await encrypt({ user, expires })
+	console.log('user object')
+	console.log(user)
+
+	return await encrypt({ user, expires })
 }
 
 function setCookie(session: string) {
-  const expires = new Date(Date.now() + secondsToExpire * 1000);
-  
-  if (!COOKIE_KEY) {
-    console.error('COOKIE_KEY is not defined');
-    return;
-  }
+	const expires = new Date(Date.now() + secondsToExpire * 1000);
 
-  try {
-    cookies().set(COOKIE_KEY, session, {
-      expires,
-      httpOnly: true,
-      secure: true, // process.env.NODE_ENV === 'production',
-      // sameSite: 'lax',
-      // path: '/'
-    });
-  } catch (error) {
-    console.error('Error setting cookie:', error);
-  }
+	if (!COOKIE_KEY) {
+		console.error('COOKIE_KEY is not defined');
+		return;
+	}
+
+	try {
+		cookies().set(COOKIE_KEY, session, {
+			expires,
+			httpOnly: true,
+			secure: true, // process.env.NODE_ENV === 'production',
+			// sameSite: 'lax',
+			// path: '/'
+		});
+	} catch (error) {
+		console.error('Error setting cookie:', error);
+	}
 }
 
 function handleError(error: unknown): ActionResponse {
-  console.error('Login action error:', {
-    error: error instanceof Error ? error.message : 'Unknown error',
-  })
-  return { status: 500, error: error instanceof Error ? error.message : 'Internal server error' }
+	console.error('Login action error:', {
+		error: error instanceof Error ? error.message : 'Unknown error',
+	})
+	return { status: 500, error: error instanceof Error ? error.message : 'Internal server error' }
 }
