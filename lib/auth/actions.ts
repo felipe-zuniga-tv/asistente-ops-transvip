@@ -52,6 +52,7 @@ export async function loginAction(formData: FormData): Promise<ActionResponse> {
 
     const userData = await fetchUserData(ADMIN_ID_URL, loginData.data.id)
     if (!userData) return { status: 400, error: 'Failed to fetch user details' }
+    console.log(`USER DATA: ${userData}`)
 
     const session = await createSession(email, loginData.data.access_token, userData.fullName)
     console.log(`SESSION: ${session}`)
