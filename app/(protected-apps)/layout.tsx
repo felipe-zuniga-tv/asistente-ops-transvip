@@ -13,9 +13,9 @@ export default async function ProtectedAppsLayout({ children }: { children: Reac
 
 	console.log(`SESSION: ${session}`)
 
-	if (!accessToken) {
-		return redirect(Routes.LOGIN);
-	}
+	// if (!accessToken) {
+	// 	return redirect(Routes.LOGIN);
+	// }
 
 	const id = nanoid()
 
