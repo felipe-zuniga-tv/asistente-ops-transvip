@@ -51,16 +51,17 @@ export async function loginAction(formData: FormData): Promise<ActionResponse> {
 		if (!loginData || !loginData.data) return { status: 400, error: 'Authentication failed' }
 		console.log("loginData")
 		console.log(loginData)
+		if (loginData.status !== 200) return { status: 201, error: 'Log in not possible' }
 
 		const userData = await fetchUserData(ADMIN_ID_URL, loginData.data.id)
 		if (!userData) return { status: 400, error: 'Failed to fetch user details' }
-		console.log("userData")
-		console.log(userData)
+		// console.log("userData")
+		// console.log(userData)
 
 		const session = await createSession(email, loginData.data.access_token, userData.fullName)
 		setCookie(session)
 
-		console.log(session)
+		// console.log(session)
 
 		return { status: 200, data: loginData.data }
 	} catch (error) {
@@ -70,6 +71,8 @@ export async function loginAction(formData: FormData): Promise<ActionResponse> {
 
 // Helper functions
 async function fetchLoginData(url: string, email: string, password: string): Promise<LoginResponse> {
+	console.log(`URL: ${url}`)
+
 	const response = await fetch(url, {
 		method: 'POST',
 		body: JSON.stringify({ email, password }),
@@ -80,13 +83,17 @@ async function fetchLoginData(url: string, email: string, password: string): Pro
 	const loginResponse = await response.json() as LoginResponse
 	if (!loginResponse.data) throw new Error('Login failed')
 
-		return loginResponse
+	return loginResponse
 }
 
 async function fetchUserData(url: string, adminId: string): Promise<{ fullName: string }> {
+	console.log(`URL: ${url}`)
+
 	const response = await fetch(`${url}?admin_id=${adminId}&limit=0&offset=0`, { headers: API_HEADERS })
 	if (!response.ok) throw new Error('User data fetch failed')
 	const data = await response.json() as UserResponse
+	console.log(data.data.result[0]);
+
 	return data.data?.result?.[0] || { fullName: 'Unknown' }
 }
 
