@@ -8,10 +8,12 @@ import { Routes } from "@/utils/routes";
 import { redirect } from "next/navigation";
 
 export default async function ProtectedAppsLayout({ children }: { children: React.ReactNode }) {
-	const session = await getSession() as unknown;
-	const accessToken = (session as Session)?.user?.accessToken || null;
+	const session = await getSession() as Session | null;
+	const accessToken = session?.user?.accessToken || null;
 
+	console.log("SESSION")
 	console.log(session)
+	console.log("ACCESS TOKEN")
 	console.log(accessToken)
 
 	if (!accessToken) {
