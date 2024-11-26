@@ -52,11 +52,8 @@ export async function loginAction(formData: FormData): Promise<ActionResponse> {
 
     const userData = await fetchUserData(ADMIN_ID_URL, loginData.data.id)
     if (!userData) return { status: 400, error: 'Failed to fetch user details' }
-    console.log(`USER DATA`)
-    console.log(userData)
 
     const session = await createSession(email, loginData.data.access_token, userData.fullName)
-    console.log(`SESSION: ${session}`)
     setCookie(session)
 
     return { status: 200, data: loginData.data }
@@ -85,7 +82,15 @@ async function fetchUserData(url: string, adminId: string): Promise<{ fullName: 
 
 async function createSession(email: string, accessToken: string, fullName: string) {
   const expires = new Date(Date.now() + secondsToExpire * 1000)
-  const user = { email, accessToken, full_name: fullName }
+  const user = { 
+    email: email,
+    accessToken: accessToken,
+    full_name: fullName 
+  }
+  
+  console.log('user object')
+  console.log(user)
+
   return await encrypt({ user, expires })
 }
 
