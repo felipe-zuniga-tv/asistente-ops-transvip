@@ -1,7 +1,7 @@
 'use server'
 
 import { cookies } from 'next/headers'
-import { encrypt } from '../auth'
+import { encryptSession } from '../auth'
 import { config } from '../config/general'
 
 interface LoginResponse {
@@ -108,7 +108,7 @@ async function createSession(email: string, accessToken: string, fullName: strin
 	console.log('user object')
 	console.log(user)
 
-	return await encrypt({ user, expires })
+	return await encryptSession({ user, expires })
 }
 
 function setCookie(session: string) {
