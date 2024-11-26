@@ -50,7 +50,7 @@ export async function loginAction(formData: FormData): Promise<ActionResponse> {
     const loginData = await fetchLoginData(LOGIN_URL, email, password)
     if (!loginData || !loginData.data) return { status: 400, error: 'Authentication failed' }
     console.log("loginData")
-    console.log(loginData.data)
+    console.log(loginData)
 
     const userData = await fetchUserData(ADMIN_ID_URL, loginData.data.id)
     if (!userData) return { status: 400, error: 'Failed to fetch user details' }
