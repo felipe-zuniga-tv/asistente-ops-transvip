@@ -16,9 +16,13 @@ export function LoginFormClient() {
     const handleSubmit = async (formData: FormData) => {
         try {
             setIsLoading(true)
-            await loginAction(formData)
+            const response = await loginAction(formData)
 
-            router.push(Routes.START)
+            if (response.status === 200) {
+                router.push(Routes.START)
+            } else {
+                setError(response?.error || null)
+            }
         } catch (error) {
             console.error('Login error:', error)
             setError('Error de conexión. Por favor intente nuevamente.')
