@@ -17,6 +17,9 @@ export function LoginFormClient() {
         try {
             setIsLoading(true)
             const response = await loginAction(formData)
+            
+            console.log(response)
+
         } catch (error) {
             console.error('Login error:', error)
             setError('Error de conexión. Por favor intente nuevamente.')

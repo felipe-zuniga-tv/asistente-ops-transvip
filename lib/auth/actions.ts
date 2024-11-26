@@ -55,6 +55,8 @@ export async function loginAction(formData: FormData): Promise<ActionResponse> {
 
     const session = await createSession(email, loginData.data.access_token, userData.fullName)
     setCookie(session)
+    
+    console.log(session)
 
     return { status: 200, data: loginData.data }
   } catch (error) {
