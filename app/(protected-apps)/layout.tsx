@@ -9,9 +9,7 @@ import { redirect } from "next/navigation";
 
 export default async function ProtectedAppsLayout({ children }: { children: React.ReactNode }) {
 	const session = await getSession() as Session | null;
-	const accessToken = session?.user?.accessToken || null;
-
-	console.log(`SESSION: ${session}`)
+	// const accessToken = session?.user?.accessToken || null;
 
 	// if (!accessToken) {
 	// 	return redirect(Routes.LOGIN);
