@@ -124,7 +124,7 @@ function setCookie(session: string) {
 			expires,
 			httpOnly: true,
 			secure: true, // process.env.NODE_ENV === 'production',
-			// sameSite: 'lax',
+			sameSite: 'lax',
 			// path: '/'
 		});
 	} catch (error) {
