@@ -13,25 +13,24 @@ export function LoginFormClient() {
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
 
-    const handleSubmit = async (formData: FormData) => {
-        try {
-            setIsLoading(true)
-            const response = await loginAction(formData)
+    // const handleSubmit = async (formData: FormData) => {
+    //     try {
+    //         setIsLoading(true)
+    //         const response = await loginAction(formData)
 
-            if (response.status === 200) {
-                router.push(Routes.START)
-            } else {
-                setError(response?.error || null)
-            }
-        } catch (error) {
-            console.error('Login error:', error)
-            setError('Error de conexión. Por favor intente nuevamente.')
-        } finally {
-            setIsLoading(false)
-        }
-    }
+    //         if (response.status === 200) {
+    //             router.push(Routes.START)
+    //         } else {
+    //             setError(response?.error || null)
+    //         }
+    //     } catch (error) {
+    //         console.error('Login error:', error)
+    //         setError('Error de conexión. Por favor intente nuevamente.')
+    //     } finally {
+    //         setIsLoading(false)
+    //     }
+    // }
 
-    /* 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         console.log('Form submitted');
         event.preventDefault()
@@ -84,13 +83,13 @@ export function LoginFormClient() {
             setIsLoading(false)
         }
     }
-    */
+    
 
     return (
         <div className="flex flex-col w-full sm:max-w-md justify-center gap-4">
             <span className='mx-auto text-xl text-white'>Ingresa aquí</span>
-            {/* <form onSubmit={handleSubmit} method='POST' className="auth-form auth-widths"> */ }
-            <form action={handleSubmit} className="auth-form auth-widths">
+            <form onSubmit={handleSubmit} method='POST' className="auth-form auth-widths">
+            {/* <form action={handleSubmit} className="auth-form auth-widths"> */}
                 <div className="relative">
                     <input
                         type="email"
