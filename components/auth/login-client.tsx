@@ -5,31 +5,12 @@ import { useRouter } from 'next/navigation'
 import { SubmitButton } from '../ui/form-submit'
 import { KeySquare, Mail } from 'lucide-react'
 import { Routes } from '@/utils/routes'
-import { login } from '@/lib/auth'
-import { loginAction } from '@/lib/auth/actions'
+import { login } from '@/lib/auth/functions'
 
 export function LoginFormClient() {
     const [error, setError] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
-
-    // const handleSubmit = async (formData: FormData) => {
-    //     try {
-    //         setIsLoading(true)
-    //         const response = await loginAction(formData)
-
-    //         if (response.status === 200) {
-    //             router.push(Routes.START)
-    //         } else {
-    //             setError(response?.error || null)
-    //         }
-    //     } catch (error) {
-    //         console.error('Login error:', error)
-    //         setError('Error de conexión. Por favor intente nuevamente.')
-    //     } finally {
-    //         setIsLoading(false)
-    //     }
-    // }
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         console.log('Form submitted');
@@ -44,37 +25,18 @@ export function LoginFormClient() {
             const password = formData.get("password")?.toString()
     
             if (!email || !password) {
-                return { status: 400, data: null, error: 'Missing credentials' }
+                setError('Ingresa tus credenciales')
+                return null
             }
             
-            console.log(`Logging in with email: ${email}`)
-            const response = await login(email, password)
-            console.log(response)
+            const loginResponse = await login(email, password)
+            console.log(loginResponse)
 
-            if (!response) {
-                throw new Error('No response from server')
-            }
-
-            if (response.error) {
-                console.error('Login error details:', response.error)
-                setError(`Error: ${response.error}`)
-                return
-            }
-
-            switch (response.status) {
-                case 200:
-                    await new Promise(resolve => setTimeout(resolve, 500))
-                    router.refresh()
-                    router.push(Routes.START)
-                    break
-                case 201:
-                    setError('¿Estás conectado a VPN?')
-                    break
-                case 401:
-                    setError('Credenciales inválidas')
-                    break
-                default:
-                    setError('Ocurrió un error. No se ha podido iniciar sesión.')
+            if (loginResponse && loginResponse.status === 200) {
+                router.refresh()
+                router.push(Routes.START)
+            } else {
+                setError(loginResponse?.message || 'Ocurrió un error.')
             }
         } catch (err) {
             console.error('Login error:', err)
@@ -83,13 +45,11 @@ export function LoginFormClient() {
             setIsLoading(false)
         }
     }
-    
 
     return (
         <div className="flex flex-col w-full sm:max-w-md justify-center gap-4">
             <span className='mx-auto text-xl text-white'>Ingresa aquí</span>
             <form onSubmit={handleSubmit} method='POST' className="auth-form auth-widths">
-            {/* <form action={handleSubmit} className="auth-form auth-widths"> */}
                 <div className="relative">
                     <input
                         type="email"

@@ -9,11 +9,10 @@ import { redirect } from "next/navigation";
 
 export default async function ProtectedAppsLayout({ children }: { children: React.ReactNode }) {
 	const session = await getSession() as Session | null;
-	// const accessToken = session?.user?.accessToken || null;
-
-	// if (!accessToken) {
-	// 	return redirect(Routes.LOGIN);
-	// }
+	
+	if (!session) {
+		return redirect(Routes.LOGIN);
+	}
 
 	const id = nanoid()
 

@@ -206,8 +206,11 @@ function VehicleListDetail({ vehicleList }: { vehicleList: AirportVehicleDetail[
                 }
 
                 return (
-                    <div key={vehicle.unique_car_id}
-                        className={`vehicle-detail-card w-full flex flex-col md:flex-row gap-4 items-center justify-between p-4 shadow-md rounded-lg text-slate-900 ${bgColor}`}>
+                    <div key={vehicle.unique_car_id + "_" + index}
+                        className={cn('vehicle-detail-card w-full flex flex-col md:flex-row gap-4 items-center justify-between p-4 shadow-md rounded-lg',
+                            'text-slate-900',
+                            bgColor
+                        )}>
                         <div className='vehicle-index-driver flex flex-row gap-2 items-center justify-start z-10'>
                             <div className='vehicle-index font-semibold text-3xl w-[30px] text-center'>{index + 1}</div>
                             <div className='vehicle-driver flex flex-col gap-1 justify-center items-center w-[320px] lg:w-[400px]'>
