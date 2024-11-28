@@ -9,6 +9,7 @@ import { ArrowLeft, Clock, Users } from 'lucide-react'
 import { AirportZone, airportZones } from '@/lib/config/airport'
 import { Routes } from '@/utils/routes'
 import Link from 'next/link'
+import { QRCodeGeneratorDialog } from '../qr/qr-code-generator-dialog'
 
 interface AirportVehicleType {
     id: number[]
@@ -120,7 +121,7 @@ function AirportHeader({ selectedZone }: {
     selectedZone: AirportZone
 }) {
     return (
-        <header className="bg-transvip/90 shadow-md p-4 flex flex-col md:flex-row justify-center md:justify-start items-center gap-2 md:gap-8">
+        <header className="bg-transvip/90 shadow-md p-3 flex flex-col md:flex-row justify-center md:justify-start items-center gap-2 md:gap-8">
             <div className='w-full flex flex-row items-center justify-center md:justify-start gap-4'>
                 <TransvipLogo size={36} colored={false} logoOnly={true} />
                 <div className='flex flex-col gap-1 justify-start'>
@@ -136,6 +137,7 @@ function AirportHeader({ selectedZone }: {
                     </span>
                 </div>
             </div>
+            <QRCodeGeneratorDialog />
             <LiveClock className='mx-auto md:ml-auto' />
         </header>
     )
@@ -200,7 +202,7 @@ function VehicleListDetail({ vehicleList }: { vehicleList: AirportVehicleDetail[
 
                 if (waitTime && waitTime >= 10 && waitTime < maxWaitTime) {
                     const intensity = Math.min((waitTime - 10) / (maxWaitTime - 10), 1); // Calculate intensity from 0 to 1
-                    bgColor = `bg-gradient-to-r from-yellow-200 to-red-200 opacity-${Math.max(10, Math.round(intensity * 100))}`; // Gradually change to red
+                    bgColor = `bg-gradient-to-r from-yellow-200 to-red-200`; // opacity-${Math.max(10, Math.round(intensity * 100))}`; // Gradually change to red
                 } else if (waitTime && waitTime >= maxWaitTime) {
                     bgColor = 'bg-gradient-to-r from-red-200 to-red-400/80'; // Full red if over max wait time
                 }
@@ -211,7 +213,7 @@ function VehicleListDetail({ vehicleList }: { vehicleList: AirportVehicleDetail[
                             'text-slate-900',
                             bgColor
                         )}>
-                        <div className='vehicle-index-driver flex flex-row gap-2 items-center justify-start z-10'>
+                        <div className='vehicle-index-driver flex flex-row gap-1 items-center justify-start z-10'>
                             <div className='vehicle-index font-semibold text-3xl w-[30px] text-center'>{index + 1}</div>
                             <div className='vehicle-driver flex flex-col gap-1 justify-center items-center w-[320px] lg:w-[400px]'>
                                 <div className='flex flex-row gap-1 justify-center items-center'>

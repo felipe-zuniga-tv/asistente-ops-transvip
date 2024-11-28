@@ -39,12 +39,12 @@ export const toolsList: Tool[] = [
         search: 'Me gustaría saber más información sobre una reserva o paquete',
         icon: FileDigitIcon
     },
-    {
-        title: 'Reservas programadas',
-        hint: 'Busca reservas para las próximas horas',
-        search: 'Me gustaría buscar reservas programadas para las próximas horas',
-        icon: Clock12Icon
-    },
+    // {
+    //     title: 'Reservas programadas',
+    //     hint: 'Busca reservas para las próximas horas',
+    //     search: 'Me gustaría buscar reservas programadas para las próximas horas',
+    //     icon: Clock12Icon
+    // },
     {
         title: 'Perfil de un conductor',
         hint: 'Busca usando el email o teléfono',
