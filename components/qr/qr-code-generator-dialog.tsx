@@ -71,7 +71,7 @@ export function QRCodeGeneratorDialog() {
             </div>
           )}
         </div>
-        <DialogFooter>
+        <DialogFooter className='mt-6'>
           <Button type="button" onClick={handleStartOver} className="px-4 py-2 bg-gray-500 text-white text-xs rounded-md hover:bg-gray-600 transition duration-300 min-w-fit">
             Empezar de nuevo
             <RotateCw className='ml-2 h-4 w-4' />
