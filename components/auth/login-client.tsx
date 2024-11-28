@@ -13,7 +13,6 @@ export function LoginFormClient() {
     const router = useRouter()
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        console.log('Form submitted');
         event.preventDefault()
         
         try {
@@ -30,7 +29,6 @@ export function LoginFormClient() {
             }
             
             const loginResponse = await login(email, password)
-            console.log(loginResponse)
 
             if (loginResponse && loginResponse.status === 200) {
                 router.refresh()
