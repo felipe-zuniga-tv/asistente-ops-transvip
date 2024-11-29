@@ -5,7 +5,6 @@ import { cn } from '@/lib/utils'
 
 export function FormSubmit({ children, pendingState, className, ...props }) {
     const { pending } = useFormStatus()
-    console.log(pending)
 
     return (
         <button type='submit' disabled={pending} {...props} 

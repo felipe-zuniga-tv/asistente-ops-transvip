@@ -2,16 +2,14 @@ import { AppSidebar } from "@/components/chat/panel/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { getSession } from "@/lib/auth";
 import { AI } from "@/lib/chat/actions";
-import { Session } from "@/lib/chat/types";
 import { nanoid } from "@/lib/utils";
 import { Routes } from "@/utils/routes";
 import { redirect } from "next/navigation";
 
 export default async function FinanceLayout({ children }: { children: React.ReactNode }) {
 	const session = await getSession() as unknown;
-	const accessToken = (session as Session)?.user?.accessToken || null;
 
-	if (!accessToken) {
+	if (!session) {
 		return redirect(Routes.LOGIN);
 	}
 

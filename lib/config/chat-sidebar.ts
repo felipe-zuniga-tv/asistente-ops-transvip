@@ -13,6 +13,7 @@ import {
 	Send,
 	Bot,
 	Ticket,
+	Map,
 } from "lucide-react"
 import { toolsList } from "./tools";
 
@@ -64,6 +65,12 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 					title: 'Tickets Aeropuerto',
 					icon: Ticket,
 					url: Routes.FINANCE.TICKETS,
+					active: false
+				},
+				{
+					title: 'Ruteo Reservas',
+					icon: Map,
+					url: Routes.ROUTE.MAIN,
 					active: false
 				},
 			],
