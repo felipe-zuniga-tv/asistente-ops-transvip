@@ -112,7 +112,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 	navSecondary: [
 		{
 			title: "Feedback",
-			url: "#",
+			url: Routes.FEEDBACK.GOOGLE_FORMS,
 			icon: Send,
 		},
 	]

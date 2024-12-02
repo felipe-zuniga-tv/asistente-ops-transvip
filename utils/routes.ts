@@ -17,6 +17,9 @@ export const Routes = Object.freeze({
     },
     ROUTE: {
         MAIN: '/ruteo'
+    },
+    FEEDBACK: {
+        GOOGLE_FORMS: 'https://forms.gle/qeiBzwNhUwD5WcLt8'
     }
 })
 
