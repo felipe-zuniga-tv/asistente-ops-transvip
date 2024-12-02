@@ -1,5 +1,6 @@
 import LogoutButton from "@/components/auth/logout";
 import { AppSidebar } from "@/components/chat/panel/app-sidebar";
+import Header from "@/components/ui/navigation/header";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { getSession } from "@/lib/auth";
 import { AI } from "@/lib/chat/actions";
@@ -23,12 +24,9 @@ export default async function ProtectedAppsLayout({ children }: { children: Reac
 				<AppSidebar session={session} />
 				<div className="grid h-screen size-full bg-white">
 					<div className="flex flex-col">
-						<header className="sticky top-0 z-10 flex h-[56px] items-center justify-between gap-1 bg-background px-4 pl-1">
+						<Header>
 							<SidebarTrigger />
-							<div className="ml-auto flex gap-4 items-center">
-								<LogoutButton className="ml-auto" />
-							</div>
-						</header>
+						</Header>
 						<div className="flex-1 overflow-auto p-0 md:p-3 md:pt-0">
 							{children}
 						</div>

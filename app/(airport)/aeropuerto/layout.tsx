@@ -1,7 +1,13 @@
-export default async function AirportLayout({ children } : { children : React.ReactNode }) {
-    return (
-        <div className="flex min-h-screen w-full flex-col bg-desert bg-cover bg-center overflow-auto">
-            { children }
-        </div>
-    )
+import { getSession } from "@/lib/auth";
+import { Routes } from "@/utils/routes";
+import { redirect } from "next/navigation";
+
+export default async function AirportLayout({ children }: { children: React.ReactNode }) {
+	const session = await getSession() as unknown;
+
+	if (!session) {
+		return redirect(Routes.LOGIN);
+	}
+
+	return <>{children}</>
 }

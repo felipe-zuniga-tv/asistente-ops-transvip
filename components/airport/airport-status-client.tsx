@@ -30,7 +30,8 @@ interface AirportVehicleDetail {
     passenger_entry_time: string
 }
 
-const secondsToUpdate = 30
+const secondsToUpdate = 60 // Refresh data
+const maxWaitTime = 15 // Minutes
 
 export default function AirportStatusClient({ vehicleTypesList, zone: initialZoneId }: {
     vehicleTypesList: AirportVehicleType[]
@@ -121,9 +122,9 @@ function AirportHeader({ selectedZone }: {
     selectedZone: AirportZone
 }) {
     return (
-        <header className="bg-transvip/90 shadow-md p-3 flex flex-col md:flex-row justify-center md:justify-start items-center gap-2 md:gap-8">
-            <div className='w-full flex flex-row items-center justify-center md:justify-start gap-4'>
-                <TransvipLogo size={36} colored={false} logoOnly={true} />
+        <header className="bg-transvip/90 shadow-md p-3 flex flex-col sm:flex-row justify-center sm:justify-start items-center gap-2 sm:gap-4">
+            <div className='w-full flex flex-row items-center justify-center sm:justify-start gap-4'>
+                <TransvipLogo size={36} colored={false} logoOnly={true} className='hidden lg:block' />
                 <div className='flex flex-col gap-1 justify-start'>
                     <div className='flex flex-row gap-1 items-center justify-center md:justify-start w-full'>
                         <span className="text-xl lg:text-2xl font-bold text-white">Zona Iluminada</span>
@@ -189,8 +190,6 @@ function VehicleListDetail({ vehicleList }: { vehicleList: AirportVehicleDetail[
     if (!vehicleList || vehicleList.length === 0) {
         return <div className='w-full p-4 font-bold text-center text-3xl'>Sin resultados</div>
     }
-
-    const maxWaitTime = 15
 
     return (
         <div className="flex flex-col flex-grow overflow-auto p-3 w-full text-base gap-4 lg:text-xl xl:text-2xl">

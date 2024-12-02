@@ -1,6 +1,6 @@
 import { airportZones } from '@/lib/config/airport'
 import { Routes } from '@/utils/routes';
-import Link from 'next/link'; // Import Link from Next.js
+import Link from 'next/link';
 
 const airportTools = [
     { airport_code: 'SCL', href: Routes.AIRPORT.ZI_SCL, active: true },
