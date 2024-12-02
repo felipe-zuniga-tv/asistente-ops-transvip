@@ -51,7 +51,7 @@ export function NavUser({ user }: {
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={'/images/transvip-logo-only-color.png'} alt={user.name || user.full_name} className="p-0.5" />
-                <AvatarFallback className="rounded-full bg-slate-700 text-white">{ getInitials(user.full_name || "") }</AvatarFallback>
+                <AvatarFallback className="rounded-full bg-slate-700 text-white">{getInitials(user.full_name || "")}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{user.name || user.full_name}</span>
@@ -69,11 +69,11 @@ export function NavUser({ user }: {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={'/images/transvip-logo-only-color.png'} alt={user.name || user.full_name} className="p-0.5" />
-                  <AvatarFallback className="rounded-full bg-slate-700 text-white">{ getInitials(user.full_name || "") }</AvatarFallback>
+                  <AvatarImage src={'/images/transvip-logo-only-color.png'} alt={user.name || user.full_name} className="p-0.5" />
+                  <AvatarFallback className="rounded-full bg-slate-700 text-white">{getInitials(user.full_name || "")}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name || user.full_name }</span>
+                  <span className="truncate font-semibold">{user.name || user.full_name}</span>
                   <span className="truncate text-xs">{user.email}</span>
                 </div>
               </div>
@@ -93,11 +93,6 @@ export function NavUser({ user }: {
                 Alertas
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator className="hidden" />
-            <DropdownMenuItem className="hidden">
-              <LogOut />
-              Salir
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
