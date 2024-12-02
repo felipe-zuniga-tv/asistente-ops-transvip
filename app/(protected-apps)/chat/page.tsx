@@ -7,7 +7,7 @@ export default async function TransvipChat() {
 	const session = await getSession()
 
 	return (
-		<div className="min-h-screen flex flex-col gap-4 items-center -mt-8">
+		<div className="h-full flex flex-col gap-4 items-center">
 			<TransvipPanel id={id} session={session} />
 		</div>
 	);
