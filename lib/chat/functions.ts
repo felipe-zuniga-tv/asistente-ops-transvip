@@ -200,6 +200,102 @@ export async function getVehicleDetail(license_plate: string) {
     return null
 }
 
+export async function getVehicleDetailList(search_string: string) {
+    const session = await getSession()
+    const currentUser = session?.user as any
+    const accessToken = currentUser?.accessToken as string
+
+    const LIMIT_RESULTS = 100
+    const OFFSET_RESULTS = 0
+
+    const params = [
+        `access_token=${accessToken}`,
+        `limit=${LIMIT_RESULTS}`,
+        `offset=${OFFSET_RESULTS}`,
+        `search_filter=1`,
+        `search_value=${search_string}`
+    ].join("&")
+
+    const { status, data: { final_data } } = await getResponseFromURL(`${VEHICLE_DETAIL_API_URL}?${params}`)
+
+    if (status !== 200) return null
+
+    const { totalCount, result } = final_data
+
+    if (totalCount === 0) return null
+
+    const output: IVehicleDetail[] = []
+
+    result.map((r: any) => {
+        const {
+            registration_number: license_plate,
+            registration_image,
+            permission_of_circulation,
+            travel_card_key,
+            passenger_insurance_key,
+            transportation_permit,
+            owner_id, fleet_id,
+            assigned_drivers, // array
+            added_at,
+            verification_status, verification_comment, // último comentario?
+            working_status, // 0 - Inactivo, 1: Activo
+            unique_car_id,
+            tipo_contrato, society_name,
+            model_id, model_name,
+            color_id, color_name, color_code,
+            first_name, last_name,
+            branch, 
+            car_type: vehicle_type_id, carName: vehicle_type_name
+        } = r
+    
+        const output_item : IVehicleDetail = {
+            vehicle_number: Number(unique_car_id),
+            license_plate,
+            branch: branches.filter(br => br.name.toUpperCase() === branch)[0],
+            status: working_status,
+            drivers: assigned_drivers.map((d: any) => cleanDriverInfo(d)),
+            creation_datetime: added_at,
+            owner: {
+                id: owner_id,
+                fleet_id,
+                first_name: first_name.trim(),
+                last_name: last_name.trim(),
+            },
+            documents: {
+                registration_image,
+                permission_of_circulation,
+                transportation_permit,
+                travel_card_key,
+                passenger_insurance_key
+            },
+            verification: {
+                status: verification_status,
+                comment: verification_comment
+            },
+            contract: {
+                type: tipo_contrato,
+                society_name,
+            },
+            type: {
+                id: vehicle_type_id,
+                name: vehicle_type_name  
+            },
+            model: {
+                id: model_id,
+                name: model_name,
+            },
+            color: {
+                id: color_id,
+                name: color_name,
+                code: color_code,
+            }
+        }
+
+        output.push(output_item)
+    })
+    return output
+}
+
 function cleanDriverInfo(d: any) {
     return {
         country_code: d.country_code.trim(),

@@ -46,7 +46,7 @@ export async function fetchUserData(adminId: string) {
 
 export const login = async (email: string, password: string) => {
     const LOGIN_URL = getLoginUrl();
-    console.log(LOGIN_URL)
+
     if (!isApiConfigured() || !isValidCredentials(email, password)) {
         return null
     }
