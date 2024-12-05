@@ -617,7 +617,7 @@ function BookingOnTimeArrival({ result, booking_datetime_local }: {
                             <>{minutes_arrived_trip} minuto después</>
                         :
                         minutes_arrived_trip < 0 ?
-                            minutes_arrived_trip <= -1 ?
+                            minutes_arrived_trip < -1 ?
                                 <>{Math.abs(minutes_arrived_trip)} minutos antes</> :
                                 <>{Math.abs(minutes_arrived_trip)} minuto antes</>
                             : null

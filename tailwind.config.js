@@ -62,7 +62,7 @@ module.exports = {
   		},
   		colors: {
   			transvip: '#ff6b00',
-  			'transvip-dark': '#d85300',
+  			'transvip-dar': '#d85300',
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
