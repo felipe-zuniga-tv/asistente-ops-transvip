@@ -15,6 +15,9 @@ export const Routes = Object.freeze({
     FINANCE: {
         TICKETS: '/finanzas/tickets',
     },
+    DATA: {
+        HOME: '/data',
+    },
     ROUTE: {
         MAIN: '/ruteo'
     },

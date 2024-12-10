@@ -14,6 +14,7 @@ import {
 	Bot,
 	Ticket,
 	Map,
+	BarChart4,
 } from "lucide-react"
 import { toolsList } from "./tools";
 
@@ -55,10 +56,16 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 					url: Routes.QR_GEN,
 					active: true
 				},
+				// {
+				// 	title: 'Herramientas Aeropuerto',
+				// 	icon: PlaneTakeoff,
+				// 	url: Routes.AIRPORT.HOME,
+				// 	active: true
+				// },
 				{
-					title: 'Herramientas Aeropuerto',
-					icon: PlaneTakeoff,
-					url: Routes.AIRPORT.HOME,
+					title: 'Análisis de Datos',
+					icon: BarChart4,
+					url: Routes.DATA.HOME,
 					active: true
 				},
 				{
