@@ -12,6 +12,9 @@ export const Routes = Object.freeze({
         ZI_ANF: '/aeropuerto/zi/anf',
         ZI_CJC: '/aeropuerto/zi/cjc',
     },
+    BOOKINGS: {
+        SHARED: '/reservas/compartidas',
+    },
     FINANCE: {
         TICKETS: '/finanzas/tickets',
     },

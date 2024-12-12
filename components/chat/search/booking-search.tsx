@@ -12,13 +12,14 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CheckIcon, Clock, GoalIcon, MailIcon, MapIcon, MapPin, Pencil, PhoneIcon, SearchIcon, UserCircleIcon, X } from 'lucide-react';
 import { WhatsappIcon } from '@/components/ui/icons';
-import { buildWhatsappLink } from '@/lib/chat/functions';
+import { buildGoogleMapsURL, buildWhatsappLink } from '@/lib/chat/functions';
 import { BookingStatusBadge, CityBadge, CustomerVipBadge, PaymentRouteType, PaymentStatusBadge, ServiceNameBadge } from '../badges/chat-badges';
 import { BookingIdBadge } from '../badges/booking-badge';
 import DriverAvatar from '@/components/driver/driver-avatar';
 import Zoom from 'react-medium-image-zoom'
 import Image from 'next/image';
 import EmailLink from '@/components/ui/email-link';
+import GoogleMapsButton from './google-maps-url-button';
 
 let chileanPeso = new Intl.NumberFormat('es-CL', {
     style: 'currency',
@@ -36,6 +37,19 @@ enum BookingSearchRequest {
     SHARED_SERVICE = 'shared_service'
 }
 
+const MESSAGE_TEMPLATES = {
+    [BookingSearchRequest.BOOKING]: (result: IBookingInfoOutput) => 
+        `Me gustaría buscar la reserva ${result.booking.id}.`,
+    [BookingSearchRequest.VEHICLE]: (result: IBookingInfoOutput) => 
+        `Me gustaría saber si el vehículo ${result.vehicle.vehicle_number} está online.`,
+    [BookingSearchRequest.LICENSE]: (result: IBookingInfoOutput) => 
+        `Me gustaría saber más información sobre el vehículo con patente ${result.vehicle.license_plate}.`,
+    [BookingSearchRequest.DRIVER]: (result: IBookingInfoOutput) => 
+        `Me gustaría buscar sólo el perfil del conductor con el teléfono ${result.fleet.phone_number}.`,
+    [BookingSearchRequest.SHARED_SERVICE]: (result: IBookingInfoOutput) => 
+        `Me gustaría buscar el paquete ${result.booking.shared_service_id}.`,
+} as const;
+
 export function BookingIdSearch({ session, searchResults, content }: {
     session: any,
     searchResults: IBookingInfoOutput[],
@@ -45,20 +59,8 @@ export function BookingIdSearch({ session, searchResults, content }: {
     const { submitUserMessage } = useActions()
 
     const handleClick = async (result: IBookingInfoOutput, request: BookingSearchRequest) => {
-        let userMessageContent = ""
-        if (request === BookingSearchRequest.BOOKING) {
-            userMessageContent = `Me gustaría buscar la reserva ${result.booking.id}.`
-        } else if (request === BookingSearchRequest.VEHICLE) {
-            userMessageContent = `Me gustaría saber si el vehículo ${result.vehicle.vehicle_number} está online.`
-        } else if (request === BookingSearchRequest.LICENSE) {
-            userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${result.vehicle.license_plate}.`
-        } else if (request === BookingSearchRequest.DRIVER) {
-            userMessageContent = `Me gustaría buscar sólo el perfil del conductor con el teléfono ${result.fleet.phone_number}.`
-        } else if (request === BookingSearchRequest.SHARED_SERVICE) {
-            userMessageContent = `Me gustaría buscar el paquete ${result.booking.shared_service_id}.`
-        } else {
-            userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${result.vehicle.license_plate}.`
-        }
+        const userMessageContent = MESSAGE_TEMPLATES[request]?.(result) ?? 
+            `Me gustaría saber más información sobre el vehículo con patente ${result.vehicle.license_plate}.`;
 
         setMessages((currentMessages: any) => [
             ...currentMessages,
@@ -102,7 +104,7 @@ export function BookingIdSearch({ session, searchResults, content }: {
     )
 }
 
-function BookingCard({ result, handleClick }: {
+export function BookingCard({ result, handleClick }: {
     result: IBookingInfoOutput
     handleClick?: any
 }) {
@@ -119,11 +121,10 @@ function BookingCard({ result, handleClick }: {
     )
 }
 
-function SharedServiceSummary({ result, handleClick }: {
+export function SharedServiceSummary({ result, handleClick }: {
     result: IBookingInfoOutput[]
-    handleClick: any
+    handleClick?: any
 }) {
-
     if (result.length < 2) return null
 
     return (
@@ -137,8 +138,8 @@ function SharedServiceSummary({ result, handleClick }: {
                     <span>Fecha: {r.dates.temp_pickup_time ? new Date(r.dates.temp_pickup_time).toLocaleString() : new Date(r.dates.job_time_utc).toLocaleString()}</span>
                     <CityBadge branch={r.branch} isCode={false} className='ml-auto' />
                 </div>
-            ))
-            }
+            ))}
+            <GoogleMapsButton result={result} className='mx-auto' text='Ver en Google Maps' />
         </div>
     )
 }
@@ -493,7 +494,7 @@ function BookingDirections({ result }: {
 
     const originAddress = result.directions.origin.address
     const destinationAddress = result.directions.destination.address
-    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(originAddress)}&destination=${encodeURIComponent(destinationAddress)}&travelmode=driving`
+    const googleMapsUrl = buildGoogleMapsURL(originAddress, destinationAddress)
 
     return (
         <div className='booking-detail info-directions w-full'>

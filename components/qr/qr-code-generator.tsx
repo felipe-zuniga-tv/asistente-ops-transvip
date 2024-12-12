@@ -4,6 +4,7 @@ import { RotateCw } from 'lucide-react';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { Button } from '../ui/button';
+import { TransvipLogo } from '../transvip/transvip-logo';
 
 interface QRCodeGeneratorProps { }
 
@@ -43,11 +44,7 @@ export const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = () => {
         <div className='p-4'>
             <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg flex flex-col gap-6 px-6 pb-4">
                 <div className="flex flex-col gap-2 md:gap-4 justify-center items-center px-6 md:px-8 pt-6 md:pt-8">
-                    <Image src="/images/transvip-logo-only-color.png"
-                        alt="Transvip Logo"
-                        height={80}
-                        width={80}
-                        className="h-8 w-8 md:h-10 md:w-10" />
+                    <TransvipLogo size={20} colored={true} />
                     <div id="welcome-title" className="text-lg md:text-2xl font-bold text-gray-800">Genera tu código QR</div>
                 </div>
 

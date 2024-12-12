@@ -3,12 +3,12 @@ import { Tool } from "../chat/types";
 
 // TOOLS
 export const toolsList: Tool[] = [
-    {
-        title: 'Generar QR en el chatbot',
-        hint: 'Ingresa el número de reserva',
-        search: 'Necesito crear un código QR a partir de un número de reserva',
-        icon: QrCodeIcon,
-    },
+    // {
+    //     title: 'Generar QR en el chatbot',
+    //     hint: 'Ingresa el número de reserva',
+    //     search: 'Necesito crear un código QR a partir de un número de reserva',
+    //     icon: QrCodeIcon,
+    // },
     {
         title: 'Escribir un texto',
         hint: 'Email, whatsapp, etc.',
@@ -19,6 +19,12 @@ export const toolsList: Tool[] = [
         title: 'Zona Iluminada Santiago',
         hint: 'Status por tipo de vehículo',
         search: 'Quiero ver la zona iluminada del aeropuerto de Santiago',
+        icon: PlaneTakeoffIcon,
+    },
+    {
+        title: 'Zona Iluminada Antofagasta',
+        hint: 'Status por tipo de vehículo',
+        search: 'Quiero ver la zona iluminada del aeropuerto de Antofagasta',
         icon: PlaneTakeoffIcon,
     },
     {

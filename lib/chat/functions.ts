@@ -46,6 +46,28 @@ async function getResponseFromURL(URL: string) {
 export function buildWhatsappLink(phone_number : string, text: string) {
     return encodeURI(`https://wa.me/${phone_number.replace('+', '').trim()}?text=${text.trim()}`)
 }
+export function buildGoogleMapsURL(originAddress: string, destinationAddress: string, waypoints?: string[]) {
+    const BASE_GOOGLE_MAPS_URL = 'https://www.google.com/maps/dir/'
+
+    const params = [
+        `api=1`,
+        `travelmode=driving`,
+        `origin=${encodeURIComponent(originAddress)}`,
+        `destination=${encodeURIComponent(destinationAddress)}`,
+    ]
+    
+    const waypointsList = waypoints?.join("|")
+    // Check for waypoints
+    if (waypoints && waypoints?.length > 0) {
+        params.push(`waypoints=${waypointsList}`)
+    }
+
+    // URL Params
+    const paramsURL = params.join("&")
+    const googleMapsUrl = `${BASE_GOOGLE_MAPS_URL}?${paramsURL}`
+
+    return googleMapsUrl
+}
 
 // FUNCTIONS
 // Vehicles

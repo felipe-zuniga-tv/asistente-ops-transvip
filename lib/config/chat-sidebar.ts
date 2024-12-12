@@ -15,6 +15,8 @@ import {
 	Ticket,
 	Map,
 	BarChart4,
+	BookPlusIcon,
+	BusFront,
 } from "lucide-react"
 import { toolsList } from "./tools";
 
@@ -79,6 +81,20 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 					icon: Map,
 					url: Routes.ROUTE.MAIN,
 					active: false
+				},
+			],
+		},
+		{
+			title: "Reservas",
+			url: "#",
+			icon: BookPlusIcon,
+			isActive: true,
+			items: [
+				{
+					title: 'Compartidas',
+					icon: BusFront,
+					url: Routes.BOOKINGS.SHARED,
+					active: true
 				},
 			],
 		},
