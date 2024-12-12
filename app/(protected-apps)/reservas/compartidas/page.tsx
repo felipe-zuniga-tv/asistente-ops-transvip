@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { IBookingInfoOutput } from "@/lib/chat/types";
 import { BookingCard, SharedServiceSummary } from "@/components/chat/search/booking-search";
 import { Switch } from "@/components/ui/switch";
+import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
 
 export default function SharedBookingsPage() {
     const [bookingId, setBookingId] = useState<string>("");
@@ -41,8 +42,6 @@ export default function SharedBookingsPage() {
             }
 
             const { data } = await response.json();
-
-            console.log(data)
             setBookingInfo(data ? data : [])
             
         } catch (error) {
@@ -53,7 +52,7 @@ export default function SharedBookingsPage() {
     }
 
     return (
-        <div className="w-full max-w-4xl mx-auto mt-4 p-2 md:p-0">
+        <MaxWidthWrapper>
             <Card>
                 <CardHeader>
                     <CardTitle className="flex flex-col md:flex-row gap-2 justify-between items-center">
@@ -135,6 +134,6 @@ export default function SharedBookingsPage() {
                     </div>
                 </CardContent>
             </Card>
-        </div>
+        </MaxWidthWrapper>
     );
 }

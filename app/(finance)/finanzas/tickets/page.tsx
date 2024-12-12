@@ -14,6 +14,7 @@ import {
 import { TransvipLogo } from "@/components/transvip/transvip-logo";
 import TicketCards from "@/components/finance/tickets/ticket-cards";
 import TicketResults from "@/components/finance/tickets/ticket-results";
+import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
 
 export interface FileWithPreview extends File {
     preview?: string;
@@ -117,41 +118,43 @@ export default function ParkingTickets() {
     };
 
     return (
-        <div className="w-full max-w-4xl mx-auto mt-4 p-2 md:p-0">
-            <div className="mb-0">
-                <CardHeader className="">
-                    <CardTitle className="flex flex-col md:flex-row gap-2 justify-between items-center">
-                        <div className="flex flex-row items-center gap-2">
-                            <TransvipLogo colored={true} size={20} />
-                            <span className="text-lg font-bold">Tickets Estacionamiento</span>
-                        </div>
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid grid-cols-1 gap-4">
-                        <TicketCards
-                            files={files}
-                            handleClearFiles={handleClearFiles}
-                            handleRemoveFile={handleRemoveFile}
-                            handleUpload={handleUpload}
-                            onFileInputClick={handleFileInputClick}
-                            isUploading={isUploading}
-                        />
+        <MaxWidthWrapper>
+            <Card>
+                <div className="mb-0">
+                    <CardHeader className="">
+                        <CardTitle className="flex flex-col md:flex-row gap-2 justify-between items-center">
+                            <div className="flex flex-row items-center gap-2">
+                                <TransvipLogo colored={true} size={20} />
+                                <span className="text-lg font-bold">Tickets Estacionamiento</span>
+                            </div>
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="grid grid-cols-1 gap-4">
+                            <TicketCards
+                                files={files}
+                                handleClearFiles={handleClearFiles}
+                                handleRemoveFile={handleRemoveFile}
+                                handleUpload={handleUpload}
+                                onFileInputClick={handleFileInputClick}
+                                isUploading={isUploading}
+                            />
 
-                        {isUploading && <div className="w-full text-center">Cargando...</div>}
-                        {!isUploading && <TicketResults results={results} handleClearResults={handleClearResults} />}
-                    </div>
-                </CardContent>
-            </div>
-            <Input
-                ref={fileInputRef}
-                id="file-input"
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handleFileChange}
-                className="hidden"
-            />
-        </div>
+                            {isUploading && <div className="w-full text-center">Cargando...</div>}
+                            {!isUploading && <TicketResults results={results} handleClearResults={handleClearResults} />}
+                        </div>
+                    </CardContent>
+                </div>
+                <Input
+                    ref={fileInputRef}
+                    id="file-input"
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleFileChange}
+                    className="hidden"
+                />
+            </Card>
+        </MaxWidthWrapper>
     );
 }
