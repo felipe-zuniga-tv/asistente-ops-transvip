@@ -12,11 +12,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { IBookingInfoOutput } from "@/lib/chat/types";
 import { BookingCard, SharedServiceSummary } from "@/components/chat/search/booking-search";
+import { Switch } from "@/components/ui/switch";
 
 export default function SharedBookingsPage() {
     const [bookingId, setBookingId] = useState<string>("");
     const [bookingInfo, setBookingInfo] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [showDetails, setShowDetails] = useState(false);
 
     function handleReset() {
         setBookingId("");
@@ -39,7 +41,10 @@ export default function SharedBookingsPage() {
             }
 
             const { data } = await response.json();
-            setBookingInfo(data);
+
+            console.log(data)
+            setBookingInfo(data ? data : [])
+            
         } catch (error) {
             console.error("Error fetching booking:", error);
         } finally {
@@ -55,11 +60,7 @@ export default function SharedBookingsPage() {
                         <div className="flex flex-row items-center gap-2">
                             <span className="text-lg font-bold">Reservas Compartidas</span>
                         </div>
-                        <Button
-                            variant="default"
-                            onClick={handleReset}
-                            className="text-sm"
-                        >
+                        <Button variant="default" onClick={handleReset} className="text-sm">
                             Comenzar de nuevo
                         </Button>
                     </CardTitle>
@@ -94,7 +95,29 @@ export default function SharedBookingsPage() {
                             </div>
                         )}
 
+                        {bookingInfo && bookingInfo.length === 0 && (
+                            <div className="p-4 text-center text-gray-500">
+                                No hay resultados
+                            </div>
+                        )}
+
                         {bookingInfo && bookingInfo.length > 0 && (
+                            <div className="flex items-center space-x-2">
+                                <Switch
+                                    checked={showDetails}
+                                    onCheckedChange={setShowDetails}
+                                    id="show-details"
+                                />
+                                <label
+                                    htmlFor="show-details"
+                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                >
+                                    Mostrar detalles
+                                </label>
+                            </div>
+                        )}
+
+                        {bookingInfo && bookingInfo.length > 0 && showDetails && (
                             <div className="p-2 bg-gray-100 rounded-md h-[600px] overflow-y-auto">
                                 <div className="flex flex-col gap-2">
                                     <span className="font-semibold ml-2">Detalle</span>

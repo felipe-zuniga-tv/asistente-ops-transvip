@@ -8,6 +8,15 @@ export function BookingIdBadge({ result, handleClick, className }: {
     handleClick: any
     className?: string
 }) {
+    if (!handleClick) {
+        return (
+            <Button variant={"default"}
+                className={cn("h-min py-1 text-white w-[90px] bg-transvip/80 hover:bg-transvip-dark text-sm", className || "")}>
+                { result.booking.id }
+            </Button>
+        )
+    }
+    
     return (
         <Button variant={"default"}
             onClick={() => handleClick(result, 'booking')}
