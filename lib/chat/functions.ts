@@ -18,9 +18,6 @@ const ZONA_ILUMINADA_SERVICES = buildAPIUrl(process.env.GET_ZONA_ILUMINADA_SERVI
 const AIRPORT_ZONE_API_URL    = buildAPIUrl(process.env.GET_STATUS_AIRPORT_CITY);
 
 // AUX FUNCTIONS
-function buildAPIUrl(endpoint: string | undefined) {
-    return `${process.env.NEXT_PUBLIC_API_BASE_URL}/${endpoint}`
-}
 async function getResponseFromURL(URL: string) {
     try {
         const options = {
@@ -38,14 +35,15 @@ async function getResponseFromURL(URL: string) {
         return null
     }
 }
-// function addHours(date : Date, hours : number) {
-//     const hoursToAdd = hours * 60 * 60 * 1000;
-//     date.setTime(date.getTime() + hoursToAdd);
-//     return date;
-// }
+
+function buildAPIUrl(endpoint: string | undefined) {
+    return `${process.env.NEXT_PUBLIC_API_BASE_URL}/${endpoint}`
+}
+
 export function buildWhatsappLink(phone_number : string, text: string) {
     return encodeURI(`https://wa.me/${phone_number.replace('+', '').trim()}?text=${text.trim()}`)
 }
+
 export function buildGoogleMapsURL(originAddress: string, destinationAddress: string, waypoints?: string[]) {
     const BASE_GOOGLE_MAPS_URL = 'https://www.google.com/maps/dir/'
 
@@ -748,6 +746,7 @@ export async function getZonaIluminada(cityName = 'Santiago') {
         regions: results
     }
 }
+
 export async function getZonaIluminadaServices(zone_id: number) {
     const session = await getSession()
     const currentUser = session?.user as any
