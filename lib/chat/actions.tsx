@@ -22,11 +22,13 @@ import { DriverProfile, IDriverProfile } from "@/components/chat/search/driver-p
 import AirportStatus from "@/components/chat/airport/airport-status";
 import { airportZones } from "../config/airport";
 import QRCode from "react-qr-code";
+import { google } from "@ai-sdk/google";
 
 export const OPENAI_GPT_4o_MINI = 'gpt-4o-mini' // 'gpt-4'
 export const OPENAI_GPT_4o      = 'gpt-4o' // 'gpt-4'
 const modelInstance = openai(OPENAI_GPT_4o_MINI)
 const modelInstanceSmart = openai(OPENAI_GPT_4o)
+const modelInstanceGoogle = google('gemini-2.0-flash-exp')
 
 async function submitUserMessage(content: string) {
 	"use server";
@@ -46,7 +48,7 @@ async function submitUserMessage(content: string) {
 	});
 
 	const ui = await streamUI({
-		model: modelInstance,
+		model: modelInstanceGoogle,
 		system: SYSTEM_MESSAGE,
 		messages: aiState.get().messages.filter(m => m.role !== 'function'),
 		text: ({ content, done }) => {
