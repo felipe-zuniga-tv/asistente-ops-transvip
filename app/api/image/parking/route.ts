@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
+import { generateText } from 'ai';
 import { openai } from "@ai-sdk/openai";
-import { generateText, streamText } from 'ai';
 import { TICKET_OCR_SYSTEM_MESSAGE } from "@/lib/config/finance";
 
 const MODEL_NAME = 'gpt-4o'
