@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { openai } from '@ai-sdk/openai';
+import { openai } from "@ai-sdk/openai";
 import { generateText, streamText } from 'ai';
 import { TICKET_OCR_SYSTEM_MESSAGE } from "@/lib/config/finance";
 
@@ -32,12 +32,12 @@ export async function POST(request: NextRequest) {
                         {
                             role: "user",
                             content: [{
-                                type: 'image',
+                                type: "image",
                                 image: `${base64Image}`,
-                            }],
-                        },
-                    ],
-                });
+                            }]
+                        }
+                    ]
+                })
 
                 return result.text
             })
