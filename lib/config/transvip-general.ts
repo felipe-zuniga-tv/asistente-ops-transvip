@@ -40,3 +40,7 @@ export const paymentMethods = {
     FACTURA: 'Factura Credito',
     CASH: 'Efectivo Pesos',
 }
+
+export const vehicleTypes = {
+  MINIBUS: 2
+}

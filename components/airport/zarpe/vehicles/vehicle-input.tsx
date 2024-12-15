@@ -1,23 +1,11 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { Trash2, Lock, Unlock, PlusCircle } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
-
-interface Vehicle {
-	id: string
-	driver: {
-		name: string
-		photo: string
-		hoursConnected: number
-	}
-	plate: string
-	contract: string
-	brand: string
-	model: string
-	blocked: boolean
-}
+import { VehicleDialog } from "@/components/airport/zarpe/vehicles/vehicle-dialog"
+import { Vehicle } from '@/lib/airport/types'
 
 interface VehicleInputProps {
 	vehicles: { [key: string]: (Vehicle | null)[] }
@@ -39,6 +27,7 @@ export function VehicleInput({
 	setShowDeleteConfirmModal
 }: VehicleInputProps) {
 	const currentVehicles = vehicles[currentTerminal]
+	const [isDialogOpen, setIsDialogOpen] = useState(false)
 
 	const handleBlockPosition = (index: number) => {
 		const newVehicles = [...currentVehicles]
@@ -53,8 +42,14 @@ export function VehicleInput({
 		})
 	}
 
+	
+
+	const handleAddVehicle = () => {
+		setIsDialogOpen(true)
+	}
+
 	return (
-		<div className="p-6 bg-white dark:bg-gray-800 rounded-3xl m-4 shadow-lg">
+		<div className="p-6 bg-white rounded-xl m-4 shadow-lg">
 			<div className="flex justify-between items-center mb-6">
 				<h2 className="text-2xl font-bold text-gray-800 dark:text-white">Andén de móviles</h2>
 				<div className="flex items-center space-x-2">
@@ -79,7 +74,7 @@ export function VehicleInput({
 									)}
 								</div>
 								<div className="ml-6 flex-grow">
-									<p className="text-xl font-bold text-gray-800 dark:text-white">ID Móvil: {vehicle.id} - Patente: {vehicle.plate}</p>
+									<p className="text-xl font-bold text-gray-800 dark:text-white">ID Móvil: {vehicle.vehicle_number} - Patente: {vehicle.license_plate}</p>
 									<p className="text-lg text-gray-700 dark:text-gray-300">{vehicle.brand} {vehicle.model} - {vehicle.contract}</p>
 									<p className="text-lg text-gray-600 dark:text-gray-400">
 										{vehicle.driver ? vehicle.driver.name : 'No Driver'} -
@@ -118,7 +113,7 @@ export function VehicleInput({
 						) : (
 							<div className="flex justify-center space-x-4">
 								<button
-									onClick={() => setShowAddVehicleModal(true)}
+									onClick={handleAddVehicle}
 									className="w-1/2 h-32 flex items-center justify-center text-gray-400 hover:text-orange-500 dark:text-gray-500 dark:hover:text-orange-400 transition-colors duration-300 border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-xl hover:border-orange-500 dark:hover:border-orange-400"
 								>
 									<PlusCircle className="w-12 h-12" />
@@ -134,6 +129,7 @@ export function VehicleInput({
 					</div>
 				))}
 			</div>
+			<VehicleDialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} />
 		</div>
 	)
 }

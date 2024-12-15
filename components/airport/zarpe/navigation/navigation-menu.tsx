@@ -1,5 +1,5 @@
 // import React from 'react'
-import { Car, Users, Clock, Map, Bell, Radio } from 'lucide-react'
+import { Car, Users, Clock, Map, Lightbulb } from 'lucide-react'
 
 interface NavigationProps {
 	activeView: string
@@ -16,8 +16,7 @@ export function Navigation({ activeView, setActiveView, passengerCount }: Naviga
 		{ icon: Users, label: 'Compartidos', view: 'shared', count: passengerCount.shared },
 		{ icon: Clock, label: 'Baja frec.', view: 'lowFrequency', count: passengerCount.lowFrequency },
 		{ icon: Map, label: 'Rutas', view: 'routes' },
-		{ icon: Bell, label: 'Zona Iluminada', view: 'alerts' },
-		{ icon: Radio, label: 'Zello', view: 'zello' }
+		{ icon: Lightbulb, label: 'Zona Iluminada', view: 'alerts' },
 	]
 
 	return (

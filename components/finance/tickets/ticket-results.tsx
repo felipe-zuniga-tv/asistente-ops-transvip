@@ -1,11 +1,12 @@
 import { TicketResultType } from "@/app/(finance)/finanzas/tickets/page";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { X } from "lucide-react";
+import { Download, X } from "lucide-react";
 
-export default function TicketResults({ results, handleClearResults } : {
+export default function TicketResults({ results, handleClearResults, handleDownloadFile } : {
     results: TicketResultType[]
     handleClearResults: () => void
+    handleDownloadFile: any
 }) {
     if (results.length === 0) return
 
@@ -13,7 +14,14 @@ export default function TicketResults({ results, handleClearResults } : {
         <Card>
             <CardHeader>
                 <CardTitle className="flex justify-between items-center">
-                    <span>Resultados</span>
+                    <div className="flex flex-row items-center gap-6">
+                        <span>Resultados</span>
+                        {results.length > 0 && (
+                            <Button onClick={handleDownloadFile} variant="outline" size={"sm"}>
+                                <Download className="h-4 w-4" /> Descargar
+                            </Button>
+                        )}
+                    </div>
                     {results.length > 0 && (
                         <Button variant="ghost"
                             size="icon"

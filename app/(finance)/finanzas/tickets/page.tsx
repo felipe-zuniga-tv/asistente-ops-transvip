@@ -4,8 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import {
     Card,
-    CardDescription,
-    CardFooter,
     CardContent,
     CardHeader,
     CardTitle,
@@ -117,11 +115,51 @@ export default function ParkingTickets() {
         setResults([]);
     };
 
+    // Function to convert JSON data to CSV format
+    const convertToCSV = (data: TicketResultType[]) => {
+        if (data.length === 0 || !data[0]) return ''; // Handle empty data
+
+        const header = Object.keys(data[0]).join(",");
+        const rows = data.map(obj =>
+            Object.values(obj)
+                .map(value => (typeof value === 'string' ? `"${value}"` : value)) // Handle strings with commas
+                .join(",")
+        );
+        return `${header}\n${rows.join("\n")}`;
+    };
+
+    // Function to trigger CSV download
+    const downloadCSV = () => {
+        if (results.length === 0) return;
+
+        const csvData = convertToCSV(results);
+        const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+
+        // Generate a timestamp for the filename
+        const timestamp = new Date().toISOString().replace(/[:.]/g, "-"); // Create ISO formatted timestamp
+        const fileName = `parking_tickets_${timestamp}.csv`;
+
+        // Create a download link and trigger the download
+        const link = document.createElement("a");
+        if (link.download !== undefined) {
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", fileName);
+            link.style.visibility = "hidden";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } else {
+            // Fallback for browsers that do not support the download attribute
+            window.open(encodeURI(`data:text/csv;charset=utf-8,${csvData}`));
+        }
+    };
+
     return (
         <MaxWidthWrapper>
             <Card>
                 <div className="mb-0">
-                    <CardHeader className="">
+                    <CardHeader>
                         <CardTitle className="flex flex-col md:flex-row gap-2 justify-between items-center">
                             <div className="flex flex-row items-center gap-2">
                                 <TransvipLogo colored={true} size={20} />
@@ -141,7 +179,7 @@ export default function ParkingTickets() {
                             />
 
                             {isUploading && <div className="w-full text-center">Cargando...</div>}
-                            {!isUploading && <TicketResults results={results} handleClearResults={handleClearResults} />}
+                            {!isUploading && <TicketResults results={results} handleClearResults={handleClearResults} handleDownloadFile={downloadCSV} />}
                         </div>
                     </CardContent>
                 </div>
