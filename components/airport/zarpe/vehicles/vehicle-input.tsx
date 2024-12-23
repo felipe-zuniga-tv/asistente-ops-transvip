@@ -42,8 +42,6 @@ export function VehicleInput({
 		})
 	}
 
-	
-
 	const handleAddVehicle = () => {
 		setIsDialogOpen(true)
 	}

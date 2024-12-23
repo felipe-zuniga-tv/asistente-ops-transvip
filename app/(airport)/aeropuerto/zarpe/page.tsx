@@ -8,22 +8,22 @@ import { VehicleInput } from "@/components/airport/zarpe/vehicles/vehicle-input"
 import { PassengerData, Vehicle, ZarpeLocation } from "@/lib/airport/types";
 import { SharedRides } from "@/components/airport/zarpe/passengers/shared-rides";
 
-const AirportLocation: ZarpeLocation = {
-	id: "aeropuerto-scl",
-	name: "Aeropuerto SCL",
-	terminals: [
-		{ id: "T1", name: "Terminal Nacional" },
-		{ id: "T2", name: "Terminal Internacional" },
-	],
-};
+// const AirportLocation: ZarpeLocation = {
+// 	id: "aeropuerto-scl",
+// 	name: "Aeropuerto SCL",
+// 	terminals: [
+// 		{ id: "T1", name: "Terminal Nacional" },
+// 		{ id: "T2", name: "Terminal Internacional" },
+// 	],
+// };
 
 export default function ZarpePage() {
 	const [activeView, setActiveView] = useState('vehicles');
+	const [darkMode, setDarkMode] = useState(false);
 
 	const [scannedQr, setScannedQr] = useState<string | null>(null);
 	const [isScanning, setIsScanning] = useState(false);
 	const [error, setError] = useState<string | null>(null);
-	const [darkMode, setDarkMode] = useState(false);
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [currentTerminal, setCurrentTerminal] = useState('T1');
 	const [showAddVehicleModal, setShowAddVehicleModal] = useState(false);
@@ -114,9 +114,9 @@ export default function ZarpePage() {
 					)}
 					{activeView === 'shared' && (
 						<SharedRides
-						passengerCount={passengerCount}
-						setPassengerCount={setPassengerCount}
-						setShowOptimizingModal={setShowOptimizingModal}
+								passengerCount={passengerCount}
+								setPassengerCount={setPassengerCount}
+								setShowOptimizingModal={setShowOptimizingModal}
 						/>
 					)}
 					{activeView === 'qr' && <QrScanner onScan={handleScan} />}

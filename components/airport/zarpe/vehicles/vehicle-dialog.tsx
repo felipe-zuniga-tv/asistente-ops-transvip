@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useState } from "react"
 import { Dialog, DialogContent, DialogTitle, DialogHeader } from "@/components/ui/dialog"
 import { Command, CommandInput, CommandList, CommandItem, CommandEmpty, CommandGroup } from "@/components/ui/command"
@@ -15,7 +17,6 @@ interface VehicleDialogProps {
 
 export function VehicleDialog({ isOpen, onClose }: VehicleDialogProps) {
     const [vehicles, setVehicles] = useState<Vehicle[]>([])
-    const [searchTerm, setSearchTerm] = useState("")
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState("")
     const [isLoading, setIsLoading] = useState(false)

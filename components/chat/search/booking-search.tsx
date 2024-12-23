@@ -95,11 +95,10 @@ export function BookingIdSearch({ session, searchResults, content }: {
                     />
                 ))}
             </div>
-            {content &&
+            {/* {content &&
                 <div className='search-results-text mt-4'>
                     <AssistantMessageContent content={content} />
-                </div>
-            }
+                </div>} */}
         </div>
     )
 }
