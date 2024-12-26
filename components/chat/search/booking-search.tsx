@@ -147,12 +147,12 @@ function SharedServiceTotals({ result }: {
     result: IBookingInfoOutput[]
 }) {
     const totalPayment = result.reduce((acc, curr) => acc + curr.payment.actual_payment, 0)
-    const totalEstimatedDistance = result.reduce((acc, curr) => acc + curr.directions.estimated_travel_kms, 0)
-    const totalActualDistance = result.reduce((acc, curr) => acc + curr.directions.total_travel_kms, 0)
+    // const totalEstimatedDistance = result.reduce((acc, curr) => acc + curr.directions.estimated_travel_kms, 0)
+    // const totalActualDistance = result.reduce((acc, curr) => acc + curr.directions.total_travel_kms, 0)
 
     return (
-        <div className='shared-service-totals card-info-detail flex flex-row gap-2 justify-start'>
-            <div className='shared-service-total-payment flex flex-row gap-1'>
+        <div className='shared-service-totals card-info-detail flex flex-row gap-3 justify-start bg-green-200 rounded-md shadow-md mb-2'>
+            <div className='shared-service-total-payment flex flex-row gap-1 p-2 w-full'>
                 <span className='font-semibold'>Pago Total:</span>
                 <span>{chileanPeso.format(totalPayment)}</span>
             </div>
