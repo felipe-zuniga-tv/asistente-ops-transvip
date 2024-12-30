@@ -79,9 +79,11 @@ export async function getVehicleStatus(vehicleNumber: number) {
         `search_id=${vehicleNumber}`,
     ].join("&")
 
-    const output = await getResponseFromURL(`${VEHICLE_STATUS_API_URL}?${params}`)
+    const { status, data } = await getResponseFromURL(`${VEHICLE_STATUS_API_URL}?${params}`)
 
-    if (output.data.length > 0) {
+    // console.log(data)
+
+    if (status === 200 && data.length > 0) {
         const {
             fleet_id,
             fleet_image,
@@ -97,7 +99,7 @@ export async function getVehicleStatus(vehicleNumber: number) {
             service_name,
             branch,
             vehicle_image,
-        } = output.data[0]
+        } = data[0]
 
         return {
             vehicle_number: vehicleNumber,

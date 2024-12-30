@@ -9,6 +9,6 @@ export async function GET(request: NextRequest) {
     }
 
     const data = await getAirportMinibusList(airportCode)
-    console.log(data)
+    // console.log(data)
     return NextResponse.json(data)
 }
