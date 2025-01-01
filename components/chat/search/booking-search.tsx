@@ -38,15 +38,15 @@ enum BookingSearchRequest {
 }
 
 const MESSAGE_TEMPLATES = {
-    [BookingSearchRequest.BOOKING]: (result: IBookingInfoOutput) => 
+    [BookingSearchRequest.BOOKING]: (result: IBookingInfoOutput) =>
         `Me gustaría buscar la reserva ${result.booking.id}.`,
-    [BookingSearchRequest.VEHICLE]: (result: IBookingInfoOutput) => 
+    [BookingSearchRequest.VEHICLE]: (result: IBookingInfoOutput) =>
         `Me gustaría saber si el vehículo ${result.vehicle.vehicle_number} está online.`,
-    [BookingSearchRequest.LICENSE]: (result: IBookingInfoOutput) => 
+    [BookingSearchRequest.LICENSE]: (result: IBookingInfoOutput) =>
         `Me gustaría saber más información sobre el vehículo con patente ${result.vehicle.license_plate}.`,
-    [BookingSearchRequest.DRIVER]: (result: IBookingInfoOutput) => 
+    [BookingSearchRequest.DRIVER]: (result: IBookingInfoOutput) =>
         `Me gustaría buscar sólo el perfil del conductor con el teléfono ${result.fleet.phone_number}.`,
-    [BookingSearchRequest.SHARED_SERVICE]: (result: IBookingInfoOutput) => 
+    [BookingSearchRequest.SHARED_SERVICE]: (result: IBookingInfoOutput) =>
         `Me gustaría buscar el paquete ${result.booking.shared_service_id}.`,
 } as const;
 
@@ -59,7 +59,7 @@ export function BookingIdSearch({ session, searchResults, content }: {
     const { submitUserMessage } = useActions()
 
     const handleClick = async (result: IBookingInfoOutput, request: BookingSearchRequest) => {
-        const userMessageContent = MESSAGE_TEMPLATES[request]?.(result) ?? 
+        const userMessageContent = MESSAGE_TEMPLATES[request]?.(result) ??
             `Me gustaría saber más información sobre el vehículo con patente ${result.vehicle.license_plate}.`;
 
         setMessages((currentMessages: any) => [
@@ -128,7 +128,7 @@ export function SharedServiceSummary({ result, handleClick }: {
 
     return (
         <div className='shared-service-summary bg-white p-2 rounded-md text-slate-900 flex flex-col gap-1.5'>
-            <SharedServiceTotals result={result} />            
+            <SharedServiceTotals result={result} />
             {result.map(r => (
                 <div key={r.booking.id.toString()} className='shared-service-booking flex flex-row gap-2 items-center text-sm'>
                     <BookingIdBadge result={r} handleClick={handleClick} />
@@ -228,7 +228,7 @@ function BookingMainDetails({ result, handleClick }: {
 function BookingRating({ result }: {
     result: IBookingInfoOutput
 }) {
-    if (result.rating.number === 0) return
+    if (!result.rating || result.rating.number === 0) return
 
     return (
         <div className='card-info-detail gap-1'>
@@ -518,16 +518,21 @@ function BookingDirections({ result }: {
                         <Clock className='size-4' />
                         <div className="flex flex-row gap-1 items-center justify-start">
                             <span className='font-semibold'>Tiempo Estimado:</span>
-                            <span>{result.directions.estimated_travel_minutes} minutos ({(result.directions.estimated_travel_minutes / 60).toFixed(2)} horas)</span>
+                            <span>
+                                {result.directions.estimated_travel_minutes != null && result.directions.estimated_travel_minutes > 0
+                                    ? `${result.directions.estimated_travel_minutes} minutos (${(result.directions.estimated_travel_minutes / 60).toFixed(2)} horas)`
+                                    : 'N/D'}
+                            </span>
+                            <Button
+                                variant="default"
+                                className="px-6 py-0.5 bg-green-600 hover:bg-green-800"
+                                onClick={() => window.open(googleMapsUrl, '_blank')}
+                            >
+                                Ver ruta
+                            </Button>
+                            <MapIcon className='h-4 w-4 ml-2' />
                         </div>
                     </div>
-                </div>
-                <div className="w-fit md:w-1/4 flex items-center justify-end text-sm">
-                    <Button variant="default" className="px-6 py-0.5 bg-green-600 hover:bg-green-800"
-                        onClick={() => window.open(googleMapsUrl, '_blank')}>
-                        Ver ruta
-                        <MapIcon className='h-4 w-4 ml-2' />
-                    </Button>
                 </div>
             </div>
         </div>
