@@ -480,6 +480,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 job_pickup_address, job_pickup_latitude, job_pickup_longitude,
                 job_address, job_latitude, job_longitude,
                 job_time, job_time_utc,
+                job_passenger_country_code,
                 temp_pickup_time,
                 creation_datetime, // UTC time
                 admin_email,
@@ -505,11 +506,15 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 fleet_rating, fleet_comment
             } = data_r
 
+            // console.log(data_r)
+
             // Get more details about the vehicle, such as type
             const vehicleDetail = await getVehicleDetail(transport_details);
 
             const pax_full_name = booking_for === 1 ? job_pickup_name : [customer_first_name.trim(), customer_last_name.trim()].join(" ")
-            const pax_phone_number = booking_for === 1 ? customer_country_code.trim() + job_pickup_phone : [customer_country_code.trim(), customer_phone_number.trim()].join("")
+            const pax_phone_number = booking_for === 1 ? 
+                [customer_country_code.trim(), (job_pickup_phone ?? customer_phone_number.replace(job_passenger_country_code, '').trim())].join("") :
+                [customer_country_code.trim(), customer_phone_number.replace(job_passenger_country_code, '').trim()].join("")
         
             const output_item: IBookingInfoOutput = {
                 booking: {
@@ -599,8 +604,6 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                     comment: fleet_comment
                 }
             };
-            // console.log(output_item)
-
             output.push(output_item);
         }));
 
@@ -615,7 +618,7 @@ export async function getBookings(next_x_hours = 2) {
     const currentUser = session?.user as any
     const accessToken = currentUser?.accessToken as string
 
-    const LIMIT_RESULTS = 3
+    const LIMIT_RESULTS = 30
     const OFFSET_RESULTS = 0
     const HOURS_TO_ADD = next_x_hours
 

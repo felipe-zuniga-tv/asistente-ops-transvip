@@ -209,6 +209,8 @@ async function submitUserMessage(content: string) {
 					const not_shared_booking = await getBookingInfo(bookingId, false) // NOT SHARED
 					const shared_booking     = await getBookingInfo(bookingId, true)  // SHAREDs
 					const bookingInformation = not_shared_booking ? not_shared_booking : shared_booking
+
+					// console.log(bookingInformation)
 					
 					// Sort by Job Pickup datetime ascending
 					bookingInformation?.

@@ -42,7 +42,7 @@ export const toolsList: Tool[] = [
     {
         title: 'Reservas programadas',
         hint: 'Busca las reservas para las próximas horas',
-        search: 'Busca las reservas programadas para las próximas horas',
+        search: 'Busca las reservas programadas para las próximas 4 horas',
         icon: Clock12Icon
     },
     {
