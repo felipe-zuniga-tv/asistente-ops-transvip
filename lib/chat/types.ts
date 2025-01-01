@@ -123,7 +123,7 @@ export interface IBookingInfoOutput {
         status: number
         estimated_payment: number
         actual_payment: number
-        method_name: string
+        method_name?: string
         fare_route_name?: string
         fare_route_type?: number
     }
