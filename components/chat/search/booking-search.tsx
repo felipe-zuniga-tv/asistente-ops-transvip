@@ -53,7 +53,7 @@ const MESSAGE_TEMPLATES = {
 export function BookingIdSearch({ session, searchResults, content }: {
     session: any,
     searchResults: IBookingInfoOutput[],
-    content: string
+    content?: string
 }) {
     const [_, setMessages] = useUIState()
     const { submitUserMessage } = useActions()

@@ -1,4 +1,4 @@
-import { BarChart, CarFront, Gauge, PlaneTakeoff } from "lucide-react"
+import { BarChart, CarFront, Gauge, PlaneTakeoff, Coins, CreditCard, ReceiptText } from "lucide-react"
 
 // Transvip Ops Teams
 export const opsTeams = [
@@ -32,14 +32,14 @@ export const branches = [
     { branch_id: 34, name: 'Antofagasta', code: 'ANF' },
 ]
 
-export const paymentMethods = {
-    CARD: 'Tarjeta de Credito o Debito',
-    CREDIT_CARD: 'Tarjeta de Crédito',
-    CREDIT_CARD_MP: 'Tarjeta de Crédito Mercadopago',
-    CARD_TOTEM: 'Tarjeta de crédito/débito tótem',
-    FACTURA: 'Factura Credito',
-    CASH: 'Efectivo Pesos',
-}
+export const paymentMethods = [
+  { key: 'CARD', name: 'Tarjeta de Credito o Debito', id: 4, icon: CreditCard },
+  { key: 'CREDIT_CARD', name: 'Tarjeta de Crédito', id: 10, icon: CreditCard },
+  { key: 'CREDIT_CARD_MP', name: 'Tarjeta de Crédito Mercadopago', id: 15, icon: CreditCard },
+  { key: 'CARD_TOTEM', name: 'Tarjeta de crédito/débito tótem', id: 18, icon: CreditCard },
+  { key: 'CASH', name: 'Factura Credito', icon: Coins },
+  { key: 'FACTURA', name: 'Efectivo Pesos', id: 3, icon: ReceiptText },
+]
 
 export const vehicleTypes = {
   MINIBUS: 2

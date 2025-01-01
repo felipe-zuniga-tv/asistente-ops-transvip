@@ -252,9 +252,7 @@ async function submitUserMessage(content: string) {
 						/>
 
 					const futureBookings = await getBookings()
-
-					console.log(futureBookings);
-					
+					// console.log(futureBookings);
 					
 					aiState.done({
 						...aiState.get(),
@@ -269,7 +267,12 @@ async function submitUserMessage(content: string) {
 
 					return futureBookings ? (
 						<BotCard>
-							<pre>{ futureBookings.map(b => JSON.stringify(b)) }</pre>
+							{ futureBookings.map(fb => {
+								<BookingIdSearch
+									searchResults={fb}
+									session={session}
+								/>
+							})}
 						</BotCard>
 					) : (
 						<BotCard>

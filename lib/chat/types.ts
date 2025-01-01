@@ -114,16 +114,16 @@ export interface IBookingInfoOutput {
             latitude: string
             longitude: string
         }
-        estimated_travel_kms: number
-        estimated_travel_minutes: number
-        total_travel_kms: number
-        total_travel_minutes: number
+        estimated_travel_kms: number | null
+        estimated_travel_minutes: number | null
+        total_travel_kms: number | null
+        total_travel_minutes: number | null
     }
     payment: {
         status: number
         estimated_payment: number
         actual_payment: number
-        method_name?: string
+        method_name: string
         fare_route_name?: string
         fare_route_type?: number
     }
@@ -136,8 +136,8 @@ export interface IBookingInfoOutput {
     }
     vehicle: {
         license_plate: string
-        vehicle_number: number
-        type?: string
+        vehicle_number: number | null
+        type?: string | null
     }
     customer: {
         vip_flag: boolean
@@ -148,7 +148,7 @@ export interface IBookingInfoOutput {
         phone_number: string
         email: string
     }
-    rating: {
+    rating?: {
         number: number
         comment: string
     }

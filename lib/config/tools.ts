@@ -3,12 +3,6 @@ import { Tool } from "../chat/types";
 
 // TOOLS
 export const toolsList: Tool[] = [
-    // {
-    //     title: 'Generar QR en el chatbot',
-    //     hint: 'Ingresa el número de reserva',
-    //     search: 'Necesito crear un código QR a partir de un número de reserva',
-    //     icon: QrCodeIcon,
-    // },
     {
         title: 'Escribir un texto',
         hint: 'Email, whatsapp, etc.',
@@ -45,12 +39,12 @@ export const toolsList: Tool[] = [
         search: 'Me gustaría saber más información sobre una reserva o paquete',
         icon: FileDigitIcon
     },
-    // {
-    //     title: 'Reservas programadas',
-    //     hint: 'Busca reservas para las próximas horas',
-    //     search: 'Me gustaría buscar reservas programadas para las próximas horas',
-    //     icon: Clock12Icon
-    // },
+    {
+        title: 'Reservas programadas',
+        hint: 'Busca las reservas para las próximas horas',
+        search: 'Me gustaría buscar reservas programadas para las próximas horas',
+        icon: Clock12Icon
+    },
     {
         title: 'Perfil de un conductor',
         hint: 'Busca usando el email o teléfono',
