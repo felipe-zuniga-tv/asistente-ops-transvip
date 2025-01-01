@@ -2,11 +2,11 @@ import { IBookingInfoOutput } from "@/lib/chat/types";
 import { paymentMethods } from "@/lib/config/transvip-general";
 
 export default function PaymentAvatar({ result }: { result: IBookingInfoOutput }) {
-    const checkPaymentMethods = paymentMethods.filter(pm => pm.name.toLowerCase() === result.payment.method_name.toLowerCase()).length > 0;
+    const checkPaymentMethods = paymentMethods.filter(pm => pm.name.toLowerCase() === result.payment.method_name?.toLowerCase()).length > 0;
 
     if (!checkPaymentMethods) return null;
 
-    const paymentMethod = paymentMethods.filter(pm => pm.name.toLowerCase() === result.payment.method_name.toLowerCase())[0]
+    const paymentMethod = paymentMethods.filter(pm => pm.name.toLowerCase() === result.payment.method_name?.toLowerCase())[0]
 
     if (!paymentMethod) return null;
 
