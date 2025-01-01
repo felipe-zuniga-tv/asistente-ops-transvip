@@ -15,7 +15,7 @@ import { CREATE_DRIVER_RATINGS_SUMMARY, CREATE_TEXT_PROMPT, EMAIL_TEXT_OPS_EXAMP
 import { getVehicleStatus, getBookingInfo, getVehicleDetail, getDriverProfile, searchDriver, getDriverRatings, getBookings, getZonaIluminadaServices } from "./functions";
 import { BotCard, AssistantMessage, LoadingMessage, UserMessage } from "@/components/chat/message";
 import { VehicleStatusSearch } from "@/components/chat/search/vehicle-status-search";
-import { BookingIdSearch } from "@/components/chat/search/booking-search";
+import { BookingCard, BookingIdSearch } from "@/components/chat/search/booking-search";
 import { IVehicleDetail, VehicleDetail } from "@/components/chat/search/vehicle-detail-search";
 import { generateText } from "ai";
 import { DriverProfile, IDriverProfile } from "@/components/chat/search/driver-profile-search";
@@ -245,13 +245,21 @@ async function submitUserMessage(content: string) {
 			getFutureBookings: {
 				description: `Útil para obtener reservas futuras, programadas para las siguientes horas`,
 				parameters: z.object({
+					hours: z
+						.number()
+						.describe("El número de horas futuras para buscar las reservas"),
 				}).required(),
-				generate: async function* () {
-					yield <LoadingMessage text={`Buscando próximas reservas...`} 
+				generate: async function* ({ hours }) {
+					const futureHours = Math.min(hours, 6)
+					yield <LoadingMessage text={`Usa máximo ${futureHours} horas en tu búsqueda...`} 
 							className="text-xs md:text-base"
 						/>
 
-					const futureBookings = await getBookings()
+					yield <LoadingMessage text={`Buscando reservas en las próximas ${futureHours} horas...`} 
+							className="text-xs md:text-base"
+						/>
+
+					const futureBookings = await getBookings(futureHours)
 					// console.log(futureBookings);
 					
 					aiState.done({
@@ -267,11 +275,9 @@ async function submitUserMessage(content: string) {
 
 					return futureBookings ? (
 						<BotCard>
+							<span>Se encontraron {futureBookings.length} reserva{futureBookings.length > 1 ? 's' : ''}</span>
 							{ futureBookings.map(fb => {
-								<BookingIdSearch
-									searchResults={fb}
-									session={session}
-								/>
+								return <BookingCard key={fb.booking.id} result={fb} simplified={true} />
 							})}
 						</BotCard>
 					) : (

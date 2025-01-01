@@ -610,14 +610,14 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
     return null
 }
 
-export async function getBookings() {
+export async function getBookings(next_x_hours = 2) {
     const session = await getSession()
     const currentUser = session?.user as any
     const accessToken = currentUser?.accessToken as string
 
     const LIMIT_RESULTS = 3
     const OFFSET_RESULTS = 0
-    const HOURS_TO_ADD = 2
+    const HOURS_TO_ADD = next_x_hours
 
     // DATES
     const START_DATE = new Date()
@@ -698,8 +698,6 @@ export async function getBookings() {
             observations,
             fleet_rating, fleet_comment
         } = r
-
-        console.log(r)
 
         // Get more details about the vehicle, such as type
         const vehicleDetail = await getVehicleDetail(transport_details);
@@ -791,8 +789,6 @@ export async function getBookings() {
         };
         output.push(output_item);
     }));
-
-    console.log(output)
 
     return output
 }

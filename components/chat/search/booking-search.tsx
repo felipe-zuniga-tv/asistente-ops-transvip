@@ -103,16 +103,17 @@ export function BookingIdSearch({ session, searchResults, content }: {
     )
 }
 
-export function BookingCard({ result, handleClick }: {
+export function BookingCard({ result, handleClick, simplified = false }: {
     result: IBookingInfoOutput
     handleClick?: any
+    simplified?: boolean
 }) {
     return (
         <div className='booking-detail main-card'>
             <BookingBadges result={result} handleClick={handleClick} />
             <BookingMainDetails result={result} handleClick={handleClick} />
             <BookingCustomer result={result} />
-            <BookingDates result={result} />
+            <BookingDates result={result} simplified={simplified} />
             <BookingPayment result={result} />
             <BookingDirections result={result} />
             <BookingVehicle result={result} handleClick={handleClick} />
@@ -254,8 +255,9 @@ function BookingObservations({ result }: {
     )
 }
 
-function BookingDates({ result }: {
+function BookingDates({ result, simplified = false }: {
     result: IBookingInfoOutput
+    simplified?: boolean
 }) {
     if (!result.dates) return null
 
@@ -296,17 +298,19 @@ function BookingDates({ result }: {
                             </>
                         )}
                     </div>
-                    <div className='card-info-detail gap-1'>
-                        <span className='font-semibold date-tag'>Creación:</span>
-                        <span>{new Date(result.dates.creation_datetime).toLocaleString()}</span>
-                        {result.booking.creation_identity &&
-                            <>
-                                <span className='hidden xs:block'>·</span>
-                                <span className='hidden xs:block font-semibold'>Usuario:</span>
-                                <span className='hidden xs:block'>{result.booking.creation_identity}</span>
-                            </>
-                        }
-                    </div>
+                    {!simplified && (
+                        <div className='card-info-detail gap-1'>
+                            <span className='font-semibold date-tag'>Creación:</span>
+                            <span>{new Date(result.dates.creation_datetime).toLocaleString()}</span>
+                            {result.booking.creation_identity &&
+                                <>
+                                    <span className='hidden xs:block'>·</span>
+                                    <span className='hidden xs:block font-semibold'>Usuario:</span>
+                                    <span className='hidden xs:block'>{result.booking.creation_identity}</span>
+                                </>
+                            }
+                        </div>)
+                    }
                     {result.dates.assignment_datetime && result.dates.assignment_datetime &&
                         <div className='card-info-detail gap-1'>
                             <div className='flex flex-row gap-1 items-center w-full'>
@@ -420,10 +424,12 @@ function BookingPayment({ result }: {
                         <span className=''>{chileanPeso.format(result.payment.estimated_payment)}</span>
                         <PaymentRouteType result={result} />
                     </div>
-                    <div className='card-info-detail flex-row gap-1'>
-                        <span className='font-semibold'>Monto Real:</span>
-                        <span className=''>{chileanPeso.format(result.payment.actual_payment)}</span>
-                    </div>
+                    { result.payment.actual_payment && (
+                        <div className='card-info-detail flex-row gap-1'>
+                            <span className='font-semibold'>Monto Real:</span>
+                            <span className=''>{chileanPeso.format(result.payment.actual_payment)}</span>
+                        </div>
+                    )}
                     <div className='card-info-detail flex-row gap-1'>
                         <span className='font-semibold'>Forma de Pago:</span>
                         <span className=''>{result.payment.method_name}</span>
@@ -501,7 +507,7 @@ function BookingDirections({ result }: {
             <div className='info-section gap-4 md:gap-0.5 flex flex-col md:flex-row items-center'>
                 <div className='w-full md:w-3/4 flex flex-col gap-1'>
                     <div className='card-info-detail'>
-                        <MapPin className='h-4 w-4' />
+                        <MapPin className='size-4' />
                         <div className="flex flex-row gap-1 items-center justify-start">
                             <span className='font-semibold'>Origen:</span>
                             <span className='line-clamp-1'>{result.directions.origin.address}</span>
@@ -517,22 +523,26 @@ function BookingDirections({ result }: {
                     <div className='card-info-detail'>
                         <Clock className='size-4' />
                         <div className="flex flex-row gap-1 items-center justify-start">
-                            <span className='font-semibold'>Tiempo Estimado:</span>
-                            <span>
-                                {result.directions.estimated_travel_minutes != null && result.directions.estimated_travel_minutes > 0
-                                    ? `${result.directions.estimated_travel_minutes} minutos (${(result.directions.estimated_travel_minutes / 60).toFixed(2)} horas)`
-                                    : 'N/D'}
-                            </span>
-                            <Button
-                                variant="default"
-                                className="px-6 py-0.5 bg-green-600 hover:bg-green-800"
-                                onClick={() => window.open(googleMapsUrl, '_blank')}
-                            >
-                                Ver ruta
-                            </Button>
-                            <MapIcon className='h-4 w-4 ml-2' />
+                            {result.directions.estimated_travel_minutes ? (
+                                <>
+                                    <span className='font-semibold'>Tiempo Estimado:</span>
+                                    <span>{result.directions.estimated_travel_minutes} minutos ({(result.directions.estimated_travel_minutes / 60).toFixed(2)} horas)</span>
+                                </>
+                            ) : (
+                                <>
+                                    <span className='font-semibold'>Tiempo Estimado:</span>
+                                    <span>N/D</span>
+                                </>
+                            )}
                         </div>
                     </div>
+                </div>
+                <div className="w-fit md:w-1/4 flex items-center justify-end text-sm">
+                    <Button variant="default" className="px-6 py-0.5 bg-green-600 hover:bg-green-800"
+                        onClick={() => window.open(googleMapsUrl, '_blank')}>
+                        Ver ruta
+                        <MapIcon className='size-4 ml-2' />
+                    </Button>
                 </div>
             </div>
         </div>
