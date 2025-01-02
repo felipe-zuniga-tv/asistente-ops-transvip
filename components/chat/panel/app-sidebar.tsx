@@ -20,6 +20,8 @@ import { Routes } from "@/utils/routes"
 import { usePathname } from "next/navigation"
 import { sidebarData, chatbotItem } from "@/lib/config/chat-sidebar"
 
+const showHints = false
+
 export function AppSidebar({ session, ...props }: { session: any & React.ComponentProps<typeof Sidebar> }) {
 	const [_, setMessages] = useUIState()
 	const { submitUserMessage } = useActions()
@@ -53,9 +55,9 @@ export function AppSidebar({ session, ...props }: { session: any & React.Compone
 			</SidebarHeader>
 			<SidebarContent>
 				{ isChatRoute ? (
-					<NavMain items={sidebarData.navMain} handleClick={handleClick} />
+					<NavMain items={sidebarData.navMain} handleClick={handleClick} showHints={showHints} />
 				) : (
-					<NavMain items={sidebarData.navMain.filter(item => item.title !== chatbotItem.title)} handleClick={handleClick} />
+					<NavMain items={sidebarData.navMain.filter(item => item.title !== chatbotItem.title)} handleClick={handleClick} showHints={showHints} />
 				)}
 			</SidebarContent>
 			<SidebarFooter>

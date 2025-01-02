@@ -22,7 +22,7 @@ import Link from "next/link"
 import { Tool } from "@/lib/chat/types"
 import { Input } from "../ui/input";
 
-export function NavMain({ items, handleClick }: {
+export function NavMain({ items, handleClick, showHints }: {
 	items: {
 		title: string
 		url?: string
@@ -32,6 +32,7 @@ export function NavMain({ items, handleClick }: {
 		items?: Tool[]
 	}[]
 	handleClick: any
+	showHints: boolean
 }) {
 	const [searchQuery, setSearchQuery] = useState("");
 
@@ -90,7 +91,7 @@ export function NavMain({ items, handleClick }: {
 															{subItem.icon && <subItem.icon className="size-4" />}
 															<div className="flex flex-col gap-0.5 items-start justify-start">
 																<span>{subItem.title}</span>
-																{ false && <span className="text-xs text-gray-400">{subItem.hint}</span> }
+																{ showHints && <span className="text-xs text-gray-400">{subItem.hint}</span> }
 															</div>
 														</div>
 													</div>
