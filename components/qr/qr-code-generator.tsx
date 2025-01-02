@@ -5,6 +5,8 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { Button } from '../ui/button';
 import { TransvipLogo } from '../transvip/transvip-logo';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Input } from '../ui/input';
 
 interface QRCodeGeneratorProps { }
 
@@ -26,34 +28,32 @@ export const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = () => {
         const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${qrData}`;
         setQrCodeUrl(qrUrl);
         setIsQrVisible(true);
-
-        // Hide QR code after 5 seconds
-        // setTimeout(() => {
-        //     setIsQrVisible(false);
-        // }, 5000);
-    };
+    }
 
     const handleStartOver = () => {
-        setBookingNumber('');
-        setErrorMessage('');
-        setQrCodeUrl(null);
-        setIsQrVisible(false);
-    };
+        setBookingNumber('')
+        setErrorMessage('')
+        setQrCodeUrl(null)
+        setIsQrVisible(false)
+    }
 
     return (
-        <div className='p-4'>
-            <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg flex flex-col gap-6 px-6 pb-4">
-                <div className="flex flex-col gap-2 md:gap-4 justify-center items-center px-6 md:px-8 pt-6 md:pt-8">
-                    <TransvipLogo size={20} colored={true} />
-                    <div id="welcome-title" className="text-lg md:text-2xl font-bold text-gray-800">Genera tu código QR</div>
-                </div>
-
-                <div className='flex flex-col sm:flex-row justify-center items-center gap-4'> 
+        <Card className="max-w-2xl mx-auto bg-white shadow-lg p-4">
+            <CardHeader className='mb-4'>
+                <CardTitle>
+                    <div className="flex flex-row items-center gap-4">
+                        <TransvipLogo colored={true} size={30} />
+                        <div id="welcome-title" className="text-lg md:text-2xl font-bold text-gray-800">Genera tu código QR</div>
+                    </div>
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div className='flex flex-col sm:flex-row justify-center items-center gap-4'>
                     <input type="text"
                         value={bookingNumber}
                         onChange={(e) => setBookingNumber(e.target.value)}
                         placeholder="Ingresa el número de reserva"
-                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                        className="w-full p-2 pl-4 text-base lg:text-lg border border-gray-300 rounded-md"
                     />
                     <Button variant={"default"} onClick={generateQRCode}
                         className="mx-auto px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition duration-300 w-[120px] sm:min-w-fit"
@@ -62,7 +62,13 @@ export const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = () => {
                     </Button>
                 </div>
 
-                <div className='flex justify-start mt-4'>
+                {isQrVisible && qrCodeUrl && (
+                    <div className="my-6 mx-auto">
+                        <Image height={400} width={400} src={qrCodeUrl} alt='Código QR Generado' className="mx-auto" />
+                    </div>
+                )}
+
+                <div className='flex justify-end mt-8'>
                     <Button variant="default" onClick={handleStartOver}
                         className="px-4 py-2 bg-gray-500 text-white text-xs rounded-md hover:bg-gray-600 transition duration-300 min-w-fit"
                     >
@@ -71,14 +77,11 @@ export const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = () => {
                     </Button>
                 </div>
 
-                { errorMessage && <div className='text-center text-red-500'>{ errorMessage }</div>}
+                {errorMessage && <div className='text-center text-red-500'>{errorMessage}</div>}
 
-                {isQrVisible && qrCodeUrl && (
-                    <div className="my-6 mx-auto">
-                        <Image height={400} width={400} src={qrCodeUrl} alt='Código QR Generado' className="mx-auto" />
-                    </div>
-                )}
-            </div>
-        </div>
+                
+            </CardContent>
+
+        </Card>
     );
 };
