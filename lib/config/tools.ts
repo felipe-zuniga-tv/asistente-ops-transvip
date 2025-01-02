@@ -30,7 +30,7 @@ export const toolsList: Tool[] = [
     {
         title: 'Detalle de un móvil',
         hint: 'Busca utilizando la patente',
-        search: 'Quiero saber más detalles sobre un móvil en particular',
+        search: 'Busca más detalles sobre un vehículo en particular (como marca, modelo, etc)',
         icon: CarIcon
     },
     {
