@@ -46,7 +46,7 @@ export function NavMain({ items, handleClick, showHints }: {
 
 	return (
 		<SidebarGroup>
-			<div className="relative bg-gray-100 rounded-lg flex items-center m-2">
+			<div className="relative bg-gray-100 rounded-lg flex items-center m-2 mt-0">
 				<Search className="text-gray-500 size-4 absolute left-2 top-1/2 transform -translate-y-1/2" />
 				<Input type="text"
 					placeholder="Filtra..."
