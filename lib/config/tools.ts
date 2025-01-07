@@ -57,10 +57,10 @@ export const toolsList: Tool[] = [
         search: 'Quiero armar un resumen de las evaluaciones de un conductor en particular',
         icon: UserSearch
     },
-    {
-        title: 'Gestión de Geocercas',
-        hint: 'Invierte las coordenadas',
-        search: 'Necesito invertir las coordenadas de un texto en GeoJSON',
-        icon: MapIcon
-    },
+    // {
+    //     title: 'Gestión de Geocercas',
+    //     hint: 'Invierte las coordenadas',
+    //     search: 'Necesito invertir las coordenadas de un texto en GeoJSON',
+    //     icon: MapIcon
+    // },
 ]

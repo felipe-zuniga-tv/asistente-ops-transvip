@@ -17,6 +17,7 @@ import {
 	BarChart4,
 	BookPlusIcon,
 	BusFront,
+	MapIcon,
 } from "lucide-react"
 import { toolsList } from "./tools";
 
@@ -40,6 +41,7 @@ export const chatbotItem : SidebarItem = {
 
 export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] } = {
 	navMain: [
+		chatbotItem,
 		{
 			title: "Secciones",
 			url: "#",
@@ -98,7 +100,20 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 				},
 			],
 		},
-		chatbotItem,
+		{
+			title: "Análisis de Datos",
+			url: "#",
+			icon: BarChart4,
+			isActive: true,
+			items: [
+				{
+					title: 'Geocercas',
+					icon: MapIcon,
+					url: Routes.DATA.HOME,
+					active: true
+				},
+			],
+		},
 		{
 			title: "Reportes",
 			url: "#",
