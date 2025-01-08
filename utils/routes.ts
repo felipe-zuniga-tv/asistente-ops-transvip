@@ -20,6 +20,7 @@ export const Routes = Object.freeze({
     },
     DATA: {
         HOME: '/data',
+        GEOFENCES: '/data/geofences',
     },
     ROUTE: {
         MAIN: '/ruteo'

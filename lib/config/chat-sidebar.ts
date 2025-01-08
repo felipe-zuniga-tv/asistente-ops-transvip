@@ -32,10 +32,10 @@ export interface SidebarItem {
 
 // Sidebar content
 export const chatbotItem : SidebarItem = {
-	title: "Herramientas Jarvip",
+	title: "Chatbot Operaciones",
 	url: "#",
 	icon: Drill,
-	isActive: true,
+	isActive: false,
 	items: toolsList,
 }
 
@@ -46,7 +46,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 			title: "Secciones",
 			url: "#",
 			icon: Hammer,
-			isActive: true,
+			isActive: false,
 			items: [
 				{
 					title: 'Chatbot Operaciones',
@@ -107,9 +107,9 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 			isActive: true,
 			items: [
 				{
-					title: 'Geocercas',
+					title: 'Geocercas - Coordenadas',
 					icon: MapIcon,
-					url: Routes.DATA.HOME,
+					url: Routes.DATA.GEOFENCES,
 					active: true
 				},
 			],
