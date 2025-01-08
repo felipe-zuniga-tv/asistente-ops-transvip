@@ -2,9 +2,7 @@ import { Tool } from "@/lib/chat/types";
 import { Routes } from "@/utils/routes";
 import {
 	BarChart3,
-	BookOpen,
 	BotIcon,
-	Drill,
 	GanttChart,
 	Hammer,
 	LucideIcon,
@@ -18,6 +16,10 @@ import {
 	BookPlusIcon,
 	BusFront,
 	MapIcon,
+	BotMessageSquare,
+	PieChart,
+	MapPin,
+	Pencil,
 } from "lucide-react"
 import { toolsList } from "./tools";
 
@@ -34,7 +36,7 @@ export interface SidebarItem {
 export const chatbotItem : SidebarItem = {
 	title: "Chatbot Operaciones",
 	url: "#",
-	icon: Drill,
+	icon: Bot,
 	isActive: false,
 	items: toolsList,
 }
@@ -43,17 +45,11 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 	navMain: [
 		chatbotItem,
 		{
-			title: "Secciones",
+			title: "Herramientas",
 			url: "#",
 			icon: Hammer,
 			isActive: false,
 			items: [
-				{
-					title: 'Chatbot Operaciones',
-					icon: Bot,
-					url: Routes.CHAT,
-					active: true
-				},
 				{
 					title: 'Genera tu código QR',
 					icon: QrCodeIcon,
@@ -67,12 +63,6 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 				// 	active: true
 				// },
 				{
-					title: 'Análisis de Datos',
-					icon: BarChart4,
-					url: Routes.DATA.HOME,
-					active: true
-				},
-				{
 					title: 'Tickets Aeropuerto',
 					icon: Ticket,
 					url: Routes.FINANCE.TICKETS,
@@ -80,9 +70,21 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 				},
 				{
 					title: 'Ruteo Reservas',
-					icon: Map,
+					icon: MapPin,
 					url: Routes.ROUTE.MAIN,
 					active: false
+				},
+				{
+					title: 'Coordenadas GeoJSON',
+					icon: Map,
+					url: Routes.DATA.GEOFENCES,
+					active: true
+				},
+				{
+					title: 'Escribe un texto',
+					icon: Pencil,
+					url: Routes.TEXT.WRITE,
+					active: true
 				},
 			],
 		},
@@ -100,52 +102,52 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 				},
 			],
 		},
-		{
-			title: "Análisis de Datos",
-			url: "#",
-			icon: BarChart4,
-			isActive: true,
-			items: [
-				{
-					title: 'Geocercas - Coordenadas',
-					icon: MapIcon,
-					url: Routes.DATA.GEOFENCES,
-					active: true
-				},
-			],
-		},
-		{
-			title: "Reportes",
-			url: "#",
-			icon: BarChart3,
-			items: [
-				{
-					title: "Cumplimiento",
-					url: "#",
-				},
-				{
-					title: "Cumplimiento 2024",
-					url: "#",
-				},
-			],
-		},
-		{
-			title: "Proyectos",
-			url: "#",
-			icon: GanttChart,
-			items: [
-				{
-					title: "Proyecto Zarpe",
-					url: "#",
-					icon: PlaneTakeoff,
-				},
-				{
-					title: "Autoasignación",
-					url: "#",
-					icon: BotIcon,
-				},
-			],
-		},
+		// {
+		// 	title: "Análisis de Datos",
+		// 	url: "#",
+		// 	icon: BarChart4,
+		// 	isActive: true,
+		// 	items: [
+		// 		{
+		// 			title: 'Coordenadas GeoJSON',
+		// 			icon: MapIcon,
+		// 			url: Routes.DATA.GEOFENCES,
+		// 			active: true
+		// 		},
+		// 	],
+		// },
+		// {
+		// 	title: "Reportes",
+		// 	url: "#",
+		// 	icon: PieChart,
+		// 	items: [
+		// 		{
+		// 			title: "Cumplimiento",
+		// 			url: "#",
+		// 		},
+		// 		{
+		// 			title: "Cumplimiento 2024",
+		// 			url: "#",
+		// 		},
+		// 	],
+		// },
+		// {
+		// 	title: "Proyectos",
+		// 	url: "#",
+		// 	icon: GanttChart,
+		// 	items: [
+		// 		{
+		// 			title: "Proyecto Zarpe",
+		// 			url: "#",
+		// 			icon: PlaneTakeoff,
+		// 		},
+		// 		{
+		// 			title: "Autoasignación",
+		// 			url: "#",
+		// 			icon: BotIcon,
+		// 		},
+		// 	],
+		// },
 	],
 	navSecondary: [
 		{

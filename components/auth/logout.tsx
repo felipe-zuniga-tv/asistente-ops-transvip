@@ -24,7 +24,8 @@ export default function LogoutButton({ className, ...props }: LogoutButtonProps)
     return (
         <form action={handleLogout} {...props}>
             <Button aria-label="Logout">
-                <LogOutIcon className="mr-2 h-4 w-4" /> Salir
+                <LogOutIcon className="m-0 lg:mr-2 h-4 w-4" />
+                <span className="hidden lg:block">Salir</span>
             </Button>
         </form>
     )

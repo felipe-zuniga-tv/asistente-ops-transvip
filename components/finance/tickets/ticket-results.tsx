@@ -1,4 +1,4 @@
-import { TicketResultType } from "@/app/(finance)/finanzas/tickets/page";
+import { TicketResultType } from "@/app/(protected-apps)/finanzas/tickets/page";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download, X } from "lucide-react";

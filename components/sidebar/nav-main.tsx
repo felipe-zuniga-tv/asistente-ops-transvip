@@ -51,7 +51,7 @@ export function NavMain({ items, handleClick, showHints }: {
 				<Input type="text"
 					placeholder="Filtra..."
 					value={searchQuery}
-					className="p-3 pl-8 border border-blue-200"
+					className="p-3 pl-8 border border-blue-200 group-data-[state=open]/collapsible"
 					onChange={(e: any) => setSearchQuery(e.target.value)}
 				/>
 			</div>
@@ -63,9 +63,10 @@ export function NavMain({ items, handleClick, showHints }: {
 						key={item.title}
 						asChild
 						defaultOpen={item.isActive}
-						className="group/collapsible"
+						className='group/collapsible'
 					>
 						<SidebarMenuItem>
+							{/* <CollapsibleTrigger asChild className={cn(item.title === chatbotItem.title ? 'bg-slate-500 text-white rounded-lg' : '')}> */}
 							<CollapsibleTrigger asChild>
 								<SidebarMenuButton tooltip={item.title}>
 									{item.icon && <item.icon />}

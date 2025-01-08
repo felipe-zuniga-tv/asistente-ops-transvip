@@ -1,4 +1,4 @@
-import { FileWithPreview } from "@/app/(finance)/finanzas/tickets/page";
+import { FileWithPreview } from "@/app/(protected-apps)/finanzas/tickets/page";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { X, PlusCircle, Upload } from "lucide-react";
