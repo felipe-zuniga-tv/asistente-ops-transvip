@@ -151,7 +151,7 @@ export default function TextWriter() {
                                     />
                                     <Label
                                         htmlFor={`fleet-${option.value}`}
-                                        className="text-sm font-medium cursor-pointer"
+                                        className="text-sm font-medium cursor-pointer w-full"
                                     >
                                         {option.label}
                                     </Label>
@@ -182,7 +182,7 @@ export default function TextWriter() {
                                     />
                                     <Label
                                         htmlFor={`fleet-${option.value}`}
-                                        className="text-sm font-medium cursor-pointer"
+                                        className="text-sm font-medium cursor-pointer w-full"
                                     >
                                         {option.label}
                                     </Label>
