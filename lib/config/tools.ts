@@ -3,12 +3,12 @@ import { Tool } from "../chat/types";
 
 // TOOLS
 export const toolsList: Tool[] = [
-    {
-        title: 'Escribir un texto',
-        hint: 'Email, whatsapp, etc.',
-        search: 'Necesito escribir un texto para los proveedores',
-        icon: PencilIcon
-    },
+    // {
+    //     title: 'Escribir un texto',
+    //     hint: 'Email, whatsapp, etc.',
+    //     search: 'Necesito escribir un texto para los proveedores',
+    //     icon: PencilIcon
+    // },
     {
         title: 'Zona Iluminada Santiago',
         hint: 'Status por tipo de vehículo',
@@ -22,7 +22,7 @@ export const toolsList: Tool[] = [
         icon: PlaneTakeoffIcon,
     },
     {
-        title: 'Conexión de un móvil',
+        title: 'Ver si un móvil está conectado',
         hint: 'Utiliza el número de móvil para la búsqueda',
         search: 'Me gustaría saber si un vehículo específico se encuentra conectado',
         icon: CarTaxiFrontIcon

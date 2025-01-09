@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
+import { createText } from "@/lib/general/actions"
 
 export interface Option {
     value: string;
@@ -33,6 +34,7 @@ interface FormData {
     vehicleTypes: string[]
     referenceText: string
     writingStyle: string
+    generatedText: string
 }
 
 const INITIAL_FORM_DATA: FormData = {
@@ -41,6 +43,7 @@ const INITIAL_FORM_DATA: FormData = {
     vehicleTypes: [],
     referenceText: '',
     writingStyle: '',
+    generatedText: '',
 }
 
 const WRITING_STYLES = [
@@ -70,7 +73,14 @@ export default function TextWriter() {
     const handleSubmit = async () => {
         setIsLoading(true)
         try {
-            // Server action call will go here
+            const result = await createText({ 
+                subject: formData.title 
+            })
+            
+            setFormData(prev => ({
+                ...prev,
+                generatedText: result.text
+            }))
         } catch (error) {
             console.error(error)
         } finally {
@@ -202,7 +212,21 @@ export default function TextWriter() {
                     />
                 </div>
 
-                <Button className="w-full mt-4" onClick={handleSubmit} disabled={isLoading}
+                {formData.generatedText && (
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium">Texto Generado</label>
+                        <Textarea
+                            value={formData.generatedText}
+                            readOnly
+                            className="resize-none h-48 bg-slate-50"
+                        />
+                    </div>
+                )}
+
+                <Button 
+                    className="w-1/2 mx-auto" 
+                    onClick={handleSubmit} 
+                    disabled={isLoading || !formData.title}
                 >
                     {isLoading ? 'Generando texto...' : 'Generar texto'}
                 </Button>
