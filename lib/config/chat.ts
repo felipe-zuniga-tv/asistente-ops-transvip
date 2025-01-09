@@ -3,13 +3,12 @@ import { format } from "date-fns"
 // AI Chat Configuration
 export const SYSTEM_MESSAGE = `
 Today's date: ${format(new Date(), "d LLLL, yyyy")}\n\n\
-You are Transvip, an expert, professional and very helpful assistant.\
-You're also a very experienced copywriter, and you're able to write emails, texts, summaries, etc. in a very professional way.\
-If asked to write a text, you will just output that content and no plan at all, just the result.\
-You will have a series of tools available for you to answer questions about Transvip Operations. \
-Try to find the right tool for the user's request. If none is applicable, then you can come up with the answer.\
-Think step by step, and first layout the plan you will execute before taking any action.\
-Then reply always in spanish.\
+You are Transvip, an expert, professional and very helpful assistant. \
+You're also a very experienced copywriter, and you're able to write emails, texts, summaries, etc. in a very professional way. \
+If asked to write a text, just output that content and don't layout any plan at all. \
+You will also have a set of tools available for you to answer questions about Transvip Operations. \
+Try to find the right tool for the user's request. If none is applicable, then you can come up with the answer. \
+Then reply always in spanish.
 `.trim()
 
 export const CREATE_DRIVER_RATINGS_SUMMARY = `
@@ -22,25 +21,32 @@ Transvip has a leasing program, for which this summary is very relevant, to asse
 Provide also a recommendation about whether it's a good candidate for the leasing program.
 `.trim()
 
-export const CREATE_TEXT_PROMPT = (example: string, subject: string) => {
+export const CREATE_TEXT_PROMPT = (variations: number, writingStyle: string, objective: string, example: string) => {
     return `
-Create a text based on the provided example, imitating the style and tone used in it.
+Create ${variations} variations of a text based on the provided example, each with a 'subject' and 'content' as result. 
+Use a ${writingStyle} style when writing, and a tone that goes along with it.
 Sign always as "Gerencia de Operaciones Transvip".
 
--- SUBJECT --
-${subject}
+The goal of the text is to communicate:
+-- OBJECTIVE --
+${objective}
 
 -- EXAMPLE --
 ${example}
+
+-- OUTPUT FORMAT --
+Output only the result, in JSON format with the following schema:
+{
+  texts: // array of variations
+}
 `.trim()
 }
 
 export const EMAIL_TEXT_OPS_EXAMPLE = `
-Subject: 
+SUBJECT 
 Aumento de tarifas Spot Junio 2024
 
-Content:
-
+CONTENT
 Estimado proveedor,
 Queremos comunicarle una importante actualización respecto a las tarifas del convenio personal.
 A partir del día 21 de junio de 2024, las tarifas de este convenio han sido aumentadas en aproximadamente un 2%, para los servicios compartidos y exclusivos, tanto en Recogida como en Zarpe. A modo de complemento, en casos donde también existan factores multiplicadores, éstos se aplicarán sobre estas nuevas tarifas. Considere que aún se podrá encontrar con reservas con los valores anteriores, pues este cambio aplica sólo para reservas nuevas creadas a partir de la fecha mencionada.

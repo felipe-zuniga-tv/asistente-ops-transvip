@@ -20,6 +20,7 @@ import { Routes } from "@/utils/routes"
 import { usePathname } from "next/navigation"
 import { sidebarData, chatbotItem } from "@/lib/config/chat-sidebar"
 
+// Hints for chatbot functionalities
 const showHints = false
 
 export function AppSidebar({ session, ...props }: { session: any & React.ComponentProps<typeof Sidebar> }) {

@@ -6,13 +6,29 @@ import { CREATE_TEXT_PROMPT, EMAIL_TEXT_OPS_EXAMPLE, SYSTEM_MESSAGE } from "../c
 
 const modelInstance = google('gemini-2.0-flash-exp')
 
-export async function createText({ subject }: {
-    subject: string
+export async function createText({ objective, fleetTypes, vehicleTypes, referenceText, writingStyle, variations }: {
+    objective: string
+    fleetTypes?: string[]
+    vehicleTypes?: string[]
+    referenceText: string
+    writingStyle: string
+    variations?: number
 }) {
+    let systemMessage = [
+        SYSTEM_MESSAGE,
+        "\n",
+        CREATE_TEXT_PROMPT(
+            variations || 1,
+            writingStyle,
+            objective,
+            referenceText || EMAIL_TEXT_OPS_EXAMPLE, 
+        )
+    ].join("\n")
+
     // Create text response
     const { text, finishReason, usage } = await generateText({
         model: modelInstance,
-        system: SYSTEM_MESSAGE + "\n\n" + CREATE_TEXT_PROMPT(EMAIL_TEXT_OPS_EXAMPLE, subject),
+        system: systemMessage,
         messages: [{
             role: 'assistant',
             content: `Redactando un texto para el usuario...`

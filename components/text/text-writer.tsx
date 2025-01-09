@@ -17,6 +17,12 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { createText } from "@/lib/general/actions"
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import { ChevronDownIcon } from "@radix-ui/react-icons"
 
 export interface Option {
     value: string;
@@ -26,24 +32,31 @@ export interface Option {
     fixed?: boolean;
     /** Group the options by providing key. */
     [key: string]: string | boolean | undefined;
-  }
+}
+
+interface GenTexts {
+    subject: string
+    content: string
+}
 
 interface FormData {
-    title: string
+    objective: string
     fleetTypes: string[]
     vehicleTypes: string[]
     referenceText: string
     writingStyle: string
-    generatedText: string
+    variations: string
+    generatedTexts: GenTexts[]
 }
 
 const INITIAL_FORM_DATA: FormData = {
-    title: '',
+    objective: '',
     fleetTypes: [],
     vehicleTypes: [],
     referenceText: '',
     writingStyle: '',
-    generatedText: '',
+    variations: '1',
+    generatedTexts: [],
 }
 
 const WRITING_STYLES = [
@@ -62,6 +75,12 @@ const VEHICLE_TYPE_OPTIONS: Option[] = [
     { label: 'Minibus', value: 'Minibus' },
 ]
 
+const VARIATIONS_OPTIONS = [
+    { id: 1, label: '1 variación' },
+    { id: 3, label: '3 variaciones' },
+    { id: 5, label: '5 variaciones' },
+]
+
 export default function TextWriter() {
     const [formData, setFormData] = useState<FormData>(INITIAL_FORM_DATA)
     const [isLoading, setIsLoading] = useState(false)
@@ -73,13 +92,22 @@ export default function TextWriter() {
     const handleSubmit = async () => {
         setIsLoading(true)
         try {
-            const result = await createText({ 
-                subject: formData.title 
+            const results = await createText({
+                objective: formData.objective,
+                fleetTypes: formData.fleetTypes,
+                vehicleTypes: formData.vehicleTypes,
+                referenceText: formData.referenceText,
+                writingStyle: formData.writingStyle,
+                variations: parseInt(formData.variations)
             })
-            
+
+            // console.log(results)
+            const generatedTexts = JSON.parse(results.text.replace('```json', '').replace('```', ''))
+            console.log(generatedTexts)
+
             setFormData(prev => ({
                 ...prev,
-                generatedText: result.text
+                generatedTexts: generatedTexts.texts
             }))
         } catch (error) {
             console.error(error)
@@ -109,37 +137,19 @@ export default function TextWriter() {
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
                 <div className="flex flex-col lg:flex-row gap-4 justify-between items-center">
-                    <div className="space-y-2 w-full lg:w-2/3">
-                        <label className="text-sm font-medium">Título</label>
-                        <Input
-                            value={formData.title}
-                            className="w-full"
-                            onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                            placeholder="Ingrese el título del texto"
+                    <div className="space-y-2 w-full">
+                        <label className="text-sm font-medium">Objetivo</label>
+                        <Textarea
+                            value={formData.objective}
+                            className="resize-none h-24 placeholder:text-sm"
+                            onChange={(e) => setFormData(prev => ({ ...prev, objective: e.target.value }))}
+                            placeholder="¿Cuál es el objetivo de lo que quiere comunicar?"
                         />
-                    </div>
-                    <div className="space-y-2 w-full lg:w-1/3">
-                        <label className="text-sm font-medium">Estilo de Escritura</label>
-                        <Select
-                            value={formData.writingStyle}
-                            onValueChange={(value) => setFormData(prev => ({ ...prev, writingStyle: value }))}
-                        >
-                            <SelectTrigger className="text-slate-500">
-                                <SelectValue placeholder="Seleccione un estilo" />
-                            </SelectTrigger>
-                            <SelectContent className="text-slate-700">
-                                {WRITING_STYLES.map((style) => (
-                                    <SelectItem key={style.id} value={style.id}>
-                                        {style.label}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-center">
-                    <div className="space-y-2 w-full">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+                    <div className="space-y-2">
                         <Label className="text-sm font-medium">Tipo de Flota</Label>
                         <div className="flex flex-row gap-2 items-center">
                             {FLEET_OPTIONS.map((option) => (
@@ -169,7 +179,7 @@ export default function TextWriter() {
                             ))}
                         </div>
                     </div>
-                    
+
                     <div className="space-y-2">
                         <Label className="text-sm font-medium">Tipo de Vehículo</Label>
                         <div className="flex flex-row gap-2 items-center">
@@ -180,13 +190,13 @@ export default function TextWriter() {
                                 >
                                     <Checkbox
                                         id={`fleet-${option.value}`}
-                                        checked={formData.fleetTypes.includes(option.value)}
+                                        checked={formData.vehicleTypes.includes(option.value)}
                                         onCheckedChange={(checked) => {
                                             setFormData(prev => ({
                                                 ...prev,
-                                                fleetTypes: checked
-                                                    ? [...prev.fleetTypes, option.value]
-                                                    : prev.fleetTypes.filter(v => v !== option.value)
+                                                vehicleTypes: checked
+                                                    ? [...prev.vehicleTypes, option.value]
+                                                    : prev.vehicleTypes.filter(v => v !== option.value)
                                             }))
                                         }}
                                     />
@@ -200,6 +210,44 @@ export default function TextWriter() {
                             ))}
                         </div>
                     </div>
+
+                    <div className="space-y-2">
+                        <Label className="text-sm font-medium">Estilo de Escritura</Label>
+                        <Select
+                            value={formData.writingStyle}
+                            onValueChange={(value) => setFormData(prev => ({ ...prev, writingStyle: value }))}
+                        >
+                            <SelectTrigger className="text-slate-500">
+                                <SelectValue placeholder="Seleccione un estilo" />
+                            </SelectTrigger>
+                            <SelectContent className="text-slate-700">
+                                {WRITING_STYLES.map((style) => (
+                                    <SelectItem key={style.id} value={style.id}>
+                                        {style.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label className="text-sm font-medium">Número de Variaciones</Label>
+                        <Select
+                            value={formData.variations}
+                            onValueChange={(value) => setFormData(prev => ({ ...prev, variations: value }))}
+                        >
+                            <SelectTrigger className="text-slate-500">
+                                <SelectValue placeholder="Seleccione cantidad" />
+                            </SelectTrigger>
+                            <SelectContent className="text-slate-700">
+                                {VARIATIONS_OPTIONS.map((option) => (
+                                    <SelectItem key={option.id} value={option.id.toString()}>
+                                        {option.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
                 </div>
 
                 <div className="space-y-2">
@@ -207,26 +255,41 @@ export default function TextWriter() {
                     <Textarea
                         value={formData.referenceText}
                         onChange={(e) => setFormData(prev => ({ ...prev, referenceText: e.target.value }))}
-                        placeholder="Ingrese el texto de referencia"
+                        placeholder="Ingrese el texto de referencia, se usará como base"
                         className="resize-none h-32 placeholder:text-sm"
                     />
                 </div>
 
-                {formData.generatedText && (
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium">Texto Generado</label>
-                        <Textarea
-                            value={formData.generatedText}
-                            readOnly
-                            className="resize-none h-48 bg-slate-50"
-                        />
+                {formData.generatedTexts.length > 0 && (
+                    <div className="space-y-4">
+                        <label className="text-sm font-medium">Textos Generados</label>
+                        <div className="space-y-2">
+                            {formData.generatedTexts.map((text, index) => (
+                                <Collapsible key={index} className="border rounded-md">
+                                    <CollapsibleTrigger className="flex w-full items-center justify-between p-4 hover:bg-slate-50">
+                                        <span className="text-sm font-medium">Variación {index + 1}</span>
+                                        <ChevronDownIcon className="h-4 w-4" />
+                                    </CollapsibleTrigger>
+                                    <CollapsibleContent className="p-4 pt-2">
+                                        <div className="flex flex-col w-full gap-4 items-center">
+                                            <Input readOnly value={text.subject} />
+                                            <Textarea
+                                                value={text.content}
+                                                readOnly
+                                                className="resize-none h-48 bg-slate-50"
+                                            />
+                                        </div>
+                                    </CollapsibleContent>
+                                </Collapsible>
+                            ))}
+                        </div>
                     </div>
                 )}
 
-                <Button 
-                    className="w-1/2 mx-auto" 
-                    onClick={handleSubmit} 
-                    disabled={isLoading || !formData.title}
+                <Button
+                    className="w-1/2 mx-auto"
+                    onClick={handleSubmit}
+                    disabled={isLoading || !formData.objective}
                 >
                     {isLoading ? 'Generando texto...' : 'Generar texto'}
                 </Button>

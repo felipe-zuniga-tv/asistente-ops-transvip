@@ -51,6 +51,12 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 			isActive: false,
 			items: [
 				{
+					title: 'Chatbot Operaciones',
+					icon: Bot,
+					url: Routes.CHAT,
+					active: true
+				},
+				{
 					title: 'Genera tu código QR',
 					icon: QrCodeIcon,
 					url: Routes.QR_GEN,
@@ -63,18 +69,6 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 				// 	active: true
 				// },
 				{
-					title: 'Tickets Aeropuerto',
-					icon: Ticket,
-					url: Routes.FINANCE.TICKETS,
-					active: false
-				},
-				{
-					title: 'Ruteo Reservas',
-					icon: MapPin,
-					url: Routes.ROUTE.MAIN,
-					active: false
-				},
-				{
 					title: 'Coordenadas GeoJSON',
 					icon: Map,
 					url: Routes.DATA.GEOFENCES,
@@ -85,6 +79,18 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 					icon: Pencil,
 					url: Routes.TEXT.WRITE,
 					active: true
+				},
+				{
+					title: 'Tickets Aeropuerto',
+					icon: Ticket,
+					url: Routes.FINANCE.TICKETS,
+					active: false
+				},
+				{
+					title: 'Ruteo Reservas',
+					icon: MapPin,
+					url: Routes.ROUTE.MAIN,
+					active: false
 				},
 			],
 		},
@@ -102,20 +108,6 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 				},
 			],
 		},
-		// {
-		// 	title: "Análisis de Datos",
-		// 	url: "#",
-		// 	icon: BarChart4,
-		// 	isActive: true,
-		// 	items: [
-		// 		{
-		// 			title: 'Coordenadas GeoJSON',
-		// 			icon: MapIcon,
-		// 			url: Routes.DATA.GEOFENCES,
-		// 			active: true
-		// 		},
-		// 	],
-		// },
 		// {
 		// 	title: "Reportes",
 		// 	url: "#",
