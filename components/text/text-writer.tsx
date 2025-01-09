@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -23,6 +23,8 @@ import {
     CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 import { ChevronDownIcon } from "@radix-ui/react-icons"
+import { ResetButton } from "../ui/buttons"
+import { CopyWrapper } from "../ui/copy-wrapper"
 
 export interface Option {
     value: string;
@@ -101,7 +103,6 @@ export default function TextWriter() {
                 variations: parseInt(formData.variations)
             })
 
-            // console.log(results)
             const generatedTexts = JSON.parse(results.text.replace('```json', '').replace('```', ''))
             console.log(generatedTexts)
 
@@ -123,15 +124,7 @@ export default function TextWriter() {
                     <div className="flex flex-row items-center gap-2">
                         <TransvipLogo size={20} />
                         <span>Escribe un texto</span>
-                        <Button
-                            variant="default"
-                            size="sm"
-                            onClick={handleReset}
-                            className="ml-auto"
-                        >
-                            <RotateCw className="w-4 h-4 mr-1" />
-                            Reiniciar
-                        </Button>
+                        <ResetButton handleReset={handleReset} />
                     </div>
                 </CardTitle>
             </CardHeader>
@@ -273,11 +266,13 @@ export default function TextWriter() {
                                     <CollapsibleContent className="p-4 pt-2">
                                         <div className="flex flex-col w-full gap-4 items-center">
                                             <Input readOnly value={text.subject} />
-                                            <Textarea
-                                                value={text.content}
-                                                readOnly
-                                                className="resize-none h-48 bg-slate-50"
-                                            />
+                                            <CopyWrapper content={text.subject + "\n\n" + text.content}>
+                                                <Textarea
+                                                    value={text.content}
+                                                    readOnly
+                                                    className="resize-none h-48 bg-slate-50"
+                                                />
+                                            </CopyWrapper>
                                         </div>
                                     </CollapsibleContent>
                                 </Collapsible>
@@ -285,15 +280,16 @@ export default function TextWriter() {
                         </div>
                     </div>
                 )}
-
+            </CardContent>
+            <CardFooter className="flex justify-center items-center w-full">
                 <Button
-                    className="w-1/2 mx-auto"
+                    className="w-fit px-24"
                     onClick={handleSubmit}
                     disabled={isLoading || !formData.objective}
                 >
                     {isLoading ? 'Generando texto...' : 'Generar texto'}
                 </Button>
-            </CardContent>
+            </CardFooter>
         </Card>
     )
 }

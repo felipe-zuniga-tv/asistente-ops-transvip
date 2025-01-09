@@ -6,19 +6,14 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { invertCoordinatesGeoJson } from "@/lib/general/functions"
 import { TransvipLogo } from "@/components/transvip/transvip-logo"
-import { CheckIcon, ClipboardIcon, RotateCw } from "lucide-react"
-import useClipboard from "@/hooks/use-copy-to-clipboard"
-import {
-    Tooltip,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip"
+import { RotateCw } from "lucide-react"
+import { CopyWrapper } from "@/components/ui/copy-wrapper"
+import { ResetButton } from "@/components/ui/buttons"
 
 export default function CoordinatesInversion() {
     const [inputValue, setInputValue] = useState<string>("")
     const [outputValue, setOutputValue] = useState<string>("")
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const { copyToClipboard, isCopied, error } = useClipboard();
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     function handleProcessInput() {
@@ -40,9 +35,6 @@ export default function CoordinatesInversion() {
         setOutputValue("");
         setIsLoading(false);
     }
-    function handleCopy() {
-        copyToClipboard(outputValue);
-    }
 
     return (
         <Card className="max-w-4xl mx-auto mt-4">
@@ -51,10 +43,7 @@ export default function CoordinatesInversion() {
                     <div className="flex flex-row items-center gap-2">
                         <TransvipLogo size={20} />
                         <span>Invertir coordenadas GeoJSON</span>
-                        <Button variant={"default"} size={"sm"} onClick={handleReset} className="ml-auto">
-                            <RotateCw className="w-4 h-4" />
-                            Comenzar de nuevo
-                        </Button>
+                        <ResetButton handleReset={handleReset} />
                     </div>
                 </CardTitle>
             </CardHeader>
@@ -74,23 +63,15 @@ export default function CoordinatesInversion() {
                 >
                     {isLoading ? 'Procesando...' : 'Procesar coordenadas'}
                 </Button>
-                <div className="relative w-full">
+
+                <CopyWrapper content={outputValue} className="w-full">
                     <Textarea
                         value={outputValue}
                         readOnly
                         placeholder="Resultados"
                         className="w-full h-[160px] p-2 pr-12 border rounded font-mono text-sm"
                     />
-                    <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Button variant={"default"} size={"icon"} onClick={handleCopy} className="absolute top-3 right-3 bg-slate-600 hover:bg-slate-500 w-8 h-8">
-                                    {isCopied ? <CheckIcon className="w-3 h-3" /> : <ClipboardIcon className="w-3 h-3" /> }
-                                </Button>
-                            </TooltipTrigger>
-                        </Tooltip>
-                    </TooltipProvider>
-                </div>
+                </CopyWrapper>
             </CardContent>
         </Card>
     )

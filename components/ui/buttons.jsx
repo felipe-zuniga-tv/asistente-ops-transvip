@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { Routes } from '@/utils/routes'
 import { Spinner } from './loading'
+import { Button } from './button'
+import { RotateCw } from 'lucide-react'
 
 export function AuthButton({ text }) {
     return (
@@ -16,5 +18,14 @@ export function LoadingButton({ text = "", small = false }) {
             <span className={`${text === '' ? 'sr-only' : ''}`}>{text}</span>
             <Spinner size={small ? "SMALL" : "MEDIUM"} />
         </button>
+    )
+}
+
+export function ResetButton({ handleReset }) {
+    return (
+        <Button variant={"default"} size={"sm"} onClick={handleReset} className="ml-auto">
+            <RotateCw className="w-4 h-4" />
+            Reiniciar
+        </Button>
     )
 }
