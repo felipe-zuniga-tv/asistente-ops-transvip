@@ -573,7 +573,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 payment: {
                     status: payment_status,
                     estimated_payment: estimated_payment_cost,
-                    actual_payment: payment_amount,
+                    actual_payment: payment_amount > 0 ? payment_amount : null,
                     method_name: payment_method_name,
                     fare_route_name: route_details.route_name,
                     fare_route_type: route_details.route_type
