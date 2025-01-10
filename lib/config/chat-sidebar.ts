@@ -48,7 +48,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 			title: "Herramientas",
 			url: "#",
 			icon: Hammer,
-			isActive: false,
+			isActive: true,
 			items: [
 				{
 					title: 'Chatbot Operaciones',

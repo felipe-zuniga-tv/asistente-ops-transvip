@@ -113,7 +113,7 @@ export function BookingCard({ result, handleClick, simplified = false }: {
             <BookingBadges result={result} handleClick={handleClick} />
             <BookingMainDetails result={result} handleClick={handleClick} />
             <BookingCustomer result={result} />
-            <BookingDates result={result} simplified={simplified} />
+            <BookingDates result={result} simplified={simplified} /> 
             <BookingPayment result={result} />
             <BookingDirections result={result} />
             <BookingVehicle result={result} handleClick={handleClick} />

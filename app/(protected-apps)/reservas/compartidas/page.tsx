@@ -14,6 +14,8 @@ import { IBookingInfoOutput } from "@/lib/chat/types";
 import { BookingCard, SharedServiceSummary } from "@/components/chat/search/booking-search";
 import { Switch } from "@/components/ui/switch";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
+import { TransvipLogo } from "@/components/transvip/transvip-logo";
+import { ResetButton } from "@/components/ui/buttons";
 
 export default function SharedBookingsPage() {
     const [bookingId, setBookingId] = useState<string>("");
@@ -57,11 +59,10 @@ export default function SharedBookingsPage() {
                 <CardHeader>
                     <CardTitle className="flex flex-col md:flex-row gap-2 justify-between items-center">
                         <div className="flex flex-row items-center gap-2">
+                            <TransvipLogo size={20} />
                             <span className="text-lg font-bold">Reservas Compartidas</span>
                         </div>
-                        <Button variant="default" onClick={handleReset} className="text-sm">
-                            Comenzar de nuevo
-                        </Button>
+                        <ResetButton handleReset={handleReset} />
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
