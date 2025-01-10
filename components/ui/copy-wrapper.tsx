@@ -34,7 +34,7 @@ export function CopyWrapper({ children, content, className = "" }: CopyWrapperPr
                             variant="default" 
                             size="icon" 
                             onClick={handleCopy} 
-                            className="absolute top-3 right-3 bg-gray-50 hover:bg-gray-200 text-black"
+                            className="absolute border top-3 right-3 bg-white hover:bg-gray-100 text-black"
                         >
                             {isCopied ? <CheckIcon className="w-3 h-3" /> : <ClipboardIcon className="w-3 h-3" />}
                         </Button>
