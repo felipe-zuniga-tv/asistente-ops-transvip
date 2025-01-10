@@ -27,14 +27,14 @@ export function CopyWrapper({ children, content, className = "" }: CopyWrapperPr
     return (
         <div className={`relative ${className}`}>
             {children}
-            <TooltipProvider>
+            <TooltipProvider delayDuration={0}>
                 <Tooltip>
                     <TooltipTrigger asChild>
                         <Button 
                             variant="default" 
                             size="icon" 
                             onClick={handleCopy} 
-                            className="absolute top-3 right-3 bg-slate-600 hover:bg-slate-500 w-8 h-8"
+                            className="absolute top-3 right-3 bg-gray-50 hover:bg-gray-200 text-black"
                         >
                             {isCopied ? <CheckIcon className="w-3 h-3" /> : <ClipboardIcon className="w-3 h-3" />}
                         </Button>
