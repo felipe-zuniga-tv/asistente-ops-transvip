@@ -7,7 +7,7 @@ import {
     TooltipTrigger,
     TooltipContent,
 } from "@/components/ui/tooltip"
-import { CheckIcon, Copy } from "lucide-react"
+import { Check, Copy } from "lucide-react"
 import useClipboard from "@/hooks/use-copy-to-clipboard"
 import { ReactNode } from "react"
 
@@ -36,7 +36,7 @@ export function CopyWrapper({ children, content, className = "" }: CopyWrapperPr
                             onClick={handleCopy} 
                             className="absolute border top-3 right-3 bg-white hover:bg-gray-100 text-slate-900"
                         >
-                            {isCopied ? <CheckIcon className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                            {isCopied ? <Check className="text-emerald-500 w-3 h-3" /> : <Copy className="w-3 h-3" />}
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent>
