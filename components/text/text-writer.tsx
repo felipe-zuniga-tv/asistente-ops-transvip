@@ -131,10 +131,10 @@ export default function TextWriter() {
             <CardContent className="flex flex-col gap-4">
                 <div className="flex flex-col lg:flex-row gap-4 justify-between items-center">
                     <div className="space-y-2 w-full">
-                        <label className="text-sm font-medium">Objetivo</label>
+                        <label className="text-sm font-medium">Objetivo del texto</label>
                         <Textarea
                             value={formData.objective}
-                            className="resize-none h-24 placeholder:text-sm"
+                            className="resize-none h-24 placeholder:text-sm text-sm"
                             onChange={(e) => setFormData(prev => ({ ...prev, objective: e.target.value }))}
                             placeholder="¿Cuál es el objetivo de lo que quiere comunicar?"
                         />
@@ -206,10 +206,8 @@ export default function TextWriter() {
 
                     <div className="space-y-2">
                         <Label className="text-sm font-medium">Estilo de Escritura</Label>
-                        <Select
-                            value={formData.writingStyle}
-                            onValueChange={(value) => setFormData(prev => ({ ...prev, writingStyle: value }))}
-                        >
+                        <Select value={formData.writingStyle}
+                            onValueChange={(value) => setFormData(prev => ({ ...prev, writingStyle: value }))}>
                             <SelectTrigger className="text-slate-500">
                                 <SelectValue placeholder="Seleccione un estilo" />
                             </SelectTrigger>
@@ -225,10 +223,8 @@ export default function TextWriter() {
 
                     <div className="space-y-2">
                         <Label className="text-sm font-medium">Número de Variaciones</Label>
-                        <Select
-                            value={formData.variations}
-                            onValueChange={(value) => setFormData(prev => ({ ...prev, variations: value }))}
-                        >
+                        <Select value={formData.variations}
+                            onValueChange={(value) => setFormData(prev => ({ ...prev, variations: value }))}>
                             <SelectTrigger className="text-slate-500">
                                 <SelectValue placeholder="Seleccione cantidad" />
                             </SelectTrigger>
@@ -249,13 +245,23 @@ export default function TextWriter() {
                         value={formData.referenceText}
                         onChange={(e) => setFormData(prev => ({ ...prev, referenceText: e.target.value }))}
                         placeholder="Ingrese el texto de referencia, se usará como base"
-                        className="resize-none h-32 placeholder:text-sm"
+                        className="resize-none h-32 placeholder:text-sm text-sm"
                     />
+                </div>
+
+                <div className="flex items-center justify-center">
+                    <Button
+                        className="w-fit px-24"
+                        onClick={handleSubmit}
+                        disabled={isLoading || !formData.objective}
+                    >
+                        {isLoading ? 'Generando texto...' : 'Generar texto'}
+                    </Button>
                 </div>
 
                 {formData.generatedTexts.length > 0 && (
                     <div className="space-y-4">
-                        <label className="text-sm font-medium">Textos Generados</label>
+                        <label className="text-sm font-medium text-slate-700">Textos Generados</label>
                         <div className="space-y-2">
                             {formData.generatedTexts.map((text, index) => (
                                 <Collapsible key={index} className="border rounded-md">
@@ -266,7 +272,7 @@ export default function TextWriter() {
                                     <CollapsibleContent className="p-4 pt-2">
                                         <div className="flex flex-col w-full gap-4 items-center">
                                             <Input readOnly value={text.subject} />
-                                            <CopyWrapper content={text.subject + "\n\n" + text.content}>
+                                            <CopyWrapper content={text.subject + "\n\n" + text.content} className="w-full">
                                                 <Textarea
                                                     value={text.content}
                                                     readOnly
@@ -281,15 +287,6 @@ export default function TextWriter() {
                     </div>
                 )}
             </CardContent>
-            <CardFooter className="flex justify-center items-center w-full">
-                <Button
-                    className="w-fit px-24"
-                    onClick={handleSubmit}
-                    disabled={isLoading || !formData.objective}
-                >
-                    {isLoading ? 'Generando texto...' : 'Generar texto'}
-                </Button>
-            </CardFooter>
         </Card>
     )
 }

@@ -52,7 +52,7 @@ export default function CoordinatesInversion() {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder="Código de entrada"
-                    className="w-full h-[160px] p-2 border rounded font-mono text-sm"
+                    className="w-full h-[160px] p-2 border font-mono text-sm resize-none"
                 />
                 {errorMessage && (
                     <p className="text-center text-sm text-red-500 w-full">Error: {errorMessage}</p>
@@ -64,14 +64,16 @@ export default function CoordinatesInversion() {
                     {isLoading ? 'Procesando...' : 'Procesar coordenadas'}
                 </Button>
 
-                <CopyWrapper content={outputValue} className="w-full">
-                    <Textarea
-                        value={outputValue}
-                        readOnly
-                        placeholder="Resultados"
-                        className="w-full h-[160px] p-2 pr-12 border rounded font-mono text-sm"
-                    />
-                </CopyWrapper>
+                {outputValue && (
+                    <CopyWrapper content={outputValue} className="w-full">
+                        <Textarea
+                            value={outputValue}
+                            readOnly
+                            placeholder="Resultados"
+                            className="w-full h-[160px] p-2 pr-12 border font-mono text-sm resize-none"
+                        />
+                    </CopyWrapper>
+                )}
             </CardContent>
         </Card>
     )
