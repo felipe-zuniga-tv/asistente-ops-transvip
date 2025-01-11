@@ -20,6 +20,7 @@ import {
 	PieChart,
 	MapPin,
 	Pencil,
+	Car,
 } from "lucide-react"
 import { toolsList } from "./tools";
 
@@ -105,6 +106,20 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 					icon: BusFront,
 					url: Routes.BOOKINGS.SHARED,
 					active: true
+				},
+			],
+		},
+		{
+			title: "Vehículos",
+			url: "#",
+			icon: BusFront,
+			isActive: true,
+			items: [
+				{
+					title: 'Detalle de Móviles',
+					icon: Car,
+					url: Routes.VEHICLES.HOME,
+					active: false
 				},
 			],
 		},

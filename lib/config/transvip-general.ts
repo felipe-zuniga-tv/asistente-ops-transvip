@@ -41,6 +41,10 @@ export const paymentMethods = [
   { key: 'FACTURA', name: 'Efectivo Pesos', id: 3, icon: ReceiptText },
 ]
 
-export const vehicleTypes = {
-  MINIBUS: 2
-}
+export const vehicleTypes = [
+  { id: 1, name: 'Sedan' },
+  { id: 2, name: 'Minibus' },
+  { id: 6, name: 'Minibus*' },
+  { id: 19, name: 'Sedan P' },
+  { id: 21, name: 'Taxi Básico' },
+]

@@ -15,6 +15,9 @@ export const Routes = Object.freeze({
     BOOKINGS: {
         SHARED: '/reservas/compartidas',
     },
+    VEHICLES: {
+        HOME: '/vehicles',
+    },
     FINANCE: {
         TICKETS: '/finanzas/tickets',
     },
