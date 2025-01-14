@@ -8,11 +8,21 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { NewShiftDialog, WEEKDAYS } from "./new-shift-dialog";
+import { NewShiftDialog } from "./new-shift-dialog";
 import { TransvipLogo } from "../transvip/transvip-logo";
 import { ShiftsTableContent } from "./shifts-table-content";
 import { EditShiftDialog } from "./edit-shift-dialog";
 import { deleteShift } from "@/lib/database/actions";
+
+export const WEEKDAYS = [
+	{ value: "1", label: "Lunes" },
+	{ value: "2", label: "Martes" },
+	{ value: "3", label: "Miércoles" },
+	{ value: "4", label: "Jueves" },
+	{ value: "5", label: "Viernes" },
+	{ value: "6", label: "Sábado" },
+	{ value: "7", label: "Domingo" },
+];
 
 export interface Shift {
     id: string;

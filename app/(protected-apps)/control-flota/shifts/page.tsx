@@ -1,6 +1,4 @@
-import { Suspense } from "react";
 import { ShiftsCard } from "@/components/shifts/shifts-content";
-import { ShiftsTable } from "@/components/shifts/shifts-table-server";
 import { getShifts } from "@/lib/database/actions";
 
 export const revalidate = 0;

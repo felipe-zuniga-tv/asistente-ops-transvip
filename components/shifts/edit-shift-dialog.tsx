@@ -9,8 +9,7 @@ import { useState, useEffect } from "react";
 import { updateShift } from "@/lib/database/actions";
 import { toast } from "sonner";
 import { useTransition } from "react";
-import { WEEKDAYS } from "./new-shift-dialog";
-import { Shift } from "./shifts-content";
+import { Shift, WEEKDAYS } from "./shifts-content";
 
 interface EditShiftDialogProps {
   shift: Shift;
