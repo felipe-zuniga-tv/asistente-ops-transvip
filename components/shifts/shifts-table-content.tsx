@@ -13,17 +13,7 @@ import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { useState } from "react";
 import { AlertDialogDeleteShift } from "./alert-dialog-delete-shift";
-import { Shift } from "./shifts-content";
-
-const WEEKDAYS = {
-	1: "Lunes",
-	2: "Martes",
-	3: "Miércoles",
-	4: "Jueves",
-	5: "Viernes",
-	6: "Sábado",
-	7: "Domingo",
-};
+import { Shift, WEEKDAYS } from "./shifts-content";
 
 interface ShiftsTableContentProps {
 	shifts: any[] | null;
@@ -83,7 +73,9 @@ export function ShiftsTableContent({ shifts, onEdit, onDelete, nameFilter, selec
 							<TableCell className="text-center">{shift.name}</TableCell>
 							<TableCell className="text-center">{shift.start_time}</TableCell>
 							<TableCell className="text-center">{shift.end_time}</TableCell>
-							<TableCell className="text-center">{WEEKDAYS[shift.free_day as keyof typeof WEEKDAYS]}</TableCell>
+							<TableCell className="text-center">
+								{WEEKDAYS.find(day => day.value === String(shift.free_day))?.label}
+							</TableCell>
 							<TableCell className="text-center">{format(new Date(shift.created_timestamp), FORMAT_DATE)}</TableCell>
 						</TableRow>
 					))}
