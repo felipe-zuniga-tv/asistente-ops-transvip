@@ -3,7 +3,6 @@ import { getSession } from "../auth";
 import { branches, paymentMethods, vehicleTypes } from "../config/transvip-general";
 import { VEHICLE_STATUS } from "../utils";
 import { IBookingInfoOutput, IBookingInfo, IDriverProfile, IVehicleDetail } from "./types";
-import { off } from "process";
 
 // URLs
 const VEHICLE_STATUS_API_URL  = buildAPIUrl(process.env.GET_VEHICLE_STATUS);
@@ -81,7 +80,6 @@ export async function getVehicleStatus(vehicleNumber: number) {
     ].join("&")
 
     const { status, data } = await getResponseFromURL(`${VEHICLE_STATUS_API_URL}?${params}`)
-
     // console.log(data)
 
     if (status === 200 && data.length > 0) {

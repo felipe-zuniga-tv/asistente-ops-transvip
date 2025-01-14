@@ -21,6 +21,10 @@ import {
 	MapPin,
 	Pencil,
 	Car,
+	TowerControl,
+	Calendar,
+	CarFront,
+	CalendarClock,
 } from "lucide-react"
 import { toolsList } from "./tools";
 
@@ -96,6 +100,32 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 			],
 		},
 		{
+			title: "Control de Flota",
+			url: "#",
+			icon: TowerControl,
+			isActive: true,
+			items: [
+				{
+					title: 'Definición de Turnos',
+					icon: CalendarClock,
+					url: Routes.CONTROL_FLOTA.SHIFTS,
+					active: true
+				},
+				{
+					title: 'Turno por Móvil',
+					icon: CarFront,
+					url: Routes.CONTROL_FLOTA.VEHICLE_SHIFT,
+					active: true
+				},
+				{
+					title: 'Calendario',
+					icon: Calendar,
+					url: Routes.CONTROL_FLOTA.DASHBOARD,
+					active: true
+				},
+			],
+		},
+		{
 			title: "Reservas",
 			url: "#",
 			icon: BookPlusIcon,
@@ -131,10 +161,14 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 		// 		{
 		// 			title: "Cumplimiento",
 		// 			url: "#",
+		// 			icon: BarChart3,
+		//			active: false
 		// 		},
 		// 		{
 		// 			title: "Cumplimiento 2024",
 		// 			url: "#",
+		// 			icon: BarChart3,
+		//			active: false
 		// 		},
 		// 	],
 		// },

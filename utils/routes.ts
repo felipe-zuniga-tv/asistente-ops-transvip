@@ -1,7 +1,6 @@
 export const Routes = Object.freeze({
     HOME: '/',
     LOGIN: '/',
-    CONTROL: '/control',
     CHAT: '/chat',
     START: '/chat',
     QR_GEN: '/qr',
@@ -17,6 +16,11 @@ export const Routes = Object.freeze({
     },
     VEHICLES: {
         HOME: '/vehicles',
+    },
+    CONTROL_FLOTA: {
+        SHIFTS: '/control-flota/shifts',
+        VEHICLE_SHIFT: '/control-flota/vehicles',
+        DASHBOARD: '/control-flota/dashboard',
     },
     FINANCE: {
         TICKETS: '/finanzas/tickets',

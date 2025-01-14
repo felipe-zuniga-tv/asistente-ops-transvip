@@ -1,14 +1,12 @@
-import Link from 'next/link'
-import { Routes } from '@/utils/routes'
 import { Spinner } from './loading'
 import { Button } from './button'
 import { RotateCw } from 'lucide-react'
 
 export function AuthButton({ text }) {
     return (
-        <button type="submit" className="auth-btn">
+        <Button variant={"default"} type="submit" className="auth-btn">
             <span>{text}</span>
-        </button>
+        </Button>
     )
 }
 

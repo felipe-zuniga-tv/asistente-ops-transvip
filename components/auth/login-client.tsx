@@ -2,10 +2,10 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { SubmitButton } from '../ui/form-submit'
 import { KeySquare, Mail } from 'lucide-react'
 import { Routes } from '@/utils/routes'
 import { login } from '@/lib/auth/functions'
+import { SubmitButton } from '../ui/form-submit'
 
 export function LoginFormClient() {
     const [error, setError] = useState<string | null>(null)
