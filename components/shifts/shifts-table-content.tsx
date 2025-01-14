@@ -25,7 +25,7 @@ interface ShiftsTableContentProps {
 
 const FORMAT_DATE = "dd/MM/yyyy HH:mm:ss"
 
-export function ShiftsTableContent({ shifts, onEdit, onDelete, nameFilter, selectedDays }: ShiftsTableContentProps) {
+export function ShiftsTable({ shifts, onEdit, onDelete, nameFilter, selectedDays }: ShiftsTableContentProps) {
 	const [shiftToDelete, setShiftToDelete] = useState<Shift | null>(null);
 
 	const filteredShifts = shifts?.filter(shift =>
@@ -55,7 +55,7 @@ export function ShiftsTableContent({ shifts, onEdit, onDelete, nameFilter, selec
 					{filteredShifts?.map((shift, index) => (
 						<TableRow key={shift.id}>
 							<TableCell className="text-center">
-								<div className="flex justify-center gap-2">
+								<div className="flex justify-center gap-1">
 									<Button variant="ghost" size="sm" onClick={() => onEdit(shift)}>
 										<Pencil className="h-4 w-4" />
 									</Button>
