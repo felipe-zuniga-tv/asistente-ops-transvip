@@ -66,7 +66,7 @@ export function ShiftsCard({ shifts }: ShiftsCardProps) {
     };
 
     return (
-        <Card className="max-w-4xl mx-2 mt-4 lg:mx-auto">
+        <Card className="max-w-4xl mx-2 lg:mx-auto">
             <CardHeader>
                 <CardTitle className="flex flex-row items-center justify-between">
                     <div className="flex flex-row items-center gap-2">
