@@ -37,7 +37,7 @@ export default function CoordinatesInversion() {
     }
 
     return (
-        <Card className="max-w-4xl mx-auto mt-4">
+        <Card className="max-w-4xl lg:mx-auto">
             <CardHeader>
                 <CardTitle>
                     <div className="flex flex-row items-center gap-2">

@@ -117,7 +117,7 @@ export default function TextWriter() {
     }
 
     return (
-        <Card className="max-w-4xl mx-2 lg:mx-auto">
+        <Card className="max-w-4xl lg:mx-auto">
             <CardHeader>
                 <CardTitle>
                     <div className="flex flex-row items-center gap-2">
