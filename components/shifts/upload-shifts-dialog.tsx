@@ -5,7 +5,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { createShift } from "@/lib/database/actions";
-import { toast } from "sonner";
 import { Shift } from "./shifts-content";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
