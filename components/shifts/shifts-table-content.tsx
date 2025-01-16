@@ -17,7 +17,7 @@ import { Shift, WEEKDAYS } from "./shifts-content";
 
 interface ShiftsTableContentProps {
 	shifts: any[] | null;
-	onEdit: (shift: any) => void;
+	onEdit: (shift: Shift) => void;
 	onDelete: (id: Shift) => void;
 	nameFilter: string;
 	selectedDays: number[];
@@ -65,7 +65,12 @@ export function ShiftsTable({ shifts, onEdit, onDelete, nameFilter, selectedDays
 							</TableCell>
 							<TableCell className="text-center">{format(new Date(shift.created_timestamp), FORMAT_DATE)}</TableCell>
 							<TableCell className="text-center w-[36px] px-1">
-								<Button variant="ghost" size="sm" onClick={() => onEdit(shift)} className="bg-slate-100 hover:bg-slate-200 shadow">
+								<Button
+									variant="ghost"
+									size="sm"
+									onClick={() => onEdit(shift)} 
+									className="bg-slate-100 hover:bg-slate-200 shadow"
+								>
 									<Pencil className="h-4 w-4" />
 								</Button>
 							</TableCell>
