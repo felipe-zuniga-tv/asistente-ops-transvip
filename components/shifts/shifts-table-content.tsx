@@ -42,33 +42,20 @@ export function ShiftsTable({ shifts, onEdit, onDelete, nameFilter, selectedDays
 			<Table>
 				<TableHeader>
 					<TableRow>
-						<TableHead className="text-center">Acciones</TableHead>
 						<TableHead className="text-center">#</TableHead>
 						<TableHead className="text-center">Nombre</TableHead>
 						<TableHead className="text-center">Hora Inicio</TableHead>
 						<TableHead className="text-center">Hora Fin</TableHead>
 						<TableHead className="text-center">Día Libre</TableHead>
 						<TableHead className="text-center">Creado</TableHead>
+						<TableHead className="text-center">Editar</TableHead>
+						<TableHead className="text-center text-red-400">Borrar</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
 					{filteredShifts?.map((shift, index) => (
 						<TableRow key={shift.id}>
-							<TableCell className="text-center">
-								<div className="flex justify-center gap-1">
-									<Button variant="ghost" size="sm" onClick={() => onEdit(shift)}>
-										<Pencil className="h-4 w-4" />
-									</Button>
-									<Button
-										variant="ghost"
-										size="sm"
-										onClick={() => setShiftToDelete(shift)}
-										className="text-destructive hover:text-destructive"
-									>
-										<Trash2 className="h-4 w-4" />
-									</Button>
-								</div>
-							</TableCell>
+							
 							<TableCell className="text-center">{index + 1}</TableCell>
 							<TableCell className="text-center">{shift.name}</TableCell>
 							<TableCell className="text-center">{shift.start_time}</TableCell>
@@ -77,12 +64,27 @@ export function ShiftsTable({ shifts, onEdit, onDelete, nameFilter, selectedDays
 								{WEEKDAYS.find(day => day.value === String(shift.free_day))?.label}
 							</TableCell>
 							<TableCell className="text-center">{format(new Date(shift.created_timestamp), FORMAT_DATE)}</TableCell>
+							<TableCell className="text-center w-[36px] px-1">
+								<Button variant="ghost" size="sm" onClick={() => onEdit(shift)} className="bg-slate-100 hover:bg-slate-200 shadow">
+									<Pencil className="h-4 w-4" />
+								</Button>
+							</TableCell>
+							<TableCell className="text-center w-[36px] px-1">
+								<Button
+									variant="ghost"
+									size="sm"
+									onClick={() => setShiftToDelete(shift)}
+									className="text-destructive hover:text-destructive bg-red-500/10 hover:bg-red-500/20 shadow"
+								>
+									<Trash2 className="h-4 w-4" />
+								</Button>
+							</TableCell>
 						</TableRow>
 					))}
 				</TableBody>
 			</Table>
 
-			<AlertDialogDeleteShift 
+			<AlertDialogDeleteShift
 				shift={shiftToDelete}
 				onOpenChange={(open) => setShiftToDelete(open ? shiftToDelete : null)}
 				onDelete={onDelete}

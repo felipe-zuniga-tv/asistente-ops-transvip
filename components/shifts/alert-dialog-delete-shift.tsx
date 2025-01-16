@@ -35,26 +35,26 @@ export function AlertDialogDeleteShift({ shift, onOpenChange, onDelete }: AlertD
 				<AlertDialogHeader>
 					<AlertDialogTitle>¿Está seguro?</AlertDialogTitle>
 					<AlertDialogDescription>
-						<div className="flex flex-col gap-2">
+						<div className="flex flex-col gap-2 text-black">
 							<span>Esta acción no se puede deshacer.</span>
 							<div>Se eliminará el siguiente turno de manera <span className="font-bold">permanente</span>:</div>
-							<div className="p-3 bg-gray-100 rounded-md shadow-md">
+							<div className="p-3 bg-gray-100 rounded-md shadow-md flex flex-col gap-2">
 								<div className="flex flex-row items-center gap-2">
-									<span className="font-semibold">Nombre</span>
+									<span className="font-semibold">Nombre:</span>
 									<span>{shift?.name}</span>
 								</div>
 								<div className="flex flex-row items-center gap-2">
-									<div className="flex flex-row items-center gap-2">
+									<div className="flex flex-row items-center gap-1">
 										<span className="font-semibold">Hora Inicio:</span>
 										<span>{shift?.start_time}</span>
 									</div>
 									<span>·</span>
-									<div className="flex flex-row items-center gap-2">
+									<div className="flex flex-row items-center gap-1">
 										<span className="font-semibold">Hora Fin:</span>
 										<span>{shift?.end_time}</span>
 									</div>
 									<span>·</span>
-									<div className="flex flex-row items-center gap-2">
+									<div className="flex flex-row items-center gap-1">
 										<span className="font-semibold">Día Libre:</span>
 										<span>{WEEKDAYS[shift?.free_day as keyof typeof WEEKDAYS]}</span>
 									</div>

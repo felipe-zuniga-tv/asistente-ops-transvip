@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PlusCircle, Search } from "lucide-react";
+import { PlusCircle, Search, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,15 +13,17 @@ import { TransvipLogo } from "../transvip/transvip-logo";
 import { ShiftsTable } from "./shifts-table-content";
 import { EditShiftDialog } from "./edit-shift-dialog";
 import { deleteShift } from "@/lib/database/actions";
+import { UploadShiftsDialog } from "./upload-shifts-dialog";
+import { toast } from "@/hooks/use-toast";
 
 export const WEEKDAYS = [
-	{ value: "1", label: "Lunes" },
-	{ value: "2", label: "Martes" },
-	{ value: "3", label: "Miércoles" },
-	{ value: "4", label: "Jueves" },
-	{ value: "5", label: "Viernes" },
-	{ value: "6", label: "Sábado" },
-	{ value: "7", label: "Domingo" },
+    { value: "1", label: "Lunes" },
+    { value: "2", label: "Martes" },
+    { value: "3", label: "Miércoles" },
+    { value: "4", label: "Jueves" },
+    { value: "5", label: "Viernes" },
+    { value: "6", label: "Sábado" },
+    { value: "7", label: "Domingo" },
 ];
 
 export interface Shift {
@@ -43,6 +45,7 @@ export function ShiftsCard({ shifts }: ShiftsCardProps) {
     const [nameFilter, setNameFilter] = useState("");
     const [selectedDays, setSelectedDays] = useState([1, 2, 3, 4, 5, 6, 7]);
     const [editingShift, setEditingShift] = useState<any>(null);
+    const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
 
     const handleEditShift = (shift: Shift) => {
         const shiftToEdit = {
@@ -74,19 +77,29 @@ export function ShiftsCard({ shifts }: ShiftsCardProps) {
                             <TransvipLogo size={20} />
                             <span className="text-sm sm:text-base">Jornadas de Conexión</span>
                         </div>
-                        <Button className="ml-auto text-xs md:text-sm" onClick={() => setIsDialogOpen(true)}>
+                        <Button className="text-xs md:text-sm" onClick={() => setIsDialogOpen(true)}>
                             <PlusCircle className="w-4 h-4" />
                             Añadir
                         </Button>
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="flex items-center space-x-2 pb-4 pl-2">
-                        <Switch
-                            checked={showFilters}
-                            onCheckedChange={setShowFilters}
-                        />
-                        <Label>{showFilters ? "Ocultar" : "Mostrar"} Filtros</Label>
+                    <div className="flex items-center justify-between gap-4 pb-4">
+                        <div className="flex items-center space-x-2 pl-2">
+                            <Switch
+                                checked={showFilters}
+                                onCheckedChange={setShowFilters}
+                            />
+                            <Label>{showFilters ? "Ocultar" : "Mostrar"} Filtros</Label>
+                        </div>
+                        <Button
+                            variant="outline"
+                            className="text-xs md:text-sm"
+                            onClick={() => setIsUploadDialogOpen(true)}
+                        >
+                            <Upload className="w-4 h-4" />
+                            Carga Masiva
+                        </Button>
                     </div>
                     {showFilters && (
                         <div className="mb-4 space-y-4 p-4 border rounded-md">
@@ -116,7 +129,7 @@ export function ShiftsCard({ shifts }: ShiftsCardProps) {
                         </div>
                     )}
 
-                    <div className="flex justify-end gap-4 mb-8">
+                    <div className="flex justify-start gap-4 mb-4">
                         <div className="relative">
                             <Input
                                 placeholder="Filtrar por nombre..."
@@ -143,6 +156,10 @@ export function ShiftsCard({ shifts }: ShiftsCardProps) {
                     shift={editingShift}
                     open={isEditDialogOpen}
                     onOpenChange={setIsEditDialogOpen}
+                />
+                <UploadShiftsDialog
+                    open={isUploadDialogOpen}
+                    onOpenChange={setIsUploadDialogOpen}
                 />
             </Card>
         </div>
