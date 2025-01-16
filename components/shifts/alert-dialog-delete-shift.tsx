@@ -37,9 +37,9 @@ export function AlertDialogDeleteShift({ shift, onOpenChange, onDelete }: AlertD
 					<AlertDialogDescription>
 						<div className="flex flex-col gap-2 text-black">
 							<span>Esta acción no se puede deshacer.</span>
-							<div>Se eliminará el siguiente turno de manera <span className="font-bold">permanente</span>:</div>
+							<div className="pb-2">Se eliminará el siguiente turno de manera <span className="font-bold">permanente</span>:</div>
 							<div className="p-3 bg-gray-100 rounded-md shadow-md flex flex-col gap-2">
-								<div className="flex flex-row items-center gap-2">
+								<div className="flex flex-row items-center gap-1">
 									<span className="font-semibold">Nombre:</span>
 									<span>{shift?.name}</span>
 								</div>

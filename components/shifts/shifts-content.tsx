@@ -1,20 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { PlusCircle, Search, Upload } from "lucide-react";
+import { PlusCircle, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { NewShiftDialog } from "./new-shift-dialog";
 import { TransvipLogo } from "../transvip/transvip-logo";
-import { ShiftsTable } from "./shifts-table-content";
 import { EditShiftDialog } from "./edit-shift-dialog";
 import { deleteShift } from "@/lib/database/actions";
 import { UploadShiftsDialog } from "./upload-shifts-dialog";
-// import { toast } from "@/hooks/use-toast";
+import { ShiftsDataTable } from "./table/shifts-data-table";
+import { columns } from "./table/columns";
+import { useRouter } from "next/navigation";
+import { AlertDialogDeleteShift } from "./alert-dialog-delete-shift";
 
 export const WEEKDAYS = [
     { value: "1", label: "Lunes" },
@@ -32,6 +33,7 @@ export interface Shift {
     start_time: string;
     end_time: string;
     free_day: number;
+    created_timestamp: string;
 }
 
 interface ShiftsCardProps {
@@ -39,13 +41,14 @@ interface ShiftsCardProps {
 }
 
 export function ShiftsCard({ shifts }: ShiftsCardProps) {
+    const router = useRouter();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [showFilters, setShowFilters] = useState(false);
-    const [nameFilter, setNameFilter] = useState("");
     const [selectedDays, setSelectedDays] = useState([1, 2, 3, 4, 5, 6, 7]);
     const [editingShift, setEditingShift] = useState<any>(null);
     const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
+    const [shiftToDelete, setShiftToDelete] = useState<Shift | null>(null);
 
     const handleEditShift = (shift: Shift) => {
         const shiftToEdit = {
@@ -59,12 +62,31 @@ export function ShiftsCard({ shifts }: ShiftsCardProps) {
         setIsEditDialogOpen(true);
     };
 
+    const handleEditComplete = async () => {
+        try {
+            setIsEditDialogOpen(false);
+            setEditingShift(null);
+
+            router.refresh();
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
+        } catch (error) {
+            console.error('Error completing edit:', error);
+        }
+    };
+
     const handleDeleteShift = async (shift: Shift) => {
         try {
             await deleteShift(shift.id);
+            router.refresh();
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
         } catch (error) {
             console.error('Error deleting shift:', error);
-            // You might want to add toast notification here for error handling
+            // toast.error("Error al eliminar el turno");
         }
     };
 
@@ -98,9 +120,18 @@ export function ShiftsCard({ shifts }: ShiftsCardProps) {
                         Carga Masiva
                     </Button>
                 </div>
-                {showFilters && (
+                { showFilters && (
                     <div className="mb-4 space-y-4 p-4 border rounded-md">
-                        <Label className="mb-2 block">Días libres</Label>
+                        <div className="flex items-center justify-start gap-6">
+                            <Label>Días libres</Label>
+                            <Button 
+                                variant="outline" 
+                                size="sm"
+                                onClick={() => setSelectedDays([1, 2, 3, 4, 5, 6, 7])}
+                            >
+                                Seleccionar todos
+                            </Button>
+                        </div>
                         <div className="flex flex-wrap gap-4">
                             {WEEKDAYS.map((weekday) => (
                                 <div key={weekday.value} className="flex items-center space-x-2 border rounded-md p-2 w-fit">
@@ -124,37 +155,34 @@ export function ShiftsCard({ shifts }: ShiftsCardProps) {
                     </div>
                 )}
 
-                <div className="flex justify-start gap-4 mt-4 mb-2">
-                    <div className="relative">
-                        <Input
-                            placeholder="Filtrar por nombre..."
-                            value={nameFilter}
-                            onChange={(e) => setNameFilter(e.target.value)}
-                            className="peer pe-9 ps-9 max-w-xs"
-                        />
-                        <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
-                            <Search size={16} strokeWidth={2} />
-                        </div>
-                    </div>
-                </div>
-
-                <ShiftsTable
-                    shifts={shifts}
-                    onEdit={handleEditShift}
-                    onDelete={handleDeleteShift}
-                    nameFilter={nameFilter}
+                <ShiftsDataTable
+                    columns={columns} 
+                    data={shifts}
                     selectedDays={selectedDays}
+                    onEdit={handleEditShift}
+                    onDelete={(shift) => setShiftToDelete(shift)}
                 />
             </CardContent>
-            <NewShiftDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} />
-            <EditShiftDialog
-                shift={editingShift}
-                open={isEditDialogOpen}
-                onOpenChange={setIsEditDialogOpen}
+
+            <NewShiftDialog 
+                open={isDialogOpen}
+                onOpenChange={setIsDialogOpen} 
             />
+
+            <EditShiftDialog shift={editingShift}
+                open={isEditDialogOpen}
+                onOpenChange={handleEditComplete}
+            />
+
             <UploadShiftsDialog
                 open={isUploadDialogOpen}
                 onOpenChange={setIsUploadDialogOpen}
+            />
+
+            <AlertDialogDeleteShift
+                shift={shiftToDelete}
+                onOpenChange={(open) => setShiftToDelete(open ? shiftToDelete : null)}
+                onDelete={handleDeleteShift}
             />
         </Card>
     );

@@ -14,7 +14,7 @@ import { Shift, WEEKDAYS } from "./shifts-content";
 interface EditShiftDialogProps {
   shift: Shift;
   open: boolean;
-  onOpenChange: (open: boolean) => void;
+  onOpenChange: () => void;
 }
 
 export function EditShiftDialog({ shift, open, onOpenChange }: EditShiftDialogProps) {
@@ -45,7 +45,7 @@ export function EditShiftDialog({ shift, open, onOpenChange }: EditShiftDialogPr
       try {
         await updateShift(shift.id, formData);
         toast.success("Turno actualizado exitosamente");
-        onOpenChange(false);
+        onOpenChange();
       } catch (error) {
         toast.error("Error al actualizar el turno");
         console.error(error);
@@ -110,7 +110,7 @@ export function EditShiftDialog({ shift, open, onOpenChange }: EditShiftDialogPr
             </Select>
           </div>
           <div className="flex justify-end space-x-2">
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+            <Button type="button" variant="outline" onClick={() => onOpenChange()}>
               Cancelar
             </Button>
             <Button type="submit" disabled={isPending}>
