@@ -14,7 +14,7 @@ import { ShiftsTable } from "./shifts-table-content";
 import { EditShiftDialog } from "./edit-shift-dialog";
 import { deleteShift } from "@/lib/database/actions";
 import { UploadShiftsDialog } from "./upload-shifts-dialog";
-import { toast } from "@/hooks/use-toast";
+// import { toast } from "@/hooks/use-toast";
 
 export const WEEKDAYS = [
     { value: "1", label: "Lunes" },
@@ -100,28 +100,26 @@ export function ShiftsCard({ shifts }: ShiftsCardProps) {
                 </div>
                 {showFilters && (
                     <div className="mb-4 space-y-4 p-4 border rounded-md">
-                        <div>
-                            <Label className="mb-2 block">Días libres</Label>
-                            <div className="flex flex-wrap gap-4">
-                                {WEEKDAYS.map((weekday) => (
-                                    <div key={weekday.value} className="flex items-center space-x-2 border rounded-md p-2 w-fit">
-                                        <Checkbox
-                                            id={`day-${weekday.value}`}
-                                            checked={selectedDays.includes(Number(weekday.value))}
-                                            onCheckedChange={(checked) => {
-                                                setSelectedDays(prev =>
-                                                    checked
-                                                        ? [...prev, Number(weekday.value)]
-                                                        : prev.filter(d => d !== Number(weekday.value))
-                                                );
-                                            }}
-                                        />
-                                        <Label className="text-sm font-medium cursor-pointer w-full" htmlFor={`day-${weekday.value}`}>
-                                            {weekday.label}
-                                        </Label>
-                                    </div>
-                                ))}
-                            </div>
+                        <Label className="mb-2 block">Días libres</Label>
+                        <div className="flex flex-wrap gap-4">
+                            {WEEKDAYS.map((weekday) => (
+                                <div key={weekday.value} className="flex items-center space-x-2 border rounded-md p-2 w-fit">
+                                    <Checkbox
+                                        id={`day-${weekday.value}`}
+                                        checked={selectedDays.includes(Number(weekday.value))}
+                                        onCheckedChange={(checked) => {
+                                            setSelectedDays(prev =>
+                                                checked
+                                                    ? [...prev, Number(weekday.value)]
+                                                    : prev.filter(d => d !== Number(weekday.value))
+                                            );
+                                        }}
+                                    />
+                                    <Label className="text-sm font-medium cursor-pointer w-full" htmlFor={`day-${weekday.value}`}>
+                                        {weekday.label}
+                                    </Label>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 )}

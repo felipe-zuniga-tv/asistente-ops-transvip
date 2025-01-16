@@ -37,7 +37,7 @@ export function ShiftsTable({ shifts, onEdit, onDelete, nameFilter, selectedDays
 		<>
 			<div className="py-1 text-sm flex flex-row gap-1 items-center">
 				<span className="font-bold">Total:</span>
-				<span className="font-normal">{shifts?.length} resultados</span>
+				<span className="font-normal">{filteredShifts?.length} resultado{filteredShifts?.length === 1 ? "" : "s"}</span>
 			</div>
 			<Table>
 				<TableHeader>
