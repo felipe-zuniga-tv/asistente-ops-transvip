@@ -77,14 +77,14 @@ export function ShiftsCard({ shifts }: ShiftsCardProps) {
                             <TransvipLogo size={20} />
                             <span className="text-sm sm:text-base">Jornadas de Conexión</span>
                         </div>
-                        <Button className="text-xs md:text-sm" onClick={() => setIsDialogOpen(true)}>
+                        <Button size={"default"} className="text-xs md:text-sm" onClick={() => setIsDialogOpen(true)}>
                             <PlusCircle className="w-4 h-4" />
                             Añadir
                         </Button>
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="flex items-center justify-between gap-4 pb-4">
+                    <div className="flex items-center justify-between pb-4">
                         <div className="flex items-center space-x-2 pl-2">
                             <Switch
                                 checked={showFilters}
@@ -93,7 +93,8 @@ export function ShiftsCard({ shifts }: ShiftsCardProps) {
                             <Label>{showFilters ? "Ocultar" : "Mostrar"} Filtros</Label>
                         </div>
                         <Button
-                            variant="outline"
+                            variant={"outline"}
+                            size="default"
                             className="text-xs md:text-sm"
                             onClick={() => setIsUploadDialogOpen(true)}
                         >
@@ -129,7 +130,7 @@ export function ShiftsCard({ shifts }: ShiftsCardProps) {
                         </div>
                     )}
 
-                    <div className="flex justify-start gap-4 mb-4">
+                    <div className="flex justify-start gap-4 mt-4 mb-2">
                         <div className="relative">
                             <Input
                                 placeholder="Filtrar por nombre..."
