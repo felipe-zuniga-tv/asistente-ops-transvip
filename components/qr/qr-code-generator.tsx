@@ -5,7 +5,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { Button } from '../ui/button';
 import { TransvipLogo } from '../transvip/transvip-logo';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
 
 interface QRCodeGeneratorProps { }
@@ -38,7 +38,7 @@ export const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = () => {
     }
 
     return (
-        <Card className="max-w-2xl mx-auto bg-white shadow-lg p-4">
+        <Card className="max-w-2xl mx-auto bg-white shadow p-4">
             <CardHeader className='mb-4'>
                 <CardTitle>
                     <div className="flex flex-row items-center gap-4">
@@ -56,7 +56,7 @@ export const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = () => {
                         className="w-full p-2 pl-4 text-base lg:text-lg border border-gray-300 rounded-md"
                     />
                     <Button variant={"default"} onClick={generateQRCode}
-                        className="mx-auto px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition duration-300 w-[120px] sm:min-w-fit"
+                        className="h-10 mx-auto px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition duration-300 w-[120px] sm:min-w-fit"
                     >
                         Generar QR
                     </Button>
@@ -64,23 +64,20 @@ export const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = () => {
 
                 {isQrVisible && qrCodeUrl && (
                     <div className="my-6 mx-auto">
-                        <Image height={400} width={400} src={qrCodeUrl} alt='Código QR Generado' className="mx-auto" />
+                        <Image height={450} width={450} src={qrCodeUrl} alt='Código QR Generado' className="mx-auto" />
                     </div>
                 )}
 
-                <div className='flex justify-end mt-8'>
-                    <Button variant="default" onClick={handleStartOver}
-                        className="px-4 py-2 bg-gray-500 text-white text-xs rounded-md hover:bg-gray-600 transition duration-300 min-w-fit"
-                    >
-                        Empezar de nuevo
-                        <RotateCw className='ml-2 h-4 w-4' />
-                    </Button>
-                </div>
-
                 {errorMessage && <div className='text-center text-red-500'>{errorMessage}</div>}
-
-                
             </CardContent>
+            <CardFooter className='flex justify-end'>
+                <Button variant="default" onClick={handleStartOver}
+                    className="px-4 py-2 bg-gray-500 text-white text-xs rounded-md hover:bg-gray-600 transition duration-300 min-w-fit"
+                >
+                    Empezar de nuevo
+                    <RotateCw className='ml-2 h-4 w-4' />
+                </Button>
+            </CardFooter>
 
         </Card>
     );

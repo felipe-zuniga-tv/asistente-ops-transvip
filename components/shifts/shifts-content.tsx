@@ -69,100 +69,95 @@ export function ShiftsCard({ shifts }: ShiftsCardProps) {
     };
 
     return (
-        <div className="py-6 px-2 md:px-4">
-            <Card className="max-w-4xl lg:mx-auto">
-                <CardHeader>
-                    <CardTitle className="flex flex-row items-center justify-between">
-                        <div className="flex flex-row items-center gap-2">
-                            <TransvipLogo size={20} />
-                            <span className="text-sm sm:text-base">Jornadas de Conexión</span>
-                        </div>
-                        <Button size={"default"} className="text-xs md:text-sm" onClick={() => setIsDialogOpen(true)}>
-                            <PlusCircle className="w-4 h-4" />
-                            Añadir
-                        </Button>
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="flex items-center justify-between pb-4">
-                        <div className="flex items-center space-x-2 pl-2">
-                            <Switch
-                                checked={showFilters}
-                                onCheckedChange={setShowFilters}
-                            />
-                            <Label>{showFilters ? "Ocultar" : "Mostrar"} Filtros</Label>
-                        </div>
-                        <Button
-                            variant={"outline"}
-                            size="default"
-                            className="text-xs md:text-sm"
-                            onClick={() => setIsUploadDialogOpen(true)}
-                        >
-                            <Upload className="w-4 h-4" />
-                            Carga Masiva
-                        </Button>
+        <Card className="max-w-4xl lg:mx-auto">
+            <CardHeader>
+                <CardTitle className="flex flex-row items-center justify-between">
+                    <div className="flex flex-row items-center gap-2">
+                        <TransvipLogo size={20} />
+                        <span className="text-sm sm:text-base">Jornadas de Conexión</span>
                     </div>
-                    {showFilters && (
-                        <div className="mb-4 space-y-4 p-4 border rounded-md">
-                            <div>
-                                <Label className="mb-2 block">Días libres</Label>
-                                <div className="flex flex-wrap gap-4">
-                                    {WEEKDAYS.map((weekday) => (
-                                        <div key={weekday.value} className="flex items-center space-x-2 border rounded-md p-2 w-fit">
-                                            <Checkbox
-                                                id={`day-${weekday.value}`}
-                                                checked={selectedDays.includes(Number(weekday.value))}
-                                                onCheckedChange={(checked) => {
-                                                    setSelectedDays(prev =>
-                                                        checked
-                                                            ? [...prev, Number(weekday.value)]
-                                                            : prev.filter(d => d !== Number(weekday.value))
-                                                    );
-                                                }}
-                                            />
-                                            <Label className="text-sm font-medium cursor-pointer w-full" htmlFor={`day-${weekday.value}`}>
-                                                {weekday.label}
-                                            </Label>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    <div className="flex justify-start gap-4 mt-4 mb-2">
-                        <div className="relative">
-                            <Input
-                                placeholder="Filtrar por nombre..."
-                                value={nameFilter}
-                                onChange={(e) => setNameFilter(e.target.value)}
-                                className="peer pe-9 ps-9 max-w-xs"
-                            />
-                            <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
-                                <Search size={16} strokeWidth={2} />
+                    <Button size={"default"} className="text-xs md:text-sm" onClick={() => setIsDialogOpen(true)}>
+                        <PlusCircle className="w-4 h-4" />
+                        Añadir
+                    </Button>
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div className="flex items-center justify-between pb-4">
+                    <div className="flex items-center space-x-2 pl-2">
+                        <Switch checked={showFilters} onCheckedChange={setShowFilters} />
+                        <Label>{showFilters ? "Ocultar" : "Mostrar"} Filtros</Label>
+                    </div>
+                    <Button
+                        variant={"outline"}
+                        size="default"
+                        className="text-xs md:text-sm"
+                        onClick={() => setIsUploadDialogOpen(true)}
+                    >
+                        <Upload className="w-4 h-4" />
+                        Carga Masiva
+                    </Button>
+                </div>
+                {showFilters && (
+                    <div className="mb-4 space-y-4 p-4 border rounded-md">
+                        <div>
+                            <Label className="mb-2 block">Días libres</Label>
+                            <div className="flex flex-wrap gap-4">
+                                {WEEKDAYS.map((weekday) => (
+                                    <div key={weekday.value} className="flex items-center space-x-2 border rounded-md p-2 w-fit">
+                                        <Checkbox
+                                            id={`day-${weekday.value}`}
+                                            checked={selectedDays.includes(Number(weekday.value))}
+                                            onCheckedChange={(checked) => {
+                                                setSelectedDays(prev =>
+                                                    checked
+                                                        ? [...prev, Number(weekday.value)]
+                                                        : prev.filter(d => d !== Number(weekday.value))
+                                                );
+                                            }}
+                                        />
+                                        <Label className="text-sm font-medium cursor-pointer w-full" htmlFor={`day-${weekday.value}`}>
+                                            {weekday.label}
+                                        </Label>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
+                )}
 
-                    <ShiftsTable
-                        shifts={shifts}
-                        onEdit={handleEditShift}
-                        onDelete={handleDeleteShift}
-                        nameFilter={nameFilter}
-                        selectedDays={selectedDays}
-                    />
-                </CardContent>
-                <NewShiftDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} />
-                <EditShiftDialog
-                    shift={editingShift}
-                    open={isEditDialogOpen}
-                    onOpenChange={setIsEditDialogOpen}
+                <div className="flex justify-start gap-4 mt-4 mb-2">
+                    <div className="relative">
+                        <Input
+                            placeholder="Filtrar por nombre..."
+                            value={nameFilter}
+                            onChange={(e) => setNameFilter(e.target.value)}
+                            className="peer pe-9 ps-9 max-w-xs"
+                        />
+                        <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
+                            <Search size={16} strokeWidth={2} />
+                        </div>
+                    </div>
+                </div>
+
+                <ShiftsTable
+                    shifts={shifts}
+                    onEdit={handleEditShift}
+                    onDelete={handleDeleteShift}
+                    nameFilter={nameFilter}
+                    selectedDays={selectedDays}
                 />
-                <UploadShiftsDialog
-                    open={isUploadDialogOpen}
-                    onOpenChange={setIsUploadDialogOpen}
-                />
-            </Card>
-        </div>
+            </CardContent>
+            <NewShiftDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} />
+            <EditShiftDialog
+                shift={editingShift}
+                open={isEditDialogOpen}
+                onOpenChange={setIsEditDialogOpen}
+            />
+            <UploadShiftsDialog
+                open={isUploadDialogOpen}
+                onOpenChange={setIsUploadDialogOpen}
+            />
+        </Card>
     );
 }
