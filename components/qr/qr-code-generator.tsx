@@ -49,13 +49,14 @@ export const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = () => {
             </CardHeader>
             <CardContent>
                 <div className='flex flex-col sm:flex-row justify-center items-center gap-4'>
-                    <input type="text"
+                    <Input type="text"
                         value={bookingNumber}
                         onChange={(e) => setBookingNumber(e.target.value)}
                         placeholder="Ingresa el número de reserva"
                         className="w-full p-2 pl-4 text-base lg:text-lg border border-gray-300 rounded-md"
                     />
-                    <Button variant={"default"} onClick={generateQRCode}
+                    <Button variant={"default"}
+                        onClick={generateQRCode}
                         className="h-10 mx-auto px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition duration-300 w-[120px] sm:min-w-fit"
                     >
                         Generar QR
@@ -68,7 +69,7 @@ export const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = () => {
                     </div>
                 )}
 
-                {errorMessage && <div className='text-center text-red-500'>{errorMessage}</div>}
+                {errorMessage && <div className='w-full text-center text-red-500'>{errorMessage}</div>}
             </CardContent>
             <CardFooter className='flex justify-end'>
                 <Button variant="default" onClick={handleStartOver}
