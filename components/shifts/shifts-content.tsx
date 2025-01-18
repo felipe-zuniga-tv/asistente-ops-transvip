@@ -19,7 +19,7 @@ import { AlertDialogDeleteShift } from "./alert-dialog-delete-shift";
 
 export const WEEKDAYS = [
     { value: "1", label: "Lunes" },
-    { value: "2", label: "Martes" },
+    { value: "2", label: "Martes" }, 
     { value: "3", label: "Miércoles" },
     { value: "4", label: "Jueves" },
     { value: "5", label: "Viernes" },
@@ -98,28 +98,29 @@ export function ShiftsCard({ shifts }: ShiftsCardProps) {
                         <TransvipLogo size={20} />
                         <span className="text-sm sm:text-base">Jornadas de Conexión</span>
                     </div>
-                    <Button size={"default"} className="text-xs md:text-sm" onClick={() => setIsDialogOpen(true)}>
-                        <PlusCircle className="w-4 h-4" />
-                        Añadir
-                    </Button>
+                    <div className="flex ml-auto gap-2">
+                        <Button
+                            variant={"outline"}
+                            size="default"
+                            className="text-xs md:text-sm"
+                            onClick={() => setIsUploadDialogOpen(true)}
+                        >
+                            <Upload className="w-4 h-4" />
+                            Carga Masiva
+                        </Button>
+                        <Button size={"default"} className="text-xs md:text-sm" onClick={() => setIsDialogOpen(true)}>
+                            <PlusCircle className="w-4 h-4" />
+                            Añadir
+                        </Button>
+                    </div>
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <div className="flex items-center justify-between pb-4">
-                    <div className="flex items-center space-x-2 pl-2">
-                        <Switch checked={showFilters} onCheckedChange={setShowFilters} />
-                        <Label>{showFilters ? "Ocultar" : "Mostrar"} Filtros</Label>
-                    </div>
-                    <Button
-                        variant={"outline"}
-                        size="default"
-                        className="text-xs md:text-sm"
-                        onClick={() => setIsUploadDialogOpen(true)}
-                    >
-                        <Upload className="w-4 h-4" />
-                        Carga Masiva
-                    </Button>
+                <div className="flex items-center space-x-2 pl-2 pb-2">
+                    <Switch checked={showFilters} onCheckedChange={setShowFilters} />
+                    <Label>{showFilters ? "Ocultar" : "Mostrar"} Filtros</Label>
                 </div>
+                
                 { showFilters && (
                     <div className="mb-4 space-y-4 p-4 border rounded-md">
                         <div className="flex items-center justify-start gap-6">

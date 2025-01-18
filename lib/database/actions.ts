@@ -27,6 +27,19 @@ export async function getShifts() {
 	return data
 }
 
+export async function getVehicleShifts() {
+	const cookieStore = cookies()
+	const supabase = createClient(cookieStore)
+
+	const { data, error } = await supabase
+		.from('vehicle_shifts')
+		.select('*')
+		.order('vehicle_number', { ascending: true })
+
+	if (error) throw new Error(error.message)
+	return data
+}
+
 export async function createShift(shiftData: ShiftData) {
 	const cookieStore = cookies()
 	const supabase = createClient(cookieStore)
