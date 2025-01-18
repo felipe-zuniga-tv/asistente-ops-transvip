@@ -108,7 +108,12 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
 
             <EditVehicleShiftDialog 
                 open={!!editingAssignment}
-                onOpenChange={(open) => !open && setEditingAssignment(null)}
+                onOpenChange={(open) => {
+                    if (!open) {
+                        setEditingAssignment(null)
+                        router.refresh()
+                    }
+                }}
                 assignment={editingAssignment}
                 shifts={shifts}
             />

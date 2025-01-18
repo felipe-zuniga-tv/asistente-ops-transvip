@@ -42,7 +42,10 @@ import { cn } from "@/lib/utils"
 import { createVehicleShift } from "@/lib/shifts/actions"
 
 export const formSchema = z.object({
-    vehicle_number: z.coerce.number().positive("El número debe ser positivo"),
+    vehicle_number: z.coerce
+        .number()
+        .min(1, "El número debe ser mayor a 0")
+        .max(99999, "El número debe ser hasta 100000"),
     shift_id: z.string().uuid("Seleccione un turno válido"),
     shift_name: z.string().optional(),
     start_date: z.date({
@@ -51,8 +54,19 @@ export const formSchema = z.object({
     end_date: z.date({
         required_error: "Se requiere una fecha de fin",
     }),
-    priority: z.coerce.number().min(1).max(100, "La prioridad debe estar entre 1 y 100"),
-})
+    priority: z.coerce
+        .number()
+        .min(1, "La prioridad debe ser mayor a 0")
+        .max(100, "La prioridad debe ser menor o igual a 100"),
+}).refine(
+    (data) => {
+        return data.end_date >= data.start_date
+    },
+    {
+        message: "La fecha de fin debe ser mayor o igual a la fecha de inicio",
+        path: ["end_date"],
+    }
+)
 
 interface NewVehicleShiftDialogProps {
     open: boolean
@@ -137,9 +151,10 @@ export function NewVehicleShiftDialog({
                                         <Input 
                                             type="number" 
                                             min={1}
+                                            max={9999}
                                             {...field}
                                             onChange={(e) => {
-                                                const value = e.target.value ? parseInt(e.target.value) : 0
+                                                const value = e.target.value ? Math.max(1, parseInt(e.target.value)) : 0
                                                 field.onChange(value)
                                             }}
                                             value={field.value || ""}
@@ -250,7 +265,7 @@ export function NewVehicleShiftDialog({
                                                     selected={field.value}
                                                     onSelect={field.onChange}
                                                     disabled={(date) =>
-                                                        date < form.getValues("start_date") || date > maxDate
+                                                        date < startOfDay(form.getValues("start_date")) || date > maxDate
                                                     }
                                                     initialFocus
                                                     locale={es}

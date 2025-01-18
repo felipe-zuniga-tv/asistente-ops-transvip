@@ -168,7 +168,19 @@ export async function updateVehicleShift(
     try {
         const result = vehicleShiftSchema.safeParse(formData)
         if (!result.success) {
-            return { error: "Datos inválidos" }
+            const errors = result.error.errors.map(e => e.message).join(", ")
+            return { error: `Datos inválidos: ${errors}` }
+        }
+
+        // First check if the record exists
+        const { data: existing } = await supabase
+            .from("vehicle_shifts")
+            .select("id")
+            .eq("id", id)
+            .single()
+
+        if (!existing) {
+            return { error: "Asignación no encontrada" }
         }
 
         const { data: shift } = await supabase
@@ -193,7 +205,12 @@ export async function updateVehicleShift(
             })
             .eq("id", id)
 
-        if (error) throw error
+        if (error) {
+            if (error.code === "23505") {
+                return { error: "Ya existe una asignación para este vehículo en este período" }
+            }
+            throw error
+        }
 
         revalidatePath(Routes.CONTROL_FLOTA.VEHICLE_SHIFT)
         return { success: true }

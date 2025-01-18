@@ -1,11 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { addYears, format } from "date-fns"
+import { addYears, format, startOfDay } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -74,6 +74,26 @@ export function EditVehicleShiftDialog({
         } : undefined,
     })
 
+    useEffect(() => {
+        if (assignment) {
+            form.reset({
+                vehicle_number: assignment.vehicle_number,
+                shift_id: assignment.shift_id,
+                start_date: new Date(assignment.start_date),
+                end_date: new Date(assignment.end_date),
+                priority: assignment.priority,
+            })
+        }
+    }, [assignment, form])
+
+    function handleOpenChange(open: boolean) {
+        if (!open) {
+            form.reset()
+            setIsSubmitting(false)
+        }
+        onOpenChange(open)
+    }
+
     async function onSubmit(values: z.infer<typeof formSchema>) {
         if (!assignment?.id) return
 
@@ -85,8 +105,7 @@ export function EditVehicleShiftDialog({
                 throw new Error(result.error)
             }
 
-            onOpenChange(false)
-            router.refresh()
+            handleOpenChange(false)
         } catch (error) {
             console.error("Error:", error)
         } finally {
@@ -94,16 +113,21 @@ export function EditVehicleShiftDialog({
         }
     }
 
-    // Reuse the same form structure as NewVehicleShiftDialog
-    // but with a different title and submit handler
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[425px]">
+        <Dialog open={open} onOpenChange={handleOpenChange}>
+            <DialogContent 
+                className="sm:max-w-sm md:max-w-md"
+                onInteractOutside={(e) => {
+                    if (isSubmitting) {
+                        e.preventDefault()
+                    }
+                }}
+            >
                 <DialogHeader>
                     <DialogTitle>Editar Asignación de Vehículo</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         <FormField
                             control={form.control}
                             name="vehicle_number"
@@ -111,7 +135,17 @@ export function EditVehicleShiftDialog({
                                 <FormItem>
                                     <FormLabel># Móvil</FormLabel>
                                     <FormControl>
-                                        <Input type="number" {...field} />
+                                        <Input 
+                                            type="number" 
+                                            min={1}
+                                            max={9999}
+                                            {...field}
+                                            onChange={(e) => {
+                                                const value = e.target.value ? Math.max(1, parseInt(e.target.value)) : 0
+                                                field.onChange(value)
+                                            }}
+                                            value={field.value || ""}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -123,9 +157,9 @@ export function EditVehicleShiftDialog({
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Turno</FormLabel>
-                                    <Select 
-                                        onValueChange={field.onChange} 
-                                        defaultValue={field.value}
+                                    <Select
+                                        onValueChange={field.onChange}
+                                        value={field.value}
                                     >
                                         <FormControl>
                                             <SelectTrigger>
@@ -175,9 +209,10 @@ export function EditVehicleShiftDialog({
                                                 selected={field.value}
                                                 onSelect={field.onChange}
                                                 disabled={(date) =>
-                                                    date < new Date() || date > maxDate
+                                                    date < startOfDay(new Date()) || date > maxDate
                                                 }
                                                 initialFocus
+                                                locale={es}
                                             />
                                         </PopoverContent>
                                     </Popover>
@@ -216,9 +251,10 @@ export function EditVehicleShiftDialog({
                                                 selected={field.value}
                                                 onSelect={field.onChange}
                                                 disabled={(date) =>
-                                                    date < form.getValues("start_date") || date > maxDate
+                                                    date < startOfDay(form.getValues("start_date")) || date > maxDate
                                                 }
                                                 initialFocus
+                                                locale={es}
                                             />
                                         </PopoverContent>
                                     </Popover>
@@ -233,8 +269,8 @@ export function EditVehicleShiftDialog({
                                 <FormItem>
                                     <FormLabel>Prioridad</FormLabel>
                                     <FormControl>
-                                        <Input 
-                                            type="number" 
+                                        <Input
+                                            type="number"
                                             {...field}
                                             min={1}
                                             max={100}
@@ -244,15 +280,19 @@ export function EditVehicleShiftDialog({
                                 </FormItem>
                             )}
                         />
-                        <div className="flex justify-end space-x-4 pt-4">
+                        <div className="flex justify-end space-x-2">
                             <Button
                                 type="button"
                                 variant="outline"
-                                onClick={() => onOpenChange(false)}
+                                onClick={() => handleOpenChange(false)}
+                                disabled={isSubmitting}
                             >
                                 Cancelar
                             </Button>
-                            <Button type="submit" disabled={isSubmitting}>
+                            <Button 
+                                type="submit"
+                                disabled={isSubmitting}
+                            >
                                 {isSubmitting ? "Guardando..." : "Guardar"}
                             </Button>
                         </div>
