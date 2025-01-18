@@ -41,9 +41,10 @@ import { Calendar } from "@/components/ui/calendar"
 import { cn } from "@/lib/utils"
 import { createVehicleShift } from "@/lib/shifts/actions"
 
-const formSchema = z.object({
+export const formSchema = z.object({
     vehicle_number: z.coerce.number().positive("El número debe ser positivo"),
     shift_id: z.string().uuid("Seleccione un turno válido"),
+    shift_name: z.string().optional(),
     start_date: z.date({
         required_error: "Se requiere una fecha de inicio",
     }),
@@ -77,6 +78,8 @@ export function NewVehicleShiftDialog({
             priority: 1,
             start_date: startOfDay(new Date()),
             end_date: startOfDay(new Date()),
+            vehicle_number: 0,
+            shift_id: "",
         },
     })
 
@@ -131,7 +134,16 @@ export function NewVehicleShiftDialog({
                                 <FormItem>
                                     <FormLabel>Número de Móvil</FormLabel>
                                     <FormControl>
-                                        <Input type="number" {...field} />
+                                        <Input 
+                                            type="number" 
+                                            min={1}
+                                            {...field}
+                                            onChange={(e) => {
+                                                const value = e.target.value ? parseInt(e.target.value) : 0
+                                                field.onChange(value)
+                                            }}
+                                            value={field.value || ""}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -145,7 +157,7 @@ export function NewVehicleShiftDialog({
                                     <FormLabel>Turno</FormLabel>
                                     <Select 
                                         onValueChange={field.onChange} 
-                                        defaultValue={field.value}
+                                        value={field.value}
                                     >
                                         <FormControl>
                                             <SelectTrigger>
@@ -238,7 +250,7 @@ export function NewVehicleShiftDialog({
                                                     selected={field.value}
                                                     onSelect={field.onChange}
                                                     disabled={(date) =>
-                                                        date < startOfDay(form.getValues("start_date")) || date > maxDate
+                                                        date < form.getValues("start_date") || date > maxDate
                                                     }
                                                     initialFocus
                                                     locale={es}
@@ -259,9 +271,14 @@ export function NewVehicleShiftDialog({
                                     <FormControl>
                                         <Input 
                                             type="number" 
-                                            {...field}
                                             min={1}
                                             max={100}
+                                            {...field}
+                                            onChange={(e) => {
+                                                const value = e.target.value ? parseInt(e.target.value) : 1
+                                                field.onChange(value)
+                                            }}
+                                            value={field.value || 1}
                                         />
                                     </FormControl>
                                     <FormMessage />

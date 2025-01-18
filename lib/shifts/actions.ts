@@ -22,7 +22,7 @@ const vehicleShiftSchema = z.object({
 export async function createVehicleShift(formData: z.infer<typeof vehicleShiftSchema>) {
     const cookieStore = cookies()
     const supabase = createClient(cookieStore)
-    
+
     try {
         const result = vehicleShiftSchema.safeParse(formData)
         if (!result.success) {

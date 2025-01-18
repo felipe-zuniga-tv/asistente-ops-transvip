@@ -40,18 +40,8 @@ import { Calendar } from "@/components/ui/calendar"
 import { cn } from "@/lib/utils"
 import { updateVehicleShift } from "@/lib/shifts/actions"
 import { VehicleShift } from "./vehicle-shifts"
-
-const formSchema = z.object({
-    vehicle_number: z.coerce.number().positive("El número debe ser positivo"),
-    shift_id: z.string().uuid("Seleccione un turno válido"),
-    start_date: z.date({
-        required_error: "Se requiere una fecha de inicio",
-    }),
-    end_date: z.date({
-        required_error: "Se requiere una fecha de fin",
-    }),
-    priority: z.coerce.number().min(1).max(100, "La prioridad debe estar entre 1 y 100"),
-})
+import { formSchema } from "./new-vehicle-shift-dialog"
+import { es } from "date-fns/locale"
 
 interface EditVehicleShiftDialogProps {
     open: boolean
@@ -171,7 +161,7 @@ export function EditVehicleShiftDialog({
                                                     )}
                                                 >
                                                     {field.value ? (
-                                                        format(field.value, "PPP")
+                                                        format(field.value, "PPP", { locale: es })
                                                     ) : (
                                                         <span>Seleccione una fecha</span>
                                                     )}
@@ -212,7 +202,7 @@ export function EditVehicleShiftDialog({
                                                     )}
                                                 >
                                                     {field.value ? (
-                                                        format(field.value, "PPP")
+                                                        format(field.value, "PPP", { locale: es })
                                                     ) : (
                                                         <span>Seleccione una fecha</span>
                                                     )}
