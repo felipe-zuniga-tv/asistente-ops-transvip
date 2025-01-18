@@ -1,4 +1,4 @@
-import { ShiftsCard } from "@/components/shifts/shifts-content";
+import { ShiftsDefinition } from "@/components/shifts/shifts-definition";
 import { getShifts } from "@/lib/database/actions";
 
 export const revalidate = 0;
@@ -6,5 +6,5 @@ export const revalidate = 0;
 export default async function ShiftsDefinitionPage() {
   const shifts = await getShifts();
 
-  return <ShiftsCard shifts={shifts} />
+  return <ShiftsDefinition shifts={shifts} />
 }

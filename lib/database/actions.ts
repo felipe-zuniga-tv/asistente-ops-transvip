@@ -21,7 +21,7 @@ export async function getShifts() {
 	const { data, error } = await supabase
 		.from('shifts')
 		.select('*')
-		.order('created_timestamp', { ascending: false })
+		.order('name', { ascending: true })
 
 	if (error) throw new Error(error.message)
 	return data

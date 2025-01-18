@@ -9,7 +9,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { VehicleShift } from "../vehicle-shifts-content"
+import { VehicleShift } from "../vehicle-shifts"
 import { format } from "date-fns"
 
 export const columns: ColumnDef<VehicleShift>[] = [

@@ -40,7 +40,7 @@ interface ShiftsCardProps {
     shifts: Shift[];
 }
 
-export function ShiftsCard({ shifts }: ShiftsCardProps) {
+export function ShiftsDefinition({ shifts }: ShiftsCardProps) {
     const router = useRouter();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);

@@ -1,4 +1,4 @@
-import { VehicleShiftsContent } from "@/components/vehicle-shifts/vehicle-shifts-content"
+import { VehicleShifts } from "@/components/vehicle-shifts/vehicle-shifts"
 import { getShifts, getVehicleShifts } from "@/lib/database/actions"
 
 export default async function VehicleShiftsPage() {
@@ -6,7 +6,7 @@ export default async function VehicleShiftsPage() {
     const vehicleShifts = await getVehicleShifts()
     
     return (
-        <VehicleShiftsContent 
+        <VehicleShifts 
             shifts={shifts} 
             vehicleShifts={vehicleShifts || []}
         />

@@ -33,7 +33,7 @@ interface VehicleShiftsContentProps {
     vehicleShifts: VehicleShift[]
 }
 
-export function VehicleShiftsContent({ shifts, vehicleShifts }: VehicleShiftsContentProps) {
+export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentProps) {
     const router = useRouter()
     const [isNewDialogOpen, setIsNewDialogOpen] = useState(false)
     const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)

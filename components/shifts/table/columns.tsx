@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowDown, ArrowUp, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { format } from "date-fns";
-import { Shift, WEEKDAYS } from "../shifts-content";
+import { Shift, WEEKDAYS } from "../shifts-definition";
 import {
     DropdownMenu,
     DropdownMenuContent,

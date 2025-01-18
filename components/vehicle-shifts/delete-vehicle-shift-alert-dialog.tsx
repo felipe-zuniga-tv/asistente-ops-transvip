@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { deleteVehicleShift } from "@/lib/shifts/actions"
 import { useRouter } from "next/navigation"
-import { VehicleShift } from "./vehicle-shifts-content"
+import { VehicleShift } from "./vehicle-shifts"
 
 interface AlertDialogDeleteVehicleShiftProps {
     assignment: VehicleShift | null

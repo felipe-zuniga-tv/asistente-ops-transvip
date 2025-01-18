@@ -39,7 +39,7 @@ import {
 import { Calendar } from "@/components/ui/calendar"
 import { cn } from "@/lib/utils"
 import { updateVehicleShift } from "@/lib/shifts/actions"
-import { VehicleShift } from "./vehicle-shifts-content"
+import { VehicleShift } from "./vehicle-shifts"
 
 const formSchema = z.object({
     vehicle_number: z.coerce.number().positive("El número debe ser positivo"),

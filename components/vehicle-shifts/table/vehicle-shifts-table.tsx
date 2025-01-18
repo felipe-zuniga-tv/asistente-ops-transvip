@@ -24,7 +24,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft, ArrowRight, Search } from "lucide-react"
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
-import { VehicleShift } from "../vehicle-shifts-content"
+import { VehicleShift } from "../vehicle-shifts"
 
 interface DataTableProps {
     columns: ColumnDef<VehicleShift>[]

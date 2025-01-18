@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { Label } from "../ui/label";
 import { createShift } from "@/lib/database/actions";
 import { useTransition } from "react";
-import { WEEKDAYS } from "./shifts-content";
+import { WEEKDAYS } from "./shifts-definition";
 
 interface NewShiftDialogProps {
 	open: boolean;

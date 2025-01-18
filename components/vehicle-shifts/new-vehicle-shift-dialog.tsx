@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { addYears, format, startOfDay } from "date-fns"
+import { es } from "date-fns/locale"
 import { CalendarIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -79,6 +80,13 @@ export function NewVehicleShiftDialog({
         },
     })
 
+    function handleOpenChange(open: boolean) {
+        if (!open) {
+            form.reset()
+        }
+        onOpenChange(open)
+    }
+
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             setIsSubmitting(true)
@@ -104,8 +112,13 @@ export function NewVehicleShiftDialog({
     }
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-sm md:max-w-md">
+        <Dialog open={open} onOpenChange={handleOpenChange}>
+            <DialogContent 
+                className="sm:max-w-sm md:max-w-md"
+                onInteractOutside={(e) => {
+                    e.preventDefault()
+                }}
+            >
                 <DialogHeader>
                     <DialogTitle>Nueva Asignación de Vehículo</DialogTitle>
                 </DialogHeader>
@@ -116,7 +129,7 @@ export function NewVehicleShiftDialog({
                             name="vehicle_number"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel># Móvil</FormLabel>
+                                    <FormLabel>Número de Móvil</FormLabel>
                                     <FormControl>
                                         <Input type="number" {...field} />
                                     </FormControl>
@@ -151,7 +164,7 @@ export function NewVehicleShiftDialog({
                                 </FormItem>
                             )}
                         />
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
                             <FormField
                                 control={form.control}
                                 name="start_date"
@@ -169,9 +182,9 @@ export function NewVehicleShiftDialog({
                                                         )}
                                                     >
                                                         {field.value ? (
-                                                            format(field.value, "PPP")
+                                                            format(field.value, "PPP", { locale: es })
                                                         ) : (
-                                                            <span>Selecciona...</span>
+                                                            <span>Selecciona una fecha</span>
                                                         )}
                                                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                                     </Button>
@@ -186,6 +199,7 @@ export function NewVehicleShiftDialog({
                                                         date < startOfDay(new Date()) || date > maxDate
                                                     }
                                                     initialFocus
+                                                    locale={es}
                                                 />
                                             </PopoverContent>
                                         </Popover>
@@ -210,9 +224,9 @@ export function NewVehicleShiftDialog({
                                                         )}
                                                     >
                                                         {field.value ? (
-                                                            format(field.value, "PPP")
+                                                            format(field.value, "PPP", { locale: es })
                                                         ) : (
-                                                            <span>Selecciona...</span>
+                                                            <span>Selecciona una fecha</span>
                                                         )}
                                                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                                     </Button>
@@ -224,9 +238,10 @@ export function NewVehicleShiftDialog({
                                                     selected={field.value}
                                                     onSelect={field.onChange}
                                                     disabled={(date) =>
-                                                        date < form.getValues("start_date") || date > maxDate
+                                                        date < startOfDay(form.getValues("start_date")) || date > maxDate
                                                     }
                                                     initialFocus
+                                                    locale={es}
                                                 />
                                             </PopoverContent>
                                         </Popover>
