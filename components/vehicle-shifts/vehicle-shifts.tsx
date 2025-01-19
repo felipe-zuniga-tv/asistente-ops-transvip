@@ -53,6 +53,27 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
         document.body.removeChild(a)
     }
 
+    const handleEditAssignment = (assignment: VehicleShift) => {
+        setEditingAssignment({
+            ...assignment,
+            start_date: assignment.start_date,
+            end_date: assignment.end_date,
+        })
+    }
+
+    const handleEditComplete = async () => {
+        try {
+            setEditingAssignment(null)
+            router.refresh()
+            
+            setTimeout(() => {
+                window.location.reload()
+            }, 100)
+        } catch (error) {
+            console.error('Error completing edit:', error)
+        }
+    }
+
     return (
         <Card className="max-w-4xl lg:mx-auto">
             <CardHeader>
@@ -95,7 +116,7 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
                 <VehicleShiftsTable
                     columns={columns}
                     data={vehicleShifts}
-                    onEdit={setEditingAssignment}
+                    onEdit={handleEditAssignment}
                     onDelete={setAssignmentToDelete}
                 />
             </CardContent>
@@ -108,12 +129,7 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
 
             <EditVehicleShiftDialog 
                 open={!!editingAssignment}
-                onOpenChange={(open) => {
-                    if (!open) {
-                        setEditingAssignment(null)
-                        router.refresh()
-                    }
-                }}
+                onOpenChange={handleEditComplete}
                 assignment={editingAssignment}
                 shifts={shifts}
             />

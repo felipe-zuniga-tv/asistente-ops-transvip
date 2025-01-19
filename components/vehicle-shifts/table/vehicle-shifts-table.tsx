@@ -55,6 +55,12 @@ export function VehicleShiftsTable({
             sorting,
             columnFilters,
         },
+        filterFns: {
+            contains: (row, columnId, filter) => {
+                const value = String(row.getValue(columnId))
+                return value.toLowerCase().includes(String(filter).toLowerCase())
+            },
+        },
         meta: {
             onEdit,
             onDelete,
@@ -62,18 +68,18 @@ export function VehicleShiftsTable({
     })
 
     return (
-        <div>
+        <>
             <div className="flex items-center justify-between py-4">
                 <div className="relative">
                     <Input
-                        placeholder="Filtrar por # móvil..."
-                        value={(table.getColumn("vehicle_number")?.getFilterValue() as string) ?? ""}
-                        onChange={(event) =>
-                            table.getColumn("vehicle_number")?.setFilterValue(event.target.value)
-                        }
-                        className="peer pe-9 ps-9 max-w-sm"
-                        type="number"
-                    />
+						placeholder="Filtrar por móvil..."
+                        type="text"
+						value={(table.getColumn("vehicle_number")?.getFilterValue() as string) ?? ""}
+						onChange={(event) =>
+							table.getColumn("vehicle_number")?.setFilterValue(event.target.value)
+						}
+						className="peer pe-9 ps-9 max-w-sm"
+					/>
                     <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
                         <Search size={16} strokeWidth={2} />
                     </div>
@@ -144,6 +150,6 @@ export function VehicleShiftsTable({
                     </TableBody>
                 </Table>
             </div>
-        </div>
+        </>
     )
 }

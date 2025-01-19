@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { addYears, format, startOfDay } from "date-fns"
-import { CalendarIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -31,19 +29,28 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import { Calendar } from "@/components/ui/calendar"
-import { cn } from "@/lib/utils"
 import { updateVehicleShift } from "@/lib/shifts/actions"
 import { VehicleShift } from "./vehicle-shifts"
-import { formSchema } from "./new-vehicle-shift-dialog"
-import { es } from "date-fns/locale"
 
-interface EditVehicleShiftDialogProps {
+const formSchema = z.object({
+    vehicle_number: z.coerce.number().min(1, "El número debe ser mayor a 0"),
+    shift_id: z.string().uuid("Seleccione un turno válido"),
+    start_date: z.string(),
+    end_date: z.string(),
+    priority: z.coerce.number().min(1).max(100).default(1),
+}).refine(
+    (data) => {
+        const start = new Date(data.start_date)
+        const end = new Date(data.end_date)
+        return end >= start
+    },
+    {
+        message: "La fecha de fin debe ser mayor o igual a la fecha de inicio",
+        path: ["end_date"],
+    }
+)
+
+interface Props {
     open: boolean
     onOpenChange: (open: boolean) => void
     assignment: VehicleShift | null
@@ -58,29 +65,31 @@ export function EditVehicleShiftDialog({
     onOpenChange,
     assignment,
     shifts,
-}: EditVehicleShiftDialogProps) {
+}: Props) {
     const router = useRouter()
     const [isSubmitting, setIsSubmitting] = useState(false)
-    const maxDate = addYears(new Date(), 5)
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: assignment ? {
-            vehicle_number: assignment.vehicle_number,
-            shift_id: assignment.shift_id,
-            start_date: new Date(assignment.start_date),
-            end_date: new Date(assignment.end_date),
-            priority: assignment.priority,
-        } : undefined,
+        defaultValues: {
+            vehicle_number: undefined,
+            shift_id: "",
+            start_date: new Date().toISOString().split('T')[0],
+            end_date: new Date().toISOString().split('T')[0],
+            priority: 1,
+        }
     })
 
     useEffect(() => {
         if (assignment) {
+            const start = new Date(assignment.start_date)
+            const end = new Date(assignment.end_date)
+            
             form.reset({
                 vehicle_number: assignment.vehicle_number,
                 shift_id: assignment.shift_id,
-                start_date: new Date(assignment.start_date),
-                end_date: new Date(assignment.end_date),
+                start_date: start.toISOString().split('T')[0],
+                end_date: end.toISOString().split('T')[0],
                 priority: assignment.priority,
             })
         }
@@ -99,15 +108,15 @@ export function EditVehicleShiftDialog({
 
         try {
             setIsSubmitting(true)
-            const result = await updateVehicleShift(assignment.id, values)
-
-            if (result.error) {
-                throw new Error(result.error)
-            }
-
+            await updateVehicleShift(assignment.id, {
+                ...values,
+                start_date: new Date(values.start_date),
+                end_date: new Date(values.end_date),
+            })
             handleOpenChange(false)
+            router.refresh()
         } catch (error) {
-            console.error("Error:", error)
+            console.error(error)
         } finally {
             setIsSubmitting(false)
         }
@@ -115,14 +124,7 @@ export function EditVehicleShiftDialog({
 
     return (
         <Dialog open={open} onOpenChange={handleOpenChange}>
-            <DialogContent 
-                className="sm:max-w-sm md:max-w-md"
-                onInteractOutside={(e) => {
-                    if (isSubmitting) {
-                        e.preventDefault()
-                    }
-                }}
-            >
+            <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Editar Asignación de Vehículo</DialogTitle>
                 </DialogHeader>
@@ -133,34 +135,22 @@ export function EditVehicleShiftDialog({
                             name="vehicle_number"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel># Móvil</FormLabel>
+                                    <FormLabel>Número de Móvil</FormLabel>
                                     <FormControl>
-                                        <Input 
-                                            type="number" 
-                                            min={1}
-                                            max={9999}
-                                            {...field}
-                                            onChange={(e) => {
-                                                const value = e.target.value ? Math.max(1, parseInt(e.target.value)) : 0
-                                                field.onChange(value)
-                                            }}
-                                            value={field.value || ""}
-                                        />
+                                        <Input type="number" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+
                         <FormField
                             control={form.control}
                             name="shift_id"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Turno</FormLabel>
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        value={field.value}
-                                    >
+                                    <Select onValueChange={field.onChange} value={field.value}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Seleccione un turno" />
@@ -178,90 +168,41 @@ export function EditVehicleShiftDialog({
                                 </FormItem>
                             )}
                         />
-                        <FormField
-                            control={form.control}
-                            name="start_date"
-                            render={({ field }) => (
-                                <FormItem className="flex flex-col">
-                                    <FormLabel>Fecha Inicio</FormLabel>
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <FormControl>
-                                                <Button
-                                                    variant={"outline"}
-                                                    className={cn(
-                                                        "w-full pl-3 text-left font-normal",
-                                                        !field.value ? "text-muted-foreground" : ""
-                                                    )}
-                                                >
-                                                    {field.value ? (
-                                                        format(field.value, "PPP", { locale: es })
-                                                    ) : (
-                                                        <span>Seleccione una fecha</span>
-                                                    )}
-                                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                                </Button>
-                                            </FormControl>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-auto p-0" align="start">
-                                            <Calendar
-                                                mode="single"
-                                                selected={field.value}
-                                                onSelect={field.onChange}
-                                                disabled={(date) =>
-                                                    date < startOfDay(new Date()) || date > maxDate
-                                                }
-                                                initialFocus
-                                                locale={es}
+
+                        <div className="grid grid-cols-2 gap-4">
+                            <FormField
+                                control={form.control}
+                                name="start_date"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Fecha Inicio</FormLabel>
+                                        <FormControl>
+                                            <Input type="date" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="end_date"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Fecha Fin</FormLabel>
+                                        <FormControl>
+                                            <Input 
+                                                type="date" 
+                                                {...field}
+                                                min={form.getValues("start_date")}
                                             />
-                                        </PopoverContent>
-                                    </Popover>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="end_date"
-                            render={({ field }) => (
-                                <FormItem className="flex flex-col">
-                                    <FormLabel>Fecha Fin</FormLabel>
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <FormControl>
-                                                <Button
-                                                    variant={"outline"}
-                                                    className={cn(
-                                                        "w-full pl-3 text-left font-normal",
-                                                        !field.value ? "text-muted-foreground" : ""
-                                                    )}
-                                                >
-                                                    {field.value ? (
-                                                        format(field.value, "PPP", { locale: es })
-                                                    ) : (
-                                                        <span>Seleccione una fecha</span>
-                                                    )}
-                                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                                </Button>
-                                            </FormControl>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-auto p-0" align="start">
-                                            <Calendar
-                                                mode="single"
-                                                selected={field.value}
-                                                onSelect={field.onChange}
-                                                disabled={(date) =>
-                                                    date < startOfDay(form.getValues("start_date")) || date > maxDate
-                                                }
-                                                initialFocus
-                                                locale={es}
-                                            />
-                                        </PopoverContent>
-                                    </Popover>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+
                         <FormField
                             control={form.control}
                             name="priority"
@@ -269,30 +210,23 @@ export function EditVehicleShiftDialog({
                                 <FormItem>
                                     <FormLabel>Prioridad</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            type="number"
-                                            {...field}
-                                            min={1}
-                                            max={100}
-                                        />
+                                        <Input type="number" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-                        <div className="flex justify-end space-x-2">
-                            <Button
-                                type="button"
-                                variant="outline"
+
+                        <div className="flex justify-end space-x-2 pt-4">
+                            <Button 
+                                type="button" 
+                                variant="outline" 
                                 onClick={() => handleOpenChange(false)}
                                 disabled={isSubmitting}
                             >
                                 Cancelar
                             </Button>
-                            <Button 
-                                type="submit"
-                                disabled={isSubmitting}
-                            >
+                            <Button type="submit" disabled={isSubmitting}>
                                 {isSubmitting ? "Guardando..." : "Guardar"}
                             </Button>
                         </div>
