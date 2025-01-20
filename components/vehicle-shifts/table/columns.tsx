@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { VehicleShift } from "../vehicle-shifts"
 import { format } from "date-fns"
+import { es } from "date-fns/locale"
 
 export const columns: ColumnDef<VehicleShift>[] = [
     {
@@ -26,20 +27,26 @@ export const columns: ColumnDef<VehicleShift>[] = [
     {
         accessorKey: "start_date",
         header: () => <div className="text-center">Fecha Inicio</div>,
-        cell: ({ row }) => (
-            <div className="text-center">
-                {format(new Date(row.getValue("start_date")), "dd/MM/yyyy")}
-            </div>
-        ),
+        cell: ({ row }) => {
+            const date = new Date(row.getValue("start_date") + "T00:00:00");
+            return (
+                <div className="text-center">
+                    {format(date, "dd/MM/yyyy", { locale: es })}
+                </div>
+            );
+        },
     },
     {
         accessorKey: "end_date",
         header: () => <div className="text-center">Fecha Fin</div>,
-        cell: ({ row }) => (
-            <div className="text-center">
-                {format(new Date(row.getValue("end_date")), "dd/MM/yyyy")}
-            </div>
-        ),
+        cell: ({ row }) => {
+            const date = new Date(row.getValue("end_date") + "T00:00:00");
+            return (
+                <div className="text-center">
+                    {format(date, "dd/MM/yyyy", { locale: es })}
+                </div>
+            );
+        },
     },
     {
         accessorKey: "priority",
