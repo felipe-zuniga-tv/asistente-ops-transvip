@@ -15,7 +15,8 @@ import { UploadShiftsDialog } from "./upload-shifts-dialog";
 import { ShiftsDataTable } from "./table/shifts-data-table";
 import { columns } from "./table/columns";
 import { useRouter } from "next/navigation";
-import { AlertDialogDeleteShift } from "./alert-dialog-delete-shift";
+import { AlertDialogDeleteShift } from "./delete-shift-alert-dialog";
+import { toast } from "sonner";
 
 export const WEEKDAYS = [
     { value: "1", label: "Lunes" },
@@ -80,13 +81,14 @@ export function ShiftsDefinition({ shifts }: ShiftsCardProps) {
         try {
             await deleteShift(shift.id);
             router.refresh();
+            toast.success("Turno eliminado exitosamente");
 
             setTimeout(() => {
                 window.location.reload();
             }, 100);
         } catch (error) {
             console.error('Error deleting shift:', error);
-            // toast.error("Error al eliminar el turno");
+            toast.error("Error al eliminar el turno");
         }
     };
 

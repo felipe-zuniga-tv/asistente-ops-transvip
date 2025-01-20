@@ -3,6 +3,7 @@
 import { createClient } from "@/utils/supabase/server"
 import { cookies } from "next/headers"
 import { revalidatePath } from "next/cache"
+import { Routes } from "@/utils/routes"
 
 export async function getVehicleShiftsByDateRange(
     vehicleNumber: number,
@@ -19,7 +20,8 @@ export async function getVehicleShiftsByDateRange(
                 *,
                 shifts (
                     start_time,
-                    end_time
+                    end_time,
+                    free_day
                 )
             `)
             .eq("vehicle_number", vehicleNumber)
@@ -36,10 +38,11 @@ export async function getVehicleShiftsByDateRange(
             ...shift,
             start_time: shift.shifts?.start_time,
             end_time: shift.shifts?.end_time,
+            free_day: shift.shifts?.free_day,
             shifts: undefined // Remove the nested shifts object
         }))
 
-        revalidatePath("/control-flota/dashboard")
+        revalidatePath(Routes.CONTROL_FLOTA.DASHBOARD)
         return { data: transformedShifts }
     } catch (error) {
         return { error: "Error fetching vehicle shifts" }

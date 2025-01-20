@@ -52,7 +52,7 @@ export function AlertDialogDeleteVehicleShift({
                     <AlertDialogTitle>¿Está seguro?</AlertDialogTitle>
                     <AlertDialogDescription>
                         <div className="flex flex-col gap-2">
-                            <p>Esta acción eliminará la siguiente asignación:</p>
+                            <span>Esta acción eliminará la siguiente asignación:</span>
                             <div className="p-3 bg-gray-100 rounded-md shadow-md flex flex-col gap-2">
                                 <div className="flex flex-row items-center gap-1">
                                     <span className="font-semibold">Vehículo:</span>

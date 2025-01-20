@@ -12,7 +12,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { useState } from "react";
-import { AlertDialogDeleteShift } from "./alert-dialog-delete-shift";
+import { AlertDialogDeleteShift } from "./delete-shift-alert-dialog";
 import { Shift, WEEKDAYS } from "./shifts-definition";
 
 interface ShiftsTableContentProps {
