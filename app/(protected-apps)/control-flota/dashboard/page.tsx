@@ -1,3 +1,5 @@
+import { VehicleShiftsDashboard } from "@/components/vehicle-shifts/dashboard/vehicle-shifts-dashboard"
+
 export default function DashboardShiftsPage() {
-    return <>Dashboard Shifts</>
+    return <VehicleShiftsDashboard daysToShow={30} />
 }

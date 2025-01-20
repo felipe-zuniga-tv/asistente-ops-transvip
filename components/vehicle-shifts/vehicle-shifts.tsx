@@ -23,6 +23,8 @@ export interface VehicleShift {
     end_date: string
     priority: number
     created_at: string
+    start_time?: string
+    end_time?: string
 }
 
 interface VehicleShiftsContentProps {
