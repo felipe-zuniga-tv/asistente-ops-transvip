@@ -17,13 +17,11 @@ import { VehicleShift } from "./vehicle-shifts"
 interface AlertDialogDeleteVehicleShiftProps {
     assignment: VehicleShift | null
     onOpenChange: (open: boolean) => void
-    onDelete?: (assignment: VehicleShift) => void
 }
 
 export function AlertDialogDeleteVehicleShift({
     assignment,
     onOpenChange,
-    onDelete,
 }: AlertDialogDeleteVehicleShiftProps) {
     const router = useRouter()
 
@@ -38,10 +36,10 @@ export function AlertDialogDeleteVehicleShift({
             }
 
             onOpenChange(false)
-            if (onDelete && assignment) {
-                onDelete(assignment)
-            }
             router.refresh()
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
         } catch (error) {
             console.error("Error:", error)
         }
