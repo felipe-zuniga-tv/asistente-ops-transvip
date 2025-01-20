@@ -118,7 +118,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 					active: true
 				},
 				{
-					title: 'Calendario',
+					title: 'Calendario por Móvil',
 					icon: Calendar,
 					url: Routes.CONTROL_FLOTA.DASHBOARD,
 					active: true
