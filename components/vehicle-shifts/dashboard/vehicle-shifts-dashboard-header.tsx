@@ -35,17 +35,17 @@ export function VehicleShiftsDashboardHeader({
     return (
         <CardHeader>
             <CardTitle className="flex flex-col gap-4">
-                <div className="flex flex-row items-center justify-between">
+                <div className="flex flex-col gap-4 sm:flex-row items-center justify-center sm:justify-between">
                     <div className="flex flex-row items-center gap-2">
                         <TransvipLogo size={20} />
-                        <span className="text-sm sm:text-base">Calendario de Turnos</span>
+                        <span className="text-base sm:text-lg">Calendario de Turnos</span>
                     </div>
-                    <div className="ml-auto flex flex-row items-center gap-2">
+                    <div className="sm:ml-auto flex flex-row items-center gap-2">
                         <span className="text-sm text-muted-foreground whitespace-nowrap">Mostrar:</span>
                         <Select value={daysToShow.toString()}
                             onValueChange={(value) => onDaysToShowChange(parseInt(value))}
                         >
-                            <SelectTrigger className="w-[130px]">
+                            <SelectTrigger className="w-[110px]">
                                 <SelectValue placeholder="Días" />
                             </SelectTrigger>
                             <SelectContent>
@@ -59,7 +59,7 @@ export function VehicleShiftsDashboardHeader({
                     </div>
                 </div>
                 <div className="flex items-center">
-                    <div className="flex justify-start items-center gap-2">
+                    <div className="w-full flex flex-col sm:flex-row justify-center sm:justify-start items-center gap-2">
                         <div className="relative">
                             <Input
                                 id="vehicle_number"

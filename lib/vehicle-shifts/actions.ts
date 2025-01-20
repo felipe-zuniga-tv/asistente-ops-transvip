@@ -25,8 +25,7 @@ export async function getVehicleShiftsByDateRange(
                 )
             `)
             .eq("vehicle_number", vehicleNumber)
-            .gte("start_date", startDate)
-            .lte("end_date", endDate)
+            .or(`start_date.gte.${startDate}, end_date.lte.${endDate}`)
             .order("priority", { ascending: false })
 
         if (error) {
