@@ -38,6 +38,9 @@ export function AlertDialogDeleteVehicleShift({
             }
 
             onOpenChange(false)
+            if (onDelete && assignment) {
+                onDelete(assignment)
+            }
             router.refresh()
         } catch (error) {
             console.error("Error:", error)
@@ -50,8 +53,23 @@ export function AlertDialogDeleteVehicleShift({
                 <AlertDialogHeader>
                     <AlertDialogTitle>¿Está seguro?</AlertDialogTitle>
                     <AlertDialogDescription>
-                        Esta acción eliminará la asignación del vehículo {assignment?.vehicle_number} 
-                        del turno {assignment?.shift_name}.
+                        <div className="flex flex-col gap-2">
+                            <p>Esta acción eliminará la siguiente asignación:</p>
+                            <div className="p-3 bg-gray-100 rounded-md shadow-md flex flex-col gap-2">
+                                <div className="flex flex-row items-center gap-1">
+                                    <span className="font-semibold">Vehículo:</span>
+                                    <span>{assignment?.vehicle_number}</span>
+                                </div>
+                                <div className="flex flex-row items-center gap-1">
+                                    <span className="font-semibold">Turno:</span>
+                                    <span>{assignment?.shift_name}</span>
+                                </div>
+                                <div className="flex flex-row items-center gap-1">
+                                    <span className="font-semibold">Prioridad:</span>
+                                    <span>{assignment?.priority}</span>
+                                </div>
+                            </div>
+                        </div>
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

@@ -94,7 +94,6 @@ export const columns: ColumnDef<Shift>[] = [
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Acciones</DropdownMenuLabel>
                             <DropdownMenuItem onClick={() => table.options.meta?.onEdit?.(shift)}>
                                 <Pencil className="h-4 w-4" /> Editar
                             </DropdownMenuItem>

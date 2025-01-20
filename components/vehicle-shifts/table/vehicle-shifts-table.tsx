@@ -41,24 +41,27 @@ export function VehicleShiftsTable({
 }: DataTableProps) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+    const [globalFilter, setGlobalFilter] = useState<string>("")
 
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
-        onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+        onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
+        onGlobalFilterChange: setGlobalFilter,
         state: {
             sorting,
             columnFilters,
+            globalFilter,
         },
         filterFns: {
-            contains: (row, columnId, filter) => {
-                const value = String(row.getValue(columnId))
-                return value.toLowerCase().includes(String(filter).toLowerCase())
+            fuzzy: (row, columnId, value) => {
+                const rowValue = String(row.getValue(columnId))
+                return rowValue.toLowerCase().includes(String(value).toLowerCase())
             },
         },
         meta: {
@@ -72,14 +75,15 @@ export function VehicleShiftsTable({
             <div className="flex items-center justify-between py-4">
                 <div className="relative">
                     <Input
-						placeholder="Filtrar por móvil..."
-                        type="text"
-						value={(table.getColumn("vehicle_number")?.getFilterValue() as string) ?? ""}
-						onChange={(event) =>
-							table.getColumn("vehicle_number")?.setFilterValue(event.target.value)
-						}
-						className="peer pe-9 ps-9 max-w-sm"
-					/>
+                        placeholder="Filtrar por móvil..."
+                        type="number"
+                        value={table.getColumn("vehicle_number")?.getFilterValue() as number ?? ""}
+                        onChange={(event) => {
+                            const value = event.target.value
+                            table.getColumn("vehicle_number")?.setFilterValue(value)
+                        }}
+                        className="peer pe-9 ps-9 max-w-sm"
+                    />
                     <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
                         <Search size={16} strokeWidth={2} />
                     </div>

@@ -1,7 +1,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -64,13 +64,13 @@ export const columns: ColumnDef<VehicleShift>[] = [
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuItem onClick={() => onEdit?.(assignment)}>
-                                Editar
+                                <Pencil className="h-4 w-4" /> Editar
                             </DropdownMenuItem>
                             <DropdownMenuItem
                                 onClick={() => onDelete?.(assignment)}
-                                className="text-destructive"
+                                className="text-destructive hover:text-destructive bg-red-500/10 hover:bg-red-500/20"
                             >
-                                Eliminar
+                                <Trash2 className="h-4 w-4" /> Borrar
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
