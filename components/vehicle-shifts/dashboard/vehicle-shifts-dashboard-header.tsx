@@ -40,12 +40,12 @@ export function VehicleShiftsDashboardHeader({
                         <TransvipLogo size={20} />
                         <span className="text-sm sm:text-base">Calendario de Turnos</span>
                     </div>
-                    <div className="ml-auto flex flex-row items-center gap-2 w-[120px]_">
+                    <div className="ml-auto flex flex-row items-center gap-2">
                         <span className="text-sm text-muted-foreground whitespace-nowrap">Mostrar:</span>
                         <Select value={daysToShow.toString()}
                             onValueChange={(value) => onDaysToShowChange(parseInt(value))}
                         >
-                            <SelectTrigger className="w-[110px]">
+                            <SelectTrigger className="w-[130px]">
                                 <SelectValue placeholder="Días" />
                             </SelectTrigger>
                             <SelectContent>
@@ -60,7 +60,7 @@ export function VehicleShiftsDashboardHeader({
                 </div>
                 <div className="flex items-center">
                     <div className="flex justify-start items-center gap-2">
-                        <div className="relative flex-1">
+                        <div className="relative">
                             <Input
                                 id="vehicle_number"
                                 type="number"
@@ -68,35 +68,36 @@ export function VehicleShiftsDashboardHeader({
                                 value={vehicleNumber}
                                 onChange={(e) => onVehicleNumberChange(e.target.value)}
                                 className={cn(
-                                    isLoading ? "pr-10" : "", 
-                                    vehicleNumber ? "pr-10" : "",
-                                    "w-[220px] font-normal placeholder:text-muted-foreground placeholder:text-sm placeholder:font-normal"
+                                    "w-[260px] peer ps-9 pe-9",
+                                    "font-normal placeholder:text-muted-foreground placeholder:text-sm placeholder:font-normal"
                                 )}
                             />
-                            <div className="absolute inset-y-0 right-0 flex items-center">
-                                {vehicleNumber && !isLoading && (
-                                    <Button
-                                        type="button"
-                                        variant="ghost"
-                                        onClick={() => onVehicleNumberChange("")}
-                                        className="h-full px-2 text-muted-foreground hover:text-foreground"
-                                    >
-                                        <X className="h-4 w-4" />
-                                    </Button>
-                                )}
-                                {isLoading && (
-                                    <div className="pr-3">
-                                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                    </div>
-                                )}
+                            <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80">
+                                <Search className="h-4 w-4" />
                             </div>
+                            {(vehicleNumber || isLoading) && (
+                                <div className="absolute inset-y-0 end-0 flex items-center pe-3">
+                                    {vehicleNumber && !isLoading && (
+                                        <Button
+                                            type="button"
+                                            variant="ghost"
+                                            onClick={() => onVehicleNumberChange("")}
+                                            className="h-8 w-8 p-0 hover:bg-transparent"
+                                        >
+                                            <X className="h-4 w-4" />
+                                        </Button>
+                                    )}
+                                    {isLoading && (
+                                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                                    )}
+                                </div>
+                            )}
                         </div>
                         <Button
                             onClick={onSearch}
                             disabled={!vehicleNumber || isLoading}
                             className="whitespace-nowrap"
                         >
-                            <Search className="h-4 w-4 mr-2" />
                             Buscar
                         </Button>
                     </div>
