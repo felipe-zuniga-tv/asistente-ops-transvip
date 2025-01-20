@@ -50,7 +50,7 @@ export function VehicleShiftsDashboardHeader({
                             </SelectTrigger>
                             <SelectContent>
                                 {daysOptions.map((days) => (
-                                    <SelectItem key={days} value={days.toString()}>
+                                    <SelectItem key={days} value={days.toString()} className="font-normal">
                                         {days} días
                                     </SelectItem>
                                 ))}

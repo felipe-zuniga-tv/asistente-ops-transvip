@@ -116,7 +116,7 @@ export function VehicleShiftsDashboardCalendar({ shifts, hasSearched, daysToShow
 
     return (
         <CardContent>
-            <div className="flex justify-end mb-4">
+            <div className="flex justify-end">
                 <Button
                     variant="default"
                     size="sm"
@@ -135,7 +135,7 @@ export function VehicleShiftsDashboardCalendar({ shifts, hasSearched, daysToShow
                 </div>
                 {/* Week day headers */}
                 {weekDays.map((day) => (
-                    <div key={day} className="text-center font-semibold p-1 text-sm bg-muted">
+                    <div key={day} className="text-center font-semibold p-1 text-sm bg-muted shadow">
                         {day}
                     </div>
                 ))}
