@@ -598,7 +598,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 fleet_rating, fleet_comment
             } = data_r
 
-            // console.log(data_r)
+            console.log(data_r)
 
             // Get more details about the vehicle, such as type
             const vehicleDetail = await getVehicleDetail(transport_details);
@@ -685,8 +685,8 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 customer: {
                     // first_name: customer_first_name.trim(),
                     // last_name: customer_last_name.trim(),
-                    vip_flag: customer_category_name.toUpperCase() === 'VIP' || customer_category_name.toUpperCase() === 'SUPERVIP',
-                    vip_label: customer_category_name === '' ? 'NO VIP' : customer_category_name.toUpperCase(),
+                    vip_flag: (customer_category_name?.toUpperCase() === 'VIP' || customer_category_name?.toUpperCase() === 'SUPERVIP') ?? false,
+                    vip_label: !customer_category_name ? 'NO VIP' : customer_category_name.toUpperCase(),
                     full_name: pax_full_name,
                     phone_number: pax_phone_number,
                     email: job_pickup_email,
@@ -875,8 +875,8 @@ export async function getBookings(next_x_hours = 2) {
             customer: {
                 // first_name: customer_first_name.trim(),
                 // last_name: customer_last_name.trim(),
-                vip_flag: customer_category_name.toUpperCase() === 'VIP' || customer_category_name.toUpperCase() === 'SUPERVIP',
-                vip_label: customer_category_name === '' ? 'NO VIP' : customer_category_name.toUpperCase(),
+                vip_flag: (customer_category_name?.toUpperCase() === 'VIP' || customer_category_name?.toUpperCase() === 'SUPERVIP') ?? false,
+                vip_label: !customer_category_name ? 'NO VIP' : customer_category_name.toUpperCase(),
                 full_name: pax_full_name,
                 phone_number: pax_phone_number,
                 email: job_pickup_email,

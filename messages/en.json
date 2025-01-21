@@ -1,0 +1,58 @@
+{
+  "sales": {
+    "language": {
+      "title": "Select Your Language",
+      "description": "Choose your preferred language to continue"
+    },
+    "personal": {
+      "title": "Personal Information",
+      "description": "Please enter your personal details",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email"
+    },
+    "travel": {
+      "title": "Travel Information",
+      "description": "Please enter your contact and return flight details",
+      "countryCode": "Country Code",
+      "phoneNumber": "Phone Number",
+      "returnDate": "Return Date",
+      "returnTime": "Return Time",
+      "pickDate": "Pick a date",
+      "searchCountry": "Search country or code...",
+      "noResults": "No results found",
+      "select": "Select..."
+    },
+    "accommodation": {
+      "title": "Accommodation Details",
+      "description": "Please enter where you'll be staying",
+      "name": "Accommodation Name",
+      "placeholder": "Hotel, Hostel or Address"
+    },
+    "confirmation": {
+      "title": "Thank You!",
+      "description": "Your information has been submitted successfully",
+      "personalInfo": "Personal Information",
+      "contactInfo": "Contact Information",
+      "returnFlight": "Return Flight",
+      "accommodation": "Accommodation",
+      "redirecting": "Redirecting to home page..."
+    },
+    "buttons": {
+      "continue": "Continue",
+      "back": "Back",
+      "submit": "Submit",
+      "submitting": "Submitting..."
+    },
+    "validation": {
+      "firstName": "First name must be at least 2 characters.",
+      "lastName": "Last name must be at least 2 characters.",
+      "email": "Please enter a valid email address.",
+      "phoneCountry": "Please select a country code.",
+      "phoneNumber": "Phone number must be at least 6 digits.",
+      "returnDate": "Please select a date.",
+      "returnTime": "Please select a time.",
+      "accommodation": "Accommodation name must be at least 3 characters."
+    }
+  }
+} 

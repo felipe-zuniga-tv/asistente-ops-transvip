@@ -1,0 +1,54 @@
+{
+  "sales": {
+    "language": {
+      "title": "Selecione seu Idioma",
+      "description": "Escolha seu idioma preferido para continuar"
+    },
+    "personal": {
+      "title": "Informações Pessoais",
+      "description": "Por favor, insira seus dados pessoais",
+      "firstName": "Nome",
+      "lastName": "Sobrenome",
+      "email": "E-mail"
+    },
+    "travel": {
+      "title": "Informações de Viagem",
+      "description": "Por favor, insira seus dados de contato e detalhes do voo de retorno",
+      "countryCode": "Código do País",
+      "phoneNumber": "Número de Telefone",
+      "returnDate": "Data de Retorno",
+      "returnTime": "Hora de Retorno",
+      "pickDate": "Selecione uma data"
+    },
+    "accommodation": {
+      "title": "Detalhes da Hospedagem",
+      "description": "Por favor, insira onde você ficará hospedado",
+      "name": "Nome da Hospedagem",
+      "placeholder": "Hotel, Hostel ou Endereço"
+    },
+    "confirmation": {
+      "title": "Obrigado!",
+      "description": "Suas informações foram enviadas com sucesso",
+      "personalInfo": "Informações Pessoais",
+      "contactInfo": "Informações de Contato",
+      "returnFlight": "Voo de Retorno",
+      "accommodation": "Hospedagem",
+      "redirecting": "Redirecionando para a página inicial..."
+    },
+    "buttons": {
+      "continue": "Continuar",
+      "back": "Voltar",
+      "submit": "Enviar"
+    },
+    "validation": {
+      "firstName": "O nome deve ter pelo menos 2 caracteres.",
+      "lastName": "O sobrenome deve ter pelo menos 2 caracteres.",
+      "email": "Por favor, insira um endereço de e-mail válido.",
+      "phoneCountry": "Por favor, selecione um código de país.",
+      "phoneNumber": "O número de telefone deve ter pelo menos 6 dígitos.",
+      "returnDate": "Por favor, selecione uma data.",
+      "returnTime": "Por favor, selecione um horário.",
+      "accommodation": "O nome da hospedagem deve ter pelo menos 3 caracteres."
+    }
+  }
+} 

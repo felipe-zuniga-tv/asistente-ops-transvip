@@ -1,0 +1,58 @@
+{
+  "sales": {
+    "language": {
+      "title": "Selecciona tu idioma",
+      "description": "Elige tu idioma preferido para continuar"
+    },
+    "personal": {
+      "title": "Información Personal",
+      "description": "Por favor, ingresa tus datos personales",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Correo Electrónico"
+    },
+    "travel": {
+      "title": "Información de Viaje",
+      "description": "Por favor, ingresa tus datos de contacto y detalles del vuelo de regreso",
+      "countryCode": "Código de País",
+      "phoneNumber": "Número de Teléfono",
+      "returnDate": "Fecha de Regreso",
+      "returnTime": "Hora de Regreso",
+      "pickDate": "Selecciona una fecha",
+      "searchCountry": "Buscar país o código...",
+      "noResults": "Sin resultados",
+      "select": "Selecciona..."
+    },
+    "accommodation": {
+      "title": "Detalles de Alojamiento",
+      "description": "Por favor, ingresa dónde te hospedarás",
+      "name": "Nombre del Alojamiento",
+      "placeholder": "Hotel, Hostal o Dirección"
+    },
+    "confirmation": {
+      "title": "¡Gracias!",
+      "description": "Tu información ha sido enviada exitosamente",
+      "personalInfo": "Información Personal",
+      "contactInfo": "Información de Contacto",
+      "returnFlight": "Vuelo de Regreso",
+      "accommodation": "Alojamiento",
+      "redirecting": "Redirigiendo a la página principal..."
+    },
+    "buttons": {
+      "continue": "Continuar",
+      "back": "Volver",
+      "submit": "Enviar",
+      "submitting": "Enviando..."
+    },
+    "validation": {
+      "firstName": "El nombre debe tener al menos 2 caracteres.",
+      "lastName": "El apellido debe tener al menos 2 caracteres.",
+      "email": "Por favor, ingresa un correo electrónico válido.",
+      "phoneCountry": "Por favor, selecciona un código de país.",
+      "phoneNumber": "El número de teléfono debe tener al menos 6 dígitos.",
+      "returnDate": "Por favor, selecciona una fecha.",
+      "returnTime": "Por favor, selecciona una hora.",
+      "accommodation": "El nombre del alojamiento debe tener al menos 3 caracteres."
+    }
+  }
+} 

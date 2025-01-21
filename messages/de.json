@@ -1,0 +1,54 @@
+{
+  "sales": {
+    "language": {
+      "title": "Sprache auswählen",
+      "description": "Wählen Sie Ihre bevorzugte Sprache aus"
+    },
+    "personal": {
+      "title": "Persönliche Informationen",
+      "description": "Bitte geben Sie Ihre persönlichen Daten ein",
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "email": "E-Mail"
+    },
+    "travel": {
+      "title": "Reiseinformationen",
+      "description": "Bitte geben Sie Ihre Kontaktdaten und Rückflugdetails ein",
+      "countryCode": "Ländervorwahl",
+      "phoneNumber": "Telefonnummer",
+      "returnDate": "Rückreisedatum",
+      "returnTime": "Rückreisezeit",
+      "pickDate": "Datum auswählen"
+    },
+    "accommodation": {
+      "title": "Unterkunftsdetails",
+      "description": "Bitte geben Sie an, wo Sie übernachten werden",
+      "name": "Name der Unterkunft",
+      "placeholder": "Hotel, Hostel oder Adresse"
+    },
+    "confirmation": {
+      "title": "Vielen Dank!",
+      "description": "Ihre Informationen wurden erfolgreich übermittelt",
+      "personalInfo": "Persönliche Informationen",
+      "contactInfo": "Kontaktinformationen",
+      "returnFlight": "Rückflug",
+      "accommodation": "Unterkunft",
+      "redirecting": "Weiterleitung zur Startseite..."
+    },
+    "buttons": {
+      "continue": "Weiter",
+      "back": "Zurück",
+      "submit": "Absenden"
+    },
+    "validation": {
+      "firstName": "Der Vorname muss mindestens 2 Zeichen lang sein.",
+      "lastName": "Der Nachname muss mindestens 2 Zeichen lang sein.",
+      "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "phoneCountry": "Bitte wählen Sie eine Ländervorwahl aus.",
+      "phoneNumber": "Die Telefonnummer muss mindestens 6 Ziffern haben.",
+      "returnDate": "Bitte wählen Sie ein Datum aus.",
+      "returnTime": "Bitte wählen Sie eine Uhrzeit aus.",
+      "accommodation": "Der Name der Unterkunft muss mindestens 3 Zeichen lang sein."
+    }
+  }
+} 
