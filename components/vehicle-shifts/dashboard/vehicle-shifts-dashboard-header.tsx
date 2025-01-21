@@ -75,7 +75,7 @@ export function VehicleShiftsDashboardHeader({
                                 <Search className="h-4 w-4" />
                             </div>
                             {(vehicleNumber || isLoading) && (
-                                <div className="absolute inset-y-0 end-0 flex items-center pe-3">
+                                <div className={cn("absolute inset-y-0 end-0 flex items-center", isLoading ? "pe-3" : "")}>
                                     {vehicleNumber && !isLoading && (
                                         <Button
                                             type="button"
