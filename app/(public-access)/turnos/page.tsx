@@ -1,4 +1,3 @@
-import { TransvipLogo } from "@/components/transvip/transvip-logo"
 import { VehicleShiftsDashboard } from "@/components/vehicle-shifts/dashboard/vehicle-shifts-dashboard"
 
 export default function PublicDashboardShiftsPage() {
