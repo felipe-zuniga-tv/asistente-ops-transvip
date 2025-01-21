@@ -16,8 +16,8 @@ export default function BranchesPage() {
 	const t = getTranslation(language)
 
 	return (
-		<Card className="max-w-4xl mx-auto mt-10">
-			<CardHeader className="flex flex-row items-center justify-between border-b pb-6">
+		<Card>
+			<CardHeader className="flex flex-col sm:flex-row gap-2 items-center justify-between border-b pb-6">
 				<div className="flex items-center gap-4">
 					<TransvipLogo size={25} />
 					<CardTitle className="text-2xl font-bold">Transvip</CardTitle>
@@ -41,13 +41,11 @@ export default function BranchesPage() {
 				</Select>
 			</CardHeader>
 			<CardContent className="p-8 flex flex-col gap-8 items-center justify-center w-full">
-				<div className="flex flex-col gap-4 items-center">
-					<div className="flex items-center justify-center gap-2">
-						<h1 className="text-3xl font-bold">{t.branches.title}</h1>
-					</div>
-					<p className="text-muted-foreground">
+				<div className="flex flex-col gap-2 items-center justify-center">
+					<h1 className="text-2xl font-bold">{t.branches.title}</h1>
+					<div className="text-muted-foreground text-center">
 						{t.branches.description}
-					</p>
+					</div>
 				</div>
 
 				<div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -100,79 +100,77 @@ export function SalesForm({ branchCode, initialLanguage, onSuccess }: SalesFormP
 	}
 
 	return (
-		<div className="container max-w-2xl mx-auto p-4 sm:py-8">
-			<Card>
-				<CardContent className="pt-6">
-					<Progress value={(step / totalSteps) * 100} className="mb-4" />
+		<Card>
+			<CardContent className="pt-6">
+				<Progress value={(step / totalSteps) * 100} className="mb-4" />
 
-					<div className="flex justify-center mb-4">
-						<TransvipLogo size={30} />
-					</div>
+				<div className="flex justify-center mb-4">
+					<TransvipLogo size={30} />
+				</div>
 
-					<div className="space-y-6">
-						{step === 1 && (
-							<LanguageStep
-								value={formData.language}
-								onChange={(language) => updateFormData({ language })}
-								onNext={nextStep}
-								translations={t.steps.language}
-							/>
-						)}
+				<div className="space-y-6">
+					{step === 1 && (
+						<LanguageStep
+							value={formData.language}
+							onChange={(language) => updateFormData({ language })}
+							onNext={nextStep}
+							translations={t.steps.language}
+						/>
+					)}
 
-						{step === 2 && (
-							<PersonalInfoStep
-								data={{
-									firstName: formData.firstName,
-									lastName: formData.lastName,
-									email: formData.email
-								}}
-								onChange={(data) => updateFormData(data)}
-								onNext={nextStep}
-								onBack={prevStep}
-								translations={t.steps.personal}
-							/>
-						)}
+					{step === 2 && (
+						<PersonalInfoStep
+							data={{
+								firstName: formData.firstName,
+								lastName: formData.lastName,
+								email: formData.email
+							}}
+							onChange={(data) => updateFormData(data)}
+							onNext={nextStep}
+							onBack={prevStep}
+							translations={t.steps.personal}
+						/>
+					)}
 
-						{step === 3 && (
-							<TravelInfoStep
-								data={{
-									phoneCountry: formData.phoneCountry,
-									phoneNumber: formData.phoneNumber,
-									returnDate: formData.returnDate,
-									returnTime: formData.returnTime
-								}}
-								onChange={(data) => updateFormData(data)}
-								onNext={nextStep}
-								onBack={prevStep}
-								translations={t.steps.travel}
-							/>
-						)}
+					{step === 3 && (
+						<TravelInfoStep
+							data={{
+								phoneCountry: formData.phoneCountry,
+								phoneNumber: formData.phoneNumber,
+								returnDate: formData.returnDate,
+								returnTime: formData.returnTime
+							}}
+							onChange={(data) => updateFormData(data)}
+							onNext={nextStep}
+							onBack={prevStep}
+							translations={t.steps.travel}
+						/>
+					)}
 
-						{step === 4 && (
-							<AccommodationStep
-								value={formData.accommodation}
-								onChange={(accommodation) => updateFormData({ accommodation })}
-								onNext={nextStep}
-								onBack={prevStep}
-								onSubmit={handleSubmit}
-								translations={t.steps.accommodation}
-							/>
-						)}
+					{step === 4 && (
+						<AccommodationStep
+							value={formData.accommodation}
+							onChange={(accommodation) => updateFormData({ accommodation })}
+							onNext={nextStep}
+							onBack={prevStep}
+							onSubmit={handleSubmit}
+							translations={t.steps.accommodation}
+						/>
+					)}
 
-						{step === 5 && (
-							<ConfirmationStep
-								formData={formData}
-								translations={t.steps.confirmation}
-							/>
-						)}
-					</div>
-				</CardContent>
-				<CardFooter className="bg-gray-200 rounded-b-lg p-0">
-					<div className="w-full flex items-center justify-center text-sm text-black p-3">
-						© {new Date().getFullYear()} · Transvip
-					</div>
-				</CardFooter>
-			</Card>
-		</div>
+					{step === 5 && (
+						<ConfirmationStep
+							formData={formData}
+							translations={t.steps.confirmation}
+						/>
+					)}
+				</div>
+			</CardContent>
+			<CardFooter className="bg-gray-200 rounded-b-lg p-0">
+				<div className="w-full flex items-center justify-center text-sm text-black p-3">
+					© {new Date().getFullYear()} · Transvip
+				</div>
+			</CardFooter>
+		</Card>
 	)
 } 

@@ -36,7 +36,7 @@ export function LanguageStep({ value, onChange, onNext, translations }: Language
 		<div className="space-y-6">
 			<div className="space-y-2">
 				<h2 className="text-2xl font-bold text-center">{translations.title}</h2>
-				<p className="text-muted-foreground text-center">
+				<p className="text-muted-foreground text-center text-sm">
 					{translations.description}
 				</p>
 			</div>
