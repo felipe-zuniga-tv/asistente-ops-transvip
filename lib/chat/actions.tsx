@@ -107,51 +107,6 @@ async function submitUserMessage(content: string) {
 					)
 				}
 			},
-			createText: {
-				description: `Utiliza esta función para escribir un texto que solicite el usuario.
-					Puede ser un email (lo más probable), pero podría ser también otro tipo de texto,
-					como un whatsapp, un texto para un proveedor, etc.`,
-				parameters: z.object({
-					addressedTo: z
-						.string()
-						.describe("El nombre de la persona que recibirá el texto. Si no se conoce, se puede dejar en blanco"),
-					subject: z
-						.string()
-						.describe("El asunto de la comunicación, si aplica"),
-				}).required(),
-				generate: async function* ({ addressedTo, subject }) {
-					yield <LoadingMessage text={`Redactando un texto para el usuario...`} />
-
-					// Create text response for current search results
-					const content = await generateText({
-						model: modelInstanceSmart,
-						system: SYSTEM_MESSAGE + "\n\n" + CREATE_TEXT_PROMPT(EMAIL_TEXT_OPS_EXAMPLE, subject),
-						messages: [{
-							role: 'assistant',
-							content: `Redactando un texto para el usuario...`
-						}],
-					})
-
-					aiState.done({
-						...aiState.get(),
-						messages: [
-							...aiState.get().messages,
-							{
-								role: 'assistant',
-								content: content.text.trim()
-							}
-						]
-					})
-
-					return content.text.length > 0 ? (
-						<AssistantMessage content={content.text} session={session} />
-					) : (
-						<BotCard>
-							<div>No se pudo escribir el texto solicitado.</div>
-						</BotCard>
-					)
-				}
-			},
 			createBookingQrCode: {
 				description: `Útil para crear un código QR a partir un número de reserva`,
 				parameters: z.object({
@@ -443,49 +398,6 @@ async function submitUserMessage(content: string) {
 					) : (
 						<BotCard>
 							<div>No se pudo encontrar el conductor <span className="rounded-full py-0.5">{ driverQueryClean }</span>.</div>
-						</BotCard>
-					)
-				}
-			},
-			invertCoordinatesGeoJson: {
-				description: `Utiliza esta función para invertir el orden de las coordenadas de un texto que entrega 
-				el usuario en formato GeoJson. Solicita siempre al usuario el texto en GeoJson.
-				No se debe utilizar otras herramientas`,
-				parameters: z.object({
-					coordinates: z
-						.string()
-						.describe(`El texto en formato GeoJson que se requiere para invertir sus coordenadas`),
-				}).required(),
-				generate: async function* ({ coordinates }) {
-					yield <LoadingMessage text={`Invirtiendo coordenadas...`} />
-
-					const baseCoordinates = JSON.parse(coordinates)
-					
-					const coordinatesArray = []
-					baseCoordinates.coordinates[0].map(c => 
-						coordinatesArray.push(c.reverse())
-					)
-						
-					const outputCoordinates = {
-						type: baseCoordinates.type,
-						coordinates: [coordinatesArray]
-					}
-
-					aiState.done({
-						...aiState.get(),
-						messages: [
-							...aiState.get().messages,
-							{
-								role: 'assistant',
-								content: JSON.stringify(outputCoordinates)
-							},
-						]
-					})
-					
-					return (
-						<BotCard>
-							<div>Listo, acá va el resultado de la inversión de coordenadas:</div>
-							<div className="p-3 rounded-md bg-muted text-black">{ JSON.stringify(outputCoordinates) }</div>
 						</BotCard>
 					)
 				}
