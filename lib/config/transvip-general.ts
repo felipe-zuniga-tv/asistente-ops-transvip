@@ -26,10 +26,10 @@ export const opsTeams = [
 
 // Transvip Data configuration
 export const branches = [
-    { branch_id: 1, name: 'Santiago', code: 'SCL' },
-    { branch_id: 798, name: 'Valparaiso', code: 'VAP' },
-    { branch_id: 179, name: 'Calama', code: 'CJC' },
-    { branch_id: 34, name: 'Antofagasta', code: 'ANF' },
+    { branch_id: 1, name: 'Santiago', code: 'SCL', salesFormActive: false },
+    { branch_id: 798, name: 'Valparaiso', code: 'VAP', salesFormActive: false },
+    { branch_id: 179, name: 'Calama', code: 'CJC', salesFormActive: true },
+    { branch_id: 34, name: 'Antofagasta', code: 'ANF', salesFormActive: false },
 ]
 
 export const paymentMethods = [

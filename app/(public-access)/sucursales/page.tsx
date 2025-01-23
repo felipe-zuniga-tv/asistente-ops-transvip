@@ -1,17 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
 import { branches } from '@/lib/config/transvip-general'
 import { TransvipLogo } from '@/components/transvip/transvip-logo'
-import Link from 'next/link'
 import { getTranslation, type Language } from '@/lib/translations'
 import { languages } from '@/components/sales/form/language-step'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 export default function BranchesPage() {
-	const router = useRouter()
 	const [language, setLanguage] = useState<Language>('es-CL')
 	const t = getTranslation(language)
 
@@ -48,8 +46,8 @@ export default function BranchesPage() {
 					</div>
 				</div>
 
-				<div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-					{branches.map((branch) => (
+				<div className="w-full flex flex-col gap-6">
+					{branches.filter(branch => branch.salesFormActive).map((branch) => (
 						<Link
 							key={branch.branch_id}
 							href={`/sucursales/venta?branch=${branch.code.toLowerCase()}&lang=${language}`}
