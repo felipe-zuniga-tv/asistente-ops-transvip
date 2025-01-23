@@ -47,7 +47,7 @@ export default function ControlFlotaPage() {
                             <CardDescription className='text-xs'>Define qué jornadas tendrá cada móvil</CardDescription>
                         </CardHeader>
                         <CardContent className='text-sm'>
-                            Asocia una jornada de conexión a cada móvil
+                            Asocia una jornada de conexión a cada móvil de la flota
                         </CardContent>
                     </Card>
                 </Link>
