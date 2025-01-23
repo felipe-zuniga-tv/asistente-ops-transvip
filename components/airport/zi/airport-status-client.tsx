@@ -1,15 +1,15 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { TransvipLogo } from '../transvip/transvip-logo'
-import { calculateDuration, cn } from '@/lib/utils'
-import { LiveClock } from '../ui/live-clock'
+import Link from 'next/link'
 import { format } from 'date-fns'
+import { TransvipLogo } from '@/components/transvip/transvip-logo'
+import { calculateDuration, cn } from '@/lib/utils'
+import { LiveClock } from '../../ui/live-clock'
 import { ArrowLeft, Clock, Users } from 'lucide-react'
 import { AirportZone, airportZones } from '@/lib/config/airport'
 import { Routes } from '@/utils/routes'
-import Link from 'next/link'
-import { QRCodeGeneratorDialog } from '../qr/qr-code-generator-dialog'
+import { QRCodeGeneratorDialog } from '@/components/qr/qr-code-generator-dialog'
 import type { AirportVehicleType, AirportVehicleDetail } from '@/lib/types'
 
 const secondsToUpdate = 60 // Refresh data

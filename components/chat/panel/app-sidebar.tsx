@@ -55,11 +55,11 @@ export function AppSidebar({ session, ...props }: { session: any & React.Compone
 				<NavUser user={session.user} />
 			</SidebarHeader>
 			<SidebarContent>
-				{ isChatRoute ? (
-					<NavMain items={sidebarData.navMain} handleClick={handleClick} showHints={showHints} />
+				<NavMain items={sidebarData.navMain} handleClick={handleClick} showHints={showHints} />
+				{/* { isChatRoute ? (
 				) : (
 					<NavMain items={sidebarData.navMain.filter(item => item.title !== chatbotItem.title)} handleClick={handleClick} showHints={showHints} />
-				)}
+				)} */}
 			</SidebarContent>
 			<SidebarFooter>
 				<NavSecondary items={sidebarData.navSecondary} className="mt-auto" />

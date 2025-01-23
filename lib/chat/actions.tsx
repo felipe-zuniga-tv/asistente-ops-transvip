@@ -23,6 +23,7 @@ import AirportStatus from "@/components/chat/airport/airport-status";
 import { airportZones } from "../config/airport";
 import QRCode from "react-qr-code";
 import { google } from "@ai-sdk/google";
+import { getMTTVehiclesInfo } from "../services/mtt/actions";
 
 export const OPENAI_GPT_4o_MINI = 'gpt-4o-mini' // 'gpt-4'
 export const OPENAI_GPT_4o      = 'gpt-4o' // 'gpt-4'
@@ -425,6 +426,68 @@ async function submitUserMessage(content: string) {
 							<AirportStatus services={services} />
 						</BotCard>
 					)
+				}
+			},
+			verifyMTTInformation: {
+				description: `Útil para verificar el estado de uno o varios vehículos en el registro del MTT (Ministerio de Transportes y Telecomunicaciones).
+					La búsqueda se realiza por patente, con formato ABCD12 (letras y números).`,
+				parameters: z.object({
+					licensePlates: z
+						.array(z.string())
+						.min(1)
+						.max(50)
+						.describe(`Lista de patentes de vehículos a consultar en el MTT. Cada patente debe tener formato ABCD12 (letras y números).`),
+				}).required(),
+				generate: async function* ({ licensePlates }) {
+					yield <LoadingMessage text={`Consultando ${licensePlates.length} patente${licensePlates.length > 1 ? 's' : ''} en el MTT...`} />
+
+					const results = await getMTTVehiclesInfo(licensePlates);
+					console.log(results);
+
+					aiState.done({
+						...aiState.get(),
+						messages: [
+							...aiState.get().messages,
+							{
+								role: 'assistant',
+								content: `Resultados de la consulta MTT para ${licensePlates.join(', ')}`
+							},
+						]
+					});
+
+					return (
+						<BotCard>
+							<div className="flex flex-col gap-4 bg-white text-black rounded-lg">
+								{results.map((result, index) => (
+									<div key={index} className="flex flex-col gap-2 p-4 border rounded-lg">
+										<div className="flex items-center justify-between">
+											<h3 className="text-lg font-semibold">Patente: {result.licensePlate}</h3>
+											<span className={`px-2 py-1 text-xs text-black shadow rounded-full ${
+												result.status === 'ENCONTRADO' ? 'bg-green-100 text-green-800' :
+												result.status === 'NO_ENCONTRADO' ? 'bg-yellow-100 text-yellow-800' :
+												'bg-red-100 text-red-800'
+											}`}>
+												{result.status}
+											</span>
+										</div>
+										{result.details && (
+											<div className="grid grid-cols-1 gap-1 mt-2">
+												{Object.entries(result.details).map(([key, value]) => (
+													<div key={key} className="flex flex-row gap-1">
+														<span className="text-sm font-medium text-gray-500">{key}:</span>
+														<span className="text-sm">{value}</span>
+													</div>
+												))}
+											</div>
+										)}
+										{result.error && (
+											<p className="text-sm text-red-600">{result.error}</p>
+										)}
+									</div>
+								))}
+							</div>
+						</BotCard>
+					);
 				}
 			}
 		},

@@ -26,6 +26,7 @@ import {
 	CarFront,
 	CalendarClock,
 	AlertTriangle,
+	Plane,
 } from "lucide-react"
 import { toolsList } from "./tools";
 
@@ -50,30 +51,38 @@ export const chatbotItem : SidebarItem = {
 export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] } = {
 	navMain: [
 		chatbotItem,
+		// {
+		// 	title: "Aeropuerto",
+		// 	url: '#',
+		// 	icon: PlaneTakeoff,
+		// 	isActive: false,
+		// 	items: [
+		// 		{
+		// 			title: 'Herramientas generales',
+		// 			icon: Plane,
+		// 			url: Routes.AIRPORT.HOME,
+		// 			active: true
+		// 		},
+		// 	],
+		// },
 		{
 			title: "Herramientas",
 			url: "#",
 			icon: Hammer,
 			isActive: true,
 			items: [
-				{
-					title: 'Chatbot Operaciones',
-					icon: Bot,
-					url: Routes.CHAT,
-					active: true
-				},
+				// {
+				// 	title: 'Chatbot Operaciones',
+				// 	icon: Bot,
+				// 	url: Routes.CHAT,
+				// 	active: true
+				// },
 				{
 					title: 'Genera tu código QR',
 					icon: QrCodeIcon,
 					url: Routes.QR_GEN,
 					active: true
 				},
-				// {
-				// 	title: 'Herramientas Aeropuerto',
-				// 	icon: PlaneTakeoff,
-				// 	url: Routes.AIRPORT.HOME,
-				// 	active: true
-				// },
 				{
 					title: 'Coordenadas GeoJSON',
 					icon: Map,
@@ -81,7 +90,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 					active: true
 				},
 				{
-					title: 'Escribe un texto',
+					title: 'Redacta un texto',
 					icon: Pencil,
 					url: Routes.TEXT.WRITE,
 					active: true
@@ -136,7 +145,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 			title: "Reservas",
 			url: "#",
 			icon: BookPlusIcon,
-			isActive: true,
+			isActive: false,
 			items: [
 				{
 					title: 'Compartidas',
@@ -150,7 +159,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 			title: "Vehículos",
 			url: "#",
 			icon: BusFront,
-			isActive: true,
+			isActive: false,
 			items: [
 				{
 					title: 'Detalle de Móviles',

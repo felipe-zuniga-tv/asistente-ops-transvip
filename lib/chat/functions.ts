@@ -598,8 +598,6 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
                 fleet_rating, fleet_comment
             } = data_r
 
-            console.log(data_r)
-
             // Get more details about the vehicle, such as type
             const vehicleDetail = await getVehicleDetail(transport_details);
 
