@@ -104,7 +104,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 				{
 					title: 'Ruteo Reservas',
 					icon: MapPin,
-					url: Routes.ROUTE.MAIN,
+					url: Routes.ROUTING.MAIN,
 					active: false
 				},
 			],

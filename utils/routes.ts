@@ -1,76 +1,80 @@
 export const Routes = Object.freeze({
-    HOME: '/',
-    LOGIN: '/',
-    CHAT: '/chat',
-    START: '/chat',
-    QR_GEN: '/qr',
-    AIRPORT: {
-        HOME: '/aeropuerto',
-        ZI: '/aeropuerto/zi',
-        ZI_SCL: '/aeropuerto/zi/scl',
-        ZI_ANF: '/aeropuerto/zi/anf',
-        ZI_CJC: '/aeropuerto/zi/cjc',
-    },
-    BOOKINGS: {
-        SHARED: '/reservas/compartidas',
-    },
-    VEHICLES: {
-        HOME: '/vehicles',
-    },
-    CONTROL_FLOTA: {
-        SHIFTS: '/control-flota/shifts',
-        VEHICLE_SHIFT: '/control-flota/vehicles',
-        DASHBOARD: '/control-flota/dashboard',
-        VEHICLE_STATUS: '/control-flota/vehicle-status',
-    },
-    FINANCE: {
-        TICKETS: '/finanzas/tickets',
-    },
-    DATA: {
-        HOME: '/data',
-        GEOFENCES: '/data/geofences',
-    },
-    TEXT: {
-        WRITE: '/write',
-    },
-    ROUTE: {
-        MAIN: '/ruteo'
-    },
-    FEEDBACK: {
-        GOOGLE_FORMS: 'https://forms.gle/qeiBzwNhUwD5WcLt8'
-    }
+	HOME: '/',
+	LOGIN: '/',
+	CHAT: '/chat',
+	START: '/chat',
+	QR_GEN: '/qr',
+	AIRPORT: {
+		HOME: '/aeropuerto',
+		ZI: '/aeropuerto/zi',
+		ZI_SCL: '/aeropuerto/zi/scl',
+		ZI_ANF: '/aeropuerto/zi/anf',
+		ZI_CJC: '/aeropuerto/zi/cjc',
+	},
+	BOOKINGS: {
+		SHARED: '/reservas/compartidas',
+	},
+	VEHICLES: {
+		HOME: '/vehicles',
+	},
+	CONTROL_FLOTA: {
+		SHIFTS: '/control-flota/shifts',
+		VEHICLE_SHIFT: '/control-flota/vehicles',
+		DASHBOARD: '/control-flota/dashboard',
+		VEHICLE_STATUS: '/control-flota/vehicle-status',
+	},
+	SALES: {
+		HOME: '/sucursales',
+		FORM: '/sucursales/venta',
+	},
+	FINANCE: {
+		TICKETS: '/finanzas/tickets',
+	},
+	DATA: {
+		HOME: '/data',
+		GEOFENCES: '/data/geofences',
+	},
+	TEXT: {
+		WRITE: '/write',
+	},
+	ROUTING: {
+		MAIN: '/ruteo'
+	},
+	FEEDBACK: {
+		GOOGLE_FORMS: 'https://forms.gle/qeiBzwNhUwD5WcLt8'
+	}
 })
 
 export const HeaderLinks = [
-    {
-        label: 'Mi Asistente',
-        href: Routes.CHAT
-    },
-    {
-        label: 'Control Flota',
-        href: Routes.START
-    },
-    {
-        label: 'Orders',
-        href: '#'
-    },
-    {
-        label: 'Products',
-        href: '#'
-    },
+	{
+		label: 'Mi Asistente',
+		href: Routes.CHAT
+	},
+	{
+		label: 'Control Flota',
+		href: Routes.START
+	},
+	{
+		label: 'Orders',
+		href: '#'
+	},
+	{
+		label: 'Products',
+		href: '#'
+	},
 ]
 
 export const NavbarLinks = [
-    {
-        label: 'Inicio',
-        href: Routes.HOME
-    },
-    {
-        label: 'Chatbot',
-        href: Routes.CHAT
-    },
-    {
-        label: 'Código QR',
-        href: Routes.QR_GEN
-    },
+	{
+		label: 'Inicio',
+		href: Routes.HOME
+	},
+	{
+		label: 'Chatbot',
+		href: Routes.CHAT
+	},
+	{
+		label: 'Código QR',
+		href: Routes.QR_GEN
+	},
 ];

@@ -78,7 +78,7 @@ export function TravelInfoStep({
 	translations
 }: TravelInfoStepProps) {
 	const [isSubmitting, setIsSubmitting] = React.useState(false)
-	
+
 	const formSchema = z.object({
 		phoneCountry: z.string().min(1, {
 			message: translations.validation.countryCode,
