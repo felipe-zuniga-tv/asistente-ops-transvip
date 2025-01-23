@@ -3,7 +3,11 @@ import { VehicleShiftsDashboard } from "@/components/vehicle-shifts/dashboard/ve
 export default function PublicDashboardShiftsPage() {
     return (
         <div className="p-3 max-w-4xl mx-auto pt-10">
-            <VehicleShiftsDashboard daysToShow={30} />
+            <VehicleShiftsDashboard 
+                daysToShow={30} 
+                shifts={[]}
+                vehicleStatuses={[]}
+            />
         </div>
     )
 }

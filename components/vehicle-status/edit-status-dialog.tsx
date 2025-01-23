@@ -128,9 +128,6 @@ export function EditStatusDialog({
             onOpenChange(false);
             form.reset();
             router.refresh();
-            setTimeout(() => {
-                window.location.reload()
-            }, 100)
             toast.success("Estado actualizado exitosamente");
         } catch (error) {
             console.error("Error updating status:", error);
