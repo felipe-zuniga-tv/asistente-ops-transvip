@@ -8,6 +8,7 @@ import { useRef } from "react"
 import { toPng } from "html-to-image"
 import { useToast } from "@/hooks/use-toast"
 import React from "react"
+import { VehicleStatus } from "@/lib/types"
 
 const weekDays = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
 
@@ -23,17 +24,50 @@ function adjustDayIndex(date: Date): number {
 }
 
 interface VehicleShiftWithShiftInfo extends VehicleShift {
-    free_day?: number
+    free_day?: number;
+    status_color?: string;
+    isStatus?: boolean;
+    shift_id: string;
+    priority: number;
+    created_at: string;
 }
 
 interface VehicleShiftWithFreeDay extends VehicleShiftWithShiftInfo {
-    isFreeDay?: boolean
+    isFreeDay?: boolean;
+    isStatus?: boolean;
+    status_color?: string;
 }
 
-function getHighestPriorityShiftForDate(shifts: VehicleShiftWithShiftInfo[], date: Date): VehicleShiftWithFreeDay | undefined {
+function getHighestPriorityShiftForDate(shifts: VehicleShiftWithShiftInfo[], date: Date, statuses?: VehicleStatus[]): VehicleShiftWithFreeDay | undefined {
     const dateStr = format(date, "yyyy-MM-dd")
     const dayOfWeek = adjustDayIndex(date) + 1 // Convert to 1-7 range where Monday = 1
 
+    // First check if there's a vehicle status for this date
+    if (statuses?.length) {
+        const status = statuses.find(status =>
+            dateStr >= status.start_date &&
+            dateStr <= status.end_date
+        );
+
+        if (status) {
+            return {
+                id: status.id,
+                vehicle_number: Number(status.vehicle_number),
+                shift_name: status.status_label,
+                start_date: status.start_date,
+                end_date: status.end_date,
+                shift_id: status.status_id,
+                priority: 100, // Status always takes precedence
+                created_at: status.created_at,
+                start_time: undefined,
+                end_time: undefined,
+                status_color: status.status_color,
+                isStatus: true
+            };
+        }
+    }
+
+    // If no status, check for shifts
     const shift = shifts.find(shift =>
         dateStr >= shift.start_date &&
         dateStr <= shift.end_date
@@ -57,6 +91,7 @@ interface VehicleShiftsDashboardCalendarProps {
     hasSearched?: boolean
     daysToShow: number
     vehicleNumber?: string
+    vehicleStatuses?: VehicleStatus[]
 }
 
 function generateCalendarMonths(days: Date[]) {
@@ -81,7 +116,7 @@ function generateCalendarMonths(days: Date[]) {
     return months
 }
 
-export function VehicleShiftsDashboardCalendar({ shifts, hasSearched, daysToShow, vehicleNumber }: VehicleShiftsDashboardCalendarProps) {
+export function VehicleShiftsDashboardCalendar({ shifts, hasSearched, daysToShow, vehicleNumber, vehicleStatuses }: VehicleShiftsDashboardCalendarProps) {
     const nextDays = generateNextXDays(daysToShow)
     const calendarRef = useRef<HTMLDivElement>(null)
     const { toast } = useToast()
@@ -193,24 +228,31 @@ export function VehicleShiftsDashboardCalendar({ shifts, hasSearched, daysToShow
 
                                     {/* Days of the month */}
                                     {days.map((date) => {
-                                        const shift = getHighestPriorityShiftForDate(shifts, date)
+                                        const shift = getHighestPriorityShiftForDate(shifts, date, vehicleStatuses)
 
                                         return (
                                             <div
                                                 key={date.toISOString()}
-                                                className={`p-1 border rounded-sm transition-colors min-h-[4rem] ${shift?.isFreeDay ? "bg-green-50 hover:bg-green-100" :
-                                                        shift ? "bg-blue-50 hover:bg-blue-100" : "hover:bg-muted/50"
-                                                    }`}
+                                                className={`p-1 border rounded-sm transition-colors min-h-[4rem] ${
+                                                    shift?.isFreeDay ? "bg-green-50 hover:bg-green-100" :
+                                                    shift?.isStatus ? `bg-opacity-10 hover:bg-opacity-20` :
+                                                    shift ? "bg-blue-50 hover:bg-blue-100" : "hover:bg-muted/50"
+                                                }`}
+                                                style={shift?.isStatus ? { backgroundColor: shift.status_color } : undefined}
                                             >
                                                 <div className="text-xs font-medium pb-2">
                                                     {format(date, "d", { locale: es })}
                                                 </div>
                                                 {shift && (
                                                     <div className="space-y-0.5">
-                                                        <div className={`text-[0.8rem] ${shift.isFreeDay ? 'text-green-600' : 'text-blue-600'} font-medium truncate`}>
+                                                        <div className={`text-[0.8rem] ${
+                                                            shift.isFreeDay ? 'text-green-600' :
+                                                            shift.isStatus ? 'text-gray-800 font-medium' :
+                                                            'text-blue-600'
+                                                        } font-medium truncate`}>
                                                             {shift.isFreeDay ? 'Libre' : shift.shift_name}
                                                         </div>
-                                                        {!shift.isFreeDay && shift.start_time && shift.end_time && (
+                                                        {!shift.isFreeDay && !shift.isStatus && shift.start_time && shift.end_time && (
                                                             <div className="text-[0.7rem] text-muted-foreground">
                                                                 {shift.start_time} - {shift.end_time}
                                                             </div>

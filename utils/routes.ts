@@ -21,6 +21,7 @@ export const Routes = Object.freeze({
         SHIFTS: '/control-flota/shifts',
         VEHICLE_SHIFT: '/control-flota/vehicles',
         DASHBOARD: '/control-flota/dashboard',
+        VEHICLE_STATUS: '/control-flota/vehicle-status',
     },
     FINANCE: {
         TICKETS: '/finanzas/tickets',

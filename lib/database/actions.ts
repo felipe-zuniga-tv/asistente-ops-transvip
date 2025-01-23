@@ -4,19 +4,22 @@ import { cookies } from 'next/headers'
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { Routes } from '@/utils/routes'
+import type { 
+	ShiftData, 
+	VehicleStatus, 
+	VehicleStatusConfig, 
+	CreateVehicleStatusInput,
+	VehicleShift,
+	VehicleShiftWithShiftInfo
+} from '@/lib/types'
 
-interface ShiftData {
-	id?: string
-	name: string
-	start_time: string
-	end_time: string
-	free_day: number
-	created_timestamp?: string
+async function getSupabaseClient() {
+	const cookieStore = cookies()
+	return createClient(cookieStore)
 }
 
 export async function getShifts() {
-	const cookieStore = cookies()
-	const supabase = createClient(cookieStore)
+	const supabase = await getSupabaseClient()
 
 	const { data, error } = await supabase
 		.from('shifts')
@@ -27,22 +30,35 @@ export async function getShifts() {
 	return data
 }
 
-export async function getVehicleShifts() {
-	const cookieStore = cookies()
-	const supabase = createClient(cookieStore)
+export async function getVehicleShifts(): Promise<VehicleShiftWithShiftInfo[]> {
+	const supabase = await getSupabaseClient()
 
 	const { data, error } = await supabase
 		.from('vehicle_shifts')
-		.select('*')
+		.select(`
+			*,
+			shifts (
+				id,
+				name,
+				start_time,
+				end_time,
+				free_day
+			)
+		`)
 		.order('vehicle_number', { ascending: true })
 
 	if (error) throw new Error(error.message)
-	return data
+	
+	return data.map(shift => ({
+		...shift,
+		shift_info: shift.shifts,
+		shifts: undefined // Remove the nested shifts object
+	})) as VehicleShiftWithShiftInfo[]
 }
 
+// SHIFTS
 export async function createShift(shiftData: ShiftData) {
-	const cookieStore = cookies()
-	const supabase = createClient(cookieStore)
+	const supabase = await getSupabaseClient()
 
 	const { error } = await supabase
 		.from('shifts')
@@ -53,8 +69,7 @@ export async function createShift(shiftData: ShiftData) {
 }
 
 export async function updateShift(id: string, shiftData: Partial<ShiftData>) {
-	const cookieStore = cookies()
-	const supabase = createClient(cookieStore)
+	const supabase = await getSupabaseClient()
 
 	const { error } = await supabase
 		.from('shifts')
@@ -66,8 +81,7 @@ export async function updateShift(id: string, shiftData: Partial<ShiftData>) {
 }
 
 export async function deleteShift(id: string) {
-	const cookieStore = cookies()
-	const supabase = createClient(cookieStore)
+	const supabase = await getSupabaseClient()
 
 	const { error } = await supabase
 		.from('shifts')
@@ -77,3 +91,167 @@ export async function deleteShift(id: string) {
 	if (error) throw new Error(error.message)
 	revalidatePath(Routes.CONTROL_FLOTA.SHIFTS)
 }
+
+// VEHICLE SHIFTS
+export async function getVehicleShiftsByDateRange(
+	vehicleNumber: number,
+	startDate: string,
+	endDate: string
+) {
+	try {
+		const supabase = await getSupabaseClient()
+
+		const { data: vehicleShifts, error } = await supabase
+			.from("vehicle_shifts")
+			.select(`
+				*,
+				shifts (
+					start_time,
+					end_time,
+					free_day
+				)
+			`)
+			.eq("vehicle_number", vehicleNumber)
+			.or(`start_date.gte.${startDate}, end_date.lte.${endDate}`)
+			.order("priority", { ascending: false })
+
+		if (error) {
+			return { error: "Error fetching vehicle shifts" }
+		}
+
+		// Transform the data to include shift times
+		const transformedShifts = vehicleShifts.map(shift => ({
+			...shift,
+			start_time: shift.shifts?.start_time,
+			end_time: shift.shifts?.end_time,
+			free_day: shift.shifts?.free_day,
+			shifts: undefined // Remove the nested shifts object
+		}))
+
+		revalidatePath(Routes.CONTROL_FLOTA.DASHBOARD)
+		return { data: transformedShifts }
+	} catch (error) {
+		return { error: "Error fetching vehicle shifts" }
+	}
+} 
+
+// VEHICLE STATUS
+export async function getVehicleStatusConfigs() {
+	const supabase = await getSupabaseClient()
+
+	const { data, error } = await supabase
+		.from('vehicle_status_config')
+		.select('*')
+		.order('label')
+
+	if (error) {
+		throw error
+	}
+
+	return data as VehicleStatusConfig[]
+}
+
+export async function getVehicleStatuses() {
+	const supabase = await getSupabaseClient()
+
+	const { data, error } = await supabase
+		.from('vehicle_status')
+		.select(`
+			*,
+			vehicle_status_config (
+				label,
+				color
+			)
+		`)
+		.order('created_at', { ascending: false })
+
+	if (error) {
+		throw error
+	}
+
+	return data.map(status => ({
+		id: status.id,
+		vehicle_number: status.vehicle_number,
+		status_id: status.status_id,
+		status_label: status.vehicle_status_config.label,
+		status_color: status.vehicle_status_config.color,
+		start_date: status.start_date,
+		end_date: status.end_date,
+		comments: status.comments,
+		created_at: status.created_at,
+		created_by: status.created_by,
+	})) as VehicleStatus[]
+}
+
+export async function createVehicleStatus(data: CreateVehicleStatusInput) {
+	const supabase = await getSupabaseClient()
+
+	const { error } = await supabase
+		.from('vehicle_status')
+		.insert([data])
+
+	if (error) {
+		throw error
+	}
+}
+
+export async function deleteVehicleStatus(id: string) {
+	const supabase = await getSupabaseClient()
+
+	const { error } = await supabase
+		.from('vehicle_status')
+		.delete()
+		.eq('id', id)
+
+	if (error) {
+		throw error
+	}
+}
+
+export async function getVehicleStatusesForCalendar(vehicleNumber: string, startDate: string, endDate: string) {
+	const supabase = await getSupabaseClient()
+
+	const { data, error } = await supabase
+		.from('vehicle_status')
+		.select(`
+			*,
+			vehicle_status_config (
+				label,
+				color
+			)
+		`)
+		.eq('vehicle_number', vehicleNumber)
+		.gte('start_date', startDate)
+		.lte('end_date', endDate)
+		.order('start_date')
+
+	if (error) {
+		throw error
+	}
+
+	return data.map(status => ({
+		id: status.id,
+		vehicle_number: status.vehicle_number,
+		status_id: status.status_id,
+		status_label: status.vehicle_status_config.label,
+		status_color: status.vehicle_status_config.color,
+		start_date: status.start_date,
+		end_date: status.end_date,
+		comments: status.comments,
+		created_at: status.created_at,
+		created_by: status.created_by,
+	})) as VehicleStatus[]
+}
+
+export async function updateVehicleStatus(id: string, data: Partial<CreateVehicleStatusInput>) {
+	const supabase = await getSupabaseClient()
+
+	const { error } = await supabase
+		.from('vehicle_status')
+		.update(data)
+		.eq('id', id)
+
+	if (error) {
+		throw error
+	}
+} 

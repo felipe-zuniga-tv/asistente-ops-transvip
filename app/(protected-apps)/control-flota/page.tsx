@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Routes } from '@/utils/routes';
 import { TransvipLogo } from '@/components/transvip/transvip-logo';
-import { Calendar, CalendarClock, Car } from 'lucide-react';
+import { Calendar, CalendarClock, Car, AlertTriangle } from 'lucide-react';
 
 export default function ControlFlotaPage() {
     return (
@@ -62,7 +62,22 @@ export default function ControlFlotaPage() {
                             <CardDescription className='text-xs'>Verifica la asociación de jornadas con fechas</CardDescription>
                         </CardHeader>
                         <CardContent className='text-sm'>
-                            Calendario para verificarla asociación de jornadas para cada vehículo de la flota.
+                            Calendario para verificar la asociación de jornadas para cada vehículo de la flota.
+                        </CardContent>
+                    </Card>
+                </Link>
+
+                <Link href={Routes.CONTROL_FLOTA.VEHICLE_STATUS} className="block hover:opacity-90">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className='flex flex-row gap-2 items-center'>
+                                <AlertTriangle className='w-4 h-4 text-transvip' />
+                                <span>Estado por Móvil</span>
+                            </CardTitle>
+                            <CardDescription className='text-xs'>Registra estados especiales de los móviles</CardDescription>
+                        </CardHeader>
+                        <CardContent className='text-sm'>
+                            Mantén un registro de estados como mantenciones, accidentes, vacaciones, etc.
                         </CardContent>
                     </Card>
                 </Link>

@@ -2,20 +2,29 @@
 import { useState, useCallback, useEffect } from "react"
 import { startOfToday, addDays, format } from "date-fns"
 import { VehicleShift } from "@/components/vehicle-shifts/vehicle-shifts"
-import { getVehicleShiftsByDateRange } from "@/lib/vehicle-shifts/actions"
+import { getVehicleShiftsByDateRange } from "@/lib/database/actions"
 import { useDebounce } from "@/hooks/use-debounce"
 import { useToast } from "@/hooks/use-toast"
 import { Card } from "@/components/ui/card"
 import { VehicleShiftsDashboardHeader } from "./vehicle-shifts-dashboard-header"
 import { VehicleShiftsDashboardCalendar } from "./vehicle-shifts-dashboard-calendar"
+import type { VehicleShiftWithShiftInfo, VehicleStatus } from "@/lib/types"
 
 interface VehicleShiftsDashboardProps {
+    shifts: VehicleShiftWithShiftInfo[]
     daysToShow?: number
+    vehicleNumber?: string
+    vehicleStatuses: VehicleStatus[]
 }
 
-export function VehicleShiftsDashboard({ daysToShow: initialDaysToShow = 90 }: VehicleShiftsDashboardProps) {
-    const [vehicleNumber, setVehicleNumber] = useState<string>("")
-    const [shifts, setShifts] = useState<VehicleShift[]>([])
+export function VehicleShiftsDashboard({ 
+    shifts: initialShifts,
+    daysToShow: initialDaysToShow = 90,
+    vehicleNumber: initialVehicleNumber,
+    vehicleStatuses 
+}: VehicleShiftsDashboardProps) {
+    const [vehicleNumber, setVehicleNumber] = useState<string>(initialVehicleNumber || "")
+    const [shifts, setShifts] = useState<VehicleShiftWithShiftInfo[]>(initialShifts)
     const [isLoading, setIsLoading] = useState(false)
     const [hasSearched, setHasSearched] = useState(false)
     const [daysToShow, setDaysToShow] = useState(initialDaysToShow)

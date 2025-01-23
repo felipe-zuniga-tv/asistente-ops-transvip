@@ -10,16 +10,9 @@ import { useEffect, useState } from 'react'
 import { MessagesList } from './messages-list'
 import { EmptyScreen } from './empty-screen'
 import { ChatPanel } from './chat-panel'
-// import { toast } from 'sonner'
+import type { ChatProps } from '@/lib/types'
 
-export interface ChatProps extends React.ComponentProps<'div'> {
-    initialMessages?: Message[]
-    id?: string
-    session?: any // Session
-    //   missingKeys: string[]
-}
-
-export function TransvipOpsChat({ id, className, session }: ChatProps) {
+export function Chat({ id, initialMessages, className, session }: ChatProps) {
     const router = useRouter()
     const path = usePathname()
     const [input, setInput] = useState('')

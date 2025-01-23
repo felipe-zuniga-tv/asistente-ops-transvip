@@ -25,6 +25,7 @@ import {
 	Calendar,
 	CarFront,
 	CalendarClock,
+	AlertTriangle,
 } from "lucide-react"
 import { toolsList } from "./tools";
 
@@ -112,9 +113,15 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 					active: true
 				},
 				{
-					title: 'Turno por Móvil',
+					title: 'Asignar Turno al Móvil',
 					icon: CarFront,
 					url: Routes.CONTROL_FLOTA.VEHICLE_SHIFT,
+					active: true
+				},
+				{
+					title: 'Estado por Móvil',
+					icon: AlertTriangle,
+					url: Routes.CONTROL_FLOTA.VEHICLE_STATUS,
 					active: true
 				},
 				{

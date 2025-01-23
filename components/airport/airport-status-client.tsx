@@ -10,25 +10,7 @@ import { AirportZone, airportZones } from '@/lib/config/airport'
 import { Routes } from '@/utils/routes'
 import Link from 'next/link'
 import { QRCodeGeneratorDialog } from '../qr/qr-code-generator-dialog'
-
-interface AirportVehicleType {
-    id: number[]
-    count: number
-    vehicle_image: string
-    name: string
-}
-
-interface AirportVehicleDetail {
-    unique_car_id: string
-    tipo_contrato: string
-    name: string
-    action: number
-    fleet_id: number
-    fleet_name: string
-    entry_time: string
-    total_passengers: number
-    passenger_entry_time: string
-}
+import type { AirportVehicleType, AirportVehicleDetail } from '@/lib/types'
 
 const secondsToUpdate = 60 // Refresh data
 const maxWaitTime = 15 // Minutes
