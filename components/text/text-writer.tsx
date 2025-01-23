@@ -141,7 +141,7 @@ export default function TextWriter() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
-                    <div className="space-y-2">
+                    <div className="hidden space-y-2">
                         <Label className="text-sm font-medium">Tipo de Flota</Label>
                         <div className="flex flex-row gap-2 items-center">
                             {FLEET_OPTIONS.map((option) => (
@@ -172,7 +172,7 @@ export default function TextWriter() {
                         </div>
                     </div>
 
-                    <div className="space-y-2">
+                    <div className="hidden space-y-2">
                         <Label className="text-sm font-medium">Tipo de Vehículo</Label>
                         <div className="flex flex-row gap-2 items-center">
                             {VEHICLE_TYPE_OPTIONS.map((option) => (

@@ -25,6 +25,8 @@ export const CREATE_TEXT_PROMPT = (variations: number, writingStyle: string, obj
     return `
 Create ${variations} variations of a text based on the provided example, each with a 'subject' and 'content' as result. 
 Use a ${writingStyle} style when writing, and a tone that goes along with it.
+Avoid words like "Trabajador", "Colaborador", "Empleado" and other similar words.
+Refer to the user as "proveedor", when requested to write a text for a provider.
 Sign always as "Gerencia de Operaciones Transvip".
 
 The goal of the text is to communicate:

@@ -76,11 +76,9 @@ export function VehicleShiftsTable({
                 <div className="relative">
                     <Input
                         placeholder="Filtrar por móvil..."
-                        type="number"
                         value={table.getColumn("vehicle_number")?.getFilterValue() as number ?? ""}
                         onChange={(event) => {
-                            const value = event.target.value
-                            table.getColumn("vehicle_number")?.setFilterValue(value)
+                            table.getColumn("vehicle_number")?.setFilterValue(event.target.value)
                         }}
                         className="peer pe-9 ps-9 max-w-sm"
                     />

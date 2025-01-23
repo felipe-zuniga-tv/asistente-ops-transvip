@@ -186,7 +186,7 @@ export function VehicleShiftsDashboardCalendar({ shifts, hasSearched, daysToShow
                     <span>Capturar calendario</span>
                 </Button>
             </div>
-            <div ref={calendarRef} className="grid gap-6 bg-white p-4 rounded-lg">
+            <div ref={calendarRef} className="grid gap-6 bg-white rounded-lg">
                 <div className="flex flex-col items-center justify-center">
                     <div className="text-lg font-semibold text-slate-700 text-center">
                         Jornadas de Conexión · Móvil {vehicleNumber}
