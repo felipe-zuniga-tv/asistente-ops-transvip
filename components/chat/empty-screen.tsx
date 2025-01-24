@@ -1,6 +1,10 @@
 import { TransvipLogo } from "../transvip/transvip-logo";
 import { toolsList } from "@/lib/config/tools";
 import { Tool } from "@/lib/chat/types";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Download, Upload } from "lucide-react";
+import { useState } from "react";
 import {
     Select,
     SelectContent,
@@ -12,12 +16,14 @@ import {
 } from "@/components/ui/select";
 
 export function EmptyScreen({ session }: { session: any }) {
+    const [showAdvanced, setShowAdvanced] = useState(false);
+
     const handleSelect = (value: string) => {
         const tool = toolsList.find(t => t.title === value);
         if (tool?.search) {
             const textarea = document.querySelector('textarea');
             if (textarea) {
-                textarea.value = tool.search;
+                textarea.value = tool.search + ' ';
                 textarea.focus();
                 // Trigger input event to update internal state
                 textarea.dispatchEvent(new Event('input', { bubbles: true }));
@@ -89,6 +95,43 @@ export function EmptyScreen({ session }: { session: any }) {
                                 ))}
                             </SelectContent>
                         </Select>
+                    </div>
+
+                    <div className="mt-4 flex flex-col gap-4">
+                        <div className="flex items-center space-x-2">
+                            <Switch
+                                id="advanced-mode"
+                                checked={showAdvanced}
+                                onCheckedChange={setShowAdvanced}
+                            />
+                            <label
+                                htmlFor="advanced-mode"
+                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                                Opciones Avanzadas
+                            </label>
+                        </div>
+
+                        {showAdvanced && (
+                            <div className="flex flex-row gap-2">
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="text-xs md:text-sm"
+                                >
+                                    <Download className="w-4 h-4 mr-2" />
+                                    Plantilla CSV
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="text-xs md:text-sm"
+                                >
+                                    <Upload className="w-4 h-4 mr-2" />
+                                    Carga Masiva
+                                </Button>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className="flex flex-row gap-2 justify-end items-center text-xs mt-4">

@@ -4,6 +4,8 @@ import { useState } from "react"
 import { PlusCircle, Upload, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
 import { TransvipLogo } from "../transvip/transvip-logo"
 import { VehicleShiftsTable } from "./table/vehicle-shifts-table"
 import { columns } from "./table/columns"
@@ -41,6 +43,7 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
     const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
     const [editingAssignment, setEditingAssignment] = useState<VehicleShift | null>(null)
     const [assignmentToDelete, setAssignmentToDelete] = useState<VehicleShift | null>(null)
+    const [showAdvancedOptions, setShowAdvancedOptions] = useState(false)
 
     const handleDownloadTemplate = () => {
         const template = generateVehicleShiftsTemplate()
@@ -67,7 +70,7 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
         try {
             setEditingAssignment(null)
             router.refresh()
-            
+
             setTimeout(() => {
                 window.location.reload()
             }, 100)
@@ -84,11 +87,31 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
                         <TransvipLogo size={20} />
                         <span className="text-sm sm:text-base">Asignación de Vehículos</span>
                     </div>
-                    <div className="flex gap-2">
+                    <Button
+                        size="default"
+                        className="text-xs md:text-sm"
+                        onClick={() => setIsNewDialogOpen(true)}
+                    >
+                        <PlusCircle className="w-4 h-4" />
+                        Añadir
+                    </Button>
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+                <div className="flex items-center space-x-2">
+                    <Switch
+                        id="advanced-options"
+                        checked={showAdvancedOptions}
+                        onCheckedChange={setShowAdvancedOptions}
+                    />
+                    <Label htmlFor="advanced-options">Opciones Avanzadas</Label>
+                </div>
+
+                {showAdvancedOptions && (
+                    <div className="flex gap-2 bg-gray-200 p-2 rounded-md">
                         <Button
                             variant="outline"
-                            size="default"
-                            className="text-xs md:text-sm"
+                            size="sm"
                             onClick={handleDownloadTemplate}
                         >
                             <Download className="w-4 h-4" />
@@ -96,25 +119,16 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
                         </Button>
                         <Button
                             variant="outline"
-                            size="default"
-                            className="text-xs md:text-sm"
+                            size="sm"
                             onClick={() => setIsUploadDialogOpen(true)}
                         >
                             <Upload className="w-4 h-4" />
                             Carga Masiva
                         </Button>
-                        <Button 
-                            size="default"
-                            className="text-xs md:text-sm"
-                            onClick={() => setIsNewDialogOpen(true)}
-                        >
-                            <PlusCircle className="w-4 h-4" />
-                            Añadir
-                        </Button>
                     </div>
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
+                )}
+            
+
                 <VehicleShiftsTable
                     columns={columns}
                     data={vehicleShifts}
@@ -123,13 +137,13 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
                 />
             </CardContent>
 
-            <NewVehicleShiftDialog 
+            <NewVehicleShiftDialog
                 open={isNewDialogOpen}
                 onOpenChange={setIsNewDialogOpen}
                 shifts={shifts}
             />
 
-            <EditVehicleShiftDialog 
+            <EditVehicleShiftDialog
                 open={!!editingAssignment}
                 onOpenChange={handleEditComplete}
                 assignment={editingAssignment}
