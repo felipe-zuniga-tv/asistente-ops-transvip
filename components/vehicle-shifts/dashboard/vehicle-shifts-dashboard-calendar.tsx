@@ -1,8 +1,8 @@
-import { addDays, format, startOfToday, getDay, isSameMonth, endOfMonth } from "date-fns"
+import { addDays, format, startOfToday, getDay, isSameMonth } from "date-fns"
 import { es } from "date-fns/locale"
 import { CardContent } from "@/components/ui/card"
 import { VehicleShift } from "@/components/vehicle-shifts/vehicle-shifts"
-import { CalendarX2, Camera } from "lucide-react"
+import { CalendarX2, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useRef } from "react"
 import { toPng } from "html-to-image"
@@ -182,8 +182,8 @@ export function VehicleShiftsDashboardCalendar({ shifts, hasSearched, daysToShow
                     onClick={handleScreenshot}
                     className="gap-2"
                 >
-                    <Camera className="h-4 w-4" />
-                    <span>Capturar calendario</span>
+                    <Download className="h-4 w-4" />
+                    <span>Descargar calendario</span>
                 </Button>
             </div>
             <div ref={calendarRef} className="grid gap-6 bg-white rounded-lg">
