@@ -109,7 +109,7 @@ export function ShiftsDefinition({ shifts }: ShiftsCardProps) {
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-                <div className="flex justify-between items-center space-x-2">
+                <div className="flex justify-between items-center">
                     <div className="flex items-center space-x-2">
                         <Switch checked={showFilters} onCheckedChange={setShowFilters} />
                         <Label>{showFilters ? "Ocultar" : "Mostrar"} Filtros</Label>

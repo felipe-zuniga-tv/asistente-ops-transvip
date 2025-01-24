@@ -41,6 +41,10 @@ export const columns: ColumnDef<VehicleShift>[] = [
         accessorKey: "vehicle_number",
         header: () => <div className="text-center"># Móvil</div>,
         cell: ({ row }) => <div className="text-center">{row.getValue("vehicle_number")}</div>,
+        filterFn: (row, columnId, filterValue) => {
+            const rowValue = String(row.getValue(columnId))
+            return rowValue.toLowerCase().includes(String(filterValue).toLowerCase())
+        }
     },
     {
         accessorKey: "shift_name",

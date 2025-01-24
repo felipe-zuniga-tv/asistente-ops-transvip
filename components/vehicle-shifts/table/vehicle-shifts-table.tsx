@@ -102,11 +102,11 @@ export function VehicleShiftsTable({
 
     return (
         <>
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center justify-between gap-4 py-1">
                 <div className="relative">
                     <Input
                         placeholder="Filtrar por móvil..."
-                        value={table.getColumn("vehicle_number")?.getFilterValue() as number ?? ""}
+                        value={(table.getColumn("vehicle_number")?.getFilterValue() as string) ?? ""}
                         onChange={(event) => {
                             table.getColumn("vehicle_number")?.setFilterValue(event.target.value)
                         }}

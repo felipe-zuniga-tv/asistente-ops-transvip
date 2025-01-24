@@ -76,7 +76,7 @@ export function ShiftsDataTable<TData, TValue>({
 
 	return (
 		<>
-			<div className="flex items-center justify-between py-2">
+			<div className="flex items-center justify-between gap-4 py-1">
 				<div className="relative">
 					<Input
 						placeholder="Filtrar por nombre..."

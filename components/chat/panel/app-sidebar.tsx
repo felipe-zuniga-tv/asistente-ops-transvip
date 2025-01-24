@@ -19,10 +19,26 @@ import { UserMessage } from "../message"
 import { Routes } from "@/utils/routes"
 import { usePathname, useRouter } from "next/navigation"
 import { sidebarData, chatbotItem } from "@/lib/config/chat-sidebar"
-import { Bot, BotMessageSquare } from "lucide-react"
+import { BotMessageSquare } from "lucide-react"
 
 // Hints for chatbot functionalities
 const showHints = false
+
+// Chatbot element for sidebar
+const chatbotElement = {
+	title: chatbotItem.title,
+	url: "#",
+	icon: chatbotItem.icon,
+	active: true,
+	items: [
+		{
+			title: "Accede a Jarvip",
+			url: Routes.CHAT,
+			icon: BotMessageSquare,
+			active: true
+		}
+	]
+}
 
 export function AppSidebar({ session, ...props }: { session: any & React.ComponentProps<typeof Sidebar> }) {
 	const [_, setMessages] = useUIState()
@@ -56,21 +72,7 @@ export function AppSidebar({ session, ...props }: { session: any & React.Compone
 
 	const sidebarItems = isChatRoute 
 		? sidebarData.navMain 
-		: [{
-			title: chatbotItem.title,
-			url: "#",
-			icon: chatbotItem.icon,
-			active: true,
-			items: [
-				{
-					title: "Accede a Jarvip",
-					url: Routes.CHAT,
-					icon: BotMessageSquare,
-					active: true
-				}
-			]
-
-		}, ...sidebarData.navMain.filter(item => item.title !== chatbotItem.title)]
+		: [chatbotElement, ...sidebarData.navMain.filter(item => item.title !== chatbotItem.title)]
 
 	return (
 		<Sidebar collapsible="icon" {...props}>
