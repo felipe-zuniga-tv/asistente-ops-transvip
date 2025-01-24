@@ -4,7 +4,7 @@ import { z } from "zod";
 import { parseMTTResponse, type ParsedMTTResponse } from "./parser";
 
 // Schema for the response data
-interface MTTVehicleInfo {
+export interface MTTVehicleInfo {
   licensePlate: string;
   status: string;
   lastUpdate: string;

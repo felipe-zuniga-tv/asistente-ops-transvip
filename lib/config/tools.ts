@@ -1,4 +1,4 @@
-import { CarIcon, CarTaxiFrontIcon, Clock12Icon, FileDigitIcon, PlaneTakeoffIcon, User, UserSearch } from "lucide-react";
+import { Car, CarIcon, CarTaxiFrontIcon, Clock12Icon, FileDigitIcon, PlaneTakeoffIcon, User, UserSearch } from "lucide-react";
 import { Tool } from "../chat/types";
 
 // TOOLS
@@ -14,6 +14,12 @@ export const toolsList: Tool[] = [
         hint: 'Status por tipo de vehículo',
         search: 'Quiero ver la zona iluminada del aeropuerto de Antofagasta',
         icon: PlaneTakeoffIcon,
+    },
+    {
+        title: 'Busca una PPU en el MTT',
+        hint: 'Busca una patente en el MTT',
+        search: 'Quiero buscar una patente en el MTT',
+        icon: Car,
     },
     {
         title: 'Ver si un móvil está conectado',
