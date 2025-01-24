@@ -4,7 +4,6 @@ import {
     ColumnDef,
     ColumnFiltersState,
     SortingState,
-    flexRender,
     getCoreRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
@@ -12,21 +11,14 @@ import {
     useReactTable,
 } from "@tanstack/react-table"
 
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, ArrowRight, Search, Trash2 } from "lucide-react"
+import { Download, Search, Trash2 } from "lucide-react"
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { VehicleShift } from "../vehicle-shifts"
 import { DataTableHeader } from "@/components/tables/data-table-header"
 import { DataTablePagination } from "@/components/tables/data-table-pagination"
+import { DataTableContent } from "@/components/tables/data-table-content"
 import {
     Dialog,
     DialogContent,
@@ -42,6 +34,7 @@ interface DataTableProps {
     onEdit?: (shift: VehicleShift) => void
     onDelete?: (shift: VehicleShift) => void
     onBulkDelete?: (shifts: VehicleShift[]) => void
+    onBulkDownload?: (shifts: VehicleShift[]) => void
 }
 
 export function VehicleShiftsTable({
@@ -50,6 +43,7 @@ export function VehicleShiftsTable({
     onEdit,
     onDelete,
     onBulkDelete,
+    onBulkDownload,
 }: DataTableProps) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -117,17 +111,28 @@ export function VehicleShiftsTable({
                     </div>
                 </div>
 
-                {/* Show bulk action button when rows are selected */}
+                {/* Show bulk action buttons when rows are selected */}
                 {table.getFilteredSelectedRowModel().rows.length > 0 && (
-                    <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => setIsDeleteDialogOpen(true)}
-                    >
-                        <Trash2 className="h-4 w-4" />
-                        Eliminar seleccionados
-                    </Button>
-
+                    <div className="flex gap-2">
+                        <Button
+                            variant="secondary"
+                            size="sm"
+                            className="shadow"
+                            onClick={() => onBulkDownload?.(getSelectedRows())}
+                        >
+                            <Download className="h-4 w-4 mr-1" />
+                            Descargar seleccionados
+                        </Button>
+                        <Button
+                            variant="destructive"
+                            size="sm"
+                            className="shadow"
+                            onClick={() => setIsDeleteDialogOpen(true)}
+                        >
+                            <Trash2 className="h-4 w-4 mr-1" />
+                            Eliminar seleccionados
+                        </Button>
+                    </div>
                 )}
 
                 {/* Delete confirmation dialog */}
@@ -160,50 +165,7 @@ export function VehicleShiftsTable({
                 </Dialog>
             </div>
             <DataTableHeader table={table} />
-            <div className="rounded-md border">
-                <Table>
-                    <TableHeader className="bg-gray-100">
-                        {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => {
-                                    return (
-                                        <TableHead key={header.id}>
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                        </TableHead>
-                                    )
-                                })}
-                            </TableRow>
-                        ))}
-                    </TableHeader>
-                    <TableBody>
-                        {table.getRowModel().rows?.length ? (
-                            table.getRowModel().rows.map((row) => (
-                                <TableRow
-                                    key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
-                                >
-                                    {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            ))
-                        ) : (
-                            <TableRow>
-                                <TableCell colSpan={columns.length} className="h-24 text-center">
-                                    No hay resultados.
-                                </TableCell>
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
-            </div>
+            <DataTableContent table={table} columns={columns.length} />
             <DataTablePagination table={table} />
         </>
     )

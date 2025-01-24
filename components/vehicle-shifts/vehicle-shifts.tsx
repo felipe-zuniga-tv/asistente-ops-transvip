@@ -58,6 +58,34 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
         document.body.removeChild(a)
     }
 
+    const handleBulkDownload = (selectedShifts: VehicleShift[]) => {
+        // Create CSV content
+        const headers = ["Móvil", "Turno", "Fecha Inicio", "Fecha Fin", "Prioridad"]
+        const rows = selectedShifts.map(shift => [
+            shift.vehicle_number,
+            shift.shift_name,
+            shift.start_date,
+            shift.end_date,
+            shift.priority
+        ])
+        
+        const csvContent = [
+            headers.join(","),
+            ...rows.map(row => row.join(","))
+        ].join("\n")
+
+        // Create and download the file
+        const blob = new Blob([csvContent], { type: "text/csv" })
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement("a")
+        a.href = url
+        a.download = "asignaciones-seleccionadas.csv"
+        document.body.appendChild(a)
+        a.click()
+        window.URL.revokeObjectURL(url)
+        document.body.removeChild(a)
+    }
+
     const handleEditAssignment = (assignment: VehicleShift) => {
         setEditingAssignment({
             ...assignment,
@@ -133,6 +161,7 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
                     data={vehicleShifts}
                     onEdit={handleEditAssignment}
                     onDelete={setAssignmentToDelete}
+                    onBulkDownload={handleBulkDownload}
                 />
             </CardContent>
 
