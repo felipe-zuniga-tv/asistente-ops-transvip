@@ -24,6 +24,8 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft, ArrowRight, Search } from "lucide-react"
 import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
+import { DataTableHeader } from "@/components/tables/data-table-header"
+import { DataTablePagination } from "@/components/tables/data-table-pagination"
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
@@ -73,8 +75,8 @@ export function ShiftsDataTable<TData, TValue>({
 	}, [selectedDays, table])
 
 	return (
-		<div>
-			<div className="flex items-center justify-between py-4">
+		<>
+			<div className="flex items-center justify-between py-2">
 				<div className="relative">
 					<Input
 						placeholder="Filtrar por nombre..."
@@ -88,28 +90,8 @@ export function ShiftsDataTable<TData, TValue>({
 						<Search size={16} strokeWidth={2} />
 					</div>
 				</div>
-				<div className="text-center flex-1 text-sm text-muted-foreground">
-					Total: {table.getFilteredRowModel().rows.length} {table.getFilteredRowModel().rows.length === 1 ? "resultado" : "resultados"}
-				</div>
-				<div className="flex items-center justify-end space-x-2">
-					<Button
-						variant="outline"
-						size="sm"
-						onClick={() => table.previousPage()}
-						disabled={!table.getCanPreviousPage()}
-					>
-						<ArrowLeft className="h-4 w-4" /> Anterior
-					</Button>
-					<Button
-						variant="outline"
-						size="sm"
-						onClick={() => table.nextPage()}
-						disabled={!table.getCanNextPage()}
-					>
-						Siguiente <ArrowRight className="h-4 w-4" />
-					</Button>
-				</div>
 			</div>
+			<DataTableHeader table={table} />
 			<div className="rounded-md border">
 				<Table>
 					<TableHeader className="bg-gray-100">
@@ -154,6 +136,7 @@ export function ShiftsDataTable<TData, TValue>({
 					</TableBody>
 				</Table>
 			</div>
-		</div>
+			<DataTablePagination table={table} />
+		</>
 	)
 }

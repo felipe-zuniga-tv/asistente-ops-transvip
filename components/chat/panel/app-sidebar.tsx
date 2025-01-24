@@ -17,8 +17,9 @@ import { useActions, useUIState } from "ai/rsc"
 import { nanoid } from "@/lib/utils"
 import { UserMessage } from "../message"
 import { Routes } from "@/utils/routes"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { sidebarData, chatbotItem } from "@/lib/config/chat-sidebar"
+import { Bot, BotMessageSquare } from "lucide-react"
 
 // Hints for chatbot functionalities
 const showHints = false
@@ -26,11 +27,16 @@ const showHints = false
 export function AppSidebar({ session, ...props }: { session: any & React.ComponentProps<typeof Sidebar> }) {
 	const [_, setMessages] = useUIState()
 	const { submitUserMessage } = useActions()
-
+	const router = useRouter()
 	const path = usePathname()
 	const isChatRoute = path === Routes.CHAT
 
 	const handleClick = async (tool: any) => {
+		if (tool.title === chatbotItem.title) {
+			router.push(Routes.CHAT)
+			return
+		}
+
 		const userMessageContent = `${tool.search}`.trim()
 
 		setMessages((currentMessages: any[]) => [
@@ -48,6 +54,24 @@ export function AppSidebar({ session, ...props }: { session: any & React.Compone
 		])
 	}
 
+	const sidebarItems = isChatRoute 
+		? sidebarData.navMain 
+		: [{
+			title: chatbotItem.title,
+			url: "#",
+			icon: chatbotItem.icon,
+			active: true,
+			items: [
+				{
+					title: "Accede a Jarvip",
+					url: Routes.CHAT,
+					icon: BotMessageSquare,
+					active: true
+				}
+			]
+
+		}, ...sidebarData.navMain.filter(item => item.title !== chatbotItem.title)]
+
 	return (
 		<Sidebar collapsible="icon" {...props}>
 			<SidebarHeader>
@@ -55,11 +79,7 @@ export function AppSidebar({ session, ...props }: { session: any & React.Compone
 				<NavUser user={session.user} />
 			</SidebarHeader>
 			<SidebarContent>
-				<NavMain items={sidebarData.navMain} handleClick={handleClick} showHints={showHints} />
-				{/* { isChatRoute ? (
-				) : (
-					<NavMain items={sidebarData.navMain.filter(item => item.title !== chatbotItem.title)} handleClick={handleClick} showHints={showHints} />
-				)} */}
+				<NavMain items={sidebarItems} handleClick={handleClick} showHints={showHints} />
 			</SidebarContent>
 			<SidebarFooter>
 				<NavSecondary items={sidebarData.navSecondary} className="mt-auto" />

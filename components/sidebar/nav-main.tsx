@@ -66,7 +66,6 @@ export function NavMain({ items, handleClick, showHints }: {
 						className='group/collapsible'
 					>
 						<SidebarMenuItem>
-							{/* <CollapsibleTrigger asChild className={cn(item.title === chatbotItem.title ? 'bg-slate-500 text-white rounded-lg' : '')}> */}
 							<CollapsibleTrigger asChild>
 								<SidebarMenuButton tooltip={item.title}>
 									{item.icon && <item.icon />}

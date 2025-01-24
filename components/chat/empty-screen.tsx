@@ -1,6 +1,5 @@
 import { TransvipLogo } from "../transvip/transvip-logo";
 import { toolsList } from "@/lib/config/tools";
-import { useState } from "react";
 import {
     Select,
     SelectContent,
@@ -12,17 +11,16 @@ import {
 } from "@/components/ui/select";
 
 export function EmptyScreen({ session }: { session: any }) {
-    const [showAdvanced, setShowAdvanced] = useState(false);
-
     const handleSelect = (value: string) => {
         const tool = toolsList.find(t => t.title === value);
         if (tool?.search) {
             const textarea = document.querySelector('textarea');
             if (textarea) {
                 textarea.value = tool.search + ' ';
-                textarea.focus();
                 // Trigger input event to update internal state
                 textarea.dispatchEvent(new Event('input', { bubbles: true }));
+                
+                textarea.focus();
             }
         }
     };
@@ -93,7 +91,7 @@ export function EmptyScreen({ session }: { session: any }) {
                         </Select>
                     </div>
                 </div>
-                <div className="flex flex-row gap-2 justify-end items-center text-xs mt-4">
+                <div className="flex flex-row gap-2 justify-end items-center text-xs">
                     <TransvipLogo logoOnly={true} colored={false} size={20} />
                 </div>
             </div>

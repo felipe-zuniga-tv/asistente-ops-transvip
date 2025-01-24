@@ -192,7 +192,7 @@ export function VehicleShiftsDashboardCalendar({ shifts, hasSearched, daysToShow
                         Jornadas de Conexión · Móvil {vehicleNumber}
                     </div>
                     <div className="text-xs text-slate-500 text-center">
-                        {format(new Date(), 'EEEE, d MMMM yyyy HH:mm', { locale: es })}
+                        Fecha: {format(new Date(), 'EEEE, d MMMM yyyy HH:mm', { locale: es })}
                     </div>
                 </div>
 
@@ -231,8 +231,7 @@ export function VehicleShiftsDashboardCalendar({ shifts, hasSearched, daysToShow
                                         const shift = getHighestPriorityShiftForDate(shifts, date, vehicleStatuses)
 
                                         return (
-                                            <div
-                                                key={date.toISOString()}
+                                            <div key={date.toISOString()}
                                                 className={`p-1 border rounded-sm transition-colors min-h-[4rem] ${
                                                     shift?.isFreeDay ? "bg-green-50 hover:bg-green-100" :
                                                     shift?.isStatus ? `bg-opacity-10 hover:bg-opacity-20` :

@@ -127,7 +127,6 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
                         </Button>
                     </div>
                 )}
-            
 
                 <VehicleShiftsTable
                     columns={columns}
