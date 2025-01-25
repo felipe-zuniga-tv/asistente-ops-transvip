@@ -221,7 +221,6 @@ export function NewStatusDialog({
                                                 value={field.value ? format(field.value, 'yyyy-MM-dd') : ''}
                                                 onChange={e => {
                                                     const date = new Date(e.target.value);
-                                                    date.setHours(12); // Set to noon to avoid timezone issues
                                                     field.onChange(date);
                                                 }}
                                             />
@@ -244,7 +243,6 @@ export function NewStatusDialog({
                                                 value={field.value ? format(field.value, 'yyyy-MM-dd') : ''}
                                                 onChange={e => {
                                                     const date = new Date(e.target.value);
-                                                    date.setHours(12); // Set to noon to avoid timezone issues
                                                     field.onChange(date);
                                                 }}
                                             />

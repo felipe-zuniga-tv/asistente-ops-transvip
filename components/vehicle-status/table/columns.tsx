@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { VehicleStatus } from "@/lib/types";
 
+const FORMAT_DATE = "dd/MM/yyyy HH:mm"
+
 export const columns: ColumnDef<VehicleStatus>[] = [
     {
         accessorKey: "vehicle_number",
@@ -42,7 +44,7 @@ export const columns: ColumnDef<VehicleStatus>[] = [
             const date = new Date(row.original.start_date);
             return (
                 <div className="text-center">
-                    {format(date, "dd/MM/yyyy", { locale: es })}
+                    {format(date.setMinutes(date.getMinutes() + date.getTimezoneOffset()), "dd/MM/yyyy", { locale: es })}
                 </div>
             );
         },
@@ -54,7 +56,7 @@ export const columns: ColumnDef<VehicleStatus>[] = [
             const date = new Date(row.original.end_date);
             return (
                 <div className="text-center">
-                    {format(date, "dd/MM/yyyy", { locale: es })}
+                    {format(date.setMinutes(date.getMinutes() + date.getTimezoneOffset()), "dd/MM/yyyy", { locale: es })}
                 </div>
             );
         },
@@ -74,14 +76,7 @@ export const columns: ColumnDef<VehicleStatus>[] = [
     {
         accessorKey: "created_at",
         header: () => <div className="text-center">Creado</div>,
-        cell: ({ row }) => {
-            const date = new Date(row.original.created_at);
-            return (
-                <div className="text-center">
-                    {format(date, "dd/MM/yyyy HH:mm", { locale: es })}
-                </div>
-            );
-        },
+        cell: ({ row }) => <div className="text-center">{format(row.original.created_at, FORMAT_DATE, { locale: es })}</div>
     },
     {
         id: "actions",

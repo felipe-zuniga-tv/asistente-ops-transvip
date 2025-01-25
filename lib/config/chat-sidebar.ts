@@ -131,7 +131,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 					title: 'Estado por Móvil',
 					icon: AlertTriangle,
 					url: Routes.CONTROL_FLOTA.VEHICLE_STATUS,
-					active: false
+					active: true
 				},
 				{
 					title: 'Calendario por Móvil',

@@ -246,7 +246,7 @@ export function VehicleShiftsDashboardCalendar({ shifts, hasSearched, daysToShow
                                                     <div className="space-y-0.5">
                                                         <div className={`text-[0.8rem] ${
                                                             shift.isFreeDay ? 'text-green-600' :
-                                                            shift.isStatus ? 'text-gray-800 font-medium' :
+                                                            shift.isStatus ? 'text-black font-medium' :
                                                             'text-blue-600'
                                                         } font-medium truncate`}>
                                                             {shift.isFreeDay ? 'Libre' : shift.shift_name}

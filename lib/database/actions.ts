@@ -221,8 +221,7 @@ export async function getVehicleStatusesForCalendar(vehicleNumber: string, start
 			)
 		`)
 		.eq('vehicle_number', vehicleNumber)
-		.gte('start_date', startDate)
-		.lte('end_date', endDate)
+		.or(`start_date.gte.${startDate},end_date.lte.${endDate}`)
 		.order('start_date')
 
 	if (error) {

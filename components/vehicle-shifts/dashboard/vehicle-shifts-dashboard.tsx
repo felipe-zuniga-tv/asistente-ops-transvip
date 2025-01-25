@@ -2,7 +2,7 @@
 import { useState, useCallback, useEffect } from "react"
 import { startOfToday, addDays, format } from "date-fns"
 import { VehicleShift } from "@/components/vehicle-shifts/vehicle-shifts"
-import { getVehicleShiftsByDateRange } from "@/lib/database/actions"
+import { getVehicleShiftsByDateRange, getVehicleStatusesForCalendar } from "@/lib/database/actions"
 import { useDebounce } from "@/hooks/use-debounce"
 import { useToast } from "@/hooks/use-toast"
 import { Card } from "@/components/ui/card"
@@ -21,47 +21,59 @@ export function VehicleShiftsDashboard({
     shifts: initialShifts,
     daysToShow: initialDaysToShow = 90,
     vehicleNumber: initialVehicleNumber,
-    vehicleStatuses 
 }: VehicleShiftsDashboardProps) {
     const [vehicleNumber, setVehicleNumber] = useState<string>(initialVehicleNumber || "")
     const [shifts, setShifts] = useState<VehicleShiftWithShiftInfo[]>(initialShifts)
+    const [vehicleStatuses, setVehicleStatuses] = useState<VehicleStatus[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [hasSearched, setHasSearched] = useState(false)
     const [daysToShow, setDaysToShow] = useState(initialDaysToShow)
     const debouncedVehicleNumber = useDebounce(vehicleNumber, 500)
     const { toast } = useToast()
 
-    const fetchShifts = useCallback(async (vNumber: number) => {
+    const fetchData = useCallback(async (vNumber: number) => {
         try {
             setIsLoading(true)
             const today = startOfToday()
             const endDate = addDays(today, daysToShow)
+            const startDateStr = format(today, "yyyy-MM-dd")
+            const endDateStr = format(endDate, "yyyy-MM-dd")
             
-            const result = await getVehicleShiftsByDateRange(
+            // Fetch shifts
+            const shiftsResult = await getVehicleShiftsByDateRange(
                 vNumber,
-                format(today, "yyyy-MM-dd"),
-                format(endDate, "yyyy-MM-dd")
+                startDateStr,
+                endDateStr
             )
 
-            if (result.error) {
+            if (shiftsResult.error) {
                 toast({
                     variant: "destructive",
                     title: "Error",
-                    description: result.error
+                    description: shiftsResult.error
                 })
                 setShifts([])
                 return
             }
 
-            setShifts(result.data || [])
+            // Fetch statuses
+            const statusesResult = await getVehicleStatusesForCalendar(
+                vNumber.toString(),
+                startDateStr,
+                endDateStr
+            )
+
+            setShifts(shiftsResult.data || [])
+            setVehicleStatuses(statusesResult || [])
         } catch (error) {
-            console.error("Error fetching shifts:", error)
+            console.error("Error fetching data:", error)
             toast({
                 variant: "destructive",
                 title: "Error",
-                description: "Error al cargar los turnos"
+                description: "Error al cargar los datos"
             })
             setShifts([])
+            setVehicleStatuses([])
         } finally {
             setIsLoading(false)
             setHasSearched(true)
@@ -70,28 +82,30 @@ export function VehicleShiftsDashboard({
 
     const handleSearch = useCallback(() => {
         if (vehicleNumber && !isNaN(parseInt(vehicleNumber))) {
-            fetchShifts(parseInt(vehicleNumber))
+            fetchData(parseInt(vehicleNumber))
         }
-    }, [vehicleNumber, fetchShifts])
+    }, [vehicleNumber, fetchData])
 
     const handleDaysToShowChange = useCallback((days: number) => {
         setDaysToShow(days)
         if (vehicleNumber && !isNaN(parseInt(vehicleNumber))) {
-            fetchShifts(parseInt(vehicleNumber))
+            fetchData(parseInt(vehicleNumber))
         }
-    }, [vehicleNumber, fetchShifts])
+    }, [vehicleNumber, fetchData])
 
     const handleVehicleNumberChange = useCallback((value: string) => {
         setVehicleNumber(value)
         if (!value) {
             setShifts([])
+            setVehicleStatuses([])
             setHasSearched(false)
         }
     }, [])
 
     useEffect(() => {
         if (debouncedVehicleNumber && !isNaN(parseInt(debouncedVehicleNumber))) {
-            setShifts([]) // Clear existing shifts when input changes
+            setShifts([]) // Clear existing data when input changes
+            setVehicleStatuses([])
             setHasSearched(false)
         }
     }, [debouncedVehicleNumber])
@@ -111,6 +125,7 @@ export function VehicleShiftsDashboard({
                 hasSearched={hasSearched} 
                 daysToShow={daysToShow}
                 vehicleNumber={vehicleNumber}
+                vehicleStatuses={vehicleStatuses}
             />
         </Card>
     )

@@ -26,7 +26,7 @@ export default async function ProtectedAppsLayout({ children }: { children: Reac
 						<Header>
 							<SidebarTrigger />
 						</Header>
-						<div className="flex-1 overflow-auto py-3 px-2 md:px-4">
+						<div className="flex-1 overflow-auto py-3 pt-0 px-2 md:px-4">
 							{children}
 						</div>
 					</div>

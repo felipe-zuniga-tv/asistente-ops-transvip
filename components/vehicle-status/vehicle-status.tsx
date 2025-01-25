@@ -5,7 +5,7 @@ import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Card } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { NewStatusDialog } from "./new-status-dialog";
 import { EditStatusDialog } from "./edit-status-dialog";
 import { VehicleStatusDataTable } from "./table/vehicle-status-data-table";
@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { AlertDialogDeleteStatus } from "./delete-status-alert-dialog";
 import { toast } from "sonner";
 import { deleteVehicleStatus } from "@/lib/database/actions";
+import { TransvipLogo } from '@/components/transvip/transvip-logo';
 import type { VehicleStatus } from "@/lib/types";
 
 interface VehicleStatusProps {
@@ -52,49 +53,59 @@ export function VehicleStatus({ statuses = [] }: VehicleStatusProps) {
     };
 
     return (
-        <div className="space-y-4">
-            <div className="flex justify-between items-center">
-                <div className="flex items-center space-x-2">
-                    <Switch checked={showFilters} onCheckedChange={setShowFilters} />
-                    <Label>{showFilters ? "Ocultar" : "Mostrar"} Filtros</Label>
+        <Card className="max-w-4xl mx-2 lg:mx-auto">
+            <CardHeader>
+                <CardTitle className="flex flex-row items-center justify-between">
+                    <div className="flex flex-row items-center gap-2">
+                        <TransvipLogo size={20} />
+                        <span>Estado por Móvil</span>
+                    </div>
+                    <Button size="default" className="text-xs md:text-sm" onClick={() => setIsNewDialogOpen(true)}>
+                        <PlusCircle className="w-4 h-4" />
+                        Añadir Estado
+                    </Button>
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div className="space-y-4">
+                    {/* <div className="flex items-center space-x-2">
+                        <Switch checked={showFilters} onCheckedChange={setShowFilters} />
+                        <Label>{showFilters ? "Ocultar" : "Mostrar"} Filtros</Label>
+                    </div>
+
+                    {showFilters && (
+                        <div className="mb-4 space-y-4 p-4 border rounded-md">
+                            {/* TODO: Add filter components */}
+                        {/* </div>
+                    )} */}
+
+                    <VehicleStatusDataTable
+                        columns={columns}
+                        data={statuses}
+                        onDelete={(status) => setStatusToDelete(status)}
+                        onEdit={handleEdit}
+                    />
+
+                    <NewStatusDialog
+                        open={isNewDialogOpen}
+                        onOpenChange={setIsNewDialogOpen}
+                    />
+
+                    {statusToEdit && (
+                        <EditStatusDialog
+                            open={isEditDialogOpen}
+                            onOpenChange={handleEditDialogClose}
+                            status={statusToEdit}
+                        />
+                    )}
+
+                    <AlertDialogDeleteStatus
+                        status={statusToDelete}
+                        onOpenChange={(open) => setStatusToDelete(open ? statusToDelete : null)}
+                        onDelete={handleDeleteStatus}
+                    />
                 </div>
-                <Button size="default" className="text-xs md:text-sm" onClick={() => setIsNewDialogOpen(true)}>
-                    <PlusCircle className="w-4 h-4 mr-2" />
-                    Añadir Estado
-                </Button>
-            </div>
-
-            {showFilters && (
-                <div className="mb-4 space-y-4 p-4 border rounded-md">
-                    {/* TODO: Add filter components */}
-                </div>
-            )}
-
-            <VehicleStatusDataTable
-                columns={columns}
-                data={statuses}
-                onDelete={(status) => setStatusToDelete(status)}
-                onEdit={handleEdit}
-            />
-
-            <NewStatusDialog
-                open={isNewDialogOpen}
-                onOpenChange={setIsNewDialogOpen}
-            />
-
-            {statusToEdit && (
-                <EditStatusDialog
-                    open={isEditDialogOpen}
-                    onOpenChange={handleEditDialogClose}
-                    status={statusToEdit}
-                />
-            )}
-
-            <AlertDialogDeleteStatus
-                status={statusToDelete}
-                onOpenChange={(open) => setStatusToDelete(open ? statusToDelete : null)}
-                onDelete={handleDeleteStatus}
-            />
-        </div>
+            </CardContent>
+        </Card>
     );
 } 
