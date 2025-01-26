@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";
-import { IBookingInfoOutput } from "@/lib/chat/types";
+import { IBookingInfoOutput } from "@/lib/types";
 import { BookingCard, SharedServiceSummary } from "@/components/chat/search/booking-search";
 import { Switch } from "@/components/ui/switch";
 import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
