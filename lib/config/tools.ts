@@ -1,5 +1,5 @@
 import { Car, CarIcon, CarTaxiFrontIcon, Clock12Icon, FileDigitIcon, PlaneTakeoffIcon, User, UserSearch } from "lucide-react";
-import { Tool } from "../chat/types";
+import { Tool } from "@/lib/types";
 
 // TOOLS
 export const toolsList: Tool[] = [
