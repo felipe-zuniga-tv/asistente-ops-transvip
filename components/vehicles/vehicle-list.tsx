@@ -19,7 +19,7 @@ import {
 	TableRow,
 } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
-import { IVehicleDetail } from '@/lib/chat/types'
+import { IVehicleDetail } from '@/lib/types/chat'
 import { getVehicleList } from '@/lib/chat/functions'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'

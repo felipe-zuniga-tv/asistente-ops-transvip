@@ -1,4 +1,4 @@
-import { Tool } from "@/lib/chat/types";
+import { Tool } from "@/lib/types/chat";
 import { Routes } from "@/utils/routes";
 import {
 	BarChart3,
@@ -27,6 +27,8 @@ import {
 	CalendarClock,
 	AlertTriangle,
 	Plane,
+	Settings,
+	Sliders,
 } from "lucide-react"
 import { toolsList } from "./tools";
 
@@ -166,6 +168,20 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 					icon: Car,
 					url: Routes.VEHICLES.HOME,
 					active: false
+				},
+			],
+		},
+		{
+			title: "Administración",
+			url: Routes.ADMIN.HOME,
+			icon: Settings,
+			isActive: false,
+			items: [
+				{
+					title: 'Configuración Estados',
+					icon: Sliders,
+					url: Routes.ADMIN.VEHICLE_STATUS_CONFIG,
+					active: true
 				},
 			],
 		},

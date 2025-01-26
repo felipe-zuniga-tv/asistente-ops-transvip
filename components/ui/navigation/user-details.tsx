@@ -1,5 +1,5 @@
-import { getSession } from "@/lib/auth";
-import { Session } from '@/lib/chat/types'
+import { getSession } from "@/lib/auth"
+import { Session } from '@/lib/types/chat'
 
 export default async function UserDetails() {
     const session = (await getSession()) as Session | null; // Define the session type

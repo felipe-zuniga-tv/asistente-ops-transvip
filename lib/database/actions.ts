@@ -253,4 +253,51 @@ export async function updateVehicleStatus(id: string, data: Partial<CreateVehicl
 	if (error) {
 		throw error
 	}
+}
+
+// VEHICLE STATUS CONFIG
+export async function createVehicleStatusConfig(data: {
+	label: string;
+	description?: string;
+	color: string;
+}) {
+	const supabase = await getSupabaseClient()
+
+	const { error } = await supabase
+		.from('vehicle_status_config')
+		.insert([data])
+
+	if (error) {
+		throw error
+	}
+}
+
+export async function updateVehicleStatusConfig(id: string, data: {
+	label: string;
+	description?: string;
+	color: string;
+}) {
+	const supabase = await getSupabaseClient()
+
+	const { error } = await supabase
+		.from('vehicle_status_config')
+		.update(data)
+		.eq('id', id)
+
+	if (error) {
+		throw error
+	}
+}
+
+export async function deleteVehicleStatusConfig(id: string) {
+	const supabase = await getSupabaseClient()
+
+	const { error } = await supabase
+		.from('vehicle_status_config')
+		.delete()
+		.eq('id', id)
+
+	if (error) {
+		throw error
+	}
 } 

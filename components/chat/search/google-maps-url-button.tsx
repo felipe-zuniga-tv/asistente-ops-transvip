@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { buildGoogleMapsURL } from "@/lib/chat/functions";
-import { IBookingInfoOutput } from "@/lib/chat/types";
+import { buildGoogleMapsURL } from "@/lib/chat/utils/helpers";
+import { IBookingInfoOutput } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { MapIcon } from "lucide-react";
 

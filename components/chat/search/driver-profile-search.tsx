@@ -5,7 +5,7 @@ import {
 } from 'ai/rsc'
 import { nanoid } from 'nanoid';
 import { UserCircle } from 'lucide-react';
-import { IDriverAssignedVehicles, IDriverProfile, IDriverVehicles } from '@/lib/chat/types';
+import { IDriverAssignedVehicles, IDriverProfile, IDriverVehicles } from '@/lib/types/chat';
 import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

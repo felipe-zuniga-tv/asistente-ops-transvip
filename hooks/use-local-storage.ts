@@ -21,4 +21,4 @@ export const useLocalStorage = <T>(
     window.localStorage.setItem(key, JSON.stringify(value))
   }
   return [storedValue, setValue]
-}
+} 

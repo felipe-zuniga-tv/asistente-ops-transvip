@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid';
 import Image from 'next/image';
 import { CheckCircle, SparklesIcon, UserIcon } from 'lucide-react';
 import { AssistantMessageContent, UserMessage } from '../message';
-import { IVehicleStatusSearchResult } from '@/lib/chat/types';
+import { IVehicleStatusSearchResult } from '@/lib/types/chat';
 import { VEHICLE_STATUS, cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import ToolsButton from '../tools/tools-button';

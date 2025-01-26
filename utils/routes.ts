@@ -23,6 +23,10 @@ export const Routes = Object.freeze({
 		DASHBOARD: '/control-flota/dashboard',
 		VEHICLE_STATUS: '/control-flota/vehicle-status',
 	},
+	ADMIN: {
+		HOME: '/admin',
+		VEHICLE_STATUS_CONFIG: '/admin/vehicle-status-config',
+	},
 	SALES: {
 		HOME: '/sucursales',
 		FORM: '/sucursales/venta',
@@ -44,37 +48,3 @@ export const Routes = Object.freeze({
 		GOOGLE_FORMS: 'https://forms.gle/qeiBzwNhUwD5WcLt8'
 	}
 })
-
-export const HeaderLinks = [
-	{
-		label: 'Mi Asistente',
-		href: Routes.CHAT
-	},
-	{
-		label: 'Control Flota',
-		href: Routes.START
-	},
-	{
-		label: 'Orders',
-		href: '#'
-	},
-	{
-		label: 'Products',
-		href: '#'
-	},
-]
-
-export const NavbarLinks = [
-	{
-		label: 'Inicio',
-		href: Routes.HOME
-	},
-	{
-		label: 'Chatbot',
-		href: Routes.CHAT
-	},
-	{
-		label: 'Código QR',
-		href: Routes.QR_GEN
-	},
-];

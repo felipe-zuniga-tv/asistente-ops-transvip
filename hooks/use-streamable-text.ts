@@ -22,4 +22,4 @@ export const useStreamableText = (
   }, [content]);
 
   return rawContent;
-};
+}; 
