@@ -1,8 +1,8 @@
 'use client'
 
 import { Message } from '@/lib/chat/actions'
-import { useLocalStorage } from '@/lib/hooks/use-local-storage'
-import { useScrollAnchor } from '@/lib/hooks/use-scroll-anchor'
+import { useLocalStorage } from '@/hooks/use-local-storage'
+import { useScrollAnchor } from '@/hooks/use-scroll-anchor'
 import { cn } from '@/lib/utils'
 import { useAIState, useUIState } from 'ai/rsc'
 import { usePathname, useRouter } from 'next/navigation'

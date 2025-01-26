@@ -304,3 +304,10 @@ export interface Tool {
     icon?: LucideIcon
     url?: string; // Optional property for the URL
 }
+
+export interface ChatProps {
+    id: string;
+    initialMessages?: any[];
+    className?: string;
+    session: any;
+}
