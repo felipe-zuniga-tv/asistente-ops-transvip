@@ -4,14 +4,14 @@ import { useState, useEffect } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
+    DialogDescription,
 } from '@/components/ui/dialog'
 import {
     Form,
@@ -23,7 +23,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
-import { type PaymentMethod, type CreatePaymentMethodInput } from '@/lib/types/admin'
 import {
     Select,
     SelectContent,
@@ -32,6 +31,8 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { icons } from '@/components/ui/icons-list'
+import { updatePaymentMethod } from '@/lib/services/admin'
+import { type PaymentMethod } from '@/lib/types/admin'
 
 const formSchema = z.object({
     name: z.string().min(2, {
@@ -48,21 +49,19 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>
 
-interface PaymentMethodDialogProps {
-    method?: PaymentMethod | null
+interface EditPaymentMethodDialogProps {
+    method: PaymentMethod | null
     open: boolean
     onOpenChange: (open: boolean) => void
-    onSuccess: () => void
 }
 
-export function PaymentMethodDialog({
+export function EditPaymentMethodDialog({
     method,
     open,
     onOpenChange,
-    onSuccess,
-}: PaymentMethodDialogProps) {
-    const [isLoading, setIsLoading] = useState(false)
-    const isEditMode = !!method
+}: EditPaymentMethodDialogProps) {
+    const router = useRouter()
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
@@ -71,7 +70,7 @@ export function PaymentMethodDialog({
             code: '',
             icon_name: '',
             is_active: true,
-        },
+        }
     })
 
     useEffect(() => {
@@ -82,15 +81,8 @@ export function PaymentMethodDialog({
                 icon_name: method.icon_name,
                 is_active: method.is_active,
             })
-        } else {
-            form.reset({
-                name: '',
-                code: '',
-                icon_name: '',
-                is_active: true,
-            })
         }
-    }, [form, method])
+    }, [method, form])
 
     // Watch the name field to update code
     const name = form.watch('name')
@@ -100,45 +92,40 @@ export function PaymentMethodDialog({
         const code = name
             .trim()
             .toUpperCase()
-            .replace(/\s+/g, '_') // Replace spaces with underscores
-            .replace(/[^A-Z0-9_]/g, '') // Remove any character that's not uppercase letter, number or underscore
+            .replace(/\s+/g, '_')
+            .replace(/[^A-Z0-9_]/g, '')
         form.setValue('code', code)
     }, [name, form])
 
     async function onSubmit(values: FormValues) {
-        setIsLoading(true)
+        if (!method?.id) return
+
         try {
-            if (isEditMode && method) {
-                // TODO: Implement API call to update payment method
-                console.log('Updating payment method:', method.id, values)
-            } else {
-                // TODO: Implement API call to create payment method
-                const paymentMethodInput: CreatePaymentMethodInput = values
-                console.log('Creating payment method:', paymentMethodInput)
-            }
-            onSuccess()
-            if (!isEditMode) {
-                form.reset()
-            }
+            setIsSubmitting(true)
+            await updatePaymentMethod(method.id, values)
             onOpenChange(false)
+            router.refresh()
         } catch (error) {
-            console.error(`Error ${isEditMode ? 'updating' : 'creating'} payment method:`, error)
+            console.error('Error updating payment method:', error)
         } finally {
-            setIsLoading(false)
+            setIsSubmitting(false)
         }
     }
 
+    function handleOpenChange(open: boolean) {
+        if (!open) {
+            form.reset()
+        }
+        onOpenChange(open)
+    }
+
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[425px]">
+        <Dialog open={open} onOpenChange={handleOpenChange}>
+            <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>
-                        {isEditMode ? 'Editar Método de Pago' : 'Nuevo Método de Pago'}
-                    </DialogTitle>
+                    <DialogTitle>Editar Método de Pago</DialogTitle>
                     <DialogDescription>
-                        {isEditMode 
-                            ? 'Modifica los detalles del método de pago.'
-                            : 'Crea un nuevo método de pago para el sistema.'}
+                        Modifica los detalles del método de pago.
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -213,30 +200,32 @@ export function PaymentMethodDialog({
                             name="is_active"
                             render={({ field }) => (
                                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                                    <div className="space-y-0.5">
+                                        <FormLabel>Activo</FormLabel>
+                                    </div>
                                     <FormControl>
-                                        <div className="w-full flex flex-row items-center justify-start gap-2">
-                                            <span className="text-sm font-medium">Activo</span>
-                                            <Switch
-                                                className="mt-0 data-[state=checked]:!bg-green-500"
-                                                checked={field.value}
-                                                onCheckedChange={field.onChange}
-                                            />
-                                        </div>
+                                        <Switch
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                            className="data-[state=checked]:bg-green-500"
+                                        />
                                     </FormControl>
                                 </FormItem>
                             )}
                         />
-                        <DialogFooter>
-                            <Button type="submit" disabled={isLoading}>
-                                {isLoading
-                                    ? isEditMode
-                                        ? 'Guardando...'
-                                        : 'Creando...'
-                                    : isEditMode
-                                    ? 'Guardar cambios'
-                                    : 'Crear'}
+                        <div className="flex justify-end space-x-2 pt-4">
+                            <Button 
+                                type="button" 
+                                variant="outline" 
+                                onClick={() => handleOpenChange(false)}
+                                disabled={isSubmitting}
+                            >
+                                Cancelar
                             </Button>
-                        </DialogFooter>
+                            <Button type="submit" disabled={isSubmitting}>
+                                {isSubmitting ? "Guardando..." : "Guardar"}
+                            </Button>
+                        </div>
                     </form>
                 </Form>
             </DialogContent>

@@ -1,5 +1,13 @@
 export function buildAPIUrl(endpoint: string | undefined) {
-    return `${process.env.NEXT_PUBLIC_API_BASE_URL}/${endpoint}`
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    if (!baseUrl || !endpoint) {
+        console.error('Missing required environment variables for API URL construction');
+        return '';
+    }
+    // Remove any leading/trailing slashes to prevent double slashes
+    const cleanBaseUrl = baseUrl.replace(/\/+$/, '');
+    const cleanEndpoint = endpoint.replace(/^\/+/, '');
+    return `${cleanBaseUrl}/${cleanEndpoint}`;
 }
 
 export function buildWhatsappLink(phone_number : string, text: string) {

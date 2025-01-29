@@ -70,7 +70,7 @@ export const columns: ColumnDef<VehicleType>[] = [
                         </DropdownMenuItem>
                         <DropdownMenuItem
                             onClick={() => table.options.meta?.onDelete?.(vehicleType)}
-                            className="text-red-600"
+                            className="text-destructive hover:text-destructive bg-red-500/10 hover:bg-red-500/20"
                         >
                             <Trash className="mr-2 h-4 w-4" />
                             <span>Eliminar</span>

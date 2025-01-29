@@ -399,8 +399,12 @@ function BookingDates({ result, simplified = false }: {
                             <span>·</span>
                             <span className='font-semibold'>Usuario:</span>
                             <span>{result.booking.cancellation_identity}</span>
-                            <span>·</span>
-                            <span className='truncate max-w-[80px] md:max-w-[140px]'>{result.booking.cancellation_reason}</span>
+                            { result.booking.cancellation_reason && result.booking.cancellation_reason.length > 0 && (
+                                <>
+                                    <span>·</span>
+                                    <span className='truncate max-w-[80px] md:max-w-[140px]'>{result.booking.cancellation_reason}</span>
+                                </>
+                            )}
                         </div>
                     }
                 </div>

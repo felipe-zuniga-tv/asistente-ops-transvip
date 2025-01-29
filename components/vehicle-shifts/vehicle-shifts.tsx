@@ -18,6 +18,7 @@ import { deleteVehicleShift } from "@/lib/shifts/actions"
 import { useToast } from "@/hooks/use-toast"
 import { AddButton } from "../ui/buttons"
 import { CardTitleContent } from "../ui/card-title-content"
+import { ConfigCardContainer } from "../tables/config-card-container"
 
 export interface VehicleShift {
     id: string
@@ -143,18 +144,9 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
     }
 
     return (
-        <Card className="max-w-4xl lg:mx-auto">
-            <CardHeader>
-                <CardTitle className="flex flex-row items-center justify-between">
-                    <CardTitleContent title="Asignación de Vehículos" />
-                    <AddButton
-                        text="Añadir"
-                        className="text-xs md:text-sm"
-                        onClick={() => setIsNewDialogOpen(true)}
-                    />
-                </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
+        <>
+            <ConfigCardContainer title="Asignación de Vehículos"
+                onAdd={() => setIsNewDialogOpen(true)}>
                 <div className="flex items-center space-x-2">
                     <Switch
                         id="advanced-options"
@@ -193,7 +185,7 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
                     onBulkDelete={handleBulkDelete}
                     onBulkDownload={handleBulkDownload}
                 />
-            </CardContent>
+            </ConfigCardContainer>
 
             <NewVehicleShiftDialog
                 open={isNewDialogOpen}
@@ -218,6 +210,6 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
                 assignment={assignmentToDelete}
                 onOpenChange={(open) => setAssignmentToDelete(open ? assignmentToDelete : null)}
             />
-        </Card>
+        </>
     )
 }

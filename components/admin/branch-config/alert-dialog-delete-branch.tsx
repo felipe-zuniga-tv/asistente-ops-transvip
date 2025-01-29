@@ -1,6 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
 import { deleteBranch } from '@/lib/services/admin'
 import {
@@ -18,7 +17,7 @@ import type { Branch } from '@/lib/types/admin'
 interface AlertDialogDeleteBranchProps {
     branch: Branch | null
     onOpenChange: (open: boolean) => void
-    onSuccess: (branchId: number) => void
+    onSuccess: (branchId: string) => void
 }
 
 export function AlertDialogDeleteBranch({

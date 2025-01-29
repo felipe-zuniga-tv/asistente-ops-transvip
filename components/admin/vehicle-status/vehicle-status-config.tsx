@@ -47,16 +47,18 @@ export function VehicleStatusConfig({ configs = [] }: VehicleStatusConfigProps) 
     };
 
     return (
-        <ConfigCardContainer title="Estados de Vehículos"
-            onAdd={() => setIsDialogOpen(true)}
-        >
-            <VehicleStatusConfigDataTable
-                columns={columns}
-                data={configs}
-                onDelete={(config) => setConfigToDelete(config)}
-                onEdit={handleEdit}
-            />
+        <>
+            <ConfigCardContainer title="Estados de Vehículos"
+                onAdd={() => setIsDialogOpen(true)}
+            >
+                <VehicleStatusConfigDataTable
+                    columns={columns}
+                    data={configs}
+                    onDelete={(config) => setConfigToDelete(config)}
+                    onEdit={handleEdit}
+                />
 
+            </ConfigCardContainer>
             <StatusConfigDialog
                 config={configToEdit}
                 open={isDialogOpen}
@@ -68,6 +70,6 @@ export function VehicleStatusConfig({ configs = [] }: VehicleStatusConfigProps) 
                 onOpenChange={(open) => setConfigToDelete(open ? configToDelete : null)}
                 onDelete={handleDeleteConfig}
             />
-        </ConfigCardContainer>
+        </>
     );
 } 

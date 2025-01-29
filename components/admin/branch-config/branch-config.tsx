@@ -44,7 +44,7 @@ export function BranchConfig({ data }: BranchConfigProps) {
         )
     }
 
-    const handleBranchDelete = (deletedBranchId: number) => {
+    const handleBranchDelete = (deletedBranchId: string) => {
         setBranches(prevBranches =>
             prevBranches.filter(branch => String(branch.id) !== String(deletedBranchId))
         )

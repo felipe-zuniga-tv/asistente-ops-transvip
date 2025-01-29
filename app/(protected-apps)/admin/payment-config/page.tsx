@@ -8,7 +8,7 @@ export const metadata = {
     description: "Administra los estados disponibles para los vehículos",
 };
 
-export const revalidate = 0; // Revalidate this page on every request
+// export const revalidate = 0; // Revalidate this page on every request
 
 export default async function PaymentMethodPage() {
     const paymentMethods = await getPaymentMethods()

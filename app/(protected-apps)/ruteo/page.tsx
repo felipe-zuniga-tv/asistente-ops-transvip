@@ -21,15 +21,25 @@ import { Check, ChevronsUpDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
+interface TimeOption {
+    value: number;
+    label: string;
+}
+
+interface RoutingType {
+    value: string;
+    label: string;
+}
+
 // Define the options for the dropdown
-const timeOptions = [
+const timeOptions: TimeOption[] = [
     { value: 30, label: "30 minutos" },
     { value: 60, label: "60 minutos" },
     { value: 90, label: "90 minutos" },
     { value: 100000, label: "Sin Límite" },
 ];
 
-const routingTypes = [
+const routingTypes: RoutingType[] = [
     { value: 'zarpe', label: "Ruteo tipo Zarpe (uno a muchos)" },
     { value: 'preasignaciones', label: "Ruteo Preasignaciones" },
 ];

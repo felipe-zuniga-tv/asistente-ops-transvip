@@ -4,8 +4,8 @@ import AirportStatusClient from '@/components/airport/zi/airport-status-client'
 import { getZonaIluminadaServices } from '@/lib/chat/functions'
 import { AirportZone, airportZones } from '@/lib/config/airport'
 
-export default async function AirportPage({ params }: { params: Promise<{ airport: string }>}) {
-  const airport = (await params).airport
+export default async function AirportPage({ params }: { params: { airport: string }}) {
+  const airport = params.airport
   const airportZone = airportZones.filter(a => a.airport_code === airport.toUpperCase())[0]
 
   return (

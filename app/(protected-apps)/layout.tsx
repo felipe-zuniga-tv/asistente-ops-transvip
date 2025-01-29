@@ -8,7 +8,7 @@ import { nanoid } from "@/lib/utils";
 import { Routes } from "@/utils/routes";
 import { redirect } from "next/navigation";
 
-export default async function ProtectedAppsLayout({ children }: { children: React.ReactNode }) {
+export default async function ChatAppLayout({ children }: { children: React.ReactNode }) {
 	const session = await getSession() as Session | null;
 
 	if (!session) {
@@ -21,7 +21,7 @@ export default async function ProtectedAppsLayout({ children }: { children: Reac
 		<AI initialAIState={{ chatId: id, interactions: [], messages: [] }}>
 			<SidebarProvider>
 				<AppSidebar session={session} />
-				<div className="grid h-screen size-full bg-white">
+				<div className="grid h-screen w-full bg-white">
 					<div className="flex flex-col">
 						<Header>
 							<SidebarTrigger />
@@ -33,6 +33,5 @@ export default async function ProtectedAppsLayout({ children }: { children: Reac
 				</div>
 			</SidebarProvider>
 		</AI>
-
 	)
 }

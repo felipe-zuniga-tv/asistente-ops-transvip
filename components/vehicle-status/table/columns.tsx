@@ -99,8 +99,8 @@ export const columns: ColumnDef<VehicleStatus>[] = [
                                 <span>Editar</span>
                             </DropdownMenuItem>
                             <DropdownMenuItem
-                                className="text-destructive focus:text-destructive"
                                 onClick={() => table.options.meta?.onDelete?.(status)}
+                                className="text-destructive hover:text-destructive bg-red-500/10 hover:bg-red-500/20"
                             >
                                 <Trash className="mr-2 h-4 w-4" />
                                 <span>Eliminar</span>

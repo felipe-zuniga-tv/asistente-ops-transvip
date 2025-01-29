@@ -84,7 +84,7 @@ export const columns: ColumnDef<Branch>[] = [
                             </DropdownMenuItem>
                             <DropdownMenuItem
                                 onClick={() => table.options.meta?.onDelete?.(branch)}
-                                className="text-red-600"
+                                className="text-destructive hover:text-destructive bg-red-500/10 hover:bg-red-500/20"
                             >
                                 <Trash2 className="mr-2 h-4 w-4" />
                                 <span>Eliminar</span>

@@ -9,13 +9,12 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 
-import { TransvipLogo } from "@/components/transvip/transvip-logo";
-import TicketCards from "@/components/finance/tickets/ticket-cards";
-import TicketResults from "@/components/finance/tickets/ticket-results";
-import MaxWidthWrapper from "@/components/ui/max-width-wrapper";
+import { TransvipLogo } from "@/components/transvip/transvip-logo"
+import TicketCards from "@/components/finance/tickets/ticket-cards"
+import TicketResults from "@/components/finance/tickets/ticket-results"
 
 export interface FileWithPreview extends File {
-    preview?: string;
+    preview: string;
 }
 
 export interface TicketResultType {
@@ -156,43 +155,39 @@ export default function ParkingTickets() {
     };
 
     return (
-        <MaxWidthWrapper>
-            <Card>
-                <div className="mb-0">
-                    <CardHeader>
-                        <CardTitle className="flex flex-col md:flex-row gap-2 justify-between items-center">
-                            <div className="flex flex-row items-center gap-2">
-                                <TransvipLogo colored={true} size={20} />
-                                <span className="text-lg font-bold">Tickets Estacionamiento</span>
-                            </div>
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="grid grid-cols-1 gap-4">
-                            <TicketCards
-                                files={files}
-                                handleClearFiles={handleClearFiles}
-                                handleRemoveFile={handleRemoveFile}
-                                handleUpload={handleUpload}
-                                onFileInputClick={handleFileInputClick}
-                                isUploading={isUploading}
-                            />
+        <Card className="w-full max-w-4xl mx-auto">
+            <CardHeader>
+                <CardTitle className="flex flex-col md:flex-row gap-2 justify-between items-center">
+                    <div className="flex flex-row items-center gap-2">
+                        <TransvipLogo colored={true} size={20} />
+                        <span className="text-lg font-bold">Tickets Estacionamiento</span>
+                    </div>
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div className="grid grid-cols-1 gap-4">
+                    <TicketCards
+                        files={files}
+                        handleClearFiles={handleClearFiles}
+                        handleRemoveFile={handleRemoveFile}
+                        handleUpload={handleUpload}
+                        onFileInputClick={handleFileInputClick}
+                        isUploading={isUploading}
+                    />
 
-                            {isUploading && <div className="w-full text-center">Cargando...</div>}
-                            {!isUploading && <TicketResults results={results} handleClearResults={handleClearResults} handleDownloadFile={downloadCSV} />}
-                        </div>
-                    </CardContent>
+                    {isUploading && <div className="w-full text-center">Cargando...</div>}
+                    {!isUploading && <TicketResults results={results} handleClearResults={handleClearResults} handleDownloadFile={downloadCSV} />}
                 </div>
-                <Input
-                    ref={fileInputRef}
-                    id="file-input"
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={handleFileChange}
-                    className="hidden"
-                />
-            </Card>
-        </MaxWidthWrapper>
+            </CardContent>
+            <Input
+                ref={fileInputRef}
+                id="file-input"
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleFileChange}
+                className="hidden"
+            />
+        </Card>
     );
 }
