@@ -8,7 +8,6 @@ import {
 } from "ai/rsc";
 
 import { z } from "zod";
-import { openai } from "@ai-sdk/openai";
 import { getSession } from "../auth";
 import { VEHICLE_STATUS, getDriverRatingSummary, nanoid } from "@/lib/utils";
 import { CREATE_DRIVER_RATINGS_SUMMARY, CREATE_TEXT_PROMPT, EMAIL_TEXT_OPS_EXAMPLE, SYSTEM_MESSAGE } from "../config/chat";
@@ -22,15 +21,16 @@ import { DriverProfile, IDriverProfile } from "@/components/chat/search/driver-p
 import AirportStatus from "@/components/chat/airport/airport-status";
 import { airportZones } from "../config/airport";
 import QRCode from "react-qr-code";
+// import { openai } from "@ai-sdk/openai";
 import { google } from "@ai-sdk/google";
 import { getMTTVehiclesInfo } from "../services/mtt/actions";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { VehicleInfoCard } from "@/components/mtt/vehicle-info-card";
 
-export const OPENAI_GPT_4o_MINI = 'gpt-4o-mini' // 'gpt-4'
-export const OPENAI_GPT_4o      = 'gpt-4o' // 'gpt-4'
-const modelInstance = openai(OPENAI_GPT_4o_MINI)
-const modelInstanceSmart = openai(OPENAI_GPT_4o)
+// export const OPENAI_GPT_4o_MINI = 'gpt-4o-mini' // 'gpt-4'
+// export const OPENAI_GPT_4o      = 'gpt-4o' // 'gpt-4'
+// const modelInstance = openai(OPENAI_GPT_4o_MINI)
+// const modelInstanceSmart = openai(OPENAI_GPT_4o)
 const modelInstanceGoogle = google('gemini-2.0-flash-exp')
 
 async function submitUserMessage(content: string) {

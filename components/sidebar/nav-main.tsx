@@ -49,6 +49,7 @@ export function NavMain({ items, handleClick, showHints }: {
 			<div className="relative bg-white rounded-lg flex items-center m-2 mt-0">
 				<Search className="text-gray-500 size-4 absolute left-2 top-1/2 transform -translate-y-1/2" />
 				<Input type="text"
+					name="sidebar_search"
 					placeholder="Filtra..."
 					value={searchQuery}
 					className="p-3 pl-8 border border-blue-200 group-data-[state=open]/collapsible"

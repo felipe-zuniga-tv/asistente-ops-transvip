@@ -11,7 +11,7 @@ import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CheckIcon, Clock, GoalIcon, MailIcon, MapIcon, MapPin, Pencil, PhoneIcon, SearchIcon, UserCircleIcon, X } from 'lucide-react';
-import { WhatsappIcon } from '@/components/ui/icons';
+import { WhatsappIcon } from '@/components/ui/icons-list';
 import { buildGoogleMapsURL, buildWhatsappLink } from '@/lib/chat/utils/helpers'
 import { BookingStatusBadge, CityBadge, CustomerVipBadge, PaymentRouteType, PaymentStatusBadge, ServiceNameBadge } from '../badges/chat-badges';
 import { BookingIdBadge } from '../badges/booking-badge';

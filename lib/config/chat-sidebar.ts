@@ -29,6 +29,9 @@ import {
 	Plane,
 	Settings,
 	Sliders,
+	Settings2,
+	CreditCard,
+	Building2,
 } from "lucide-react"
 import { toolsList } from "./tools";
 
@@ -42,7 +45,7 @@ export interface SidebarItem {
 }
 
 // Sidebar content
-export const chatbotItem : SidebarItem = {
+export const chatbotItem: SidebarItem = {
 	title: "Chatbot Operaciones",
 	url: "#",
 	icon: Bot,
@@ -50,28 +53,47 @@ export const chatbotItem : SidebarItem = {
 	items: toolsList,
 }
 
+const configMenu: SidebarItem = {
+	title: "Configuración",
+	url: Routes.ADMIN.HOME,
+	icon: Settings,
+	isActive: false,
+	items: [
+		{
+			title: 'Estados del Móvil',
+			icon: Settings2,
+			url: Routes.ADMIN.VEHICLE_STATUS_CONFIG,
+			active: true
+		},
+		{
+			title: 'Métodos de Pago',
+			icon: CreditCard,
+			url: Routes.ADMIN.PAYMENT_CONFIG,
+			active: true
+		},
+		{
+			title: 'Tipos de Vehículo',
+			icon: CarFront,
+			url: Routes.ADMIN.VEHICLE_TYPES,
+			active: true
+		},
+		{
+			title: 'Sucursales',
+			icon: Building2,
+			url: Routes.ADMIN.BRANCH_CONFIG,
+			active: true
+		},
+	],
+}
+
 export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] } = {
 	navMain: [
 		chatbotItem,
-		// {
-		// 	title: "Aeropuerto",
-		// 	url: '#',
-		// 	icon: PlaneTakeoff,
-		// 	isActive: false,
-		// 	items: [
-		// 		{
-		// 			title: 'Herramientas generales',
-		// 			icon: Plane,
-		// 			url: Routes.AIRPORT.HOME,
-		// 			active: true
-		// 		},
-		// 	],
-		// },
 		{
 			title: "Herramientas",
 			url: "#",
 			icon: Hammer,
-			isActive: true,
+			isActive: false,
 			items: [
 				// {
 				// 	title: 'Chatbot Operaciones',
@@ -171,20 +193,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 				},
 			],
 		},
-		{
-			title: "Administración",
-			url: Routes.ADMIN.HOME,
-			icon: Settings,
-			isActive: false,
-			items: [
-				{
-					title: 'Configuración Estados',
-					icon: Sliders,
-					url: Routes.ADMIN.VEHICLE_STATUS_CONFIG,
-					active: true
-				},
-			],
-		},
+		configMenu,
 		// {
 		// 	title: "Reportes",
 		// 	url: "#",
@@ -201,23 +210,6 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 		// 			url: "#",
 		// 			icon: BarChart3,
 		//			active: false
-		// 		},
-		// 	],
-		// },
-		// {
-		// 	title: "Proyectos",
-		// 	url: "#",
-		// 	icon: GanttChart,
-		// 	items: [
-		// 		{
-		// 			title: "Proyecto Zarpe",
-		// 			url: "#",
-		// 			icon: PlaneTakeoff,
-		// 		},
-		// 		{
-		// 			title: "Autoasignación",
-		// 			url: "#",
-		// 			icon: BotIcon,
 		// 		},
 		// 	],
 		// },

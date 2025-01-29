@@ -239,3 +239,23 @@ export async function deleteVehicleShift(id: string) {
         return { error: "Error al eliminar la asignación" }
     }
 }
+
+export async function bulkDeleteVehicleShifts(ids: string[]) {
+    const cookieStore = cookies()
+    const supabase = createClient(cookieStore)
+    
+    try {
+        const { error } = await supabase
+            .from("vehicle_shifts")
+            .delete()
+            .in("id", ids)
+
+        if (error) throw error
+
+        revalidatePath(Routes.CONTROL_FLOTA.VEHICLE_SHIFT)
+        return { success: true }
+    } catch (error) {
+        console.error("Error deleting vehicle shifts:", error)
+        return { error: "Error al eliminar las asignaciones" }
+    }
+}

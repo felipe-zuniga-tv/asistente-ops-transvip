@@ -1,10 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { PlusCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { NewStatusDialog } from "./new-status-dialog";
 import { EditStatusDialog } from "./edit-status-dialog";
@@ -14,8 +10,9 @@ import { useRouter } from "next/navigation";
 import { AlertDialogDeleteStatus } from "./delete-status-alert-dialog";
 import { toast } from "sonner";
 import { deleteVehicleStatus } from "@/lib/database/actions";
-import { TransvipLogo } from '@/components/transvip/transvip-logo';
 import type { VehicleStatus } from "@/lib/types";
+import { AddButton } from "../ui/buttons";
+import { CardTitleContent } from "../ui/card-title-content";
 
 interface VehicleStatusProps {
     statuses?: VehicleStatus[];
@@ -25,7 +22,7 @@ export function VehicleStatus({ statuses = [] }: VehicleStatusProps) {
     const router = useRouter();
     const [isNewDialogOpen, setIsNewDialogOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-    const [showFilters, setShowFilters] = useState(false);
+    // const [showFilters, setShowFilters] = useState(false);
     const [statusToDelete, setStatusToDelete] = useState<VehicleStatus | null>(null);
     const [statusToEdit, setStatusToEdit] = useState<VehicleStatus | null>(null);
 
@@ -56,29 +53,15 @@ export function VehicleStatus({ statuses = [] }: VehicleStatusProps) {
         <Card className="max-w-4xl mx-2 lg:mx-auto">
             <CardHeader>
                 <CardTitle className="flex flex-row items-center justify-between">
-                    <div className="flex flex-row items-center gap-2">
-                        <TransvipLogo size={20} />
-                        <span>Estado por Móvil</span>
-                    </div>
-                    <Button size="default" className="text-xs md:text-sm" onClick={() => setIsNewDialogOpen(true)}>
-                        <PlusCircle className="w-4 h-4" />
-                        Añadir Estado
-                    </Button>
+                    <CardTitleContent title="Estado por Móvil" />
+                    <AddButton
+                        text="Añadir Estado"
+                        onClick={() => setIsNewDialogOpen(true)}
+                    />
                 </CardTitle>
             </CardHeader>
             <CardContent>
                 <div className="space-y-4">
-                    {/* <div className="flex items-center space-x-2">
-                        <Switch checked={showFilters} onCheckedChange={setShowFilters} />
-                        <Label>{showFilters ? "Ocultar" : "Mostrar"} Filtros</Label>
-                    </div>
-
-                    {showFilters && (
-                        <div className="mb-4 space-y-4 p-4 border rounded-md">
-                            {/* TODO: Add filter components */}
-                        {/* </div>
-                    )} */}
-
                     <VehicleStatusDataTable
                         columns={columns}
                         data={statuses}

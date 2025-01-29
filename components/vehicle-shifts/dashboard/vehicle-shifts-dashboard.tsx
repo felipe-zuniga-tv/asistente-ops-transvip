@@ -62,6 +62,9 @@ export function VehicleShiftsDashboard({
                 endDateStr
             )
 
+            console.log(shiftsResult)
+            console.log(statusesResult)
+
             setShifts(shiftsResult.data || [])
             setVehicleStatuses(statusesResult || [])
         } catch (error) {

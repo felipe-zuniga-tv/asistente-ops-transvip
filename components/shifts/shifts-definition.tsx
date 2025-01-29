@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { PlusCircle, Upload } from "lucide-react";
+import { Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { NewShiftDialog } from "./new-shift-dialog";
-import { TransvipLogo } from "../transvip/transvip-logo";
 import { EditShiftDialog } from "./edit-shift-dialog";
 import { deleteShift } from "@/lib/database/actions";
 import { UploadShiftsDialog } from "./upload-shifts-dialog";
@@ -17,6 +16,8 @@ import { columns } from "./table/columns";
 import { useRouter } from "next/navigation";
 import { AlertDialogDeleteShift } from "./delete-shift-alert-dialog";
 import { toast } from "sonner";
+import { AddButton } from "../ui/buttons";
+import { CardTitleContent } from "../ui/card-title-content";
 
 export const WEEKDAYS = [
     { value: "1", label: "Lunes" },
@@ -96,16 +97,11 @@ export function ShiftsDefinition({ shifts }: ShiftsCardProps) {
         <Card className="max-w-4xl lg:mx-auto">
             <CardHeader>
                 <CardTitle className="flex flex-row items-center justify-between">
-                    <div className="flex flex-row items-center gap-2">
-                        <TransvipLogo size={20} />
-                        <span className="text-sm sm:text-base">Jornadas de Conexión</span>
-                    </div>
-                    <div className="flex ml-auto gap-2">
-                        <Button size={"default"} className="text-xs md:text-sm" onClick={() => setIsDialogOpen(true)}>
-                            <PlusCircle className="w-4 h-4" />
-                            Añadir
-                        </Button>
-                    </div>
+                    <CardTitleContent title="Jornadas de Conexión" />
+                    <AddButton
+                        text="Añadir"
+                        onClick={() => setIsDialogOpen(true)}
+                    />
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">

@@ -70,24 +70,26 @@ export function AppSidebar({ session, ...props }: { session: any & React.Compone
 		])
 	}
 
-	const sidebarItems = isChatRoute 
+	let sidebarItems = isChatRoute 
 		? sidebarData.navMain 
 		: [chatbotElement, ...sidebarData.navMain.filter(item => item.title !== chatbotItem.title)]
 
+	sidebarItems = session.user.email === 'felipe.zuniga@transvip.cl' ? sidebarItems : sidebarItems.filter(item => item.title !== "Configuración")
+
 	return (
 		<Sidebar collapsible="icon" {...props}>
-			<SidebarHeader>
-				{/* <TeamSwitcher teams={opsTeams} /> */}
-				<NavUser user={session.user} />
-			</SidebarHeader>
-			<SidebarContent>
-				<NavMain items={sidebarItems} handleClick={handleClick} showHints={showHints} />
-			</SidebarContent>
-			<SidebarFooter>
-				<NavSecondary items={sidebarData.navSecondary} className="mt-auto" />
-			</SidebarFooter>
-			<SidebarRail />
-		</Sidebar>
+				<SidebarHeader>
+					{/* <TeamSwitcher teams={opsTeams} /> */}
+					<NavUser user={session.user} />
+				</SidebarHeader>
+				<SidebarContent>
+					<NavMain items={sidebarItems} handleClick={handleClick} showHints={showHints} />
+				</SidebarContent>
+				<SidebarFooter>
+					<NavSecondary items={sidebarData.navSecondary} className="mt-auto" />
+				</SidebarFooter>
+				<SidebarRail />
+			</Sidebar>
 	)
 }
 

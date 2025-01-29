@@ -13,7 +13,7 @@ import type {
 	VehicleShiftWithShiftInfo
 } from '@/lib/types'
 
-async function getSupabaseClient() {
+export async function getSupabaseClient() {
 	const cookieStore = cookies()
 	return createClient(cookieStore)
 }
@@ -112,7 +112,7 @@ export async function getVehicleShiftsByDateRange(
 				)
 			`)
 			.eq("vehicle_number", vehicleNumber)
-			.or(`start_date.gte.${startDate}, end_date.lte.${endDate}`)
+			.or(`start_date.lte.${endDate},end_date.gte.${startDate}`)
 			.order("priority", { ascending: false })
 
 		if (error) {
@@ -221,7 +221,7 @@ export async function getVehicleStatusesForCalendar(vehicleNumber: string, start
 			)
 		`)
 		.eq('vehicle_number', vehicleNumber)
-		.or(`start_date.gte.${startDate},end_date.lte.${endDate}`)
+		.or(`start_date.lte.${endDate},end_date.gte.${startDate}`)
 		.order('start_date')
 
 	if (error) {

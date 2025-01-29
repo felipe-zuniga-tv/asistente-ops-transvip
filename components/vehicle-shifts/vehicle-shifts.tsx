@@ -1,12 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { PlusCircle, Upload, Download } from "lucide-react"
+import { Upload, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
-import { TransvipLogo } from "../transvip/transvip-logo"
 import { VehicleShiftsTable } from "./table/vehicle-shifts-table"
 import { columns } from "./table/columns"
 import { useRouter } from "next/navigation"
@@ -15,6 +14,10 @@ import { EditVehicleShiftDialog } from "./edit-vehicle-shift-dialog"
 import { UploadShiftsDialog } from "./upload-vehicle-shifts-dialog"
 import { AlertDialogDeleteVehicleShift } from "./delete-vehicle-shift-alert-dialog"
 import { generateVehicleShiftsTemplate } from "@/lib/csv/vehicle-shifts-template"
+import { deleteVehicleShift } from "@/lib/shifts/actions"
+import { useToast } from "@/hooks/use-toast"
+import { AddButton } from "../ui/buttons"
+import { CardTitleContent } from "../ui/card-title-content"
 
 export interface VehicleShift {
     id: string
@@ -107,22 +110,48 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
         }
     }
 
+    const handleBulkDelete = async (selectedShifts: VehicleShift[]) => {
+        const { toast } = useToast()
+        try {
+            const results = await Promise.all(
+                selectedShifts.map(shift => deleteVehicleShift(shift.id))
+            )
+            
+            const errors = results.filter(result => result.error)
+            if (errors.length > 0) {
+                toast({
+                    variant: "destructive",
+                    title: "Error",
+                    description: `Error al eliminar ${errors.length} asignaciones`
+                })
+            } else {
+                toast({
+                    title: "Éxito",
+                    description: `${results.length} asignaciones eliminadas correctamente`
+                })
+            }
+            
+            router.refresh()
+        } catch (error) {
+            console.error('Error deleting shifts:', error)
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Error al eliminar las asignaciones"
+            })
+        }
+    }
+
     return (
         <Card className="max-w-4xl lg:mx-auto">
             <CardHeader>
                 <CardTitle className="flex flex-row items-center justify-between">
-                    <div className="flex flex-row items-center gap-2">
-                        <TransvipLogo size={20} />
-                        <span className="text-sm sm:text-base">Asignación de Vehículos</span>
-                    </div>
-                    <Button
-                        size="default"
+                    <CardTitleContent title="Asignación de Vehículos" />
+                    <AddButton
+                        text="Añadir"
                         className="text-xs md:text-sm"
                         onClick={() => setIsNewDialogOpen(true)}
-                    >
-                        <PlusCircle className="w-4 h-4" />
-                        Añadir
-                    </Button>
+                    />
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
@@ -161,6 +190,7 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
                     data={vehicleShifts}
                     onEdit={handleEditAssignment}
                     onDelete={setAssignmentToDelete}
+                    onBulkDelete={handleBulkDelete}
                     onBulkDownload={handleBulkDownload}
                 />
             </CardContent>

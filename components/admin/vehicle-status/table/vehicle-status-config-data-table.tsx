@@ -62,7 +62,7 @@ export function VehicleStatusConfigDataTable({
     return (
         <div className="space-y-4">
             <div className="flex items-center">
-                <div className="flex items-center border rounded-md px-3 flex-1 gap-2">
+                <div className="flex items-center border rounded-md px-3 gap-2">
                     <Search className="h-4 w-4 text-muted-foreground" />
                     <Input
                         placeholder="Buscar estado..."
@@ -70,15 +70,13 @@ export function VehicleStatusConfigDataTable({
                         onChange={(event) =>
                             table.getColumn("label")?.setFilterValue(event.target.value)
                         }
-                        className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0 px-0"
+                        className="w-sm border-0 focus-visible:ring-0 focus-visible:ring-offset-0 px-0"
                     />
                 </div>
             </div>
-            <div className="rounded-md border">
-                <DataTableHeader table={table} />
-                <DataTableContent columns={columns.length} table={table} />
-                <DataTablePagination table={table} />
-            </div>
+            <DataTableHeader table={table} />
+            <DataTableContent columns={columns.length} table={table} />
+            <DataTablePagination table={table} />
         </div>
     );
 } 

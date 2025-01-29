@@ -16,11 +16,11 @@ import type { VehicleStatusConfig } from "@/lib/types/vehicle/status";
 export const columns: ColumnDef<VehicleStatusConfig>[] = [
     {
         accessorKey: "label",
-        header: () => <div className="text-left">Estado</div>,
+        header: () => <div className="text-center">Estado</div>,
         cell: ({ row }) => {
             const config = row.original;
             return (
-                <div className="flex items-center gap-2">
+                <div className="flex justify-center items-center gap-2">
                     <div
                         className="w-3 h-3 rounded-full"
                         style={{ backgroundColor: config.color }}
@@ -32,19 +32,19 @@ export const columns: ColumnDef<VehicleStatusConfig>[] = [
     },
     {
         accessorKey: "description",
-        header: () => <div className="text-left">Descripción</div>,
-        cell: ({ row }) => <div className="text-left">{row.original.description || "-"}</div>,
+        header: () => <div className="text-center">Descripción</div>,
+        cell: ({ row }) => <div className="text-center">{row.original.description || "-"}</div>,
     },
     {
         accessorKey: "color",
-        header: () => <div className="text-left">Color</div>,
+        header: () => <div className="text-center">Color</div>,
         cell: ({ row }) => (
             <div className="flex items-center gap-2">
                 <div
                     className="w-3 h-3 rounded-full"
                     style={{ backgroundColor: row.original.color }}
                 />
-                <span>{row.original.color}</span>
+                <span>{row.original.color.toUpperCase()}</span>
             </div>
         ),
     },

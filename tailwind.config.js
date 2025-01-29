@@ -114,7 +114,9 @@ module.exports = {
   		},
   		backgroundImage: {
   			buildings: 'url("/images/bg_buildings.jpeg")',
-  			desert: 'url("/images/bg_desert.jpg")'
+  			desert: 'url("/images/bg_desert.jpg")',
+  			airport: 'url("/images/bg_airport.png")',
+  			main: 'url("/images/bg_desert.jpg")',
   		}
   	}
   },

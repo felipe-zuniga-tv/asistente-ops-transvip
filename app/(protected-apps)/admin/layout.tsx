@@ -1,18 +1,10 @@
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
+export const metadata = {
     title: "Administración | Transvip",
     description: "Panel de administración de Transvip",
 };
 
-export default function AdminLayout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
-    return (
-        <div className="container mx-auto py-6">
-            {children}
-        </div>
-    );
+export const revalidate = 0
+
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+    return <>{children}</>
 } 

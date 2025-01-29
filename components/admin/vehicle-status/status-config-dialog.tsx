@@ -25,13 +25,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { updateVehicleStatusConfig } from "@/lib/database/actions";
+import { createVehicleStatusConfig, updateVehicleStatusConfig } from "@/lib/database/actions";
 import type { VehicleStatusConfig } from "@/lib/types/vehicle/status";
 
-interface EditStatusConfigDialogProps {
+interface StatusConfigDialogProps {
+    config?: VehicleStatusConfig | null;
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    config: VehicleStatusConfig;
 }
 
 const formSchema = z.object({
@@ -40,48 +40,64 @@ const formSchema = z.object({
     color: z.string().min(1, "El color es requerido").regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, "Color inválido"),
 });
 
-export function EditStatusConfigDialog({
+type FormValues = z.infer<typeof formSchema>;
+
+export function StatusConfigDialog({
+    config,
     open,
     onOpenChange,
-    config,
-}: EditStatusConfigDialogProps) {
+}: StatusConfigDialogProps) {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+    const isEditMode = !!config;
 
-    const form = useForm<z.infer<typeof formSchema>>({
+    const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            label: config.label,
-            description: config.description || "",
-            color: config.color,
+            label: "",
+            description: "",
+            color: "#000000",
         },
     });
 
     useEffect(() => {
         if (open) {
-            form.reset({
-                label: config.label,
-                description: config.description || "",
-                color: config.color,
-            });
+            if (config) {
+                form.reset({
+                    label: config.label,
+                    description: config.description || "",
+                    color: config.color,
+                });
+            } else {
+                form.reset({
+                    label: "",
+                    description: "",
+                    color: "#000000",
+                });
+            }
         }
     }, [open, config, form]);
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: FormValues) {
         try {
             setIsLoading(true);
             
-            await updateVehicleStatusConfig(config.id, values);
+            if (isEditMode && config) {
+                await updateVehicleStatusConfig(config.id, values);
+                toast.success("Estado actualizado exitosamente");
+            } else {
+                await createVehicleStatusConfig(values);
+                toast.success("Estado creado exitosamente");
+            }
             
             onOpenChange(false);
             form.reset();
             setTimeout(() => {
                 router.refresh();
             }, 500);
-            toast.success("Estado actualizado exitosamente");
         } catch (error) {
-            console.error("Error updating status:", error);
-            toast.error("Error al actualizar el estado");
+            console.error(`Error ${isEditMode ? 'updating' : 'creating'} status:`, error);
+            toast.error(`Error al ${isEditMode ? 'actualizar' : 'crear'} el estado`);
         } finally {
             setIsLoading(false);
         }
@@ -91,9 +107,13 @@ export function EditStatusConfigDialog({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Editar Estado</DialogTitle>
+                    <DialogTitle>
+                        {isEditMode ? "Editar Estado" : "Crear Nuevo Estado"}
+                    </DialogTitle>
                     <DialogDescription>
-                        Modifique los datos del estado
+                        {isEditMode
+                            ? "Modifique los datos del estado"
+                            : "Ingrese los datos del nuevo estado"}
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -149,7 +169,13 @@ export function EditStatusConfigDialog({
 
                         <DialogFooter>
                             <Button type="submit" disabled={isLoading}>
-                                {isLoading ? "Actualizando..." : "Actualizar Estado"}
+                                {isLoading
+                                    ? isEditMode
+                                        ? "Actualizando..."
+                                        : "Creando..."
+                                    : isEditMode
+                                    ? "Actualizar Estado"
+                                    : "Crear Estado"}
                             </Button>
                         </DialogFooter>
                     </form>
