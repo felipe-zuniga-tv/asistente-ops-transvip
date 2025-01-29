@@ -42,6 +42,7 @@ interface VehicleShiftsContentProps {
 
 export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentProps) {
     const router = useRouter()
+    const { toast } = useToast()
     const [isNewDialogOpen, setIsNewDialogOpen] = useState(false)
     const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
     const [editingAssignment, setEditingAssignment] = useState<VehicleShift | null>(null)
@@ -111,7 +112,6 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
     }
 
     const handleBulkDelete = async (selectedShifts: VehicleShift[]) => {
-        const { toast } = useToast()
         try {
             const results = await Promise.all(
                 selectedShifts.map(shift => deleteVehicleShift(shift.id))
