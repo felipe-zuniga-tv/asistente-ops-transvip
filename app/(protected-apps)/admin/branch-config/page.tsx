@@ -8,14 +8,15 @@ export const metadata = {
     description: 'Administra las sucursales en Transvip',
 }
 
-export const revalidate = 0;
-
 export default async function BranchConfigPage() {
-    const branches = await getBranches()
-
     return (
         <Suspense fallback={<SuspenseLoading />}>
-            <BranchConfig data={branches} />
+            <BranchConfigDashboard />
         </Suspense>
     )
+}
+
+async function BranchConfigDashboard() {
+    const branches = await getBranches()
+    return <BranchConfig data={branches} />
 }

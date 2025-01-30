@@ -125,13 +125,27 @@ export async function deleteVehicleType(id: string) {
 // Branches
 export async function getBranches() {
     const supabase = await getSupabaseClient()
-            const { data, error } = await supabase
-                .from('branches')
-                .select('*')
-                .order('name')
-            
-            if (error) throw error
-    return data as Branch[]
+    
+    try {
+        const { data, error, status } = await supabase
+            .from('branches')
+            .select('*')
+            .order('name')
+        
+        if (error) {
+            console.error('Error fetching branches:', error)
+            throw new Error(`Failed to fetch branches: ${error.message}`)
+        }
+
+        if (!data || status !== 200) {
+            throw new Error('No branches data received')
+        }
+
+        return data as Branch[]
+    } catch (error) {
+        console.error('Error in getBranches:', error)
+        throw error
+    }
 }
 
 export async function createBranch(input: CreateBranchInput) {

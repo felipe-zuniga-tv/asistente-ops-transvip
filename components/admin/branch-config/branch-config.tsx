@@ -1,13 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo, useCallback } from 'react'
 import { type Branch } from '@/lib/types/admin'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { BranchConfigDataTable } from './table/branch-config-data-table'
 import { BranchDialog } from './branch-dialog'
 import { AlertDialogDeleteBranch } from './alert-dialog-delete-branch'
-import { CardTitleContent } from '@/components/ui/card-title-content'
-import { AddButton } from '@/components/ui/buttons'
 import { ConfigCardContainer } from '@/components/tables/config-card-container'
 
 interface BranchConfigProps {
@@ -22,46 +19,64 @@ export function BranchConfig({ data }: BranchConfigProps) {
 
     useEffect(() => {
         if (!isDialogOpen || !branchToEdit) {
-            // Pushing the change to the end of the call stack
             const timer = setTimeout(() => {
-              document.body.style.pointerEvents = "";
+                document.body.style.pointerEvents = "";
             }, 0);
-      
+
             return () => clearTimeout(timer);
-          } else {
+        } else {
             document.body.style.pointerEvents = "auto";
-          }
+        }
     }, [isDialogOpen, branchToEdit]);
 
-    const handleEdit = (branch: Branch) => {
+    const handleEdit = useCallback((branch: Branch) => {
         setBranchToEdit(branch)
         setIsDialogOpen(true)
-    }
+    }, [])
 
-    const handleDialogClose = (open: boolean) => {
+    const handleDialogClose = useCallback((open: boolean) => {
         setIsDialogOpen(open)
         if (!open) {
             setBranchToEdit(null)
         }
-    }
+    }, [])
 
-    const handleBranchCreate = (newBranch: Branch) => {
+    const handleBranchCreate = useCallback((newBranch: Branch) => {
         setBranches(prevBranches => [...prevBranches, newBranch])
-    }
+    }, [])
 
-    const handleBranchUpdate = (updatedBranch: Branch) => {
+    const handleBranchUpdate = useCallback((updatedBranch: Branch) => {
         setBranches(prevBranches =>
             prevBranches.map(branch =>
                 branch.id === updatedBranch.id ? updatedBranch : branch
             )
         )
-    }
+    }, [])
 
-    const handleBranchDelete = (deletedBranchId: string) => {
+    const handleBranchDelete = useCallback((deletedBranchId: string) => {
         setBranches(prevBranches =>
             prevBranches.filter(branch => String(branch.id) !== String(deletedBranchId))
         )
-    }
+    }, [])
+
+    // Memoize the dialog component to prevent unnecessary re-renders
+    const branchDialog = useMemo(() => (
+        <BranchDialog
+            branch={branchToEdit}
+            open={isDialogOpen}
+            onOpenChange={handleDialogClose}
+            onSuccess={branchToEdit ? handleBranchUpdate : handleBranchCreate}
+        />
+    ), [branchToEdit, isDialogOpen, handleDialogClose, handleBranchUpdate, handleBranchCreate])
+
+    // Memoize the delete dialog to prevent unnecessary re-renders
+    const deleteDialog = useMemo(() => (
+        <AlertDialogDeleteBranch
+            branch={branchToDelete}
+            onOpenChange={(open) => setBranchToDelete(open ? branchToDelete : null)}
+            onSuccess={handleBranchDelete}
+        />
+    ), [branchToDelete, handleBranchDelete])
 
     return (
         <ConfigCardContainer title="Sucursales"
@@ -72,19 +87,8 @@ export function BranchConfig({ data }: BranchConfigProps) {
                 onEdit={handleEdit}
                 onDelete={setBranchToDelete}
             />
-
-            <BranchDialog
-                branch={branchToEdit}
-                open={isDialogOpen}
-                onOpenChange={handleDialogClose}
-                onSuccess={branchToEdit ? handleBranchUpdate : handleBranchCreate}
-            />
-
-            <AlertDialogDeleteBranch
-                branch={branchToDelete}
-                onOpenChange={(open) => setBranchToDelete(open ? branchToDelete : null)}
-                onSuccess={handleBranchDelete}
-            />
+            {branchDialog}
+            {deleteDialog}
         </ConfigCardContainer>
     )
 } 

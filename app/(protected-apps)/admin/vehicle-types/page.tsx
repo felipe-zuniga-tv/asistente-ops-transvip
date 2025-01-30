@@ -9,11 +9,14 @@ export const metadata = {
 }
 
 export default async function VehicleTypesPage() {
-    const vehicleTypes = await getVehicleTypes();
-
     return (
         <Suspense fallback={<SuspenseLoading />}>
-            <VehicleTypesConfig data={vehicleTypes} />
+            <VehicleTypesConfigDashboard />
         </Suspense>
     );
-} 
+}
+
+async function VehicleTypesConfigDashboard() {
+    const vehicleTypes = await getVehicleTypes();
+    return <VehicleTypesConfig data={vehicleTypes} />
+}

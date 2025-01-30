@@ -8,14 +8,15 @@ export const metadata = {
     description: "Administra los estados disponibles para los vehículos",
 };
 
-export const revalidate = 0;
-
 export default async function VehicleStatusConfigPage() {
-    const configs = await getVehicleStatusConfigs();
-
     return (
         <Suspense fallback={<SuspenseLoading />}>
-            <VehicleStatusConfig configs={configs} />
+            <VehicleStatusConfigDashboard />
         </Suspense>
     );
 } 
+
+async function VehicleStatusConfigDashboard() {
+    const configs = await getVehicleStatusConfigs();
+    return <VehicleStatusConfig configs={configs} />
+}
