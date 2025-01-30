@@ -12,6 +12,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { deletePaymentMethod } from '@/lib/services/admin'
 
 interface AlertDialogDeletePaymentMethodProps {
     method: PaymentMethod | null
@@ -31,8 +32,7 @@ export function AlertDialogDeletePaymentMethod({
 
         setIsLoading(true)
         try {
-            // TODO: Implement API call to delete payment method
-            console.log('Deleting payment method:', method.id)
+            await deletePaymentMethod(method.id)
             onSuccess()
             onOpenChange(false)
         } catch (error) {

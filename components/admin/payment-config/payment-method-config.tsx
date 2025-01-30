@@ -20,7 +20,7 @@ export function PaymentMethodConfig({ data }: PaymentMethodConfigProps) {
     const [paymentMethodToDelete, setPaymentMethodToDelete] = useState<PaymentMethod | null>(null)
 
     useEffect(() => {
-        if (!isDialogOpen || !paymentMethodToEdit) {
+        if (!isDialogOpen || !paymentMethodToEdit || !paymentMethodToDelete) {
             // Pushing the change to the end of the call stack
             const timer = setTimeout(() => {
               document.body.style.pointerEvents = "";
@@ -30,23 +30,30 @@ export function PaymentMethodConfig({ data }: PaymentMethodConfigProps) {
           } else {
             document.body.style.pointerEvents = "auto";
           }
-    }, [isDialogOpen, paymentMethodToEdit]);
+    }, [isDialogOpen, paymentMethodToEdit, paymentMethodToDelete]);
 
     const handleSuccess = () => {
         router.refresh()
+        setPaymentMethodToDelete(null)
+        setPaymentMethodToEdit(null)
+        setIsDialogOpen(false)
     }
 
     const handleEdit = (method: PaymentMethod) => {
         setPaymentMethodToEdit(method)
+        setPaymentMethodToDelete(null)
         setIsDialogOpen(true)
     }
 
     const handleDialogClose = () => {
         setIsDialogOpen(false)
         setPaymentMethodToEdit(null)
+        setPaymentMethodToDelete(null)
     }
 
     const handleDelete = (method: PaymentMethod | null) => {
+        setIsDialogOpen(false)
+        setPaymentMethodToEdit(null)
         setPaymentMethodToDelete(method)
     }
 

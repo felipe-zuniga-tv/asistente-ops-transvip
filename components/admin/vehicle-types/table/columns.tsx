@@ -41,7 +41,7 @@ export const columns: ColumnDef<VehicleType>[] = [
             <div className="text-center">
                 <Badge
                     variant={row.original.is_active ? 'default' : 'secondary'}
-                    className={cn("text-xs", row.original.is_active ? 'bg-green-500' : 'bg-red-500')}
+                    className={cn("text-xs", row.original.is_active ? 'bg-green-700 hover:bg-green-800' : 'text-white bg-red-500 hover:bg-red-400')}
                 >
                     {row.original.is_active ? 'Activo' : 'Inactivo'}
                 </Badge>
