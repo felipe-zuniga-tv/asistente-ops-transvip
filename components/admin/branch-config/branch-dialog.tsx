@@ -144,6 +144,7 @@ export function BranchDialog({
                             onCheckedChange={(checked) =>
                                 setFormData({ ...formData, sales_form_active: checked })
                             }
+                            className="data-[state=checked]:bg-green-400"
                         />
                         <Label htmlFor="sales_form_active">Formulario de Ventas Activo</Label>
                     </div>
@@ -154,6 +155,7 @@ export function BranchDialog({
                             onCheckedChange={(checked) =>
                                 setFormData({ ...formData, is_active: checked })
                             }
+                            className="data-[state=checked]:bg-green-400"
                         />
                         <Label htmlFor="is_active">Activo</Label>
                     </div>

@@ -1,10 +1,11 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -29,7 +30,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { createVehicleShift } from "@/lib/shifts/actions"
+import { createVehicleShift, updateVehicleShift } from "@/lib/shifts/actions"
+import { VehicleShift } from "./vehicle-shifts"
 
 const formSchema = z.object({
   vehicle_number: z.coerce.number().min(1, "El número debe ser mayor a 0"),
@@ -49,8 +51,10 @@ const formSchema = z.object({
   }
 )
 
-const defaultValues = {
-  vehicle_number: undefined,
+type FormValues = z.infer<typeof formSchema>
+
+const defaultValues: FormValues = {
+  vehicle_number: 0,
   shift_id: "",
   start_date: new Date().toISOString().split('T')[0],
   end_date: new Date().toISOString().split('T')[0],
@@ -61,36 +65,68 @@ interface Props {
   open: boolean
   onOpenChange: (open: boolean) => void
   shifts: { id: string; name: string }[]
+  assignment?: VehicleShift | null
 }
 
-export function NewVehicleShiftDialog({ open, onOpenChange, shifts }: Props) {
+export function VehicleShiftDialog({ open, onOpenChange, shifts, assignment }: Props) {
   const router = useRouter()
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const isEditMode = !!assignment
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues,
+    defaultValues: assignment
+      ? {
+          vehicle_number: assignment.vehicle_number,
+          shift_id: assignment.shift_id,
+          start_date: assignment.start_date,
+          end_date: assignment.end_date,
+          priority: assignment.priority,
+        }
+      : defaultValues,
   })
 
-  // Reset form when dialog opens or closes
+  // Reset form when dialog opens/closes or when switching between create/edit modes
   useEffect(() => {
-    form.reset(defaultValues)
-  }, [open, form])
+    if (open) {
+      if (assignment) {
+        form.reset({
+          vehicle_number: assignment.vehicle_number,
+          shift_id: assignment.shift_id,
+          start_date: assignment.start_date,
+          end_date: assignment.end_date,
+          priority: assignment.priority,
+        })
+      } else {
+        form.reset(defaultValues)
+      }
+    }
+  }, [open, assignment, form])
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: FormValues) {
     try {
-      setIsSubmitting(true)
-      await createVehicleShift({
-        ...values,
-        start_date: new Date(values.start_date),
-        end_date: new Date(values.end_date),
-      })
+      if (isEditMode && assignment) {
+        await updateVehicleShift(assignment.id, {
+          ...values,
+          start_date: new Date(values.start_date),
+          end_date: new Date(values.end_date),
+        })
+        toast.success("Asignación actualizada exitosamente")
+      } else {
+        await createVehicleShift({
+          ...values,
+          start_date: new Date(values.start_date),
+          end_date: new Date(values.end_date),
+        })
+        toast.success("Asignación creada exitosamente")
+      }
       onOpenChange(false)
       router.refresh()
     } catch (error) {
       console.error(error)
-    } finally {
-      setIsSubmitting(false)
+      toast.error(isEditMode 
+        ? "Error al actualizar la asignación" 
+        : "Error al crear la asignación"
+      )
     }
   }
 
@@ -101,11 +137,12 @@ export function NewVehicleShiftDialog({ open, onOpenChange, shifts }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Nueva Asignación de Vehículo</DialogTitle>
+          <DialogTitle>
+            {isEditMode ? "Editar Asignación de Vehículo" : "Nueva Asignación de Vehículo"}
+          </DialogTitle>
         </DialogHeader>
-
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -169,8 +206,8 @@ export function NewVehicleShiftDialog({ open, onOpenChange, shifts }: Props) {
                   <FormItem>
                     <FormLabel>Fecha Fin</FormLabel>
                     <FormControl>
-                      <Input 
-                        type="date" 
+                      <Input
+                        type="date"
                         {...field}
                         min={form.getValues("start_date")}
                       />
@@ -188,7 +225,7 @@ export function NewVehicleShiftDialog({ open, onOpenChange, shifts }: Props) {
                 <FormItem>
                   <FormLabel>Prioridad</FormLabel>
                   <FormControl>
-                    <Input type="number" {...field} />
+                    <Input type="number" {...field} min={1} max={100} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -196,16 +233,15 @@ export function NewVehicleShiftDialog({ open, onOpenChange, shifts }: Props) {
             />
 
             <div className="flex justify-end space-x-2 pt-4">
-              <Button 
-                type="button" 
-                variant="outline" 
+              <Button
+                type="button"
+                variant="outline"
                 onClick={() => handleOpenChange(false)}
-                disabled={isSubmitting}
               >
                 Cancelar
               </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Guardando..." : "Guardar"}
+              <Button type="submit">
+                {isEditMode ? "Guardar" : "Crear"}
               </Button>
             </div>
           </form>

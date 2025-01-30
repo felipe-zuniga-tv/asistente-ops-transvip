@@ -1,11 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { type PaymentMethod } from '@/lib/types/admin'
 import { PaymentMethodDataTable } from './table/payment-method-data-table'
 import { columns } from './table/columns'
-import { NewPaymentMethodDialog } from './new-payment-method-dialog'
-import { EditPaymentMethodDialog } from './edit-payment-method-dialog'
+import { PaymentMethodDialog } from './payment-method-dialog'
 import { AlertDialogDeletePaymentMethod } from './alert-dialog-delete-payment-method'
 import { ConfigCardContainer } from '@/components/tables/config-card-container'
 import { useRouter } from 'next/navigation'
@@ -16,10 +15,22 @@ interface PaymentMethodConfigProps {
 
 export function PaymentMethodConfig({ data }: PaymentMethodConfigProps) {
     const router = useRouter()
-    const [isNewDialogOpen, setIsNewDialogOpen] = useState(false)
-    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+    const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [paymentMethodToEdit, setPaymentMethodToEdit] = useState<PaymentMethod | null>(null)
     const [paymentMethodToDelete, setPaymentMethodToDelete] = useState<PaymentMethod | null>(null)
+
+    useEffect(() => {
+        if (!isDialogOpen || !paymentMethodToEdit) {
+            // Pushing the change to the end of the call stack
+            const timer = setTimeout(() => {
+              document.body.style.pointerEvents = "";
+            }, 0);
+      
+            return () => clearTimeout(timer);
+          } else {
+            document.body.style.pointerEvents = "auto";
+          }
+    }, [isDialogOpen, paymentMethodToEdit]);
 
     const handleSuccess = () => {
         router.refresh()
@@ -27,11 +38,11 @@ export function PaymentMethodConfig({ data }: PaymentMethodConfigProps) {
 
     const handleEdit = (method: PaymentMethod) => {
         setPaymentMethodToEdit(method)
-        setIsEditDialogOpen(true)
+        setIsDialogOpen(true)
     }
 
-    const handleEditComplete = () => {
-        setIsEditDialogOpen(false)
+    const handleDialogClose = () => {
+        setIsDialogOpen(false)
         setPaymentMethodToEdit(null)
     }
 
@@ -40,28 +51,18 @@ export function PaymentMethodConfig({ data }: PaymentMethodConfigProps) {
     }
 
     return (
-        <>
-            <ConfigCardContainer 
-                title="Métodos de Pago"
-                onAdd={() => setIsNewDialogOpen(true)}
-            >
-                <PaymentMethodDataTable
-                    columns={columns}
-                    data={data}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                />
-            </ConfigCardContainer>
-
-            <NewPaymentMethodDialog
-                open={isNewDialogOpen}
-                onOpenChange={setIsNewDialogOpen}
+        <ConfigCardContainer title="Métodos de Pago" onAdd={() => setIsDialogOpen(true)}>
+            <PaymentMethodDataTable
+                columns={columns}
+                data={data}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
             />
 
-            <EditPaymentMethodDialog
+            <PaymentMethodDialog
                 method={paymentMethodToEdit}
-                open={isEditDialogOpen}
-                onOpenChange={handleEditComplete}
+                open={isDialogOpen}
+                onOpenChange={handleDialogClose}
             />
 
             <AlertDialogDeletePaymentMethod
@@ -69,6 +70,6 @@ export function PaymentMethodConfig({ data }: PaymentMethodConfigProps) {
                 onOpenChange={(open) => !open && handleDelete(null)}
                 onSuccess={handleSuccess}
             />
-        </>
+        </ConfigCardContainer>
     )
 } 

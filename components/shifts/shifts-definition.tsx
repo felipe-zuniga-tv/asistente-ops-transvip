@@ -1,14 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { NewShiftDialog } from "./new-shift-dialog";
-import { EditShiftDialog } from "./edit-shift-dialog";
+import { ShiftDialog } from "./shift-dialog";
 import { deleteShift } from "@/lib/database/actions";
 import { UploadShiftsDialog } from "./upload-shifts-dialog";
 import { ShiftsDataTable } from "./table/shifts-data-table";
@@ -18,6 +17,7 @@ import { AlertDialogDeleteShift } from "./delete-shift-alert-dialog";
 import { toast } from "sonner";
 import { AddButton } from "../ui/buttons";
 import { CardTitleContent } from "../ui/card-title-content";
+import { ConfigCardContainer } from "../tables/config-card-container";
 
 export const WEEKDAYS = [
     { value: "1", label: "Lunes" },
@@ -45,37 +45,37 @@ interface ShiftsCardProps {
 export function ShiftsDefinition({ shifts }: ShiftsCardProps) {
     const router = useRouter();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [showFilters, setShowFilters] = useState(false);
     const [selectedDays, setSelectedDays] = useState([1, 2, 3, 4, 5, 6, 7]);
-    const [editingShift, setEditingShift] = useState<any>(null);
+    const [editingShift, setEditingShift] = useState<Shift | null>(null);
     const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
     const [shiftToDelete, setShiftToDelete] = useState<Shift | null>(null);
 
+    useEffect(() => {
+        if (!isDialogOpen || !editingShift) {
+            // Pushing the change to the end of the call stack
+            const timer = setTimeout(() => {
+              document.body.style.pointerEvents = "";
+            }, 0);
+      
+            return () => clearTimeout(timer);
+          } else {
+            document.body.style.pointerEvents = "auto";
+          }
+    }, [isDialogOpen, editingShift]);
+
     const handleEditShift = (shift: Shift) => {
-        const shiftToEdit = {
-            id: shift.id,
-            name: shift.name,
-            start_time: shift.start_time,
-            end_time: shift.end_time,
-            free_day: shift.free_day
-        };
-        setEditingShift(shiftToEdit);
-        setIsEditDialogOpen(true);
+        setEditingShift(shift);
+        setIsDialogOpen(true);
     };
 
-    const handleEditComplete = async () => {
-        try {
-            setIsEditDialogOpen(false);
-            setEditingShift(null);
-
-            router.refresh();
-            setTimeout(() => {
-                window.location.reload();
-            }, 100);
-        } catch (error) {
-            console.error('Error completing edit:', error);
-        }
+    const handleDialogClose = async () => {
+        setIsDialogOpen(false);
+        setEditingShift(null);
+        router.refresh();
+        setTimeout(() => {
+            window.location.reload();
+        }, 100);
     };
 
     const handleDeleteShift = async (shift: Shift) => {
@@ -94,84 +94,72 @@ export function ShiftsDefinition({ shifts }: ShiftsCardProps) {
     };
 
     return (
-        <Card className="max-w-4xl lg:mx-auto">
-            <CardHeader>
-                <CardTitle className="flex flex-row items-center justify-between">
-                    <CardTitleContent title="Jornadas de Conexión" />
-                    <AddButton
-                        text="Añadir"
-                        onClick={() => setIsDialogOpen(true)}
-                    />
-                </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-                <div className="flex justify-between items-center">
-                    <div className="flex items-center space-x-2">
-                        <Switch checked={showFilters} onCheckedChange={setShowFilters} />
-                        <Label>{showFilters ? "Ocultar" : "Mostrar"} Filtros</Label>
-                    </div>
-                    <Button
-                        variant={"outline"}
-                        size="sm"
-                        onClick={() => setIsUploadDialogOpen(true)}
-                    >
-                        <Upload className="w-4 h-4" />
-                        Carga Masiva
-                    </Button>
+        <ConfigCardContainer
+            title="Jornadas de Conexión"
+            onAdd={() => setIsDialogOpen(true)}
+        >
+            <div className="flex justify-between items-center">
+                <div className="flex items-center space-x-2">
+                    <Switch checked={showFilters} onCheckedChange={setShowFilters} />
+                    <Label>{showFilters ? "Ocultar" : "Mostrar"} Filtros</Label>
                 </div>
+                <Button
+                    variant={"outline"}
+                    size="sm"
+                    onClick={() => setIsUploadDialogOpen(true)}
+                >
+                    <Upload className="w-4 h-4" />
+                    Carga Masiva
+                </Button>
+            </div>
 
-                {showFilters && (
-                    <div className="mb-4 space-y-4 p-4 border rounded-md">
-                        <div className="flex items-center justify-start gap-6">
-                            <Label>Días libres</Label>
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => setSelectedDays([1, 2, 3, 4, 5, 6, 7])}
-                            >
-                                Seleccionar todos
-                            </Button>
-                        </div>
-                        <div className="flex flex-wrap gap-4">
-                            {WEEKDAYS.map((weekday) => (
-                                <div key={weekday.value} className="flex items-center space-x-2 border rounded-md p-2 w-fit">
-                                    <Checkbox
-                                        id={`day-${weekday.value}`}
-                                        checked={selectedDays.includes(Number(weekday.value))}
-                                        onCheckedChange={(checked) => {
-                                            setSelectedDays(prev =>
-                                                checked
-                                                    ? [...prev, Number(weekday.value)]
-                                                    : prev.filter(d => d !== Number(weekday.value))
-                                            );
-                                        }}
-                                    />
-                                    <Label className="text-sm font-medium cursor-pointer w-full" htmlFor={`day-${weekday.value}`}>
-                                        {weekday.label}
-                                    </Label>
-                                </div>
-                            ))}
-                        </div>
+            {showFilters && (
+                <div className="mb-4 space-y-4 p-4 border rounded-md">
+                    <div className="flex items-center justify-start gap-6">
+                        <Label>Días libres</Label>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setSelectedDays([1, 2, 3, 4, 5, 6, 7])}
+                        >
+                            Seleccionar todos
+                        </Button>
                     </div>
-                )}
+                    <div className="flex flex-wrap gap-4">
+                        {WEEKDAYS.map((weekday) => (
+                            <div key={weekday.value} className="flex items-center space-x-2 border rounded-md p-2 w-fit">
+                                <Checkbox
+                                    id={`day-${weekday.value}`}
+                                    checked={selectedDays.includes(Number(weekday.value))}
+                                    onCheckedChange={(checked) => {
+                                        setSelectedDays(prev =>
+                                            checked
+                                                ? [...prev, Number(weekday.value)]
+                                                : prev.filter(d => d !== Number(weekday.value))
+                                        );
+                                    }}
+                                />
+                                <Label className="text-sm font-medium cursor-pointer w-full" htmlFor={`day-${weekday.value}`}>
+                                    {weekday.label}
+                                </Label>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
-                <ShiftsDataTable
-                    columns={columns}
-                    data={shifts}
-                    selectedDays={selectedDays}
-                    onEdit={handleEditShift}
-                    onDelete={(shift) => setShiftToDelete(shift)}
-                />
-            </CardContent>
-
-            <NewShiftDialog
-                open={isDialogOpen}
-                onOpenChange={setIsDialogOpen}
+            <ShiftsDataTable
+                columns={columns}
+                data={shifts}
+                selectedDays={selectedDays}
+                onEdit={handleEditShift}
+                onDelete={(shift) => setShiftToDelete(shift)}
             />
 
-            <EditShiftDialog shift={editingShift}
-                open={isEditDialogOpen}
-                onOpenChange={handleEditComplete}
+            <ShiftDialog
+                shift={editingShift}
+                open={isDialogOpen}
+                onOpenChange={handleDialogClose}
             />
 
             <UploadShiftsDialog
@@ -184,6 +172,6 @@ export function ShiftsDefinition({ shifts }: ShiftsCardProps) {
                 onOpenChange={(open) => setShiftToDelete(open ? shiftToDelete : null)}
                 onDelete={handleDeleteShift}
             />
-        </Card>
+        </ConfigCardContainer>
     );
 }

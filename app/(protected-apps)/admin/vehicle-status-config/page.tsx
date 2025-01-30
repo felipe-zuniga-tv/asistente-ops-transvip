@@ -1,10 +1,9 @@
-import { Metadata } from "next";
 import { VehicleStatusConfig } from "@/components/admin/vehicle-status/vehicle-status-config";
 import { getVehicleStatusConfigs } from "@/lib/database/actions";
 import { Suspense } from "react";
 import SuspenseLoading from "@/components/ui/suspense";
 
-export const metadata: Metadata = {
+export const metadata = {
     title: "Configuración de Estados | Transvip",
     description: "Administra los estados disponibles para los vehículos",
 };

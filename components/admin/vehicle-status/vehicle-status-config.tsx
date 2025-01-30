@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VehicleStatusConfigDataTable } from "./table/vehicle-status-config-data-table";
 import { columns } from "./table/columns";
 import { useRouter } from "next/navigation";
@@ -21,12 +21,23 @@ export function VehicleStatusConfig({ configs = [] }: VehicleStatusConfigProps) 
     const [configToDelete, setConfigToDelete] = useState<VehicleStatusConfigType | null>(null);
     const [configToEdit, setConfigToEdit] = useState<VehicleStatusConfigType | null>(null);
 
+    useEffect(() => {
+        if (!isDialogOpen || !configToEdit) {
+            // Pushing the change to the end of the call stack
+            const timer = setTimeout(() => {
+              document.body.style.pointerEvents = "";
+            }, 0);
+      
+            return () => clearTimeout(timer);
+          } else {
+            document.body.style.pointerEvents = "auto";
+          }
+    }, [isDialogOpen, configToEdit]);
+
     const handleDeleteConfig = async (config: VehicleStatusConfigType) => {
         try {
             await deleteVehicleStatusConfig(config.id);
-            setTimeout(() => {
-                router.refresh();
-            }, 500);
+            router.refresh();
             toast.success("Estado eliminado exitosamente");
         } catch (error) {
             console.error('Error deleting config:', error);
@@ -39,26 +50,20 @@ export function VehicleStatusConfig({ configs = [] }: VehicleStatusConfigProps) 
         setIsDialogOpen(true);
     };
 
-    const handleDialogClose = (open: boolean) => {
-        setIsDialogOpen(open);
-        if (!open) {
-            setConfigToEdit(null);
-        }
+    const handleDialogClose = () => {
+        setIsDialogOpen(false);
+        setConfigToEdit(null);
     };
 
     return (
-        <>
-            <ConfigCardContainer title="Estados de Vehículos"
-                onAdd={() => setIsDialogOpen(true)}
-            >
-                <VehicleStatusConfigDataTable
-                    columns={columns}
-                    data={configs}
-                    onDelete={(config) => setConfigToDelete(config)}
-                    onEdit={handleEdit}
-                />
+        <ConfigCardContainer title="Estados de Vehículos" onAdd={() => setIsDialogOpen(true)}>
+            <VehicleStatusConfigDataTable
+                columns={columns}
+                data={configs}
+                onDelete={(config) => setConfigToDelete(config)}
+                onEdit={handleEdit}
+            />
 
-            </ConfigCardContainer>
             <StatusConfigDialog
                 config={configToEdit}
                 open={isDialogOpen}
@@ -70,6 +75,6 @@ export function VehicleStatusConfig({ configs = [] }: VehicleStatusConfigProps) 
                 onOpenChange={(open) => setConfigToDelete(open ? configToDelete : null)}
                 onDelete={handleDeleteConfig}
             />
-        </>
+        </ConfigCardContainer>
     );
 } 

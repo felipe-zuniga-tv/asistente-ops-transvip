@@ -70,11 +70,11 @@ export function AppSidebar({ session, ...props }: { session: any & React.Compone
 		])
 	}
 
-	let sidebarItems = isChatRoute 
+	const sidebarItems = isChatRoute 
 		? sidebarData.navMain 
 		: [chatbotElement, ...sidebarData.navMain.filter(item => item.title !== chatbotItem.title)]
 
-	sidebarItems = session.user.email === 'felipe.zuniga@transvip.cl' ? sidebarItems : sidebarItems.filter(item => item.title !== "Configuración")
+	// sidebarItems = session.user.email === 'felipe.zuniga@transvip.cl' ? sidebarItems : sidebarItems.filter(item => item.title !== "Configuración")
 
 	return (
 		<Sidebar collapsible="icon" {...props}>

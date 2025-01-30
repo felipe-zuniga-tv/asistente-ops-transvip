@@ -37,7 +37,7 @@ export const columns: ColumnDef<Branch>[] = [
                 <div className="flex justify-center">
                     <Badge
                         variant={isActive ? 'default' : 'secondary'}
-                        className={`text-xs ${isActive ? 'bg-green-700 hover:bg-green-800' : 'bg-red-300 hover:bg-red-400'}`}
+                        className={`text-xs ${isActive ? 'bg-green-700 hover:bg-green-800' : 'text-white bg-red-500 hover:bg-red-400'}`}
                     >
                         {isActive ? 'Activo' : 'Inactivo'}
                     </Badge>
@@ -54,7 +54,7 @@ export const columns: ColumnDef<Branch>[] = [
                 <div className="flex justify-center">
                     <Badge
                         variant={isActive ? 'default' : 'secondary'}
-                        className={`text-xs ${isActive ? 'bg-green-700 hover:bg-green-800' : 'bg-red-500 hover:bg-red-400'}`}
+                        className={`text-xs ${isActive ? 'bg-green-700 hover:bg-green-800' : 'text-white bg-red-500 hover:bg-red-400'}`}
                     >
                         {isActive ? 'Activo' : 'Inactivo'}
                     </Badge>

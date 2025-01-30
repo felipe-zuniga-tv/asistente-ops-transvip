@@ -58,17 +58,17 @@ const formSchema = z.object({
     path: ["end_date"],
 });
 
-interface NewStatusDialogProps {
+interface StatusDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     statusToEdit?: VehicleStatus;
 }
 
-export function NewStatusDialog({
+export function StatusDialog({
     open,
     onOpenChange,
     statusToEdit
-}: NewStatusDialogProps) {
+}: StatusDialogProps) {
     const router = useRouter();
     const [statusConfigs, setStatusConfigs] = useState<StatusConfig[]>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -156,9 +156,6 @@ export function NewStatusDialog({
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>{statusToEdit ? "Editar" : "Registrar"} Estado de Móvil</DialogTitle>
-                    <DialogDescription>
-                        Ingrese los datos del estado del móvil
-                    </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VehicleTypesDataTable } from "./table/vehicle-types-data-table";
 import { columns } from "./table/columns";
 import { useRouter } from "next/navigation";
@@ -20,6 +20,19 @@ export function VehicleTypesConfig({ data = [] }: VehicleTypesConfigProps) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [vehicleTypeToDelete, setVehicleTypeToDelete] = useState<VehicleType | null>(null);
     const [vehicleTypeToEdit, setVehicleTypeToEdit] = useState<VehicleType | null>(null);
+
+    useEffect(() => {
+        if (!isDialogOpen || !vehicleTypeToEdit) {
+            // Pushing the change to the end of the call stack
+            const timer = setTimeout(() => {
+              document.body.style.pointerEvents = "";
+            }, 0);
+      
+            return () => clearTimeout(timer);
+          } else {
+            document.body.style.pointerEvents = "auto";
+          }
+    }, [isDialogOpen, vehicleTypeToEdit]);
 
     const handleDeleteVehicleType = async (vehicleType: VehicleType) => {
         try {

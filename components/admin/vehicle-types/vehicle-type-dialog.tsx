@@ -157,6 +157,7 @@ export function VehicleTypeDialog({
                             onCheckedChange={(checked) =>
                                 setFormData({ ...formData, is_active: checked })
                             }
+                            className="data-[state=checked]:bg-green-400"
                         />
                         <Label htmlFor="is_active">Activo</Label>
                     </div>

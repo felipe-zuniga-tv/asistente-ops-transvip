@@ -13,8 +13,6 @@ export const metadata: Metadata = {
 	metadataBase: new URL(defaultUrl),
 	title: "Transvip | Operaciones Chile",
 	description: "Operaciones Transvip Chile",
-	viewport: "width=device-width, initial-scale=1",
-	robots: "index, follow",
 };
 
 interface RootLayoutProps {

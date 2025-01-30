@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { NewStatusDialog } from "./new-status-dialog";
-import { EditStatusDialog } from "./edit-status-dialog";
+import { useEffect, useState } from "react";
+import { StatusDialog } from "./status-dialog";
 import { VehicleStatusDataTable } from "./table/vehicle-status-data-table";
 import { columns } from "./table/columns";
 import { useRouter } from "next/navigation";
@@ -11,8 +9,7 @@ import { AlertDialogDeleteStatus } from "./delete-status-alert-dialog";
 import { toast } from "sonner";
 import { deleteVehicleStatus } from "@/lib/database/actions";
 import type { VehicleStatus } from "@/lib/types";
-import { AddButton } from "../ui/buttons";
-import { CardTitleContent } from "../ui/card-title-content";
+import { ConfigCardContainer } from "../tables/config-card-container";
 
 interface VehicleStatusProps {
     statuses?: VehicleStatus[];
@@ -20,11 +17,22 @@ interface VehicleStatusProps {
 
 export function VehicleStatus({ statuses = [] }: VehicleStatusProps) {
     const router = useRouter();
-    const [isNewDialogOpen, setIsNewDialogOpen] = useState(false);
-    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-    // const [showFilters, setShowFilters] = useState(false);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [statusToDelete, setStatusToDelete] = useState<VehicleStatus | null>(null);
-    const [statusToEdit, setStatusToEdit] = useState<VehicleStatus | null>(null);
+    const [statusToEdit, setStatusToEdit] = useState<VehicleStatus | undefined>(undefined);
+
+    useEffect(() => {
+        if (!isDialogOpen || !statusToEdit) {
+            // Pushing the change to the end of the call stack
+            const timer = setTimeout(() => {
+              document.body.style.pointerEvents = "";
+            }, 0);
+      
+            return () => clearTimeout(timer);
+          } else {
+            document.body.style.pointerEvents = "auto";
+          }
+    }, [isDialogOpen, statusToEdit]);
 
     const handleDeleteStatus = async (status: VehicleStatus) => {
         try {
@@ -39,56 +47,36 @@ export function VehicleStatus({ statuses = [] }: VehicleStatusProps) {
 
     const handleEdit = (status: VehicleStatus) => {
         setStatusToEdit(status);
-        setIsEditDialogOpen(true);
+        setIsDialogOpen(true);
     };
 
-    const handleEditDialogClose = (open: boolean) => {
-        setIsEditDialogOpen(open);
+    const handleDialogClose = (open: boolean) => {
+        setIsDialogOpen(open);
         if (!open) {
-            setStatusToEdit(null);
+            setStatusToEdit(undefined);
         }
     };
 
     return (
-        <Card className="max-w-4xl mx-2 lg:mx-auto">
-            <CardHeader>
-                <CardTitle className="flex flex-row items-center justify-between">
-                    <CardTitleContent title="Estado por Móvil" />
-                    <AddButton
-                        text="Añadir Estado"
-                        onClick={() => setIsNewDialogOpen(true)}
-                    />
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
-                <div className="space-y-4">
-                    <VehicleStatusDataTable
-                        columns={columns}
-                        data={statuses}
-                        onDelete={(status) => setStatusToDelete(status)}
-                        onEdit={handleEdit}
-                    />
+        <ConfigCardContainer title="Estado por Móvil" onAdd={() => setIsDialogOpen(true)}>
+            <VehicleStatusDataTable
+                columns={columns}
+                data={statuses}
+                onDelete={(status) => setStatusToDelete(status)}
+                onEdit={handleEdit}
+            />
 
-                    <NewStatusDialog
-                        open={isNewDialogOpen}
-                        onOpenChange={setIsNewDialogOpen}
-                    />
+            <StatusDialog
+                open={isDialogOpen}
+                onOpenChange={handleDialogClose}
+                statusToEdit={statusToEdit}
+            />
 
-                    {statusToEdit && (
-                        <EditStatusDialog
-                            open={isEditDialogOpen}
-                            onOpenChange={handleEditDialogClose}
-                            status={statusToEdit}
-                        />
-                    )}
-
-                    <AlertDialogDeleteStatus
-                        status={statusToDelete}
-                        onOpenChange={(open) => setStatusToDelete(open ? statusToDelete : null)}
-                        onDelete={handleDeleteStatus}
-                    />
-                </div>
-            </CardContent>
-        </Card>
+            <AlertDialogDeleteStatus
+                status={statusToDelete}
+                onOpenChange={(open) => setStatusToDelete(open ? statusToDelete : null)}
+                onDelete={handleDeleteStatus}
+            />
+        </ConfigCardContainer>
     );
 } 

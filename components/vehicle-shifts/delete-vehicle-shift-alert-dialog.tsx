@@ -51,16 +51,23 @@ export function AlertDialogDeleteVehicleShift({
                 <AlertDialogHeader>
                     <AlertDialogTitle>¿Está seguro?</AlertDialogTitle>
                     <AlertDialogDescription>
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-2 text-black">
                             <span>Esta acción eliminará la siguiente asignación:</span>
                             <div className="p-3 bg-gray-100 rounded-md shadow-md flex flex-col gap-2">
                                 <div className="flex flex-row items-center gap-1">
                                     <span className="font-semibold">Vehículo:</span>
                                     <span>{assignment?.vehicle_number}</span>
-                                </div>
-                                <div className="flex flex-row items-center gap-1">
+                                    <span className="px-2">·</span>
                                     <span className="font-semibold">Turno:</span>
                                     <span>{assignment?.shift_name}</span>
+                                </div>
+                                <div className="flex flex-row items-center gap-1">
+                                    <span className="font-semibold">Fecha Inicio:</span>
+                                    <span>{assignment?.start_date}</span>
+                                </div>
+                                <div className="flex flex-row items-center gap-1">
+                                    <span className="font-semibold">Fecha Fin:</span>
+                                    <span>{assignment?.end_date}</span>
                                 </div>
                                 <div className="flex flex-row items-center gap-1">
                                     <span className="font-semibold">Prioridad:</span>
@@ -72,7 +79,7 @@ export function AlertDialogDeleteVehicleShift({
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDelete}>
+                    <AlertDialogAction className="bg-red-500 hover:bg-red-600" onClick={handleDelete}>
                         Eliminar
                     </AlertDialogAction>
                 </AlertDialogFooter>

@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import {
     Dialog,
     DialogContent,
@@ -31,8 +32,9 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { icons } from '@/components/ui/icons-list'
-import { updatePaymentMethod } from '@/lib/services/admin'
+import { createPaymentMethod, updatePaymentMethod } from '@/lib/services/admin'
 import { type PaymentMethod } from '@/lib/types/admin'
+import { Label } from '@/components/ui/label'
 
 const formSchema = z.object({
     name: z.string().min(2, {
@@ -45,34 +47,40 @@ const formSchema = z.object({
         message: 'Debes seleccionar un ícono.',
     }),
     is_active: z.boolean().default(true),
+    payment_id: z.number().default(() => Math.floor(Date.now() / 1000)),
 })
 
 type FormValues = z.infer<typeof formSchema>
 
-interface EditPaymentMethodDialogProps {
-    method: PaymentMethod | null
+const defaultValues: FormValues = {
+    name: '',
+    code: '',
+    icon_name: '',
+    is_active: true,
+    payment_id: Math.floor(Date.now() / 1000),
+}
+
+interface PaymentMethodDialogProps {
+    method?: PaymentMethod | null
     open: boolean
     onOpenChange: (open: boolean) => void
 }
 
-export function EditPaymentMethodDialog({
+export function PaymentMethodDialog({
     method,
     open,
     onOpenChange,
-}: EditPaymentMethodDialogProps) {
+}: PaymentMethodDialogProps) {
     const router = useRouter()
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const isEditing = !!method
 
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
-        defaultValues: {
-            name: '',
-            code: '',
-            icon_name: '',
-            is_active: true,
-        }
+        defaultValues,
     })
 
+    // Reset form when dialog opens or closes
     useEffect(() => {
         if (method) {
             form.reset({
@@ -80,33 +88,43 @@ export function EditPaymentMethodDialog({
                 code: method.code,
                 icon_name: method.icon_name,
                 is_active: method.is_active,
+                payment_id: method.payment_id,
+            })
+        } else {
+            form.reset({
+                ...defaultValues,
+                payment_id: Math.floor(Date.now() / 1000),
             })
         }
-    }, [method, form])
+    }, [open, method, form])
 
     // Watch the name field to update code
     const name = form.watch('name')
 
-    // Update code when name changes
+    // Update code when name changes (only in create mode)
     useEffect(() => {
-        const code = name
-            .trim()
-            .toUpperCase()
-            .replace(/\s+/g, '_')
-            .replace(/[^A-Z0-9_]/g, '')
-        form.setValue('code', code)
-    }, [name, form])
+        if (!isEditing) {
+            const code = name
+                .trim()
+                .toUpperCase()
+                .replace(/\s+/g, '_')
+                .replace(/[^A-Z0-9_]/g, '')
+            form.setValue('code', code)
+        }
+    }, [name, form, isEditing])
 
     async function onSubmit(values: FormValues) {
-        if (!method?.id) return
-
         try {
             setIsSubmitting(true)
-            await updatePaymentMethod(method.id, values)
+            if (isEditing && method?.id) {
+                await updatePaymentMethod(method.id, values)
+            } else {
+                await createPaymentMethod(values)
+            }
             onOpenChange(false)
             router.refresh()
         } catch (error) {
-            console.error('Error updating payment method:', error)
+            console.error(`Error ${isEditing ? 'updating' : 'creating'} payment method:`, error)
         } finally {
             setIsSubmitting(false)
         }
@@ -114,7 +132,7 @@ export function EditPaymentMethodDialog({
 
     function handleOpenChange(open: boolean) {
         if (!open) {
-            form.reset()
+            form.reset(defaultValues)
         }
         onOpenChange(open)
     }
@@ -123,9 +141,14 @@ export function EditPaymentMethodDialog({
         <Dialog open={open} onOpenChange={handleOpenChange}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Editar Método de Pago</DialogTitle>
+                    <DialogTitle>
+                        {isEditing ? 'Editar Método de Pago' : 'Nuevo Método de Pago'}
+                    </DialogTitle>
                     <DialogDescription>
-                        Modifica los detalles del método de pago.
+                        {isEditing 
+                            ? 'Modifica los detalles del método de pago.'
+                            : 'Crea un nuevo método de pago para el sistema.'
+                        }
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -153,8 +176,8 @@ export function EditPaymentMethodDialog({
                                         <Input 
                                             placeholder="EFECTIVO" 
                                             {...field} 
-                                            disabled
-                                            className="bg-muted"
+                                            disabled={isEditing}
+                                            className={cn("bg-muted", isEditing ? 'opacity-50' : '')}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -199,17 +222,15 @@ export function EditPaymentMethodDialog({
                             control={form.control}
                             name="is_active"
                             render={({ field }) => (
-                                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                                    <div className="space-y-0.5">
-                                        <FormLabel>Activo</FormLabel>
-                                    </div>
+                                <FormItem className="flex items-center space-x-2">
                                     <FormControl>
                                         <Switch
                                             checked={field.value}
                                             onCheckedChange={field.onChange}
-                                            className="data-[state=checked]:bg-green-500"
+                                            className="data-[state=checked]:bg-green-400"
                                         />
                                     </FormControl>
+                                    <Label style={{ marginTop: 0 }}>Activo</Label>
                                 </FormItem>
                             )}
                         />

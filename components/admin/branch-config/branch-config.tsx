@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { type Branch } from '@/lib/types/admin'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { BranchConfigDataTable } from './table/branch-config-data-table'
@@ -19,6 +19,19 @@ export function BranchConfig({ data }: BranchConfigProps) {
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [branchToDelete, setBranchToDelete] = useState<Branch | null>(null)
     const [branchToEdit, setBranchToEdit] = useState<Branch | null>(null)
+
+    useEffect(() => {
+        if (!isDialogOpen || !branchToEdit) {
+            // Pushing the change to the end of the call stack
+            const timer = setTimeout(() => {
+              document.body.style.pointerEvents = "";
+            }, 0);
+      
+            return () => clearTimeout(timer);
+          } else {
+            document.body.style.pointerEvents = "auto";
+          }
+    }, [isDialogOpen, branchToEdit]);
 
     const handleEdit = (branch: Branch) => {
         setBranchToEdit(branch)
