@@ -32,10 +32,11 @@ import {
 	Settings2,
 	CreditCard,
 	Building2,
+	Building,
+	Sun,
 } from "lucide-react"
 import { toolsList } from "./tools";
 
-// Define a new interface for sidebar items
 export interface SidebarItem {
 	title: string;
 	url: string;
@@ -45,6 +46,27 @@ export interface SidebarItem {
 }
 
 // Sidebar content
+export const publicSidebar: SidebarItem = {
+	title: "Acceso Público",
+	url: "#",
+	icon: Sun,
+	isActive: false,
+	items: [
+		{
+			title: "Form Ventas Sucursales",
+			url: Routes.PUBLIC.SUCURSALES,
+			icon: Building,
+			active: true,
+		},
+		{
+			title: "Turnos Flota",
+			url: Routes.PUBLIC.TURNOS,
+			icon: CalendarClock,
+			active: true,
+		},
+	],
+}
+
 export const chatbotItem: SidebarItem = {
 	title: "Chatbot Operaciones",
 	url: "#",
@@ -88,6 +110,7 @@ const configMenu: SidebarItem = {
 
 export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] } = {
 	navMain: [
+		publicSidebar,
 		chatbotItem,
 		{
 			title: "Herramientas",

@@ -13,6 +13,8 @@ import { TravelInfoStep } from './travel-info-step'
 import { AccommodationStep } from './accommodation-step'
 import { ConfirmationStep } from './confirmation-step'
 import { TransvipLogo } from '@/components/transvip/transvip-logo'
+import Link from 'next/link'
+import { Routes } from '@/utils/routes'
 
 interface SalesFormData {
 	language: Language
@@ -33,7 +35,7 @@ interface SalesFormProps {
 }
 
 export function SalesForm({ branchCode, initialLanguage, onSuccess }: SalesFormProps) {
-	const [step, setStep] = useState(1)
+	const [step, setStep] = useState(initialLanguage ? 2 : 1)
 	const [formData, setFormData] = useState<SalesFormData>({
 		language: initialLanguage,
 		firstName: '',
@@ -105,7 +107,9 @@ export function SalesForm({ branchCode, initialLanguage, onSuccess }: SalesFormP
 				<Progress value={(step / totalSteps) * 100} className="mb-4" />
 
 				<div className="flex justify-center mb-4">
-					<TransvipLogo size={30} />
+					<Link href={Routes.PUBLIC.SUCURSALES}>
+						<TransvipLogo size={30} />
+					</Link>
 				</div>
 
 				<div className="space-y-6">

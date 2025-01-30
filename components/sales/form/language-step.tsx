@@ -5,20 +5,7 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { type Language } from '@/lib/translations'
 import { ArrowRightIcon } from 'lucide-react'
-
-interface LanguageOption {
-	value: Language
-	label: string
-	flag: string
-	region: string
-}
-
-export const languages: LanguageOption[] = [
-	{ value: 'es-CL', label: 'Español', flag: '🇨🇱 🇪🇸', region: 'Chile' },
-	{ value: 'pt-BR', label: 'Português', flag: '🇧🇷 🇵🇹', region: 'Brasil' },
-	{ value: 'en-US', label: 'English', flag: '🇺🇸 🇬🇧', region: 'United States' },
-	{ value: 'de-DE', label: 'Deutsch', flag: '🇩🇪', region: 'Deutschland' },
-]
+import { languages } from '../language-selector'
 
 interface LanguageStepProps {
 	value: Language

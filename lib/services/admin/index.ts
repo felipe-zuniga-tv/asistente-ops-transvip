@@ -140,7 +140,8 @@ export async function getBranches() {
         if (!data || status !== 200) {
             throw new Error('No branches data received')
         }
-
+        revalidatePath(Routes.PUBLIC.SUCURSALES)
+        revalidatePath(Routes.ADMIN.BRANCH_CONFIG)
         return data as Branch[]
     } catch (error) {
         console.error('Error in getBranches:', error)

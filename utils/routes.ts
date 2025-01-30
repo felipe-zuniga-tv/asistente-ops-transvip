@@ -49,5 +49,10 @@ export const Routes = Object.freeze({
 	},
 	FEEDBACK: {
 		GOOGLE_FORMS: 'https://forms.gle/qeiBzwNhUwD5WcLt8'
+	},
+	PUBLIC: {
+		SUCURSALES: '/public/sucursales',
+		VENTA_SUCURSALES: '/public/sucursales/venta',
+		TURNOS: '/public/turnos',
 	}
 })
