@@ -64,7 +64,7 @@ function SalesPageContent() {
 		// Validate branch code
 		const validBranch = branches.some(b => b.code.toLowerCase() === branchCode)
 		if (!branchCode || !validBranch) {
-			router.push(Routes.SALES.HOME)
+			router.push(Routes.PUBLIC.SUCURSALES)
 		}
 	}, [branchCode, router])
 
@@ -75,7 +75,7 @@ function SalesPageContent() {
 		<SalesForm
 			branchCode={branchCode}
 			initialLanguage={language}
-			onSuccess={() => router.push(Routes.SALES.HOME)}
+			onSuccess={() => router.push(Routes.PUBLIC.SUCURSALES)}
 		/>
 	)
 }

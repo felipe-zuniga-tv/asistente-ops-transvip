@@ -30,10 +30,6 @@ export const Routes = Object.freeze({
 		PAYMENT_CONFIG: '/admin/payment-config',
 		VEHICLE_TYPES: '/admin/vehicle-types',
 	},
-	SALES: {
-		HOME: '/sucursales',
-		FORM: '/sucursales/venta',
-	},
 	FINANCE: {
 		TICKETS: '/finanzas/tickets',
 	},
