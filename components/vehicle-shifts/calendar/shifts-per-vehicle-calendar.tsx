@@ -18,7 +18,7 @@ function generateNextXDays(next_X_days: number) {
 }
 
 // Helper function to adjust day index to start from Monday
-function adjustDayIndex(date: Date): number {
+export function adjustDayIndex(date: Date): number {
     const day = getDay(date)
     return day === 0 ? 6 : day - 1 // Convert Sunday (0) to 6, and shift other days back by 1
 }

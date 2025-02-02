@@ -18,11 +18,11 @@ export const Routes = Object.freeze({
 		HOME: '/vehicles',
 	},
 	CONTROL_FLOTA: {
-		SHIFTS: '/control-flota/shifts',
-		VEHICLE_SHIFT: '/control-flota/vehicles',
-		FLEET_SHIFTS_CALENDAR: '/control-flota/fleet-shifts',
-		SHIFTS_PER_VEHICLE: '/control-flota/vehicle-calendar',
-		VEHICLE_STATUS: '/control-flota/vehicle-status',
+		SHIFTS: '/control-flota/definicion-turnos',
+		VEHICLE_SHIFT: '/control-flota/asignacion-turno',
+		SHIFTS_PER_VEHICLE: '/control-flota/calendario-por-vehiculo',
+		VEHICLE_STATUS: '/control-flota/estado-por-vehiculo',
+		FLEET_SHIFTS_CALENDAR: '/control-flota/calendario-flota',
 	},
 	ADMIN: {
 		HOME: '/admin',

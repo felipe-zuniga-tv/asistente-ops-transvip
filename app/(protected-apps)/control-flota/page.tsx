@@ -81,6 +81,21 @@ export default function ControlFlotaPage() {
                         </CardContent>
                     </Card>
                 </Link>
+                
+                <Link href={Routes.CONTROL_FLOTA.FLEET_SHIFTS_CALENDAR} className="block hover:opacity-90">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className='flex flex-row gap-2 items-center'>
+                                <Calendar className='w-4 h-4 text-transvip' />
+                                <span>Jornadas de la Flota</span>
+                            </CardTitle>
+                            <CardDescription className='text-xs'>Verifica los vehículos que tienen turnos en una fecha específica</CardDescription>
+                        </CardHeader>
+                        <CardContent className='text-sm'>
+                            Calendario para verificar los vehículos que tienen turnos en una fecha específica
+                        </CardContent>
+                    </Card>
+                </Link>
             </CardContent>
         </Card>
     );

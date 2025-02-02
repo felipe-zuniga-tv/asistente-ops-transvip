@@ -12,14 +12,11 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils"
 import { CalendarIcon, X } from "lucide-react"
 import type { VehicleShiftWithShiftInfo } from "@/lib/types"
+import { TransvipLogo } from "@/components/transvip/transvip-logo"
+import { Label } from "@/components/ui/label"
+import { adjustDayIndex } from "../calendar/shifts-per-vehicle-calendar"
 
 const weekDays = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
-
-// Helper function to adjust day index to start from Monday
-function adjustDayIndex(date: Date): number {
-    const day = getDay(date)
-    return day === 0 ? 6 : day - 1 // Convert Sunday (0) to 6, and shift other days back by 1
-}
 
 interface ShiftSummary {
     date: string
@@ -73,7 +70,7 @@ export function VehicleShiftsSummary() {
             result.data?.forEach(shift => {
                 const shiftStart = parseISO(shift.start_date)
                 const shiftEnd = parseISO(shift.end_date)
-                
+
                 let currentDate = shiftStart
                 while (currentDate <= shiftEnd) {
                     const dateStr = format(currentDate, "yyyy-MM-dd")
@@ -89,7 +86,10 @@ export function VehicleShiftsSummary() {
             const newSummaries: ShiftSummary[] = Array.from(shiftsMap.entries()).map(([date, shifts]) => ({
                 date,
                 vehicles: shifts
-                    .filter(shift => !shift.free_day && !shift.isStatus)
+                    .filter(shift => {
+                        const currentDateWeekday = adjustDayIndex(parseISO(date)) + 1
+                        return currentDateWeekday !== shift.free_day
+                    })
                     .map(shift => ({
                         number: shift.vehicle_number,
                         shiftType: shift.shift_name,
@@ -126,23 +126,27 @@ export function VehicleShiftsSummary() {
     }, [date])
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 max-w-4xl mx-auto">
             <Card className="p-6">
                 <div className="space-y-4">
                     <div className="flex flex-col space-y-1.5">
-                        <h2 className="font-semibold text-lg">Resumen de Turnos por Fecha</h2>
+                        <div className="flex gap-2 items-center">
+                            <TransvipLogo size={20} />
+                            <h2 className="font-semibold text-lg">Resumen de Turnos por Fecha</h2>
+                        </div>
                         <p className="text-sm text-muted-foreground">
                             Seleccione una fecha para ver los vehículos con turnos activos en los próximos 30 días
                         </p>
                     </div>
                     <div className="flex items-center gap-4">
+                        <Label className="text-sm text-muted-foreground">Fecha de inicio</Label>
                         <Popover>
                             <PopoverTrigger asChild>
                                 <Button
                                     variant="outline"
                                     className="justify-start text-left font-normal"
                                 >
-                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    <CalendarIcon className="h-4 w-4" />
                                     {date ? format(date, "PPP", { locale: es }) : <span>Seleccionar fecha</span>}
                                 </Button>
                             </PopoverTrigger>
@@ -159,6 +163,7 @@ export function VehicleShiftsSummary() {
                         <Button 
                             onClick={fetchShiftsSummary}
                             disabled={isLoading}
+                            className="bg-transvip text-white hover:bg-transvip/90"
                         >
                             {isLoading ? "Cargando..." : "Actualizar"}
                         </Button>
@@ -188,9 +193,9 @@ export function VehicleShiftsSummary() {
                         const isSelected = selectedDate === dateStr
 
                         return (
-                            <button
+                            <Button
                                 key={dateStr}
-                                type="button"
+                                variant="outline"
                                 className={cn(
                                     "p-2 border rounded-sm min-h-[4rem] text-left transition-colors",
                                     isSelected ? "ring-2 ring-primary" : "",
@@ -203,10 +208,10 @@ export function VehicleShiftsSummary() {
                                 </div>
                                 {vehicleCount > 0 && (
                                     <div className="mt-1 text-xs text-blue-600 font-medium">
-                                        {vehicleCount} vehículo{vehicleCount !== 1 ? 's' : ''}
+                                        {vehicleCount} móvil{vehicleCount !== 1 ? 'es' : ''}
                                     </div>
                                 )}
-                            </button>
+                            </Button>
                         )
                     })}
                 </div>

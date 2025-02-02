@@ -45,6 +45,8 @@ export function ShiftsPerVehicleDashboard({
                 endDateStr
             )
 
+            console.log(shiftsResult)
+
             if (shiftsResult.error) {
                 toast({
                     variant: "destructive",

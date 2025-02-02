@@ -111,10 +111,7 @@ export async function getVehicleShiftsByDateRange(
 					free_day
 				)
 			`)
-			// Get shifts that overlap with our date range:
-			// Either the shift starts before our end date AND ends after our start date
-			.lte('start_date', endDate)
-			.gte('end_date', startDate)
+			.or(`start_date.lte.${endDate},end_date.gte.${startDate}`)
 			.order("priority", { ascending: false })
 
 		// Only apply vehicle number filter if not 0

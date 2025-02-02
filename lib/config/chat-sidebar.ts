@@ -109,7 +109,7 @@ const controlFlotaMenu: SidebarItem = {
 			title: 'Calendario de Turnos',
 			icon: Calendar,
 			url: Routes.CONTROL_FLOTA.FLEET_SHIFTS_CALENDAR,
-			active: false
+			active: true
 		},
 	],
 }

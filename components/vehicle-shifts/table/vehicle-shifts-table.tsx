@@ -27,6 +27,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
+import { DataTableSearch } from "@/components/tables/data-table-search"
 
 interface DataTableProps {
     columns: ColumnDef<VehicleShift>[]
@@ -97,19 +98,11 @@ export function VehicleShiftsTable({
     return (
         <>
             <div className="flex items-center justify-between gap-4 py-1">
-                <div className="relative">
-                    <Input
-                        placeholder="Filtrar por móvil..."
-                        value={(table.getColumn("vehicle_number")?.getFilterValue() as string) ?? ""}
-                        onChange={(event) => {
-                            table.getColumn("vehicle_number")?.setFilterValue(event.target.value)
-                        }}
-                        className="peer pe-9 ps-9 max-w-xs"
-                    />
-                    <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
-                        <Search size={16} strokeWidth={2} />
-                    </div>
-                </div>
+                <DataTableSearch
+                    table={table}
+                    placeholder="Filtrar por móvil..."
+                    searchColumnId="vehicle_number"
+                />
 
                 {/* Show bulk action buttons when rows are selected */}
                 {table.getFilteredSelectedRowModel().rows.length > 0 && (
