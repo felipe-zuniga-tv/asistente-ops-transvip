@@ -5,22 +5,22 @@ import { getVehicleShiftsByDateRange, getVehicleStatusesForCalendar } from "@/li
 import { useDebounce } from "@/hooks/use-debounce"
 import { useToast } from "@/hooks/use-toast"
 import { Card } from "@/components/ui/card"
-import { VehicleShiftsDashboardHeader } from "./vehicle-shifts-dashboard-header"
-import { VehicleShiftsDashboardCalendar } from "./vehicle-shifts-dashboard-calendar"
+import { ShiftsPerVehicleHeader } from "./shifts-per-vehicle-header"
+import { ShiftsPerVehicleCalendar } from "./shifts-per-vehicle-calendar"
 import type { VehicleShiftWithShiftInfo, VehicleStatus } from "@/lib/types"
 
-interface VehicleShiftsDashboardProps {
+interface ShiftsPerVehicleDashboardProps {
     shifts: VehicleShiftWithShiftInfo[]
     daysToShow?: number
     vehicleNumber?: string
     vehicleStatuses: VehicleStatus[]
 }
 
-export function VehicleShiftsDashboard({ 
+export function ShiftsPerVehicleDashboard({ 
     shifts: initialShifts,
     daysToShow: initialDaysToShow = 90,
     vehicleNumber: initialVehicleNumber,
-}: VehicleShiftsDashboardProps) {
+}: ShiftsPerVehicleDashboardProps) {
     const [vehicleNumber, setVehicleNumber] = useState<string>(initialVehicleNumber || "")
     const [shifts, setShifts] = useState<VehicleShiftWithShiftInfo[]>(initialShifts)
     const [vehicleStatuses, setVehicleStatuses] = useState<VehicleStatus[]>([])
@@ -61,9 +61,6 @@ export function VehicleShiftsDashboard({
                 startDateStr,
                 endDateStr
             )
-
-            console.log(shiftsResult)
-            console.log(statusesResult)
 
             setShifts(shiftsResult.data || [])
             setVehicleStatuses(statusesResult || [])
@@ -114,7 +111,7 @@ export function VehicleShiftsDashboard({
 
     return (
         <Card className="w-full">
-            <VehicleShiftsDashboardHeader
+            <ShiftsPerVehicleHeader
                 vehicleNumber={vehicleNumber}
                 onVehicleNumberChange={handleVehicleNumberChange}
                 onSearch={handleSearch}
@@ -122,7 +119,7 @@ export function VehicleShiftsDashboard({
                 daysToShow={daysToShow}
                 onDaysToShowChange={handleDaysToShowChange}
             />
-            <VehicleShiftsDashboardCalendar 
+            <ShiftsPerVehicleCalendar 
                 shifts={shifts} 
                 hasSearched={hasSearched} 
                 daysToShow={daysToShow}

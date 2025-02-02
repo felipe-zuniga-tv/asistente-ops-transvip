@@ -101,7 +101,7 @@ export async function getVehicleShiftsByDateRange(
 	try {
 		const supabase = await getSupabaseClient()
 
-		const { data: vehicleShifts, error } = await supabase
+		let query = supabase
 			.from("vehicle_shifts")
 			.select(`
 				*,
@@ -111,11 +111,21 @@ export async function getVehicleShiftsByDateRange(
 					free_day
 				)
 			`)
-			.eq("vehicle_number", vehicleNumber)
-			.or(`start_date.lte.${endDate},end_date.gte.${startDate}`)
+			// Get shifts that overlap with our date range:
+			// Either the shift starts before our end date AND ends after our start date
+			.lte('start_date', endDate)
+			.gte('end_date', startDate)
 			.order("priority", { ascending: false })
 
+		// Only apply vehicle number filter if not 0
+		if (vehicleNumber !== 0) {
+			query = query.eq("vehicle_number", vehicleNumber)
+		}
+
+		const { data: vehicleShifts, error } = await query
+
 		if (error) {
+			console.error("Database error:", error)
 			return { error: "Error fetching vehicle shifts" }
 		}
 
@@ -128,9 +138,10 @@ export async function getVehicleShiftsByDateRange(
 			shifts: undefined // Remove the nested shifts object
 		}))
 
-		revalidatePath(Routes.CONTROL_FLOTA.DASHBOARD)
+		revalidatePath(Routes.CONTROL_FLOTA.SHIFTS_PER_VEHICLE)
 		return { data: transformedShifts }
 	} catch (error) {
+		console.error("Error in getVehicleShiftsByDateRange:", error)
 		return { error: "Error fetching vehicle shifts" }
 	}
 } 

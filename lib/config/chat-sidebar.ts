@@ -75,7 +75,46 @@ export const chatbotItem: SidebarItem = {
 	items: toolsList,
 }
 
-const configMenu: SidebarItem = {
+const controlFlotaMenu: SidebarItem = {
+	title: "Control de Flota",
+	url: "#",
+	icon: TowerControl,
+	isActive: true,
+	items: [
+		{
+			title: 'Definición de Turnos',
+			icon: CalendarClock,
+			url: Routes.CONTROL_FLOTA.SHIFTS,
+			active: true
+		},
+		{
+			title: 'Asignar Turno al Móvil',
+			icon: CarFront,
+			url: Routes.CONTROL_FLOTA.VEHICLE_SHIFT,
+			active: true
+		},
+		{
+			title: 'Asignar Estado al Móvil',
+			icon: AlertTriangle,
+			url: Routes.CONTROL_FLOTA.VEHICLE_STATUS,
+			active: true
+		},
+		{
+			title: 'Turnos por Móvil',
+			icon: Calendar,
+			url: Routes.CONTROL_FLOTA.SHIFTS_PER_VEHICLE,
+			active: true
+		},
+		{
+			title: 'Calendario de Turnos',
+			icon: Calendar,
+			url: Routes.CONTROL_FLOTA.FLEET_SHIFTS_CALENDAR,
+			active: false
+		},
+	],
+}
+
+const adminMenu: SidebarItem = {
 	title: "Configuración",
 	url: Routes.ADMIN.HOME,
 	icon: Settings,
@@ -156,38 +195,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 				},
 			],
 		},
-		{
-			title: "Control de Flota",
-			url: "#",
-			icon: TowerControl,
-			isActive: true,
-			items: [
-				{
-					title: 'Definición de Turnos',
-					icon: CalendarClock,
-					url: Routes.CONTROL_FLOTA.SHIFTS,
-					active: true
-				},
-				{
-					title: 'Asignar Turno al Móvil',
-					icon: CarFront,
-					url: Routes.CONTROL_FLOTA.VEHICLE_SHIFT,
-					active: true
-				},
-				{
-					title: 'Estado por Móvil',
-					icon: AlertTriangle,
-					url: Routes.CONTROL_FLOTA.VEHICLE_STATUS,
-					active: true
-				},
-				{
-					title: 'Calendario por Móvil',
-					icon: Calendar,
-					url: Routes.CONTROL_FLOTA.DASHBOARD,
-					active: true
-				},
-			],
-		},
+		controlFlotaMenu,
 		{
 			title: "Reservas",
 			url: "#",
@@ -216,7 +224,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 				},
 			],
 		},
-		configMenu,
+		adminMenu,
 		// {
 		// 	title: "Reportes",
 		// 	url: "#",

@@ -86,7 +86,7 @@ function shouldShowMonth(date: Date, index: number, days: Date[]) {
     return !isSameMonth(date, prevDate)
 }
 
-interface VehicleShiftsDashboardCalendarProps {
+interface ShiftsPerVehicleCalendarProps {
     shifts: VehicleShiftWithShiftInfo[]
     hasSearched?: boolean
     daysToShow: number
@@ -116,7 +116,7 @@ function generateCalendarMonths(days: Date[]) {
     return months
 }
 
-export function VehicleShiftsDashboardCalendar({ shifts, hasSearched, daysToShow, vehicleNumber, vehicleStatuses }: VehicleShiftsDashboardCalendarProps) {
+export function ShiftsPerVehicleCalendar({ shifts, hasSearched, daysToShow, vehicleNumber, vehicleStatuses }: ShiftsPerVehicleCalendarProps) {
     const nextDays = generateNextXDays(daysToShow)
     const calendarRef = useRef<HTMLDivElement>(null)
     const { toast } = useToast()

@@ -20,7 +20,8 @@ export const Routes = Object.freeze({
 	CONTROL_FLOTA: {
 		SHIFTS: '/control-flota/shifts',
 		VEHICLE_SHIFT: '/control-flota/vehicles',
-		DASHBOARD: '/control-flota/dashboard',
+		FLEET_SHIFTS_CALENDAR: '/control-flota/fleet-shifts',
+		SHIFTS_PER_VEHICLE: '/control-flota/vehicle-calendar',
 		VEHICLE_STATUS: '/control-flota/vehicle-status',
 	},
 	ADMIN: {

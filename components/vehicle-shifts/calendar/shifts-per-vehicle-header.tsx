@@ -12,7 +12,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-interface VehicleShiftsDashboardHeaderProps {
+interface ShiftsPerVehicleHeaderProps {
     vehicleNumber: string
     onVehicleNumberChange: (value: string) => void
     onSearch: () => void
@@ -23,14 +23,14 @@ interface VehicleShiftsDashboardHeaderProps {
 
 const daysOptions = [30, 60, 90, 120]
 
-export function VehicleShiftsDashboardHeader({
+export function ShiftsPerVehicleHeader({
     vehicleNumber,
     onVehicleNumberChange,
     onSearch,
     isLoading,
     daysToShow,
     onDaysToShowChange
-}: VehicleShiftsDashboardHeaderProps) {
+}: ShiftsPerVehicleHeaderProps) {
     return (
         <CardHeader>
             <CardTitle className="flex flex-col gap-4">

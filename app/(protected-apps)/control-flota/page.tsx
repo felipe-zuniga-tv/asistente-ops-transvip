@@ -52,7 +52,7 @@ export default function ControlFlotaPage() {
                     </Card>
                 </Link>
 
-                <Link href={Routes.CONTROL_FLOTA.DASHBOARD} className="block hover:opacity-90">
+                <Link href={Routes.CONTROL_FLOTA.SHIFTS_PER_VEHICLE} className="block hover:opacity-90">
                     <Card>
                         <CardHeader>
                             <CardTitle className='flex flex-row gap-2 items-center'>

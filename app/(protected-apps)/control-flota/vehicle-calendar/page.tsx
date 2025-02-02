@@ -1,8 +1,8 @@
-import { VehicleShiftsDashboard } from "@/components/vehicle-shifts/dashboard/vehicle-shifts-dashboard"
+import { ShiftsPerVehicleDashboard } from "@/components/vehicle-shifts/calendar/shifts-per-vehicle-dashboard"
 
 export default function DashboardPage() {
     return (
-        <VehicleShiftsDashboard 
+        <ShiftsPerVehicleDashboard 
             shifts={[]}
             daysToShow={30}
             vehicleNumber=""
