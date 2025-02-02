@@ -13,4 +13,4 @@ export default async function VehicleStatusPage() {
             <VehicleStatus statuses={statuses} />
         </Suspense>
     );
-} 
+}
