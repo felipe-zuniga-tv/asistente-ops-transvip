@@ -20,7 +20,7 @@ export function InspectionQuestionsConfig({ data = [], sectionId }: InspectionQu
     const [questions, setQuestions] = useState<InspectionQuestion[]>(data);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [questionToDelete, setQuestionToDelete] = useState<InspectionQuestion | null>(null);
-    const [questionToEdit, setQuestionToEdit] = useState<InspectionQuestion | null>(null);
+    const [questionToEdit, setQuestionToEdit] = useState<InspectionQuestion | undefined>(undefined);
 
     useEffect(() => {
         if (!isDialogOpen || !questionToEdit) {
@@ -41,7 +41,7 @@ export function InspectionQuestionsConfig({ data = [], sectionId }: InspectionQu
     const handleDialogClose = useCallback((open: boolean) => {
         setIsDialogOpen(open);
         if (!open) {
-            setQuestionToEdit(null);
+            setQuestionToEdit(undefined);
         }
     }, []);
 
@@ -76,9 +76,9 @@ export function InspectionQuestionsConfig({ data = [], sectionId }: InspectionQu
             question={questionToEdit}
             open={isDialogOpen}
             onOpenChange={handleDialogClose}
-            onSuccess={questionToEdit ? handleQuestionUpdate : handleQuestionCreate}
+            sectionId={sectionId}
         />
-    ), [questionToEdit, isDialogOpen, handleDialogClose, handleQuestionUpdate, handleQuestionCreate]);
+    ), [questionToEdit, isDialogOpen, handleDialogClose, sectionId]);
 
     // Memoize the delete dialog
     const deleteDialog = useMemo(() => (
