@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useCallback, useEffect, useMemo } from "react"
-import { startOfToday, addDays, format, parseISO, getDay } from "date-fns"
+import { useState, useCallback, useEffect, useMemo, useRef } from "react"
+import { startOfToday, addDays, format, parseISO } from "date-fns"
 import { es } from "date-fns/locale"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -10,23 +10,13 @@ import { useToast } from "@/hooks/use-toast"
 import { getVehicleShiftsByDateRange } from "@/lib/database/actions"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
-import { CalendarIcon, X } from "lucide-react"
-import type { VehicleShiftWithShiftInfo } from "@/lib/types"
+import { CalendarIcon, X, Download } from "lucide-react"
 import { TransvipLogo } from "@/components/transvip/transvip-logo"
 import { Label } from "@/components/ui/label"
-import { adjustDayIndex } from "../calendar/shifts-per-vehicle-calendar"
-
-const weekDays = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
-
-interface ShiftSummary {
-    date: string
-    vehicles: {
-        number: number
-        shiftType: string
-        startTime?: string
-        endTime?: string
-    }[]
-}
+import { CalendarGrid } from "@/components/ui/calendar-grid"
+import { generateNextXDays, generateCalendarMonths } from "@/lib/utils/date"
+import { toPng } from "html-to-image"
+import type { ShiftSummary } from "@/lib/types/calendar"
 
 export function VehicleShiftsSummary() {
     const [date, setDate] = useState<Date>(startOfToday())
@@ -34,6 +24,7 @@ export function VehicleShiftsSummary() {
     const [isLoading, setIsLoading] = useState(false)
     const [selectedDate, setSelectedDate] = useState<string | null>(null)
     const { toast } = useToast()
+    const summaryRef = useRef<HTMLDivElement>(null)
 
     const fetchShiftsSummary = useCallback(async () => {
         try {
@@ -59,7 +50,7 @@ export function VehicleShiftsSummary() {
             }
 
             // Create a map for all dates in our range
-            const shiftsMap = new Map<string, VehicleShiftWithShiftInfo[]>()
+            const shiftsMap = new Map<string, any[]>()
             let currentDate = date
             while (currentDate <= endDate) {
                 shiftsMap.set(format(currentDate, "yyyy-MM-dd"), [])
@@ -85,20 +76,16 @@ export function VehicleShiftsSummary() {
             // Create summaries
             const newSummaries: ShiftSummary[] = Array.from(shiftsMap.entries()).map(([date, shifts]) => ({
                 date,
-                vehicles: shifts
-                    .filter(shift => {
-                        const currentDateWeekday = adjustDayIndex(parseISO(date)) + 1
-                        return currentDateWeekday !== shift.free_day
-                    })
-                    .map(shift => ({
-                        number: shift.vehicle_number,
-                        shiftType: shift.shift_name,
-                        startTime: shift.start_time,
-                        endTime: shift.end_time
-                    }))
+                vehicles: shifts.map(shift => ({
+                    number: shift.vehicle_number,
+                    shiftType: shift.shift_name,
+                    startTime: shift.start_time,
+                    endTime: shift.end_time
+                })).sort((a, b) => a.number - b.number)
             }))
+                .sort((a, b) => a.date.localeCompare(b.date))
 
-            setSummaries(newSummaries.sort((a, b) => a.date.localeCompare(b.date)))
+            setSummaries(newSummaries)
         } catch (error) {
             console.error("Error fetching shifts summary:", error)
             toast({
@@ -121,9 +108,65 @@ export function VehicleShiftsSummary() {
         return summaries.find(s => s.date === selectedDate)
     }, [selectedDate, summaries])
 
-    const nextDays = useMemo(() => {
-        return Array.from({ length: 30 }, (_, i) => addDays(date, i))
-    }, [date])
+    const nextDays = useMemo(() => generateNextXDays(30), [])
+    const months = useMemo(() => generateCalendarMonths(nextDays), [nextDays])
+
+    const renderCell = useCallback((date: Date) => {
+        const dateStr = format(date, "yyyy-MM-dd")
+        const summary = summaries.find(s => s.date === dateStr)
+        const vehicleCount = summary?.vehicles.length || 0
+        const isSelected = selectedDate === dateStr
+
+        return (
+            <div
+                key={dateStr}
+                // variant="outline"
+                className={cn(
+                    "p-1 border rounded-sm min-h-[4rem] text-left hover:cursor-pointer hover:border-muted-foreground",
+                    isSelected ? "ring-2 ring-primary" : "",
+                    vehicleCount > 0 ? "bg-blue-50 hover:bg-blue-100" : "hover:bg-muted/50"
+                )}
+                onClick={() => setSelectedDate(isSelected ? null : dateStr)}
+            >
+                <div className="text-xs font-medium">
+                    {format(date, "d", { locale: es })}
+                </div>
+                {vehicleCount > 0 && (
+                    <div className="text-xs text-blue-600 font-medium text-center pt-1.5">
+                        {vehicleCount} móvil{vehicleCount !== 1 ? 'es' : ''}
+                    </div>
+                )}
+            </div>
+        )
+    }, [selectedDate, summaries])
+
+    const handleScreenshot = async () => {
+        if (!summaryRef.current || !selectedDate) return
+
+        try {
+            const dataUrl = await toPng(summaryRef.current, {
+                quality: 1.0,
+                backgroundColor: 'white',
+            })
+
+            const link = document.createElement('a')
+            link.download = `turnos-${format(parseISO(selectedDate), 'yyyy-MM-dd')}.png`
+            link.href = dataUrl
+            link.click()
+
+            toast({
+                title: "Éxito",
+                description: "Resumen guardado como imagen",
+            })
+        } catch (err) {
+            console.error('Error al generar la imagen:', err)
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "No se pudo generar la imagen del resumen",
+            })
+        }
+    }
 
     return (
         <div className="space-y-6 max-w-4xl mx-auto">
@@ -135,7 +178,7 @@ export function VehicleShiftsSummary() {
                             <h2 className="font-semibold text-lg">Resumen de Turnos por Fecha</h2>
                         </div>
                         <p className="text-sm text-muted-foreground">
-                            Seleccione una fecha para ver los vehículos con turnos activos en los próximos 30 días
+                            Seleccione una fecha para ver los vehículos con turno en los próximos 30 días
                         </p>
                     </div>
                     <div className="flex items-center gap-4">
@@ -160,100 +203,73 @@ export function VehicleShiftsSummary() {
                                 />
                             </PopoverContent>
                         </Popover>
-                        <Button 
+                        <Button
                             onClick={fetchShiftsSummary}
                             disabled={isLoading}
                             className="bg-transvip text-white hover:bg-transvip/90"
                         >
-                            {isLoading ? "Cargando..." : "Actualizar"}
+                            {isLoading ? "Cargando..." : "Buscar"}
                         </Button>
                     </div>
                 </div>
             </Card>
 
             <Card className="p-6">
-                <div className="grid grid-cols-7 gap-1.5">
-                    {weekDays.map((day) => (
-                        <div key={day} className="text-center font-semibold p-1 text-sm bg-muted shadow">
-                            {day}
-                        </div>
-                    ))}
-                </div>
-
-                <div className="grid grid-cols-7 gap-1.5 mt-1.5">
-                    {/* Add empty cells for first week alignment */}
-                    {Array.from({ length: adjustDayIndex(date) }, (_, i) => (
-                        <div key={`empty-start-${i}`} className="p-1 border-0 rounded-sm min-h-[4rem] bg-transparent" />
-                    ))}
-
-                    {nextDays.map((day, index) => {
-                        const dateStr = format(day, "yyyy-MM-dd")
-                        const summary = summaries.find(s => s.date === dateStr)
-                        const vehicleCount = summary?.vehicles.length || 0
-                        const isSelected = selectedDate === dateStr
-
-                        return (
-                            <Button
-                                key={dateStr}
-                                variant="outline"
-                                className={cn(
-                                    "p-2 border rounded-sm min-h-[4rem] text-left transition-colors",
-                                    isSelected ? "ring-2 ring-primary" : "",
-                                    vehicleCount > 0 ? "bg-blue-50 hover:bg-blue-100" : "hover:bg-muted/50"
-                                )}
-                                onClick={() => setSelectedDate(isSelected ? null : dateStr)}
-                            >
-                                <div className="text-xs font-medium">
-                                    {format(day, "d", { locale: es })}
-                                </div>
-                                {vehicleCount > 0 && (
-                                    <div className="mt-1 text-xs text-blue-600 font-medium">
-                                        {vehicleCount} móvil{vehicleCount !== 1 ? 'es' : ''}
-                                    </div>
-                                )}
-                            </Button>
-                        )
-                    })}
-                </div>
+                <CalendarGrid months={months} renderCell={renderCell} />
             </Card>
 
             {selectedDate && (
-                <Card className="p-6">
+                <Card ref={summaryRef} className="p-6">
                     <div className="space-y-4">
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between gap-4">
                             <h3 className="text-lg font-semibold">
                                 {format(parseISO(selectedDate), "EEEE d 'de' MMMM, yyyy", { locale: es })}
                             </h3>
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => setSelectedDate(null)}
-                            >
-                                <X className="h-4 w-4" />
-                            </Button>
-                        </div>
-                        <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
-                            {selectedDateSummary?.vehicles.map((vehicle, idx) => (
-                                <div 
-                                    key={`${selectedDate}-${vehicle.number}-${idx}`}
-                                    className="flex items-center justify-between p-3 bg-muted rounded-lg hover:bg-muted/80 transition-colors"
+                            <div className="text-xs text-slate-500 text-center">
+                                <span className="font-semibold">Actualizado:</span> {format(new Date(), 'EEEE, d MMMM yyyy HH:mm', { locale: es })}
+                            </div>
+                            <div className="flex items-center justify-between gap-2 ml-auto">
+                                <Button
+                                    variant="default"
+                                    size="sm"
+                                    onClick={handleScreenshot}
+                                    className="gap-2"
                                 >
-                                    <span className="font-medium">{vehicle.number}</span>
-                                    <div className="text-sm">
-                                        <span className="font-medium text-primary">{vehicle.shiftType}</span>
+                                    <Download className="h-4 w-4" />
+                                    <span>Descargar</span>
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => setSelectedDate(null)}
+                                    className="gap-2"
+                                >
+                                    <X className="h-4 w-4" />
+                                </Button>
+                            </div>
+                        </div>
+                        <div className="bg-white rounded-lg">
+                            <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
+                                {selectedDateSummary?.vehicles.map((vehicle, idx) => (
+                                    <div
+                                        key={`${selectedDate}-${vehicle.number}-${idx}`}
+                                        className="text-sm flex items-center justify-between p-3 bg-muted rounded-lg hover:bg-muted/80"
+                                    >
+                                        <span className="font-semibold">{vehicle.number}</span>
+                                        <span className="font-normal text-primary">{vehicle.shiftType}</span>
                                         {vehicle.startTime && vehicle.endTime && (
-                                            <span className="ml-2 text-muted-foreground">
+                                            <span className="text-muted-foreground">
                                                 {vehicle.startTime} - {vehicle.endTime}
                                             </span>
                                         )}
                                     </div>
-                                </div>
-                            ))}
-                            {(!selectedDateSummary?.vehicles.length) && (
-                                <div className="text-center text-muted-foreground py-8 md:col-span-2 lg:col-span-3">
-                                    No hay vehículos con turnos activos en esta fecha
-                                </div>
-                            )}
+                                ))}
+                                {(!selectedDateSummary?.vehicles.length) && (
+                                    <div className="text-center text-muted-foreground py-8 md:col-span-2 lg:col-span-3">
+                                        No hay vehículos con turnos activos en esta fecha
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </Card>

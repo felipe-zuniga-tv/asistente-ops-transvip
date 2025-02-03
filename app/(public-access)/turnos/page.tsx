@@ -2,11 +2,12 @@ import { ShiftsPerVehicleDashboard } from "@/components/vehicle-shifts/calendar/
 
 export default function PublicDashboardShiftsPage() {
     return (
-        <div className="p-3 max-w-4xl mx-auto pt-10">
+        <div className="p-3 pt-6 bg-gray-100 min-h-screen">
             <ShiftsPerVehicleDashboard 
                 daysToShow={30} 
                 shifts={[]}
                 vehicleStatuses={[]}
+                className="max-w-4xl mx-auto"
             />
         </div>
     )

@@ -1,7 +1,6 @@
-import { addDays, format, startOfToday, getDay, isSameMonth } from "date-fns"
+import { format } from "date-fns"
 import { es } from "date-fns/locale"
 import { CardContent } from "@/components/ui/card"
-import { VehicleShift } from "@/components/vehicle-shifts/vehicle-shifts"
 import { CalendarX2, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useRef } from "react"
@@ -9,82 +8,10 @@ import { toPng } from "html-to-image"
 import { useToast } from "@/hooks/use-toast"
 import React from "react"
 import { VehicleStatus } from "@/lib/types"
-
-const weekDays = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
-
-function generateNextXDays(next_X_days: number) {
-    const today = startOfToday()
-    return Array.from({ length: next_X_days }, (_, i) => addDays(today, i))
-}
-
-// Helper function to adjust day index to start from Monday
-export function adjustDayIndex(date: Date): number {
-    const day = getDay(date)
-    return day === 0 ? 6 : day - 1 // Convert Sunday (0) to 6, and shift other days back by 1
-}
-
-interface VehicleShiftWithShiftInfo extends VehicleShift {
-    free_day?: number;
-    status_color?: string;
-    isStatus?: boolean;
-    shift_id: string;
-    priority: number;
-    created_at: string;
-}
-
-interface VehicleShiftWithFreeDay extends VehicleShiftWithShiftInfo {
-    isFreeDay?: boolean;
-    isStatus?: boolean;
-    status_color?: string;
-}
-
-function getHighestPriorityShiftForDate(shifts: VehicleShiftWithShiftInfo[], date: Date, statuses?: VehicleStatus[]): VehicleShiftWithFreeDay | undefined {
-    const dateStr = format(date, "yyyy-MM-dd")
-    const dayOfWeek = adjustDayIndex(date) + 1 // Convert to 1-7 range where Monday = 1
-
-    // First check if there's a vehicle status for this date
-    if (statuses?.length) {
-        const status = statuses.find(status =>
-            dateStr >= status.start_date &&
-            dateStr <= status.end_date
-        );
-
-        if (status) {
-            return {
-                id: status.id,
-                vehicle_number: Number(status.vehicle_number),
-                shift_name: status.status_label,
-                start_date: status.start_date,
-                end_date: status.end_date,
-                shift_id: status.status_id,
-                priority: 100, // Status always takes precedence
-                created_at: status.created_at,
-                start_time: undefined,
-                end_time: undefined,
-                status_color: status.status_color,
-                isStatus: true
-            };
-        }
-    }
-
-    // If no status, check for shifts
-    const shift = shifts.find(shift =>
-        dateStr >= shift.start_date &&
-        dateStr <= shift.end_date
-    )
-
-    if (shift?.free_day === dayOfWeek) {
-        return { ...shift, isFreeDay: true }
-    }
-
-    return shift
-}
-
-function shouldShowMonth(date: Date, index: number, days: Date[]) {
-    if (index === 0) return true
-    const prevDate = days[index - 1]
-    return !isSameMonth(date, prevDate)
-}
+import { CalendarGrid } from "@/components/ui/calendar-grid"
+import { generateNextXDays, generateCalendarMonths } from "@/lib/utils/date"
+import { getHighestPriorityShiftForDate } from "@/lib/utils/shifts"
+import type { VehicleShiftWithShiftInfo } from "@/lib/types/calendar"
 
 interface ShiftsPerVehicleCalendarProps {
     shifts: VehicleShiftWithShiftInfo[]
@@ -94,30 +21,9 @@ interface ShiftsPerVehicleCalendarProps {
     vehicleStatuses?: VehicleStatus[]
 }
 
-function generateCalendarMonths(days: Date[]) {
-    const months: { date: Date; days: Date[] }[] = []
-    let currentMonth: Date[] = []
-
-    days.forEach((date, index) => {
-        if (index === 0 || !isSameMonth(date, days[index - 1])) {
-            if (currentMonth.length > 0) {
-                months.push({ date: currentMonth[0], days: currentMonth })
-            }
-            currentMonth = [date]
-        } else {
-            currentMonth.push(date)
-        }
-    })
-
-    if (currentMonth.length > 0) {
-        months.push({ date: currentMonth[0], days: currentMonth })
-    }
-
-    return months
-}
-
 export function ShiftsPerVehicleCalendar({ shifts, hasSearched, daysToShow, vehicleNumber, vehicleStatuses }: ShiftsPerVehicleCalendarProps) {
     const nextDays = generateNextXDays(daysToShow)
+    const months = generateCalendarMonths(nextDays)
     const calendarRef = useRef<HTMLDivElement>(null)
     const { toast } = useToast()
 
@@ -171,7 +77,40 @@ export function ShiftsPerVehicleCalendar({ shifts, hasSearched, daysToShow, vehi
         )
     }
 
-    const months = generateCalendarMonths(nextDays)
+    const renderCell = (date: Date) => {
+        const shift = getHighestPriorityShiftForDate(shifts, date, vehicleStatuses)
+
+        return (
+            <div key={date.toISOString()}
+                className={`p-1 border rounded-sm transition-colors min-h-[4rem] ${
+                    shift?.isFreeDay ? "bg-green-50 hover:bg-green-100" :
+                    shift?.isStatus ? `bg-opacity-10 hover:bg-opacity-20` :
+                    shift ? "bg-blue-50 hover:bg-blue-100" : "hover:bg-muted/50"
+                }`}
+                style={shift?.isStatus ? { backgroundColor: shift.status_color } : undefined}
+            >
+                <div className="text-xs font-medium pb-2">
+                    {format(date, "d", { locale: es })}
+                </div>
+                {shift && (
+                    <div className="space-y-0.5">
+                        <div className={`text-[0.8rem] ${
+                            shift.isFreeDay ? 'text-green-600' :
+                            shift.isStatus ? 'text-black font-medium' :
+                            'text-blue-600'
+                        } font-medium truncate`}>
+                            {shift.isFreeDay ? 'Libre' : shift.shift_name}
+                        </div>
+                        {!shift.isFreeDay && !shift.isStatus && shift.start_time && shift.end_time && (
+                            <div className="text-[0.7rem] text-muted-foreground">
+                                {shift.start_time} - {shift.end_time}
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
+        )
+    }
 
     return (
         <CardContent>
@@ -196,76 +135,7 @@ export function ShiftsPerVehicleCalendar({ shifts, hasSearched, daysToShow, vehi
                     </div>
                 </div>
 
-                <div className="grid grid-cols-7 gap-1.5">
-                    {weekDays.map((day) => (
-                        <div key={day} className="text-center font-semibold p-1 text-sm bg-muted shadow">
-                            {day}
-                        </div>
-                    ))}
-                </div>
-
-                {/* Calendar grid */}
-                <div className="space-y-6">
-                    {months.map(({ date: monthDate, days }) => {
-                        const firstDayIndex = adjustDayIndex(days[0])
-
-                        return (
-                            <div key={`month-${monthDate.toISOString()}`} className="space-y-1.5">
-                                <div className="text-sm font-semibold">
-                                    {format(monthDate, "MMMM yyyy", { locale: es })}
-                                </div>
-                                <div className="grid grid-cols-7 gap-1.5">
-                                    {false && weekDays.map((day) => (
-                                        <div key={day} className="text-center font-semibold p-1 text-sm bg-muted shadow">
-                                            {day}
-                                        </div>
-                                    ))}
-
-                                    {/* Empty cells for first week alignment */}
-                                    {Array.from({ length: firstDayIndex }, (_, i) => (
-                                        <div key={`empty-start-${i}`} className="p-1 border-0 rounded-sm min-h-[4rem] bg-transparent" />
-                                    ))}
-
-                                    {/* Days of the month */}
-                                    {days.map((date) => {
-                                        const shift = getHighestPriorityShiftForDate(shifts, date, vehicleStatuses)
-
-                                        return (
-                                            <div key={date.toISOString()}
-                                                className={`p-1 border rounded-sm transition-colors min-h-[4rem] ${
-                                                    shift?.isFreeDay ? "bg-green-50 hover:bg-green-100" :
-                                                    shift?.isStatus ? `bg-opacity-10 hover:bg-opacity-20` :
-                                                    shift ? "bg-blue-50 hover:bg-blue-100" : "hover:bg-muted/50"
-                                                }`}
-                                                style={shift?.isStatus ? { backgroundColor: shift.status_color } : undefined}
-                                            >
-                                                <div className="text-xs font-medium pb-2">
-                                                    {format(date, "d", { locale: es })}
-                                                </div>
-                                                {shift && (
-                                                    <div className="space-y-0.5">
-                                                        <div className={`text-[0.8rem] ${
-                                                            shift.isFreeDay ? 'text-green-600' :
-                                                            shift.isStatus ? 'text-black font-medium' :
-                                                            'text-blue-600'
-                                                        } font-medium truncate`}>
-                                                            {shift.isFreeDay ? 'Libre' : shift.shift_name}
-                                                        </div>
-                                                        {!shift.isFreeDay && !shift.isStatus && shift.start_time && shift.end_time && (
-                                                            <div className="text-[0.7rem] text-muted-foreground">
-                                                                {shift.start_time} - {shift.end_time}
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-                            </div>
-                        )
-                    })}
-                </div>
+                <CalendarGrid months={months} renderCell={renderCell} />
             </div>
         </CardContent>
     )

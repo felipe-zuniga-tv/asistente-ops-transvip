@@ -8,18 +8,21 @@ import { Card } from "@/components/ui/card"
 import { ShiftsPerVehicleHeader } from "./shifts-per-vehicle-header"
 import { ShiftsPerVehicleCalendar } from "./shifts-per-vehicle-calendar"
 import type { VehicleShiftWithShiftInfo, VehicleStatus } from "@/lib/types"
+import { cn } from "@/lib/utils"
 
 interface ShiftsPerVehicleDashboardProps {
     shifts: VehicleShiftWithShiftInfo[]
     daysToShow?: number
     vehicleNumber?: string
     vehicleStatuses: VehicleStatus[]
+    className?: string
 }
 
 export function ShiftsPerVehicleDashboard({ 
     shifts: initialShifts,
     daysToShow: initialDaysToShow = 90,
     vehicleNumber: initialVehicleNumber,
+    className = ""
 }: ShiftsPerVehicleDashboardProps) {
     const [vehicleNumber, setVehicleNumber] = useState<string>(initialVehicleNumber || "")
     const [shifts, setShifts] = useState<VehicleShiftWithShiftInfo[]>(initialShifts)
@@ -44,8 +47,6 @@ export function ShiftsPerVehicleDashboard({
                 startDateStr,
                 endDateStr
             )
-
-            console.log(shiftsResult)
 
             if (shiftsResult.error) {
                 toast({
@@ -112,7 +113,7 @@ export function ShiftsPerVehicleDashboard({
     }, [debouncedVehicleNumber])
 
     return (
-        <Card className="w-full">
+        <Card className={cn(className)}>
             <ShiftsPerVehicleHeader
                 vehicleNumber={vehicleNumber}
                 onVehicleNumberChange={handleVehicleNumberChange}
