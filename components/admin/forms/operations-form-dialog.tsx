@@ -9,7 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDes
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { createInspectionForm } from "@/lib/services/vehicle/inspection-forms";
+import { createOperationsForm } from "@/lib/services/forms";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Switch } from "@/components/ui/switch";
@@ -20,12 +20,12 @@ const formSchema = z.object({
     is_active: z.boolean().default(true),
 });
 
-interface InspectionFormDialogProps {
+interface OperationsFormDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
 }
 
-export function InspectionFormDialog({ open, onOpenChange }: InspectionFormDialogProps) {
+export function OperationsFormDialog({ open, onOpenChange }: OperationsFormDialogProps) {
     const [isPending, startTransition] = useTransition();
     const { toast } = useToast();
     const router = useRouter();
@@ -42,14 +42,14 @@ export function InspectionFormDialog({ open, onOpenChange }: InspectionFormDialo
     function onSubmit(values: z.infer<typeof formSchema>) {
         startTransition(async () => {
             try {
-                const form = await createInspectionForm(values);
+                const form = await createOperationsForm(values);
                 toast({
                     title: "Formulario creado",
                     description: "El formulario ha sido creado exitosamente.",
                 });
                 onOpenChange(false);
                 router.refresh();
-                router.push(`/admin/inspection-config/${form.id}`);
+                router.push(`/admin/forms-config/${form.id}`);
             } catch (error) {
                 toast({
                     title: "Error",

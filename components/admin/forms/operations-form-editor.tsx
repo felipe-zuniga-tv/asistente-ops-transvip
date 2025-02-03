@@ -6,26 +6,26 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { InspectionSectionDialog } from "./inspection-section-dialog";
-import { InspectionQuestionDialog } from "./inspection-question-dialog";
-import { InspectionForm, InspectionSection, InspectionQuestion } from "@/lib/types/vehicle/inspection";
+import { OperationsFormSectionDialog } from "./operations-form-section-dialog";
+import { OperationsFormQuestionDialog } from "./operations-form-question-dialog";
+import { OperationsForm, OperationsFormSection, OperationsFormQuestion } from "@/lib/types/vehicle/forms";
 import { Plus, GripVertical, Settings2 } from "lucide-react";
 import { DragDropContext, Draggable, Droppable, DropResult, DroppableProvided, DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd";
 import { cn } from "@/lib/utils";
 
-interface InspectionFormEditorProps {
-    form: InspectionForm & {
-        sections: (InspectionSection & {
-            questions: InspectionQuestion[];
+interface OperationsFormEditorProps {
+    form: OperationsForm & {
+        sections: (OperationsFormSection & {
+            questions: OperationsFormQuestion[];
         })[];
     };
 }
 
-export function InspectionFormEditor({ form }: InspectionFormEditorProps) {
+export function OperationsFormEditor({ form }: OperationsFormEditorProps) {
     const [sectionDialogOpen, setSectionDialogOpen] = useState(false);
     const [questionDialogOpen, setQuestionDialogOpen] = useState(false);
-    const [selectedSection, setSelectedSection] = useState<InspectionSection & { questions: InspectionQuestion[] }>();
-    const [selectedQuestion, setSelectedQuestion] = useState<InspectionQuestion>();
+    const [selectedSection, setSelectedSection] = useState<OperationsFormSection & { questions: OperationsFormQuestion[] }>();
+    const [selectedQuestion, setSelectedQuestion] = useState<OperationsFormQuestion>();
     const router = useRouter();
 
     function onDragEnd(result: DropResult) {
@@ -216,7 +216,7 @@ export function InspectionFormEditor({ form }: InspectionFormEditorProps) {
                 </DragDropContext>
             </div>
 
-            <InspectionSectionDialog
+            <OperationsFormSectionDialog
                 open={sectionDialogOpen}
                 onOpenChange={setSectionDialogOpen}
                 formId={form.id}
@@ -225,7 +225,7 @@ export function InspectionFormEditor({ form }: InspectionFormEditorProps) {
             />
 
             {selectedSection && (
-                <InspectionQuestionDialog
+                <OperationsFormQuestionDialog
                     open={questionDialogOpen}
                     onOpenChange={setQuestionDialogOpen}
                     sectionId={selectedSection.id}

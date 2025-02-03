@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import {
-    ColumnDef,
+    // ColumnDef,
     ColumnFiltersState,
     SortingState,
     getCoreRowModel,
@@ -16,19 +16,19 @@ import { DataTablePagination } from "@/components/tables/data-table-pagination";
 import { DataTableContent } from "@/components/tables/data-table-content";
 import { DataTableSearch } from "@/components/tables/data-table-search";
 import { columns } from "./columns";
-import type { InspectionQuestion } from "@/lib/types/vehicle/inspection";
+import type { OperationsFormQuestion } from "@/lib/types/vehicle/forms";
 
-interface InspectionQuestionsDataTableProps {
-    data: InspectionQuestion[];
-    onEdit: (question: InspectionQuestion) => void;
-    onDelete: (question: InspectionQuestion) => void;
+interface OperationsFormQuestionsDataTableProps {
+    data: OperationsFormQuestion[];
+    onEdit: (question: OperationsFormQuestion) => void;
+    onDelete: (question: OperationsFormQuestion) => void;
 }
 
-export function InspectionQuestionsDataTable({
+export function OperationsFormQuestionsDataTable({
     data,
     onEdit,
     onDelete,
-}: InspectionQuestionsDataTableProps) {
+}: OperationsFormQuestionsDataTableProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
 
@@ -53,13 +53,12 @@ export function InspectionQuestionsDataTable({
 
     return (
         <div className="space-y-4">
-            <DataTableSearch 
-                table={table} 
+            <DataTableSearch table={table} 
                 placeholder="Buscar pregunta..."
                 searchColumnId="label"
             />
             <DataTableHeader table={table} />
-            <DataTableContent columns={columns({ onEdit, onDelete }).length} table={table} />
+            <DataTableContent columns={columns.length} table={table} />
             <DataTablePagination table={table} />
         </div>
     );

@@ -3,24 +3,24 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { InspectionQuestionsDataTable } from "./table/inspection-questions-data-table";
-import { InspectionQuestionDialog } from "./inspection-question-dialog";
+import { OperationsFormQuestionsDataTable } from "./table/operations-form-questions-data-table";
+import { OperationsFormQuestionDialog } from "./operations-form-question-dialog";
 import { AlertDialogDeleteQuestion } from "./alert-dialog-delete-question";
 import { ConfigCardContainer } from "@/components/tables/config-card-container";
-import { deleteInspectionQuestion } from "@/lib/services/vehicle/inspection";
-import type { InspectionQuestion } from "@/lib/types/vehicle/inspection";
+import { deleteInspectionQuestion } from "@/lib/services/forms";
+import type { OperationsFormQuestion } from "@/lib/types/vehicle/forms";
 
-interface InspectionQuestionsConfigProps {
-    data: InspectionQuestion[];
+interface OperationsFormQuestionsConfigProps {
+    data: OperationsFormQuestion[];
     sectionId: string;
 }
 
-export function InspectionQuestionsConfig({ data = [], sectionId }: InspectionQuestionsConfigProps) {
+export function OperationsFormQuestionsConfig({ data = [], sectionId }: OperationsFormQuestionsConfigProps) {
     const router = useRouter();
-    const [questions, setQuestions] = useState<InspectionQuestion[]>(data);
+    const [questions, setQuestions] = useState<OperationsFormQuestion[]>(data);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [questionToDelete, setQuestionToDelete] = useState<InspectionQuestion | null>(null);
-    const [questionToEdit, setQuestionToEdit] = useState<InspectionQuestion | undefined>(undefined);
+    const [questionToDelete, setQuestionToDelete] = useState<OperationsFormQuestion | null>(null);
+    const [questionToEdit, setQuestionToEdit] = useState<OperationsFormQuestion | undefined>(undefined);
 
     useEffect(() => {
         if (!isDialogOpen || !questionToEdit) {
@@ -33,7 +33,7 @@ export function InspectionQuestionsConfig({ data = [], sectionId }: InspectionQu
         }
     }, [isDialogOpen, questionToEdit]);
 
-    const handleEdit = useCallback((question: InspectionQuestion) => {
+    const handleEdit = useCallback((question: OperationsFormQuestion) => {
         setQuestionToEdit(question);
         setIsDialogOpen(true);
     }, []);
@@ -45,11 +45,11 @@ export function InspectionQuestionsConfig({ data = [], sectionId }: InspectionQu
         }
     }, []);
 
-    const handleQuestionCreate = useCallback((newQuestion: InspectionQuestion) => {
+    const handleQuestionCreate = useCallback((newQuestion: OperationsFormQuestion) => {
         setQuestions(prevQuestions => [...prevQuestions, newQuestion]);
     }, []);
 
-    const handleQuestionUpdate = useCallback((updatedQuestion: InspectionQuestion) => {
+    const handleQuestionUpdate = useCallback((updatedQuestion: OperationsFormQuestion) => {
         setQuestions(prevQuestions =>
             prevQuestions.map(question =>
                 question.id === updatedQuestion.id ? updatedQuestion : question
@@ -57,7 +57,7 @@ export function InspectionQuestionsConfig({ data = [], sectionId }: InspectionQu
         );
     }, []);
 
-    const handleQuestionDelete = useCallback(async (question: InspectionQuestion) => {
+    const handleQuestionDelete = useCallback(async (question: OperationsFormQuestion) => {
         try {
             await deleteInspectionQuestion(question.id);
             setQuestions(prevQuestions =>
@@ -72,7 +72,7 @@ export function InspectionQuestionsConfig({ data = [], sectionId }: InspectionQu
 
     // Memoize the dialog component
     const questionDialog = useMemo(() => (
-        <InspectionQuestionDialog
+        <OperationsFormQuestionDialog
             question={questionToEdit}
             open={isDialogOpen}
             onOpenChange={handleDialogClose}
@@ -94,7 +94,7 @@ export function InspectionQuestionsConfig({ data = [], sectionId }: InspectionQu
             title="Preguntas de Inspección"
             onAdd={() => setIsDialogOpen(true)}
         >
-            <InspectionQuestionsDataTable
+            <OperationsFormQuestionsDataTable
                 data={questions}
                 onEdit={handleEdit}
                 onDelete={setQuestionToDelete}

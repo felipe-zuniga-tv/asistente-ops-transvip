@@ -1,10 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
+import { Routes } from '@/utils/routes'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { useToast } from '@/hooks/use-toast'
 import { getTranslation, type Language } from '@/lib/translations/'
+import { createSalesResponse } from '@/lib/services/sales'
 
 // Form Steps
 import { LanguageStep } from './language-step'
@@ -13,8 +16,6 @@ import { TravelInfoStep } from './travel-info-step'
 import { AccommodationStep } from './accommodation-step'
 import { ConfirmationStep } from './confirmation-step'
 import { TransvipLogo } from '@/components/transvip/transvip-logo'
-import Link from 'next/link'
-import { Routes } from '@/utils/routes'
 
 interface SalesFormData {
 	language: Language
@@ -30,11 +31,12 @@ interface SalesFormData {
 
 interface SalesFormProps {
 	branchCode: string
+	branchName: string
 	initialLanguage: Language
 	onSuccess?: () => void
 }
 
-export function SalesForm({ branchCode, initialLanguage, onSuccess }: SalesFormProps) {
+export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }: SalesFormProps) {
 	const [step, setStep] = useState(initialLanguage ? 2 : 1)
 	const [formData, setFormData] = useState<SalesFormData>({
 		language: initialLanguage,
@@ -66,8 +68,22 @@ export function SalesForm({ branchCode, initialLanguage, onSuccess }: SalesFormP
 
 	const handleSubmit = async () => {
 		try {
-			// Here you would typically send the data to your backend
-			console.log('Form submitted:', { branch: branchCode, ...formData })
+			const objectToCreate = {
+				branch_code: branchCode,
+				branch_name: branchName,
+				language: formData.language,
+				first_name: formData.firstName,
+				last_name: formData.lastName,
+				email: formData.email,
+				phone_country: formData.phoneCountry,
+				phone_number: formData.phoneNumber,
+				return_date: formData.returnDate ? new Date(formData.returnDate).toISOString() : null,
+				return_time: formData.returnTime || null,
+				accommodation: formData.accommodation,
+			}
+			console.log(objectToCreate)
+
+			// await createSalesResponse(objectToCreate)
 
 			// Show success message
 			toast({

@@ -1,5 +1,6 @@
 'use client'
 
+import {useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -14,7 +15,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { CalendarIcon } from '@radix-ui/react-icons'
-import { Check, ChevronsUpDown, Loader2 } from 'lucide-react'
+import { Check, ChevronsUpDown, Loader2, ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
 import { format } from 'date-fns'
 import { cn } from '@/lib/utils'
 import { Calendar } from '@/components/ui/calendar'
@@ -23,7 +24,6 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover'
-import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
 import { es } from 'date-fns/locale'
 import { countryCodes } from '@/lib/config/country-codes'
 import {
@@ -35,6 +35,7 @@ import {
 	CommandList,
 } from "@/components/ui/command"
 import * as React from "react"
+import { TimePickerInput } from '@/components/ui/time-picker'
 
 interface TravelInfoStepProps {
 	data: {
@@ -77,7 +78,7 @@ export function TravelInfoStep({
 	onBack,
 	translations
 }: TravelInfoStepProps) {
-	const [isSubmitting, setIsSubmitting] = React.useState(false)
+	const [isSubmitting, setIsSubmitting] = useState(false)
 
 	const formSchema = z.object({
 		phoneCountry: z.string().min(1, {
@@ -246,18 +247,10 @@ export function TravelInfoStep({
 						)}
 					/>
 
-					<FormField
+					<TimePickerInput
 						control={form.control}
 						name="returnTime"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>{translations.returnTime}</FormLabel>
-								<FormControl>
-									<Input type="time" {...field} />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
+						label={translations.returnTime}
 					/>
 
 					<div className="flex gap-3 pt-4">

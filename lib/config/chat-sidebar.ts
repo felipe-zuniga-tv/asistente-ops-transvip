@@ -34,6 +34,7 @@ import {
 	Building2,
 	Building,
 	Sun,
+	ListChecks,
 } from "lucide-react"
 import { toolsList } from "./tools";
 
@@ -114,6 +115,21 @@ const controlFlotaMenu: SidebarItem = {
 	],
 }
 
+const vehiclesMenu: SidebarItem = {
+	title: "Vehículos",
+	url: "#",
+	icon: BusFront,
+	isActive: false,
+	items: [
+		{
+			title: 'Detalle de Móviles',
+			icon: Car,
+			url: Routes.VEHICLES.HOME,
+			active: true
+		},
+	],
+}
+
 const adminMenu: SidebarItem = {
 	title: "Configuración",
 	url: Routes.ADMIN.HOME,
@@ -143,6 +159,12 @@ const adminMenu: SidebarItem = {
 			icon: Building2,
 			url: Routes.ADMIN.BRANCH_CONFIG,
 			active: true
+		},
+		{
+			title: 'Formularios',
+			icon: ListChecks,
+			url: Routes.ADMIN.FORMS_CONFIG,
+			active: false
 		},
 	],
 }
@@ -210,20 +232,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 				},
 			],
 		},
-		{
-			title: "Vehículos",
-			url: "#",
-			icon: BusFront,
-			isActive: false,
-			items: [
-				{
-					title: 'Detalle de Móviles',
-					icon: Car,
-					url: Routes.VEHICLES.HOME,
-					active: false
-				},
-			],
-		},
+		// vehiclesMenu,
 		adminMenu,
 		// {
 		// 	title: "Reportes",

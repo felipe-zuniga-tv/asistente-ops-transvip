@@ -1,14 +1,8 @@
-'use client'
-
-import * as React from 'react'
-import { Suspense, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { branches } from '@/lib/config/transvip-general'
-import { SalesForm } from '@/components/sales/form/sales-form'
-import type { Language } from '@/lib/translations'
+import { Suspense } from 'react'
+import SalesPageContent from '@/components/sales/sales-page-content'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import { Routes } from '@/utils/routes'
+import { getBranches } from '@/lib/services/admin'
 
 function SalesPageSkeleton() {
 	return (
@@ -54,36 +48,12 @@ function SalesPageSkeleton() {
 	)
 }
 
-function SalesPageContent() {
-	const router = useRouter()
-	const searchParams = useSearchParams()
-	const branchCode = searchParams.get('branch')?.toLowerCase()
-	const language = (searchParams.get('lang') || 'es-CL') as Language
+export default async function SalesPage() {
+	const branches = await getBranches()
 
-	useEffect(() => {
-		// Validate branch code
-		const validBranch = branches.some(b => b.code.toLowerCase() === branchCode)
-		if (!branchCode || !validBranch) {
-			router.push(Routes.PUBLIC.SUCURSALES)
-		}
-	}, [branchCode, router])
-
-	// If no valid branch code, show nothing while redirecting
-	if (!branchCode) return null
-
-	return (
-		<SalesForm
-			branchCode={branchCode}
-			initialLanguage={language}
-			onSuccess={() => router.push(Routes.PUBLIC.SUCURSALES)}
-		/>
-	)
-}
-
-export default function SalesPage() {
 	return (
 		<Suspense fallback={<SalesPageSkeleton />}>
-			<SalesPageContent />
+			<SalesPageContent branches={branches} />
 		</Suspense>
 	)
 } 

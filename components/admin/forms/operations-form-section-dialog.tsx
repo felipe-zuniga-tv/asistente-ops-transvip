@@ -9,10 +9,10 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { createSection, updateSection } from "@/lib/services/vehicle/inspection-forms";
+import { createSection, updateSection } from "@/lib/services/forms";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { InspectionSection } from "@/lib/types/vehicle/inspection";
+import { OperationsFormSection } from "@/lib/types/vehicle/forms";
 
 const formSchema = z.object({
     title: z.string().min(1, "El título es requerido"),
@@ -20,21 +20,21 @@ const formSchema = z.object({
     order: z.number().min(0),
 });
 
-interface InspectionSectionDialogProps {
+interface OperationsFormSectionDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     formId: string;
-    section?: InspectionSection;
+    section?: OperationsFormSection;
     currentOrder?: number;
 }
 
-export function InspectionSectionDialog({ 
+export function OperationsFormSectionDialog({ 
     open, 
     onOpenChange, 
     formId, 
     section,
     currentOrder = 0 
-}: InspectionSectionDialogProps) {
+}: OperationsFormSectionDialogProps) {
     const [isPending, startTransition] = useTransition();
     const { toast } = useToast();
     const router = useRouter();

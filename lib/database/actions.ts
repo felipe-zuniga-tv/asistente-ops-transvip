@@ -37,7 +37,7 @@ export async function getVehicleShifts(): Promise<VehicleShiftWithShiftInfo[]> {
 		.from('vehicle_shifts')
 		.select(`
 			*,
-			shifts (
+			shift_data:shifts (
 				id,
 				name,
 				start_time,
@@ -50,9 +50,17 @@ export async function getVehicleShifts(): Promise<VehicleShiftWithShiftInfo[]> {
 	if (error) throw new Error(error.message)
 	
 	return data.map(shift => ({
-		...shift,
-		shift_info: shift.shifts,
-		shifts: undefined // Remove the nested shifts object
+		id: shift.id,
+		vehicle_number: shift.vehicle_number,
+		shift_id: shift.shift_id,
+		priority: shift.priority,
+		created_at: shift.created_at,
+		start_date: shift.start_date,
+		end_date: shift.end_date,
+		shift_name: shift.shift_data.name,
+		shift_start_time: shift.shift_data.start_time,
+		shift_end_time: shift.shift_data.end_time,
+		shift_free_day: shift.shift_data.free_day,
 	})) as VehicleShiftWithShiftInfo[]
 }
 

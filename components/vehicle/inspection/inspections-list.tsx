@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
-import { VehicleInspection, InspectionForm } from "@/lib/types/vehicle/inspection";
+import { OperationsFormResponses, OperationsForm } from "@/lib/types/vehicle/forms";
 import { formatDate } from "@/utils/dates";
 
 interface InspectionsListProps {
     vehicleNumber: number;
-    inspections: (VehicleInspection & { form: InspectionForm })[];
-    availableForms: InspectionForm[];
+    inspections: (OperationsFormResponses & { form: OperationsForm })[];
+    availableForms: OperationsForm[];
 }
 
 export function InspectionsList({ vehicleNumber, inspections, availableForms }: InspectionsListProps) {

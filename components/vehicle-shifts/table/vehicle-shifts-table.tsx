@@ -12,9 +12,8 @@ import {
 } from "@tanstack/react-table"
 
 import { Button } from "@/components/ui/button"
-import { Download, Search, Trash2 } from "lucide-react"
+import { Download, Trash2 } from "lucide-react"
 import { useState } from "react"
-import { Input } from "@/components/ui/input"
 import { VehicleShift } from "../vehicle-shifts"
 import { DataTableHeader } from "@/components/tables/data-table-header"
 import { DataTablePagination } from "@/components/tables/data-table-pagination"
@@ -97,66 +96,73 @@ export function VehicleShiftsTable({
 
     return (
         <>
-            <div className="flex items-center justify-between gap-4 py-1">
+            <div className="flex items-center justify-start gap-4 py-1">
                 <DataTableSearch
                     table={table}
                     placeholder="Filtrar por móvil..."
                     searchColumnId="vehicle_number"
                 />
+                <DataTableSearch
+                    table={table}
+                    placeholder="Filtrar por turno..."
+                    searchColumnId="shift_name"
+                />
+            </div>
 
-                {/* Show bulk action buttons when rows are selected */}
-                {table.getFilteredSelectedRowModel().rows.length > 0 && (
-                    <div className="flex gap-2">
+            {/* Show bulk action buttons when rows are selected */}
+            {table.getFilteredSelectedRowModel().rows.length > 0 && (
+                <div className="w-full flex items-center justify-end gap-2">
+                    <span className="text-sm font-semibold">Seleccionados:</span>
+                    <Button
+                        variant="secondary"
+                        size="sm"
+                        className="shadow"
+                        onClick={() => onBulkDownload?.(getSelectedRows())}
+                    >
+                        <Download className="h-4 w-4" />
+                        Descargar
+                    </Button>
+                    <Button
+                        variant="destructive"
+                        size="sm"
+                        className="shadow"
+                        onClick={() => setIsDeleteDialogOpen(true)}
+                    >
+                        <Trash2 className="h-4 w-4" />
+                        Eliminar
+                    </Button>
+                </div>
+            )}
+
+            {/* Delete confirmation dialog */}
+            <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Confirmar eliminación</DialogTitle>
+                        <DialogDescription className="pt-4">
+                            <div className="flex flex-col gap-2">
+                                <p>¿Estás seguro que deseas eliminar los {table.getFilteredSelectedRowModel().rows.length} turnos seleccionados?</p>
+                                <p>Esta acción <b>no</b> se puede deshacer.</p>
+                            </div>
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
                         <Button
-                            variant="secondary"
-                            size="sm"
-                            className="shadow"
-                            onClick={() => onBulkDownload?.(getSelectedRows())}
+                            variant="outline"
+                            onClick={() => setIsDeleteDialogOpen(false)}
                         >
-                            <Download className="h-4 w-4 mr-1" />
-                            Descargar seleccionados
+                            Cancelar
                         </Button>
                         <Button
                             variant="destructive"
-                            size="sm"
-                            className="shadow"
-                            onClick={() => setIsDeleteDialogOpen(true)}
+                            onClick={handleBulkDelete}
                         >
-                            <Trash2 className="h-4 w-4 mr-1" />
-                            Eliminar seleccionados
+                            Eliminar
                         </Button>
-                    </div>
-                )}
-
-                {/* Delete confirmation dialog */}
-                <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-                    <DialogContent>
-                        <DialogHeader>
-                            <DialogTitle>Confirmar eliminación</DialogTitle>
-                            <DialogDescription className="pt-4">
-                                <div className="flex flex-col gap-2">
-                                    <p>¿Estás seguro que deseas eliminar los {table.getFilteredSelectedRowModel().rows.length} turnos seleccionados?</p>
-                                    <p>Esta acción <b>no</b> se puede deshacer.</p>
-                                </div>
-                            </DialogDescription>
-                        </DialogHeader>
-                        <DialogFooter>
-                            <Button
-                                variant="outline"
-                                onClick={() => setIsDeleteDialogOpen(false)}
-                            >
-                                Cancelar
-                            </Button>
-                            <Button
-                                variant="destructive"
-                                onClick={handleBulkDelete}
-                            >
-                                Eliminar
-                            </Button>
-                        </DialogFooter>
-                    </DialogContent>
-                </Dialog>
-            </div>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+        
             <DataTableHeader table={table} />
             <DataTableContent table={table} columns={columns.length} />
             <DataTablePagination table={table} />

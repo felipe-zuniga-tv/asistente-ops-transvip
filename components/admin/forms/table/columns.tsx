@@ -4,14 +4,14 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Edit2, Trash2 } from "lucide-react";
-import type { InspectionQuestion } from "@/lib/types/vehicle/inspection";
+import type { OperationsFormQuestion } from "@/lib/types/vehicle/forms";
 
 interface ColumnsProps {
-    onEdit: (question: InspectionQuestion) => void;
-    onDelete: (question: InspectionQuestion) => void;
+    onEdit: (question: OperationsFormQuestion) => void;
+    onDelete: (question: OperationsFormQuestion) => void;
 }
 
-export const columns = ({ onEdit, onDelete }: ColumnsProps): ColumnDef<InspectionQuestion>[] => [
+export const columns = ({ onEdit, onDelete }: ColumnsProps): ColumnDef<OperationsFormQuestion>[] => [
     {
         accessorKey: "order",
         header: "Orden",

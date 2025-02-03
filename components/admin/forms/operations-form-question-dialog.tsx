@@ -12,8 +12,8 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { InspectionQuestion, QuestionType } from "@/lib/types/vehicle/inspection";
-import { createQuestion, updateQuestion } from "@/lib/services/vehicle/inspection-forms";
+import { OperationsFormQuestion, QuestionType } from "@/lib/types/vehicle/forms";
+import { createQuestion, updateQuestion } from "@/lib/services/forms";
 
 const QUESTION_TYPES: { label: string; value: QuestionType }[] = [
     { label: "Texto", value: "text" },
@@ -30,21 +30,21 @@ const formSchema = z.object({
     allow_gallery_access: z.boolean().optional(),
 });
 
-interface InspectionQuestionDialogProps {
+interface OperationsFormQuestionDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     sectionId: string;
-    question?: InspectionQuestion;
+    question?: OperationsFormQuestion;
     currentOrder?: number;
 }
 
-export function InspectionQuestionDialog({
+export function OperationsFormQuestionDialog({
     open,
     onOpenChange,
     sectionId,
     question,
     currentOrder = 0,
-}: InspectionQuestionDialogProps) {
+}: OperationsFormQuestionDialogProps) {
     const [isPending, startTransition] = useTransition();
     const { toast } = useToast();
     const router = useRouter();

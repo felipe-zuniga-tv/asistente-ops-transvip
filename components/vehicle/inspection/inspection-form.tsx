@@ -4,15 +4,15 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
-import { InspectionQuestion, InspectionSection } from "@/lib/types/vehicle/inspection";
+import { InspectionQuestion, OperationsFormSection } from "@/lib/types/vehicle/forms";
 import { QuestionInput } from "./question-input";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { createInspectionAnswer, updateInspectionStatus, updateInspectionAnswer } from "@/lib/services/vehicle/inspection";
+import { createInspectionAnswer, updateInspectionStatus, updateInspectionAnswer } from "@/lib/services/forms";
 
 interface InspectionFormProps {
     inspectionId: string;
-    sections: (InspectionSection & {
+    sections: (OperationsFormSection & {
         questions: InspectionQuestion[];
     })[];
     answers: Record<string, { id?: string; value: string }>;

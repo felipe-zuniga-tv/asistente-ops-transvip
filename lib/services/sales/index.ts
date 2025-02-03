@@ -1,0 +1,123 @@
+import { CreateSalesResponse, SalesResponse } from '@/lib/types/sales'
+import { getSupabaseClient } from "@/lib/database/actions";
+
+const SALES_RESPONSES_TABLE = 'sales_responses'
+
+export async function createSalesResponse(data: CreateSalesResponse): Promise<SalesResponse> {
+	const supabase = await getSupabaseClient();
+	const { data: response, error } = await supabase
+		.from(SALES_RESPONSES_TABLE)
+		.insert({
+			...data,
+			status: 'pending',
+			whatsapp_confirmed: false
+		})
+		.select()
+		.single()
+
+	if (error) {
+		throw new Error(`Error creating sales response: ${error.message}`)
+	}
+
+	return response
+}
+
+export async function getSalesResponsesByBranch(branchCode: string) {
+	const supabase = await getSupabaseClient();
+	const { data, error } = await supabase
+		.from(SALES_RESPONSES_TABLE)
+		.select()
+		.eq('branch_code', branchCode)
+		.order('created_at', { ascending: false })
+
+	if (error) {
+		throw new Error(`Error fetching sales responses: ${error.message}`)
+	}
+
+	return data as SalesResponse[]
+}
+
+export async function getSalesResponse(id: string) {
+	const supabase = await getSupabaseClient();
+	const { data, error } = await supabase
+		.from(SALES_RESPONSES_TABLE)
+		.select()
+		.eq('id', id)
+		.single()
+
+	if (error) {
+		throw new Error(`Error fetching sales response: ${error.message}`)
+	}
+
+	return data as SalesResponse
+}
+
+export async function getSalesResponsesStats() {
+	const supabase = await getSupabaseClient();
+	const { data, error } = await supabase
+		.from(SALES_RESPONSES_TABLE)
+		.select('branch_code, branch_name, created_at')
+		.order('created_at', { ascending: false })
+
+	if (error) {
+		throw new Error(`Error fetching sales responses stats: ${error.message}`)
+	}
+
+	return data
+}
+
+export async function updateSalesResponseStatus(id: string, status: SalesResponse['status']) {
+	const supabase = await getSupabaseClient();
+	const { data, error } = await supabase
+		.from(SALES_RESPONSES_TABLE)
+		.update({ status })
+		.eq('id', id)
+		.select()
+		.single()
+
+	if (error) {
+		throw new Error(`Error updating sales response status: ${error.message}`)
+	}
+
+	return data as SalesResponse
+}
+
+export async function updateSalesResponseWhatsappConfirmation(
+	id: string,
+	confirmed: boolean,
+	userId: string
+) {
+	const supabase = await getSupabaseClient();
+	const { data, error } = await supabase
+		.from(SALES_RESPONSES_TABLE)
+		.update({
+			whatsapp_confirmed: confirmed,
+			whatsapp_confirmed_at: confirmed ? new Date().toISOString() : null,
+			whatsapp_confirmed_by: confirmed ? userId : null
+		})
+		.eq('id', id)
+		.select()
+		.single()
+
+	if (error) {
+		throw new Error(`Error updating WhatsApp confirmation: ${error.message}`)
+	}
+
+	return data as SalesResponse
+}
+
+export async function updateSalesResponseNotes(id: string, notes: string) {
+	const supabase = await getSupabaseClient();
+	const { data, error } = await supabase
+		.from(SALES_RESPONSES_TABLE)
+		.update({ notes })
+		.eq('id', id)
+		.select()
+		.single()
+
+	if (error) {
+		throw new Error(`Error updating sales response notes: ${error.message}`)
+	}
+
+	return data as SalesResponse
+} 

@@ -3,7 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ImageInput } from "@/components/vehicle/inspection/image-input";
-import { InspectionQuestion } from "@/lib/types/vehicle/inspection";
+import { InspectionQuestion } from "@/lib/types/vehicle/forms";
 
 interface QuestionInputProps {
     question: InspectionQuestion;

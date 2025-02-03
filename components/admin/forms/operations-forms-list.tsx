@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { InspectionForm } from "@/lib/types/vehicle/inspection";
-import { InspectionFormDialog } from "./inspection-form-dialog";
+import { OperationsForm } from "@/lib/types/vehicle/forms";
+import { OperationsFormDialog } from "./operations-form-dialog";
 import { useRouter } from "next/navigation";
 import {
     Table,
@@ -16,19 +16,19 @@ import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/utils/dates";
 import { ConfigCardContainer } from "@/components/tables/config-card-container";
 import { Button } from "@/components/ui/button";
-import { Eye } from "lucide-react";
+import { Pencil } from "lucide-react";
 
-interface InspectionFormsListProps {
-    data: InspectionForm[];
+interface OperationsFormsListProps {
+    data: OperationsForm[];
 }
 
-export function InspectionFormsList({ data }: InspectionFormsListProps) {
+export function OperationsFormsList({ data }: OperationsFormsListProps) {
     const [open, setOpen] = useState(false);
     const router = useRouter();
 
     const handleView = (formId: string, e: React.MouseEvent) => {
         e.stopPropagation();
-        router.push(`/admin/inspection-config/${formId}`);
+        router.push(`/admin/forms-config/${formId}`);
     };
 
     return (
@@ -41,11 +41,11 @@ export function InspectionFormsList({ data }: InspectionFormsListProps) {
                     <Table>
                         <TableHeader>
                             <TableRow>
+                                <TableHead className="w-[50px] text-center"></TableHead>
                                 <TableHead>Título</TableHead>
                                 <TableHead>Descripción</TableHead>
                                 <TableHead className="text-center">Estado</TableHead>
                                 <TableHead className="text-center">Fecha de Creación</TableHead>
-                                <TableHead className="w-[100px] text-center">Acciones</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -55,6 +55,16 @@ export function InspectionFormsList({ data }: InspectionFormsListProps) {
                                     className="cursor-pointer hover:bg-gray-50 text-xs"
 
                                 >
+                                    <TableCell className="flex justify-center">
+                                        <Button
+                                            variant="default"
+                                            size="icon"
+                                            onClick={(e) => handleView(form.id, e)}
+                                            className="h-8 w-8 bg-transvip hover:bg-transvip/80 text-white hover:text-white"
+                                        >
+                                            <Pencil className="h-4 w-4" />
+                                        </Button>
+                                    </TableCell>
                                     <TableCell>{form.title}</TableCell>
                                     <TableCell>{form.description}</TableCell>
                                     <TableCell className="text-center">
@@ -63,16 +73,6 @@ export function InspectionFormsList({ data }: InspectionFormsListProps) {
                                         </Badge>
                                     </TableCell>
                                     <TableCell className="text-center">{formatDate(form.created_at)}</TableCell>
-                                    <TableCell className="flex justify-center">
-                                        <Button
-                                            variant="outline"
-                                            size="icon"
-                                            onClick={(e) => handleView(form.id, e)}
-                                            className="h-8 w-8"
-                                        >
-                                            <Eye className="h-4 w-4" />
-                                        </Button>
-                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -80,7 +80,7 @@ export function InspectionFormsList({ data }: InspectionFormsListProps) {
                 </div>
             </ConfigCardContainer>
 
-            <InspectionFormDialog
+            <OperationsFormDialog
                 open={open}
                 onOpenChange={setOpen}
             />

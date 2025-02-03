@@ -1,6 +1,6 @@
 export type QuestionType = 'text' | 'number' | 'image' | 'email';
 
-export interface InspectionForm {
+export interface OperationsForm {
     id: string;
     title: string;
     description: string;
@@ -9,7 +9,7 @@ export interface InspectionForm {
     updated_at: string;
 }
 
-export interface InspectionSection {
+export interface OperationsFormSection {
     id: string;
     form_id: string;
     title: string;
@@ -19,7 +19,7 @@ export interface InspectionSection {
     updated_at: string;
 }
 
-export interface InspectionQuestion {
+export interface OperationsFormQuestion {
     id: string;
     section_id: string;
     label: string;
@@ -31,7 +31,7 @@ export interface InspectionQuestion {
     updated_at: string;
 }
 
-export interface VehicleInspection {
+export interface OperationsFormResponses {
     id: string;
     form_id: string;
     vehicle_number: number;
@@ -42,34 +42,33 @@ export interface VehicleInspection {
     completed_at?: string;
 }
 
-export interface InspectionAnswer {
+export interface OperationsFormAnswer {
     id: string;
-    inspection_id: string;
+    form_id: string;
     question_id: string;
     answer: string;
     created_at: string;
     updated_at: string;
 }
 
-export interface CreateInspectionFormInput {
+export interface CreateOperationsFormInput {
     title: string;
     description: string;
-}
-
-export interface UpdateInspectionFormInput extends Partial<CreateInspectionFormInput> {
     is_active?: boolean;
 }
 
-export interface CreateInspectionSectionInput {
+export interface UpdateOperationsFormInput extends Partial<CreateOperationsFormInput> {}
+
+export interface CreateOperationsFormSectionInput {
     form_id: string;
     title: string;
     description: string;
     order: number;
 }
 
-export interface UpdateInspectionSectionInput extends Partial<Omit<CreateInspectionSectionInput, 'form_id'>> {}
+export interface UpdateOperationsFormSectionInput extends Partial<Omit<CreateOperationsFormSectionInput, 'form_id'>> {}
 
-export interface CreateInspectionQuestionInput {
+export interface CreateOperationsFormQuestionInput {
     section_id: string;
     label: string;
     type: QuestionType;
@@ -77,16 +76,16 @@ export interface CreateInspectionQuestionInput {
     allow_gallery_access?: boolean;
 }
 
-export interface UpdateInspectionQuestionInput extends Partial<Omit<CreateInspectionQuestionInput, 'section_id'>> {
+export interface UpdateOperationsFormQuestionInput extends Partial<Omit<CreateOperationsFormQuestionInput, 'section_id'>> {
     is_active?: boolean;
 }
 
-export interface CreateInspectionInput {
+export interface CreateVehicleInspectionInput {
     form_id: string;
     vehicle_number: number;
 }
 
-export interface CreateInspectionAnswerInput {
+export interface CreateOperationsFormAnswerInput {
     inspection_id: string;
     question_id: string;
     answer: string;

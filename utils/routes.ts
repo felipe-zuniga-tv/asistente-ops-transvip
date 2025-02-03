@@ -27,6 +27,7 @@ export const Routes = Object.freeze({
 	ADMIN: {
 		HOME: '/admin',
 		BRANCH_CONFIG: '/admin/branch-config',
+		FORMS_CONFIG: '/admin/forms-config',
 		VEHICLE_STATUS_CONFIG: '/admin/vehicle-status-config',
 		PAYMENT_CONFIG: '/admin/payment-config',
 		VEHICLE_TYPES: '/admin/vehicle-types',
