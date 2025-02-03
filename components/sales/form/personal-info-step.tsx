@@ -124,7 +124,7 @@ export function PersonalInfoStep({
 								<FormLabel>{translations.email}</FormLabel>
 								<FormControl>
 									<Input
-										placeholder="john.doe@example.com"
+										placeholder="email@ejemplo.com"
 										type="email"
 										{...field}
 									/>
