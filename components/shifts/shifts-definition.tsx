@@ -15,8 +15,6 @@ import { columns } from "./table/columns";
 import { useRouter } from "next/navigation";
 import { AlertDialogDeleteShift } from "./delete-shift-alert-dialog";
 import { toast } from "sonner";
-import { AddButton } from "../ui/buttons";
-import { CardTitleContent } from "../ui/card-title-content";
 import { ConfigCardContainer } from "../tables/config-card-container";
 
 export const WEEKDAYS = [
@@ -97,6 +95,7 @@ export function ShiftsDefinition({ shifts }: ShiftsCardProps) {
         <ConfigCardContainer
             title="Jornadas de Conexión"
             onAdd={() => setIsDialogOpen(true)}
+            className="max-w-full"
         >
             <div className="flex justify-between items-center">
                 <div className="flex items-center space-x-2">

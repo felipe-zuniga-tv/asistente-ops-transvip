@@ -147,7 +147,9 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
 
     return (
         <ConfigCardContainer title="Asignación de Vehículos"
-            onAdd={() => setIsDialogOpen(true)}>
+            onAdd={() => setIsDialogOpen(true)}
+            className="max-w-full"
+            >
             <div className="flex items-center space-x-2">
                 <Switch
                     id="advanced-options"

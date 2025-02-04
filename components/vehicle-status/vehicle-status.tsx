@@ -58,7 +58,7 @@ export function VehicleStatus({ statuses = [] }: VehicleStatusProps) {
     };
 
     return (
-        <ConfigCardContainer title="Estado por Móvil" onAdd={() => setIsDialogOpen(true)}>
+        <ConfigCardContainer title="Estado por Móvil" onAdd={() => setIsDialogOpen(true)} className="max-w-full">
             <VehicleStatusDataTable
                 columns={columns}
                 data={statuses}

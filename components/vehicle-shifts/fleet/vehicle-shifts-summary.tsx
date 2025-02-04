@@ -169,7 +169,7 @@ export function VehicleShiftsSummary() {
     }
 
     return (
-        <div className="space-y-6 max-w-4xl mx-auto">
+        <div className="space-y-6 max-w-full">
             <Card className="p-6">
                 <div className="space-y-4">
                     <div className="flex flex-col space-y-1.5">
@@ -249,7 +249,7 @@ export function VehicleShiftsSummary() {
                             </div>
                         </div>
                         <div className="bg-white rounded-lg">
-                            <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
+                            <div className="grid gap-2 md:grid-cols-3 lg:grid-cols-6">
                                 {selectedDateSummary?.vehicles.map((vehicle, idx) => (
                                     <div
                                         key={`${selectedDate}-${vehicle.number}-${idx}`}
@@ -265,7 +265,7 @@ export function VehicleShiftsSummary() {
                                     </div>
                                 ))}
                                 {(!selectedDateSummary?.vehicles.length) && (
-                                    <div className="text-center text-muted-foreground py-8 md:col-span-2 lg:col-span-3">
+                                    <div className="text-center text-muted-foreground py-8 md:col-span-3 lg:col-span-6">
                                         No hay vehículos con turnos activos en esta fecha
                                     </div>
                                 )}
