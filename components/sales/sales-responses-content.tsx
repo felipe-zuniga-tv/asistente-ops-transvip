@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { SalesResponse } from '@/lib/types/sales'
 import { SalesResponsesTable } from './sales-responses-table'
+import { SalesResponseNotesDialog } from './sales-response-notes-dialog'
 import { useToast } from '@/hooks/use-toast'
 import { ConfigCardContainer } from '@/components/tables/config-card-container'
 import { Button } from '@/components/ui/button'
@@ -13,6 +14,7 @@ import {
 	updateSalesResponseNotesAction,
 	getSalesResponses
 } from '@/lib/services/sales'
+import { useRouter } from 'next/navigation'
 
 interface SalesResponsesContentProps {
 	initialResponses: SalesResponse[]
@@ -21,9 +23,24 @@ interface SalesResponsesContentProps {
 export function SalesResponsesContent({
 	initialResponses,
 }: SalesResponsesContentProps) {
+	const router = useRouter()
 	const { toast } = useToast()
 	const [responses, setResponses] = useState<SalesResponse[]>(initialResponses)
 	const [isRefreshing, setIsRefreshing] = useState(false)
+	const [isDialogOpen, setIsDialogOpen] = useState(false)
+	const [editingResponse, setEditingResponse] = useState<SalesResponse | null>(null)
+
+	useEffect(() => {
+		if (!isDialogOpen || !editingResponse) {
+			const timer = setTimeout(() => {
+				document.body.style.pointerEvents = ""
+			}, 0)
+
+			return () => clearTimeout(timer)
+		} else {
+			document.body.style.pointerEvents = "auto"
+		}
+	}, [isDialogOpen, editingResponse])
 
 	const loadResponses = async () => {
 		try {
@@ -41,10 +58,10 @@ export function SalesResponsesContent({
 		}
 	}
 
-	const handleUpdateStatus = async (id: string, status: SalesResponse['status']) => {
+	const handleUpdateStatus = async (id: string, status: string) => {
 		try {
-			await updateSalesResponseStatusAction(id, status)
-			await loadResponses()
+			await updateSalesResponseStatusAction(id, status as SalesResponse['status'])
+			router.refresh()
 			toast({
 				title: "Estado actualizado",
 				description: "El estado de la respuesta ha sido actualizado correctamente."
@@ -61,7 +78,7 @@ export function SalesResponsesContent({
 	const handleConfirmWhatsapp = async (id: string, confirmed: boolean) => {
 		try {
 			await updateSalesResponseWhatsappConfirmationAction(id, confirmed)
-			await loadResponses()
+			router.refresh()
 			toast({
 				title: "WhatsApp confirmado",
 				description: `El número de WhatsApp ha sido ${confirmed ? 'confirmado' : 'desconfirmado'} correctamente.`
@@ -78,7 +95,7 @@ export function SalesResponsesContent({
 	const handleUpdateNotes = async (id: string, notes: string) => {
 		try {
 			await updateSalesResponseNotesAction(id, notes)
-			await loadResponses()
+			router.refresh()
 			toast({
 				title: "Notas actualizadas",
 				description: "Las notas han sido actualizadas correctamente."
@@ -90,6 +107,20 @@ export function SalesResponsesContent({
 				variant: "destructive"
 			})
 		}
+	}
+
+	const handleEditResponse = (id: string) => {
+		const response = responses.find(r => r.id === id)
+		if (response) {
+			setEditingResponse({ ...response })
+			setIsDialogOpen(true)
+		}
+	}
+
+	const handleDialogClose = () => {
+		setIsDialogOpen(false)
+		setEditingResponse(null)
+		router.refresh()
 	}
 
 	return (
@@ -114,7 +145,14 @@ export function SalesResponsesContent({
 				data={responses}
 				onUpdateStatus={handleUpdateStatus}
 				onConfirmWhatsapp={handleConfirmWhatsapp}
-				onUpdateNotes={handleUpdateNotes}
+				onUpdateNotes={handleEditResponse}
+			/>
+
+			<SalesResponseNotesDialog
+				open={isDialogOpen}
+				onOpenChange={handleDialogClose}
+				response={editingResponse}
+				onSave={handleUpdateNotes}
 			/>
 		</ConfigCardContainer>
 	)

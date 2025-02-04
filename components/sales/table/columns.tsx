@@ -40,6 +40,14 @@ export const statusLabels: Record<SalesResponse['status'], string> = {
 	cancelled: "Cancelado",
 };
 
+declare module '@tanstack/table-core' {
+	interface TableMeta<TData extends unknown> {
+		onConfirmWhatsapp?: (id: string, confirmed: boolean) => void
+		onUpdateStatus?: (id: string) => void | Promise<void>
+		onUpdateNotes?: (id: string) => void
+	}
+}
+
 export const columns: ColumnDef<SalesResponse>[] = [
 	{
 		accessorKey: "branch_name",
@@ -132,73 +140,16 @@ export const columns: ColumnDef<SalesResponse>[] = [
 		accessorKey: "notes",
 		header: () => <div className="text-center">Notas</div>,
 		cell: ({ row, table }) => {
-			const [open, setOpen] = React.useState(false)
-			const [notes, setNotes] = React.useState(row.original.notes || '')
-			const [isLoading, setIsLoading] = React.useState(false)
-
 			return (
 				<div className="text-center">
-					<Dialog open={open} onOpenChange={setOpen}>
-						<DialogTrigger asChild>
-							<Button variant="outline" size="sm" className="h-8">
-								{row.original.notes ? 'Ver Notas' : 'Agregar Notas'}
-							</Button>
-						</DialogTrigger>
-						<DialogContent className="sm:max-w-[500px]">
-							<DialogHeader>
-								<DialogTitle>Notas del Cliente</DialogTitle>
-							</DialogHeader>
-							<div className="grid gap-4 py-4">
-								<div className="grid grid-cols-4 items-center gap-4">
-									<Label className="text-right font-semibold">Cliente</Label>
-									<div className="col-span-3 text-sm">
-										{row.original.first_name} {row.original.last_name}
-									</div>
-								</div>
-								<div className="grid grid-cols-4 items-center gap-4">
-									<Label className="text-right font-semibold">Sucursal</Label>
-									<div className="col-span-3 text-sm">
-										{row.original.branch_name}
-									</div>
-								</div>
-								<div className="grid grid-cols-4 items-center gap-4">
-									<Label className="text-right font-semibold">Teléfono</Label>
-									<div className="col-span-3 text-sm">
-										{row.original.phone_country} {row.original.phone_number}
-									</div>
-								</div>
-								<div className="grid grid-cols-4 items-center gap-4">
-									<Label className="text-right font-semibold">Notas</Label>
-									<Textarea 
-										className="col-span-3 text-sm"
-										value={notes}
-										onChange={(e) => setNotes(e.target.value)}
-										placeholder="Agregar notas sobre el cliente..."
-										disabled={isLoading}
-									/>
-								</div>
-							</div>
-							<DialogFooter>
-								<Button
-									type="submit"
-									onClick={async () => {
-										try {
-											setIsLoading(true);
-											await (table.options.meta as any).onUpdateNotes(row.original.id, notes);
-											setOpen(false);
-										} catch (error) {
-											console.error('Error updating notes:', error);
-										} finally {
-											setIsLoading(false);
-										}
-									}}
-									disabled={isLoading}
-								>
-									{isLoading ? 'Guardando...' : 'Guardar cambios'}
-								</Button>
-							</DialogFooter>
-						</DialogContent>
-					</Dialog>
+					<Button 
+						variant="outline" 
+						size="sm" 
+						className="h-8"
+						onClick={() => table.options.meta?.onUpdateNotes?.(row.original.id)}
+					>
+						{row.original.notes ? 'Ver Notas' : 'Agregar Notas'}
+					</Button>
 				</div>
 			);
 		},
@@ -223,17 +174,17 @@ export const columns: ColumnDef<SalesResponse>[] = [
 								<WhatsappIcon className="bg-green-500 rounded-full p-0.5" /> {row.original.whatsapp_confirmed ? 'Desconfirmar WhatsApp' : 'Confirmar WhatsApp'}
 							</DropdownMenuItem>
 							<DropdownMenuItem
-								onClick={() => (table.options.meta as any).onUpdateStatus(row.original.id, 'contacted')}
+								onClick={() => (table.options.meta as any).onUpdateStatus(row.original.id)}
 							>
 								Marcar como contactado
 							</DropdownMenuItem>
 							<DropdownMenuItem
-								onClick={() => (table.options.meta as any).onUpdateStatus(row.original.id, 'confirmed')}
+								onClick={() => (table.options.meta as any).onUpdateStatus(row.original.id)}
 							>
 								Marcar como confirmado
 							</DropdownMenuItem>
 							<DropdownMenuItem
-								onClick={() => (table.options.meta as any).onUpdateStatus(row.original.id, 'cancelled')}
+								onClick={() => (table.options.meta as any).onUpdateStatus(row.original.id)}
 								className="text-red-600"
 							>
 								Marcar como cancelado
