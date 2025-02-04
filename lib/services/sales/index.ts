@@ -69,6 +69,7 @@ export async function getSalesResponsesStats() {
 		throw new Error(`Error fetching sales responses stats: ${error.message}`)
 	}
 
+	revalidatePath(Routes.SALES.RESPONSES)
 	return data
 }
 
@@ -85,6 +86,7 @@ export async function updateSalesResponseStatus(id: string, status: SalesRespons
 		throw new Error(`Error updating sales response status: ${error.message}`)
 	}
 
+	revalidatePath(Routes.SALES.RESPONSES)
 	return data as SalesResponse
 }
 
@@ -111,6 +113,7 @@ export async function updateSalesResponseWhatsappConfirmation(
 		throw new Error(`Error updating WhatsApp confirmation: ${error.message}`)
 	}
 
+	revalidatePath(Routes.SALES.RESPONSES)
 	return data as SalesResponse
 }
 
@@ -128,6 +131,7 @@ export async function updateSalesResponseNotes(id: string, notes: string) {
 		throw new Error(`Error updating sales response notes: ${error.message}`)
 	}
 
+	revalidatePath(Routes.SALES.RESPONSES)
 	return data as SalesResponse
 }
 

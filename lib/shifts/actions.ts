@@ -6,6 +6,7 @@ import { parse } from "date-fns"
 import { z } from "zod"
 import { cookies } from "next/headers"
 import { Routes } from "@/utils/routes"
+import { getSupabaseClient } from "../database/actions"
 
 const vehicleShiftSchema = z.object({
     vehicle_number: z.coerce.number().positive("El número debe ser positivo"),
@@ -20,8 +21,7 @@ const vehicleShiftSchema = z.object({
 })
 
 export async function createVehicleShift(formData: z.infer<typeof vehicleShiftSchema>) {
-    const cookieStore = cookies()
-    const supabase = createClient(cookieStore)
+    const supabase = await getSupabaseClient()
 
     try {
         const result = vehicleShiftSchema.safeParse(formData)
@@ -44,7 +44,6 @@ export async function createVehicleShift(formData: z.infer<typeof vehicleShiftSc
             .insert({
                 vehicle_number: result.data.vehicle_number,
                 shift_id: result.data.shift_id,
-                shift_name: shift.name,
                 start_date: result.data.start_date,
                 end_date: result.data.end_date,
                 priority: result.data.priority,
