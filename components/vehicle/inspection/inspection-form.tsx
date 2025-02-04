@@ -4,16 +4,16 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
-import { InspectionQuestion, OperationsFormSection } from "@/lib/types/vehicle/forms";
+import { OperationsFormQuestion, OperationsFormSection } from "@/lib/types/vehicle/forms";
 import { QuestionInput } from "./question-input";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { createInspectionAnswer, updateInspectionStatus, updateInspectionAnswer } from "@/lib/services/forms";
+import { saveOperationsFormAnswer, updateInspectionStatus, updateOperationsFormAnswer } from "@/lib/services/forms";
 
 interface InspectionFormProps {
     inspectionId: string;
     sections: (OperationsFormSection & {
-        questions: InspectionQuestion[];
+        questions: OperationsFormQuestion[];
     })[];
     answers: Record<string, { id?: string; value: string }>;
 }
@@ -34,10 +34,10 @@ export function InspectionForm({ inspectionId, sections, answers }: InspectionFo
             
             if (currentAnswer.id) {
                 // Update existing answer
-                await updateInspectionAnswer(currentAnswer.id, value);
+                await updateOperationsFormAnswer(currentAnswer.id, value);
             } else {
                 // Create new answer
-                const answer = await createInspectionAnswer({
+                const answer = await saveOperationsFormAnswer({
                     inspection_id: inspectionId,
                     question_id: questionId,
                     answer: value,

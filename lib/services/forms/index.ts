@@ -311,7 +311,7 @@ export async function updateInspectionStatus(id: string, status: "draft" | "comp
 }
 
 // Answer Management
-export async function createInspectionAnswer(input: CreateOperationsFormAnswerInput) {
+export async function saveOperationsFormAnswer(input: CreateOperationsFormAnswerInput) {
     const supabase = await getSupabaseClient();
 
     const { data, error } = await supabase
@@ -324,7 +324,7 @@ export async function createInspectionAnswer(input: CreateOperationsFormAnswerIn
     return data as OperationsFormAnswer;
 }
 
-export async function updateInspectionAnswer(id: string, answer: string) {
+export async function updateOperationsFormAnswer(id: string, answer: string) {
     const supabase = await getSupabaseClient();
 
     const { data, error } = await supabase
