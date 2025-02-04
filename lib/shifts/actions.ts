@@ -1,10 +1,8 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import { createClient } from "@/utils/supabase/server"
 import { parse } from "date-fns"
 import { z } from "zod"
-import { cookies } from "next/headers"
 import { Routes } from "@/utils/routes"
 import { getSupabaseClient } from "../database/actions"
 
@@ -60,8 +58,7 @@ export async function createVehicleShift(formData: z.infer<typeof vehicleShiftSc
 }
 
 export async function uploadVehicleShifts(csvContent: string, shifts: { id: string, name: string }[]) {
-    const cookieStore = cookies()
-    const supabase = createClient(cookieStore)
+    const supabase = await getSupabaseClient()
     
     const errors: { row: number; message: string }[] = []
     
@@ -161,8 +158,7 @@ export async function updateVehicleShift(
     id: string,
     formData: z.infer<typeof vehicleShiftSchema>
 ) {
-    const cookieStore = cookies()
-    const supabase = createClient(cookieStore)
+    const supabase = await getSupabaseClient()
     
     try {
         const result = vehicleShiftSchema.safeParse(formData)
@@ -197,7 +193,6 @@ export async function updateVehicleShift(
             .update({
                 vehicle_number: result.data.vehicle_number,
                 shift_id: result.data.shift_id,
-                shift_name: shift.name,
                 start_date: result.data.start_date,
                 end_date: result.data.end_date,
                 priority: result.data.priority,
@@ -220,8 +215,7 @@ export async function updateVehicleShift(
 }
 
 export async function deleteVehicleShift(id: string) {
-    const cookieStore = cookies()
-    const supabase = createClient(cookieStore)
+    const supabase = await getSupabaseClient()
     
     try {
         const { error } = await supabase
@@ -240,8 +234,7 @@ export async function deleteVehicleShift(id: string) {
 }
 
 export async function bulkDeleteVehicleShifts(ids: string[]) {
-    const cookieStore = cookies()
-    const supabase = createClient(cookieStore)
+    const supabase = await getSupabaseClient()
     
     try {
         const { error } = await supabase
