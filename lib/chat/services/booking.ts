@@ -21,8 +21,6 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
 
     const { totalCount, result } = data
 
-    console.log(totalCount, result)
-
     if (totalCount > 0) {
         const output: IBookingInfoOutput[] = []
 

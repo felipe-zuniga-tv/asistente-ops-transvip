@@ -311,7 +311,7 @@ function BookingDates({ result, simplified = false }: {
                             }
                         </div>)
                     }
-                    {result.dates.assignment_datetime && result.dates.assignment_datetime &&
+                    {result.dates.assignment_datetime && result.booking.assignment_identity &&
                         <div className='card-info-detail gap-1'>
                             <div className='flex flex-row gap-1 items-center w-full'>
                                 <span className='font-semibold date-tag'>Asignación:</span>
