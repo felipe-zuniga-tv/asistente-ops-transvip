@@ -132,13 +132,9 @@ export const columns: ColumnDef<SalesResponse>[] = [
 		accessorKey: "notes",
 		header: () => <div className="text-center">Notas</div>,
 		cell: ({ row, table }) => {
-			const [notes, setNotes] = React.useState(row.original.notes);
-			const [open, setOpen] = React.useState(false);
-
-			const handleSubmit = () => {
-				(table.options.meta as any).onUpdateNotes(row.original.id, notes);
-				setOpen(false);
-			};
+			const [open, setOpen] = React.useState(false)
+			const [notes, setNotes] = React.useState(row.original.notes || '')
+			const [isLoading, setIsLoading] = React.useState(false)
 
 			return (
 				<div className="text-center">
@@ -148,23 +144,58 @@ export const columns: ColumnDef<SalesResponse>[] = [
 								{row.original.notes ? 'Ver Notas' : 'Agregar Notas'}
 							</Button>
 						</DialogTrigger>
-						<DialogContent>
+						<DialogContent className="sm:max-w-[500px]">
 							<DialogHeader>
-								<DialogTitle>Notas del cliente</DialogTitle>
+								<DialogTitle>Notas del Cliente</DialogTitle>
 							</DialogHeader>
 							<div className="grid gap-4 py-4">
-								<div className="grid gap-2">
-									<Label htmlFor="notes">Notas</Label>
-									<Textarea
-										id="notes"
+								<div className="grid grid-cols-4 items-center gap-4">
+									<Label className="text-right font-semibold">Cliente</Label>
+									<div className="col-span-3 text-sm">
+										{row.original.first_name} {row.original.last_name}
+									</div>
+								</div>
+								<div className="grid grid-cols-4 items-center gap-4">
+									<Label className="text-right font-semibold">Sucursal</Label>
+									<div className="col-span-3 text-sm">
+										{row.original.branch_name}
+									</div>
+								</div>
+								<div className="grid grid-cols-4 items-center gap-4">
+									<Label className="text-right font-semibold">Teléfono</Label>
+									<div className="col-span-3 text-sm">
+										{row.original.phone_country} {row.original.phone_number}
+									</div>
+								</div>
+								<div className="grid grid-cols-4 items-center gap-4">
+									<Label className="text-right font-semibold">Notas</Label>
+									<Textarea 
+										className="col-span-3 text-sm"
 										value={notes}
 										onChange={(e) => setNotes(e.target.value)}
 										placeholder="Agregar notas sobre el cliente..."
+										disabled={isLoading}
 									/>
 								</div>
 							</div>
 							<DialogFooter>
-								<Button onClick={handleSubmit} type="submit">Guardar</Button>
+								<Button
+									type="submit"
+									onClick={async () => {
+										try {
+											setIsLoading(true);
+											await (table.options.meta as any).onUpdateNotes(row.original.id, notes);
+											setOpen(false);
+										} catch (error) {
+											console.error('Error updating notes:', error);
+										} finally {
+											setIsLoading(false);
+										}
+									}}
+									disabled={isLoading}
+								>
+									{isLoading ? 'Guardando...' : 'Guardar cambios'}
+								</Button>
 							</DialogFooter>
 						</DialogContent>
 					</Dialog>

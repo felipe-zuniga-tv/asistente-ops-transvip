@@ -69,7 +69,7 @@ export const publicSidebar: SidebarItem = {
 	],
 }
 
-export const chatbotItem: SidebarItem = {
+export const chatbotMenu: SidebarItem = {
 	title: "Chatbot Operaciones",
 	url: "#",
 	icon: Bot,
@@ -77,7 +77,52 @@ export const chatbotItem: SidebarItem = {
 	items: toolsList,
 }
 
-export const salesItem: SidebarItem = {
+const toolsMenu: SidebarItem = {
+	title: "Herramientas",
+	url: "#",
+	icon: Hammer,
+	isActive: false,
+	items: [
+		// {
+		// 	title: 'Chatbot Operaciones',
+		// 	icon: Bot,
+		// 	url: Routes.CHAT,
+		// 	active: true
+		// },
+		{
+			title: 'Genera tu código QR',
+			icon: QrCodeIcon,
+			url: Routes.QR_GEN,
+			active: true
+		},
+		{
+			title: 'Coordenadas GeoJSON',
+			icon: Map,
+			url: Routes.DATA.GEOFENCES,
+			active: true
+		},
+		{
+			title: 'Redacta un texto',
+			icon: Pencil,
+			url: Routes.TEXT.WRITE,
+			active: true
+		},
+		{
+			title: 'Tickets Aeropuerto',
+			icon: Ticket,
+			url: Routes.FINANCE.TICKETS,
+			active: false
+		},
+		{
+			title: 'Ruteo Reservas',
+			icon: MapPin,
+			url: Routes.ROUTING.MAIN,
+			active: false
+		},
+	],
+}
+
+export const salesMenu: SidebarItem = {
 	title: "Ventas",
 	url: "#",
 	icon: ShoppingCart,
@@ -188,52 +233,9 @@ const adminMenu: SidebarItem = {
 export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] } = {
 	navMain: [
 		publicSidebar,
-		chatbotItem,
-		{
-			title: "Herramientas",
-			url: "#",
-			icon: Hammer,
-			isActive: false,
-			items: [
-				// {
-				// 	title: 'Chatbot Operaciones',
-				// 	icon: Bot,
-				// 	url: Routes.CHAT,
-				// 	active: true
-				// },
-				{
-					title: 'Genera tu código QR',
-					icon: QrCodeIcon,
-					url: Routes.QR_GEN,
-					active: true
-				},
-				{
-					title: 'Coordenadas GeoJSON',
-					icon: Map,
-					url: Routes.DATA.GEOFENCES,
-					active: true
-				},
-				{
-					title: 'Redacta un texto',
-					icon: Pencil,
-					url: Routes.TEXT.WRITE,
-					active: true
-				},
-				{
-					title: 'Tickets Aeropuerto',
-					icon: Ticket,
-					url: Routes.FINANCE.TICKETS,
-					active: false
-				},
-				{
-					title: 'Ruteo Reservas',
-					icon: MapPin,
-					url: Routes.ROUTING.MAIN,
-					active: false
-				},
-			],
-		},
-		salesItem,
+		chatbotMenu,
+		toolsMenu,
+		salesMenu,
 		controlFlotaMenu,
 		{
 			title: "Reservas",

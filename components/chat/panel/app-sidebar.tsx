@@ -18,7 +18,7 @@ import { nanoid } from "@/lib/utils"
 import { UserMessage } from "../message"
 import { Routes } from "@/utils/routes"
 import { usePathname, useRouter } from "next/navigation"
-import { sidebarData, chatbotItem } from "@/lib/config/chat-sidebar"
+import { sidebarData, chatbotMenu } from "@/lib/config/chat-sidebar"
 import { BotMessageSquare } from "lucide-react"
 
 // Hints for chatbot functionalities
@@ -26,9 +26,9 @@ const showHints = false
 
 // Chatbot element for sidebar
 const chatbotElement = {
-	title: chatbotItem.title,
+	title: chatbotMenu.title,
 	url: "#",
-	icon: chatbotItem.icon,
+	icon: chatbotMenu.icon,
 	active: true,
 	items: [
 		{
@@ -48,7 +48,7 @@ export function AppSidebar({ session, ...props }: { session: any & React.Compone
 	const isChatRoute = path === Routes.CHAT
 
 	const handleClick = async (tool: any) => {
-		if (tool.title === chatbotItem.title) {
+		if (tool.title === chatbotMenu.title) {
 			router.push(Routes.CHAT)
 			return
 		}
@@ -72,7 +72,7 @@ export function AppSidebar({ session, ...props }: { session: any & React.Compone
 
 	const sidebarItems = isChatRoute 
 		? sidebarData.navMain 
-		: [chatbotElement, ...sidebarData.navMain.filter(item => item.title !== chatbotItem.title)]
+		: [chatbotElement, ...sidebarData.navMain.filter(item => item.title !== chatbotMenu.title)]
 
 	// sidebarItems = session.user.email === 'felipe.zuniga@transvip.cl' ? sidebarItems : sidebarItems.filter(item => item.title !== "Configuración")
 
