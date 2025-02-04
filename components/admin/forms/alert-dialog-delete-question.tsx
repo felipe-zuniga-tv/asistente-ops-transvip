@@ -10,12 +10,12 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import type { InspectionQuestion } from "@/lib/types/vehicle/forms";
+import type { OperationsFormQuestion } from "@/lib/types/vehicle/forms";
 
 interface AlertDialogDeleteQuestionProps {
-    question: InspectionQuestion | null;
+    question: OperationsFormQuestion | null;
     onOpenChange: (open: boolean) => void;
-    onSuccess: (question: InspectionQuestion) => void;
+    onSuccess: (question: OperationsFormQuestion) => void;
 }
 
 export function AlertDialogDeleteQuestion({
@@ -37,7 +37,7 @@ export function AlertDialogDeleteQuestion({
                     <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
                     <AlertDialogDescription>
                         Esta acción no se puede deshacer. Se eliminará permanentemente la pregunta
-                        &quot;{question.label}&quot; del formulario de inspección.
+                        &quot;{question.label}&quot; del formulario.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

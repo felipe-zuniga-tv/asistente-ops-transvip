@@ -55,6 +55,7 @@ import {
 } from 'lucide-react';
 import Image from "next/image"
 import * as whatsappLogo from '../../public/images/whatsapp-logo.png'
+import { cn } from '@/lib/utils';
 
 export const icons = [
   { label: 'AlertTriangle', value: 'AlertTriangle', icon: AlertTriangle },
@@ -111,9 +112,9 @@ export const icons = [
   { label: 'X', value: 'X', icon: X }
 ];
 
-export const WhatsappIcon = () => {
+export const WhatsappIcon = ({ className = "" }: { className?: string }) => {
   return (
     <Image src={whatsappLogo} height={100} width={100}
-      className="h-4 w-4 text-white object-cover" alt={"Logo Whatsapp"} />
+      className={cn("h-4 w-4 text-white object-cover", className)} alt={"Logo Whatsapp"} />
   )
 } 

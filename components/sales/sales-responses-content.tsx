@@ -33,7 +33,7 @@ export function SalesResponsesContent({
 		} catch (error) {
 			toast({
 				title: "Error",
-				description: "There was an error loading the responses.",
+				description: "Ocurrió un error al cargar las respuestas.",
 				variant: "destructive"
 			})
 		} finally {
@@ -46,13 +46,13 @@ export function SalesResponsesContent({
 			await updateSalesResponseStatusAction(id, status)
 			await loadResponses()
 			toast({
-				title: "Status updated",
-				description: "The response status has been updated successfully."
+				title: "Estado actualizado",
+				description: "El estado de la respuesta ha sido actualizado correctamente."
 			})
 		} catch (error) {
 			toast({
 				title: "Error",
-				description: "There was an error updating the status.",
+				description: "Ocurrió un error al actualizar el estado.",
 				variant: "destructive"
 			})
 		}
@@ -63,13 +63,13 @@ export function SalesResponsesContent({
 			await updateSalesResponseWhatsappConfirmationAction(id, confirmed)
 			await loadResponses()
 			toast({
-				title: "WhatsApp status updated",
-				description: `WhatsApp number has been ${confirmed ? 'confirmed' : 'unconfirmed'} successfully.`
+				title: "WhatsApp confirmado",
+				description: `El número de WhatsApp ha sido ${confirmed ? 'confirmado' : 'desconfirmado'} correctamente.`
 			})
 		} catch (error) {
 			toast({
 				title: "Error",
-				description: "There was an error updating the WhatsApp confirmation status.",
+				description: "Ocurrió un error al actualizar el estado de confirmación de WhatsApp.",
 				variant: "destructive"
 			})
 		}
@@ -80,13 +80,13 @@ export function SalesResponsesContent({
 			await updateSalesResponseNotesAction(id, notes)
 			await loadResponses()
 			toast({
-				title: "Notes updated",
-				description: "The notes have been updated successfully."
+				title: "Notas actualizadas",
+				description: "Las notas han sido actualizadas correctamente."
 			})
 		} catch (error) {
 			toast({
 				title: "Error",
-				description: "There was an error updating the notes.",
+				description: "Ocurrió un error al actualizar las notas.",
 				variant: "destructive"
 			})
 		}
@@ -106,8 +106,8 @@ export function SalesResponsesContent({
 			}
 			className='max-w-full'
 		>
-			<p className="text-muted-foreground text-sm -mt-4">
-				Respuestas a los formularios de ventas para los counter.
+			<p className="text-muted-foreground text-sm -mt-6">
+				Respuestas a los formularios de ventas utilizados en los counters
 			</p>
 
 			<SalesResponsesTable

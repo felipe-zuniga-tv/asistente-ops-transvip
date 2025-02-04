@@ -35,6 +35,7 @@ import {
 	Building,
 	Sun,
 	ListChecks,
+	ShoppingCart,
 } from "lucide-react"
 import { toolsList } from "./tools";
 
@@ -74,6 +75,21 @@ export const chatbotItem: SidebarItem = {
 	icon: Bot,
 	isActive: false,
 	items: toolsList,
+}
+
+export const salesItem: SidebarItem = {
+	title: "Ventas",
+	url: "#",
+	icon: ShoppingCart,
+	isActive: false,
+	items: [
+		{
+			title: "Respuestas de Formularios",
+			url: Routes.SALES.RESPONSES,
+			icon: ListChecks,
+			active: true,
+		},
+	],
 }
 
 const controlFlotaMenu: SidebarItem = {
@@ -217,6 +233,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 				},
 			],
 		},
+		salesItem,
 		controlFlotaMenu,
 		{
 			title: "Reservas",

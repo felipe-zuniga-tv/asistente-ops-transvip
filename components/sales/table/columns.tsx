@@ -12,7 +12,8 @@ import {
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger
+	DialogTrigger,
+	DialogFooter
 } from "@/components/ui/dialog";
 import {
 	DropdownMenu,
@@ -22,12 +23,21 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { SalesResponse } from "@/lib/types/sales";
+import { WhatsappIcon } from "@/components/ui/icons-list";
+import React from "react";
 
 const statusColors: Record<SalesResponse['status'], string> = {
-	pending: "bg-yellow-100 text-yellow-800",
-	contacted: "bg-blue-100 text-blue-800",
-	confirmed: "bg-green-100 text-green-800",
-	cancelled: "bg-red-100 text-red-800",
+	pending: "bg-yellow-100 text-black hover:bg-yellow-200 hover:text-black",
+	contacted: "bg-blue-100 text-blue-800 hover:bg-blue-200 hover:text-blue-800",
+	confirmed: "bg-green-100 text-green-800 hover:bg-green-200 hover:text-green-800",
+	cancelled: "bg-red-100 text-red-800 hover:bg-red-200 hover:text-red-800",
+};
+
+export const statusLabels: Record<SalesResponse['status'], string> = {
+	pending: "Pendiente",
+	contacted: "Contactado",
+	confirmed: "Confirmado",
+	cancelled: "Cancelado",
 };
 
 export const columns: ColumnDef<SalesResponse>[] = [
@@ -35,7 +45,7 @@ export const columns: ColumnDef<SalesResponse>[] = [
 		accessorKey: "branch_name",
 		header: () => <div className="text-center">Sucursal</div>,
 		cell: ({ row }) => (
-			<div className="text-center">
+			<div className="text-center text-sm">
 				{row.getValue("branch_name")}
 			</div>
 		),
@@ -44,27 +54,44 @@ export const columns: ColumnDef<SalesResponse>[] = [
 		accessorKey: "created_at",
 		header: () => <div className="text-center">Fecha</div>,
 		cell: ({ row }) => (
-			<div className="text-center">
+			<div className="text-center text-sm">
 				{format(new Date(row.getValue("created_at")), 'dd/MM/yyyy HH:mm')}
 			</div>
 		),
 	},
 	{
-		accessorKey: "customer",
-		header: () => <div className="text-center">Cliente</div>,
+		accessorKey: "first_name",
+		header: () => <div className="text-center">Nombre</div>,
 		cell: ({ row }) => (
-			<div className="text-center">
-				{`${row.original.first_name} ${row.original.last_name}`}
+			<div className="text-center text-sm">
+				{row.original.first_name}
 			</div>
 		),
 	},
 	{
-		accessorKey: "contact",
-		header: () => <div className="text-center">Contacto</div>,
+		accessorKey: "last_name",
+		header: () => <div className="text-center">Apellido</div>,
 		cell: ({ row }) => (
-			<div className="flex flex-col gap-1 items-center text-center">
+			<div className="text-center text-sm">
+				{row.original.last_name}
+			</div>
+		),
+	},
+	{
+		accessorKey: "phone_number",
+		header: () => <div className="text-center hidden">Teléfono</div>,
+		cell: ({ row }) => (
+			<div className="hidden flex flex-col gap-1 items-center text-center text-sm">
 				<span>{row.original.phone_country} {row.original.phone_number}</span>
-				<span className="text-sm text-gray-500">{row.original.email}</span>
+			</div>
+		),
+	},
+	{
+		accessorKey: "email",
+		header: () => <div className="text-center hidden">Email</div>,
+		cell: ({ row }) => (
+			<div className="hidden text-center text-sm">
+				{row.original.email}
 			</div>
 		),
 	},
@@ -72,14 +99,14 @@ export const columns: ColumnDef<SalesResponse>[] = [
 		accessorKey: "whatsapp_confirmed",
 		header: () => <div className="text-center">WhatsApp</div>,
 		cell: ({ row }) => (
-			<div className="text-center">
+			<div className="text-center text-sm">
 				{row.original.whatsapp_confirmed ? (
-					<Badge variant="default" className="gap-1">
+					<Badge variant="default" className="gap-1 bg-green-500 hover:bg-green-600">
 						<Check className="h-3 w-3" />
 						Confirmado
 					</Badge>
 				) : (
-					<Badge variant="secondary" className="gap-1">
+					<Badge variant="default" className="gap-1 bg-red-500 hover:bg-red-600">
 						<X className="h-3 w-3" />
 						Pendiente
 					</Badge>
@@ -93,9 +120,9 @@ export const columns: ColumnDef<SalesResponse>[] = [
 		cell: ({ row }) => {
 			const status = row.getValue("status") as SalesResponse['status'];
 			return (
-				<div className="text-center">
+				<div className="text-center text-sm">
 					<Badge className={statusColors[status]}>
-						{status.charAt(0).toUpperCase() + status.slice(1)}
+						{statusLabels[status]}
 					</Badge>
 				</div>
 			);
@@ -104,33 +131,46 @@ export const columns: ColumnDef<SalesResponse>[] = [
 	{
 		accessorKey: "notes",
 		header: () => <div className="text-center">Notas</div>,
-		cell: ({ row, table }) => (
-			<div className="text-center">
-				<Dialog>
-					<DialogTrigger asChild>
-						<Button variant="ghost" className="h-8">
-							{row.original.notes ? 'Ver Notas' : 'Agregar Notas'}
-						</Button>
-					</DialogTrigger>
-					<DialogContent>
-						<DialogHeader>
-							<DialogTitle>Notas del cliente</DialogTitle>
-						</DialogHeader>
-						<div className="grid gap-4 py-4">
-							<div className="grid gap-2">
-								<Label htmlFor="notes">Notas</Label>
-								<Textarea
-									id="notes"
-									defaultValue={row.original.notes}
-									onChange={(e) => (table.options.meta as any).onUpdateNotes(row.original.id, e.target.value)}
-									placeholder="Agregar notas sobre el cliente..."
-								/>
+		cell: ({ row, table }) => {
+			const [notes, setNotes] = React.useState(row.original.notes);
+			const [open, setOpen] = React.useState(false);
+
+			const handleSubmit = () => {
+				(table.options.meta as any).onUpdateNotes(row.original.id, notes);
+				setOpen(false);
+			};
+
+			return (
+				<div className="text-center">
+					<Dialog open={open} onOpenChange={setOpen}>
+						<DialogTrigger asChild>
+							<Button variant="outline" size="sm" className="h-8">
+								{row.original.notes ? 'Ver Notas' : 'Agregar Notas'}
+							</Button>
+						</DialogTrigger>
+						<DialogContent>
+							<DialogHeader>
+								<DialogTitle>Notas del cliente</DialogTitle>
+							</DialogHeader>
+							<div className="grid gap-4 py-4">
+								<div className="grid gap-2">
+									<Label htmlFor="notes">Notas</Label>
+									<Textarea
+										id="notes"
+										value={notes}
+										onChange={(e) => setNotes(e.target.value)}
+										placeholder="Agregar notas sobre el cliente..."
+									/>
+								</div>
 							</div>
-						</div>
-					</DialogContent>
-				</Dialog>
-			</div>
-		),
+							<DialogFooter>
+								<Button onClick={handleSubmit} type="submit">Guardar</Button>
+							</DialogFooter>
+						</DialogContent>
+					</Dialog>
+				</div>
+			);
+		},
 	},
 	{
 		id: "actions",
@@ -149,7 +189,7 @@ export const columns: ColumnDef<SalesResponse>[] = [
 							<DropdownMenuItem
 								onClick={() => (table.options.meta as any).onConfirmWhatsapp(row.original.id, !row.original.whatsapp_confirmed)}
 							>
-								{row.original.whatsapp_confirmed ? 'Desconfirmar WhatsApp' : 'Confirmar WhatsApp'}
+								<WhatsappIcon className="bg-green-500 rounded-full p-0.5" /> {row.original.whatsapp_confirmed ? 'Desconfirmar WhatsApp' : 'Confirmar WhatsApp'}
 							</DropdownMenuItem>
 							<DropdownMenuItem
 								onClick={() => (table.options.meta as any).onUpdateStatus(row.original.id, 'contacted')}
