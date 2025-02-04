@@ -96,9 +96,9 @@ export const columns: ColumnDef<SalesResponse>[] = [
 	},
 	{
 		accessorKey: "email",
-		header: () => <div className="text-center hidden">Email</div>,
+		header: () => <div className="text-center">Email</div>,
 		cell: ({ row }) => (
-			<div className="hidden text-center text-sm">
+			<div className="text-center text-sm">
 				{row.original.email}
 			</div>
 		),
