@@ -20,7 +20,6 @@ interface AccommodationStepProps {
 	onChange: (value: string) => void
 	onNext: () => void
 	onBack: () => void
-	onSubmit: () => void
 	translations: {
 		title: string
 		description: string
@@ -39,7 +38,6 @@ export function AccommodationStep({
 	onChange,
 	onNext,
 	onBack,
-	onSubmit: handleFinalSubmit,
 	translations
 }: AccommodationStepProps) {
 	const formSchema = z.object({
@@ -57,7 +55,7 @@ export function AccommodationStep({
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		onChange(values.accommodation)
-		handleFinalSubmit()
+		onNext()
 	}
 
 	return (

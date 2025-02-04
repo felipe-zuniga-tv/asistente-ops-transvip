@@ -53,7 +53,7 @@ export default async function SalesPage() {
 
 	return (
 		<Suspense fallback={<SalesPageSkeleton />}>
-			<SalesPageContent branches={branches} />
+			<SalesPageContent branches={branches.filter(branch => branch.sales_form_active)} />
 		</Suspense>
 	)
 } 

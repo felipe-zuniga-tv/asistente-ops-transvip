@@ -32,20 +32,20 @@ const statusColors: Record<SalesResponse['status'], string> = {
 
 export const columns: ColumnDef<SalesResponse>[] = [
 	{
-		accessorKey: "created_at",
-		header: () => <div className="text-center">Fecha</div>,
-		cell: ({ row }) => (
-			<div className="text-center">
-				{format(new Date(row.getValue("created_at")), 'dd/MM/yyyy HH:mm')}
-			</div>
-		),
-	},
-	{
 		accessorKey: "branch_name",
 		header: () => <div className="text-center">Sucursal</div>,
 		cell: ({ row }) => (
 			<div className="text-center">
 				{row.getValue("branch_name")}
+			</div>
+		),
+	},
+	{
+		accessorKey: "created_at",
+		header: () => <div className="text-center">Fecha</div>,
+		cell: ({ row }) => (
+			<div className="text-center">
+				{format(new Date(row.getValue("created_at")), 'dd/MM/yyyy HH:mm')}
 			</div>
 		),
 	},

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { CheckCircle2 } from 'lucide-react'
 import { format } from 'date-fns'
 import { type Language } from '@/lib/translations'
@@ -27,9 +27,19 @@ interface ConfirmationStepProps {
 		notSpecified: string
 		redirecting: string
 	}
+	onSubmit: () => void
 }
 
-export function ConfirmationStep({ formData, translations }: ConfirmationStepProps) {
+export function ConfirmationStep({ formData, translations, onSubmit }: ConfirmationStepProps) {
+	const hasSubmitted = useRef(false);
+
+	useEffect(() => {
+		if (!hasSubmitted.current) {
+			hasSubmitted.current = true;
+			onSubmit();
+		}
+	}, [onSubmit]);
+
 	return (
 		<div className="space-y-6 text-center">
 			<div className="flex flex-col items-center space-y-2">
@@ -43,18 +53,18 @@ export function ConfirmationStep({ formData, translations }: ConfirmationStepPro
 			<div className="space-y-4 text-left p-6 bg-muted rounded-lg">
 				<div>
 					<h3 className="font-medium">{translations.personalInfo}</h3>
-					<p>{formData.firstName} {formData.lastName}</p>
-					<p>{formData.email}</p>
+					<p className="text-sm">{formData.firstName} {formData.lastName}</p>
+					<p className="text-sm">{formData.email}</p>
 				</div>
 
 				<div>
 					<h3 className="font-medium">{translations.contactInfo}</h3>
-					<p>{formData.phoneCountry} {formData.phoneNumber}</p>
+					<p className="text-sm">{formData.phoneCountry} {formData.phoneNumber}</p>
 				</div>
 
 				<div>
 					<h3 className="font-medium">{translations.returnFlight}</h3>
-					<p>
+					<p className="text-sm">
 						{formData.returnDate
 							? format(formData.returnDate, 'PPP')
 							: translations.notSpecified}{' '}
@@ -64,7 +74,7 @@ export function ConfirmationStep({ formData, translations }: ConfirmationStepPro
 
 				<div>
 					<h3 className="font-medium">{translations.accommodation}</h3>
-					<p>{formData.accommodation}</p>
+					<p className="text-sm">{formData.accommodation}</p>
 				</div>
 			</div>
 

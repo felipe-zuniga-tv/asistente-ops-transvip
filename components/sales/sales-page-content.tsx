@@ -1,4 +1,5 @@
 'use client'
+
 import { useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Routes } from '@/utils/routes'
@@ -26,7 +27,7 @@ export default function SalesPageContent({ branches }: { branches: Branch[] }) {
 
 	return (
 		<SalesForm
-			branchCode={branchCode}
+			branchCode={branchCode.toUpperCase()}
 			branchName={branch.name}
 			initialLanguage={language}
 			onSuccess={() => router.push(Routes.PUBLIC.SUCURSALES)}

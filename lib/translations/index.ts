@@ -47,7 +47,7 @@ export const translations = {
         description: 'Por favor ingresa dónde te hospedarás',
         name: 'Nombre del Alojamiento',
         placeholder: 'Hotel, Hostal o Dirección',
-        continue: 'Enviar',
+        continue: 'Continuar',
         back: 'Volver',
         validation: {
           name: 'El nombre del alojamiento debe tener al menos 3 caracteres.'
@@ -121,7 +121,7 @@ export const translations = {
         description: "Please enter where you'll be staying",
         name: 'Accommodation Name',
         placeholder: 'Hotel, Hostel or Address',
-        continue: 'Submit',
+        continue: 'Continue',
         back: 'Back',
         validation: {
           name: 'Accommodation name must be at least 3 characters.'
@@ -195,7 +195,7 @@ export const translations = {
         description: 'Bitte geben Sie an, wo Sie übernachten werden',
         name: 'Name der Unterkunft',
         placeholder: 'Hotel, Hostel oder Adresse',
-        continue: 'Absenden',
+        continue: 'Weiter',
         back: 'Zurück',
         validation: {
           name: 'Der Name der Unterkunft muss mindestens 3 Zeichen lang sein.'
@@ -269,7 +269,7 @@ export const translations = {
         description: 'Por favor, insira onde você ficará hospedado',
         name: 'Nome da Hospedagem',
         placeholder: 'Hotel, Hostel ou Endereço',
-        continue: 'Enviar',
+        continue: 'Continuar',
         back: 'Voltar',
         validation: {
           name: 'O nome da hospedagem deve ter pelo menos 3 caracteres.'

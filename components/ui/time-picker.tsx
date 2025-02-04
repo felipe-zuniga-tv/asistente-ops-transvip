@@ -73,7 +73,7 @@ export function TimePickerInput({
 									<Command>
 										<CommandInput placeholder="Hora..." className="h-9" />
 										<CommandList>
-											<CommandEmpty>No found.</CommandEmpty>
+											<CommandEmpty>Sin resultados</CommandEmpty>
 											<CommandGroup>
 												{hours.map((hour) => (
 													<CommandItem
@@ -89,7 +89,7 @@ export function TimePickerInput({
 																selectedHour === hour ? "opacity-100" : "opacity-0"
 															)}
 														/>
-														{hour}h
+														{hour}
 													</CommandItem>
 												))}
 											</CommandGroup>
@@ -119,7 +119,7 @@ export function TimePickerInput({
 									<Command>
 										<CommandInput placeholder="Minutos..." className="h-9" />
 										<CommandList>
-											<CommandEmpty>No found.</CommandEmpty>
+											<CommandEmpty>Sin resultados</CommandEmpty>
 											<CommandGroup>
 												{minutes.map((minute) => (
 													<CommandItem
@@ -135,7 +135,7 @@ export function TimePickerInput({
 																selectedMinute === minute ? "opacity-100" : "opacity-0"
 															)}
 														/>
-														{minute}m
+														{minute}
 													</CommandItem>
 												))}
 											</CommandGroup>

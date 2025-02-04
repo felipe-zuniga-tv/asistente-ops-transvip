@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { Routes } from '@/utils/routes'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
@@ -38,6 +38,7 @@ interface SalesFormProps {
 
 export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }: SalesFormProps) {
 	const [step, setStep] = useState(initialLanguage ? 2 : 1)
+	const isSubmitting = useRef(false)
 	const [formData, setFormData] = useState<SalesFormData>({
 		language: initialLanguage,
 		firstName: '',
@@ -66,9 +67,12 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 		setStep(prev => Math.max(prev - 1, 1))
 	}
 
-	const handleSubmit = async () => {
+	const handleSubmit = useCallback(async () => {
+		if (isSubmitting.current) return;
+		
 		try {
-			const objectToCreate = {
+			isSubmitting.current = true;
+			await createSalesResponse({
 				branch_code: branchCode,
 				branch_name: branchName,
 				language: formData.language,
@@ -80,10 +84,7 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 				return_date: formData.returnDate ? new Date(formData.returnDate).toISOString() : null,
 				return_time: formData.returnTime || null,
 				accommodation: formData.accommodation,
-			}
-			console.log(objectToCreate)
-
-			// await createSalesResponse(objectToCreate)
+			})
 
 			// Show success message
 			toast({
@@ -114,8 +115,10 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 				description: t.error.description,
 				variant: 'destructive',
 			})
+		} finally {
+			isSubmitting.current = false;
 		}
-	}
+	}, [branchCode, branchName, formData, initialLanguage, onSuccess, t.error.description, t.error.title, t.success.description, t.success.title]);
 
 	return (
 		<Card>
@@ -173,7 +176,6 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 							onChange={(accommodation) => updateFormData({ accommodation })}
 							onNext={nextStep}
 							onBack={prevStep}
-							onSubmit={handleSubmit}
 							translations={t.steps.accommodation}
 						/>
 					)}
@@ -182,6 +184,7 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 						<ConfirmationStep
 							formData={formData}
 							translations={t.steps.confirmation}
+							onSubmit={handleSubmit}
 						/>
 					)}
 				</div>
