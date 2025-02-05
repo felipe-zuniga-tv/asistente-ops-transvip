@@ -1,23 +1,15 @@
 import { Tool } from "@/lib/types/chat";
 import { Routes } from "@/utils/routes";
 import {
-	BarChart3,
-	BotIcon,
-	GanttChart,
 	Hammer,
 	LucideIcon,
-	PlaneTakeoff,
 	QrCodeIcon,
 	Send,
 	Bot,
 	Ticket,
 	Map,
-	BarChart4,
 	BookPlusIcon,
 	BusFront,
-	MapIcon,
-	BotMessageSquare,
-	PieChart,
 	MapPin,
 	Pencil,
 	Car,
@@ -26,16 +18,14 @@ import {
 	CarFront,
 	CalendarClock,
 	AlertTriangle,
-	Plane,
 	Settings,
-	Sliders,
 	Settings2,
 	CreditCard,
 	Building2,
 	Building,
 	Sun,
 	ListChecks,
-	ShoppingCart,
+	House,
 } from "lucide-react"
 import { toolsList } from "./tools";
 
@@ -122,14 +112,14 @@ const toolsMenu: SidebarItem = {
 	],
 }
 
-export const salesMenu: SidebarItem = {
-	title: "Ventas",
+export const branchesFormsMenu: SidebarItem = {
+	title: "Formularios Sucursales",
 	url: "#",
-	icon: ShoppingCart,
+	icon: House,
 	isActive: false,
 	items: [
 		{
-			title: "Respuestas de Formularios",
+			title: "Respuestas",
 			url: Routes.SALES.RESPONSES,
 			icon: ListChecks,
 			active: true,
@@ -235,7 +225,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 		publicSidebar,
 		chatbotMenu,
 		toolsMenu,
-		salesMenu,
+		branchesFormsMenu,
 		controlFlotaMenu,
 		{
 			title: "Reservas",

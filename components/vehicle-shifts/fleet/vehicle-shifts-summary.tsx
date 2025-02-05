@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect, useMemo, useRef } from "react"
+import { useState, useCallback, useMemo, useRef } from "react"
 import { startOfToday, addDays, format, parseISO } from "date-fns"
 import { es } from "date-fns/locale"
 import { Card } from "@/components/ui/card"
@@ -17,12 +17,21 @@ import { CalendarGrid } from "@/components/ui/calendar-grid"
 import { generateNextXDays, generateCalendarMonths } from "@/lib/utils/date"
 import { toPng } from "html-to-image"
 import type { ShiftSummary } from "@/lib/types/calendar"
+import {
+    Badge,
+} from "@/components/ui/badge"
+
+interface ShiftOption {
+    value: string
+    label: string
+}
 
 export function VehicleShiftsSummary() {
     const [date, setDate] = useState<Date>(startOfToday())
     const [summaries, setSummaries] = useState<ShiftSummary[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [selectedDate, setSelectedDate] = useState<string | null>(null)
+    const [selectedShifts, setSelectedShifts] = useState<string[]>([])
     const { toast } = useToast()
     const summaryRef = useRef<HTMLDivElement>(null)
 
@@ -74,16 +83,20 @@ export function VehicleShiftsSummary() {
             })
 
             // Create summaries
-            const newSummaries: ShiftSummary[] = Array.from(shiftsMap.entries()).map(([date, shifts]) => ({
-                date,
-                vehicles: shifts.map(shift => ({
-                    number: shift.vehicle_number,
-                    shiftType: shift.shift_name,
-                    startTime: shift.start_time,
-                    endTime: shift.end_time
-                })).sort((a, b) => a.number - b.number)
-            }))
+            const newSummaries: ShiftSummary[] = Array
+                .from(shiftsMap.entries())
+                .map(([date, shifts]) => ({
+                    date,
+                    vehicles: shifts.map(shift => ({
+                        number: shift.vehicle_number,
+                        shiftType: shift.shift_name,
+                        startTime: shift.start_time,
+                        endTime: shift.end_time
+                    })).sort((a, b) => a.number - b.number)
+                }))
                 .sort((a, b) => a.date.localeCompare(b.date))
+
+            console.log(newSummaries)
 
             setSummaries(newSummaries)
         } catch (error) {
@@ -98,10 +111,6 @@ export function VehicleShiftsSummary() {
             setIsLoading(false)
         }
     }, [date, toast])
-
-    useEffect(() => {
-        fetchShiftsSummary()
-    }, [fetchShiftsSummary])
 
     const selectedDateSummary = useMemo(() => {
         if (!selectedDate) return null
@@ -168,6 +177,35 @@ export function VehicleShiftsSummary() {
         }
     }
 
+    const filteredSummaries = useMemo(() => {
+        if (!selectedShifts.length) return summaries
+        return summaries.map(summary => ({
+            ...summary,
+            vehicles: summary.vehicles.filter(vehicle => {
+                const shiftKey = `${vehicle.shiftType} (${vehicle.startTime} - ${vehicle.endTime})`
+                return selectedShifts.includes(shiftKey)
+            })
+        }))
+    }, [summaries, selectedShifts])
+
+    const groupedVehicles = useMemo(() => {
+        if (!selectedDateSummary) return []
+        
+        const groups = new Map<string, number[]>()
+        selectedDateSummary.vehicles.forEach(vehicle => {
+            const shiftKey = `${vehicle.shiftType} (${vehicle.startTime} - ${vehicle.endTime})`
+            if (!groups.has(shiftKey)) {
+                groups.set(shiftKey, [])
+            }
+            groups.get(shiftKey)?.push(vehicle.number)
+        })
+
+        return Array.from(groups.entries()).map(([key, vehicles]) => ({
+            shiftKey: key,
+            vehicles: vehicles.sort((a, b) => a - b)
+        }))
+    }, [selectedDateSummary])
+
     return (
         <div className="space-y-6 max-w-full">
             <Card className="p-6">
@@ -203,6 +241,7 @@ export function VehicleShiftsSummary() {
                                 />
                             </PopoverContent>
                         </Popover>
+
                         <Button
                             onClick={fetchShiftsSummary}
                             disabled={isLoading}
@@ -248,28 +287,28 @@ export function VehicleShiftsSummary() {
                                 </Button>
                             </div>
                         </div>
-                        <div className="bg-white rounded-lg">
-                            <div className="grid gap-2 md:grid-cols-3 lg:grid-cols-6">
-                                {selectedDateSummary?.vehicles.map((vehicle, idx) => (
-                                    <div
-                                        key={`${selectedDate}-${vehicle.number}-${idx}`}
-                                        className="text-sm flex items-center justify-between p-3 bg-muted rounded-lg hover:bg-muted/80"
-                                    >
-                                        <span className="font-semibold">{vehicle.number}</span>
-                                        <span className="font-normal text-primary">{vehicle.shiftType}</span>
-                                        {vehicle.startTime && vehicle.endTime && (
-                                            <span className="text-muted-foreground">
-                                                {vehicle.startTime} - {vehicle.endTime}
-                                            </span>
-                                        )}
+                        <div className="bg-white rounded-lg space-y-4">
+                            {groupedVehicles.map(({ shiftKey, vehicles }) => (
+                                <div key={shiftKey} className="space-y-2">
+                                    <h4 className="font-medium text-sm text-primary">{shiftKey} · {vehicles.length} vehículo{vehicles.length === 1 ? '' : 's'}</h4>
+                                    <div className="grid gap-2 grid-cols-1 sm:grid-cols-5 md:grid-cols-7">
+                                        {vehicles.map((vehicleNumber) => (
+                                            <Badge
+                                                key={vehicleNumber}
+                                                variant="secondary"
+                                                className="justify-center py-1.5"
+                                            >
+                                                {vehicleNumber}
+                                            </Badge>
+                                        ))}
                                     </div>
-                                ))}
-                                {(!selectedDateSummary?.vehicles.length) && (
-                                    <div className="text-center text-muted-foreground py-8 md:col-span-3 lg:col-span-6">
-                                        No hay vehículos con turnos activos en esta fecha
-                                    </div>
-                                )}
-                            </div>
+                                </div>
+                            ))}
+                            {(!groupedVehicles.length) && (
+                                <div className="text-center text-muted-foreground py-8">
+                                    No hay vehículos con turnos activos en esta fecha
+                                </div>
+                            )}
                         </div>
                     </div>
                 </Card>

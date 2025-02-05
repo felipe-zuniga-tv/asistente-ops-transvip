@@ -114,6 +114,7 @@ export async function getVehicleShiftsByDateRange(
 			.select(`
 				*,
 				shifts (
+					name,
 					start_time,
 					end_time,
 					free_day
@@ -133,10 +134,10 @@ export async function getVehicleShiftsByDateRange(
 			console.error("Database error:", error)
 			return { error: "Error fetching vehicle shifts" }
 		}
-
 		// Transform the data to include shift times
 		const transformedShifts = vehicleShifts.map(shift => ({
 			...shift,
+			shift_name: shift.shifts?.name,
 			start_time: shift.shifts?.start_time,
 			end_time: shift.shifts?.end_time,
 			free_day: shift.shifts?.free_day,
