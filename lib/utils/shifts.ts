@@ -20,6 +20,8 @@ export function getHighestPriorityShiftForDate(
 
         if (status) {
             return {
+                branch_id: status.branch_id || "",
+                branch_name: status.branch_name || "",
                 id: status.id,
                 vehicle_number: Number(status.vehicle_number),
                 shift_name: status.status_label,

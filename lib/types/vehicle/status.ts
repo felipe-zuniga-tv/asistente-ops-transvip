@@ -17,6 +17,8 @@ export interface VehicleStatus {
     comments: string | null;
     created_at: string;
     created_by: string | null;
+    branch_id?: string;
+    branch_name?: string;
 }
 
 export interface CreateVehicleStatusInput {
