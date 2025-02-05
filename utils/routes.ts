@@ -43,7 +43,7 @@ export const Routes = Object.freeze({
 		VENTA_SUCURSALES: '/sucursales/venta',
 		TURNOS: '/turnos',
 	},
-	QR_GEN: '/qr',
+	QR_GEN: '/qr-code',
 	ROUTING: {
 		MAIN: '/ruteo',
 	},

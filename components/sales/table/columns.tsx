@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { MoreHorizontal, Check, X } from "lucide-react";
+import { MoreHorizontal, Check, X, Eye, PlusCircle, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
@@ -21,10 +21,13 @@ import {
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuTrigger,
+	DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
 import type { SalesResponse } from "@/lib/types/sales";
 import { WhatsappIcon } from "@/components/ui/icons-list";
 import React from "react";
+import { languages } from "../language-selector";
+import type { Language } from "@/lib/translations";
 
 const statusColors: Record<SalesResponse['status'], string> = {
 	pending: "bg-yellow-100 text-black hover:bg-yellow-200 hover:text-black",
@@ -45,6 +48,7 @@ declare module '@tanstack/table-core' {
 		onConfirmWhatsapp?: (id: string, confirmed: boolean) => void
 		onUpdateStatus?: (id: string) => void | Promise<void>
 		onUpdateNotes?: (id: string) => void
+		onSendWhatsApp?: (response: TData) => void
 	}
 }
 
@@ -68,38 +72,69 @@ export const columns: ColumnDef<SalesResponse>[] = [
 		),
 	},
 	{
-		accessorKey: "first_name",
+		accessorKey: "client_name",
 		header: () => <div className="text-center">Nombre</div>,
 		cell: ({ row }) => (
 			<div className="text-center text-sm">
-				{row.original.first_name}
+				{row.original.first_name} {row.original.last_name}
 			</div>
 		),
 	},
 	{
-		accessorKey: "last_name",
-		header: () => <div className="text-center">Apellido</div>,
-		cell: ({ row }) => (
-			<div className="text-center text-sm">
-				{row.original.last_name}
-			</div>
-		),
+		accessorKey: "language",
+		header: () => <div className="text-center">Idioma</div>,
+		cell: ({ row }) => {
+			const lang = languages.find(l => l.value === (row.original.language as Language));
+			return (
+				<div className="flex items-center justify-center gap-2 text-sm">
+					<span className="text-lg">{lang?.flag.split(" ")[0]}</span>
+					<span className="hidden">{lang?.label}</span>
+				</div>
+			);
+		},
 	},
-	{
-		accessorKey: "phone_number",
-		header: () => <div className="text-center hidden">Teléfono</div>,
-		cell: ({ row }) => (
-			<div className="hidden flex flex-col gap-1 items-center text-center text-sm">
-				<span>{row.original.phone_country} {row.original.phone_number}</span>
-			</div>
-		),
-	},
+	// {
+	// 	accessorKey: "first_name",
+	// 	header: () => <div className="text-center">Nombre</div>,
+	// 	cell: ({ row }) => (
+	// 		<div className="text-center text-sm">
+	// 			{row.original.first_name}
+	// 		</div>
+	// 	),
+	// },
+	// {
+	// 	accessorKey: "last_name",
+	// 	header: () => <div className="text-center">Apellido</div>,
+	// 	cell: ({ row }) => (
+	// 		<div className="text-center text-sm">
+	// 			{row.original.last_name}
+	// 		</div>
+	// 	),
+	// },
 	{
 		accessorKey: "email",
 		header: () => <div className="text-center">Email</div>,
 		cell: ({ row }) => (
 			<div className="text-center text-sm">
 				{row.original.email}
+			</div>
+		),
+	},
+	{
+		accessorKey: "phone_number",
+		header: () => <div className="text-center">Teléfono</div>,
+		cell: ({ row, table }) => (
+			<div className="flex flex-col gap-1 items-center text-center text-sm">
+				<span className="hidden">{row.original.phone_country} {row.original.phone_number}</span>
+				<Button
+					variant="ghost"
+					size="sm"
+					className="h-6 px-2 bg-green-300 hover:bg-green-400"
+					onClick={() => table.options.meta?.onSendWhatsApp?.(row.original)}
+				>
+					<WhatsappIcon className="h-4 w-4" />
+					<span>Enviar mensaje</span>
+				</Button>
 			</div>
 		),
 	},
@@ -137,24 +172,6 @@ export const columns: ColumnDef<SalesResponse>[] = [
 		},
 	},
 	{
-		accessorKey: "notes",
-		header: () => <div className="text-center">Notas</div>,
-		cell: ({ row, table }) => {
-			return (
-				<div className="text-center">
-					<Button 
-						variant="outline" 
-						size="sm" 
-						className="h-8"
-						onClick={() => table.options.meta?.onUpdateNotes?.(row.original.id)}
-					>
-						{row.original.notes ? 'Ver Notas' : 'Agregar Notas'}
-					</Button>
-				</div>
-			);
-		},
-	},
-	{
 		id: "actions",
 		header: () => <div className="text-center">Acciones</div>,
 		cell: ({ row, table }) => {
@@ -167,11 +184,28 @@ export const columns: ColumnDef<SalesResponse>[] = [
 							</Button>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end">
-							<DropdownMenuLabel>Acciones</DropdownMenuLabel>
+							<DropdownMenuLabel>Notas</DropdownMenuLabel>
+							<DropdownMenuItem
+								onClick={() => (table.options.meta as any).onUpdateNotes(row.original.id)}
+							>
+								{row.original.notes ? (
+									<>
+										<Pencil className="mr-1 h-4 w-4" />
+										Editar nota
+									</>
+								) : (
+									<>
+										<PlusCircle className="mr-1 h-4 w-4" />
+										Agregar nota
+									</>
+								)}
+							</DropdownMenuItem>
+							<DropdownMenuSeparator />
+							<DropdownMenuLabel>Estado</DropdownMenuLabel>
 							<DropdownMenuItem
 								onClick={() => (table.options.meta as any).onConfirmWhatsapp(row.original.id, !row.original.whatsapp_confirmed)}
 							>
-								<WhatsappIcon className="bg-green-500 rounded-full p-0.5" /> {row.original.whatsapp_confirmed ? 'Desconfirmar WhatsApp' : 'Confirmar WhatsApp'}
+								<WhatsappIcon className="mr-1 bg-green-500 rounded-full p-0.5" /> {row.original.whatsapp_confirmed ? 'Desconfirmar WhatsApp' : 'Confirmar WhatsApp'}
 							</DropdownMenuItem>
 							<DropdownMenuItem
 								onClick={() => (table.options.meta as any).onUpdateStatus(row.original.id)}

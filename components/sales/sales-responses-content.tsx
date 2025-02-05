@@ -16,6 +16,23 @@ import {
 } from '@/lib/services/sales'
 import { useRouter } from 'next/navigation'
 
+const WHATSAPP_MESSAGES = {
+	'es-CL': "Hola [NAME], te escribimos de Transvip. Este mensaje es sólo para confirmar que obtuvimos correctamente tu número de teléfono. ¡Buen viaje!",
+	'en-US': "Hello [NAME], we are writing to you from Transvip. This message is only to confirm that we correctly obtained your phone number. Have a good trip!",
+	'pt-BR': "Olá [NAME], estamos escrevendo para você da Transvip. Esta mensagem serve apenas para confirmar que obtivemos corretamente o seu número de telefone. Boa viagem!",
+	'de-DE': "Hallo [NAME], wir schreiben Ihnen im Namen von Transvip. Diese Nachricht dient lediglich der Bestätigung, dass wir Ihre Telefonnummer korrekt erhalten haben. Gute Reise!"
+};
+
+function getWhatsAppMessage(name: string, language: string): string {
+	const message = WHATSAPP_MESSAGES[language as keyof typeof WHATSAPP_MESSAGES] || WHATSAPP_MESSAGES['es-CL'];
+	return message.replace("[NAME]", name);
+}
+
+function sendWhatsAppMessage(phoneNumber: string, message: string) {
+	const encodedMessage = encodeURIComponent(message);
+	window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
+}
+
 interface SalesResponsesContentProps {
 	initialResponses: SalesResponse[]
 }
@@ -123,6 +140,11 @@ export function SalesResponsesContent({
 		router.refresh()
 	}
 
+	const handleSendWhatsAppMessage = (response: SalesResponse) => {
+		const message = getWhatsAppMessage(response.first_name, response.language);
+		sendWhatsAppMessage(`${response.phone_country}${response.phone_number}`, message);
+	}
+
 	return (
 		<ConfigCardContainer title="Respuestas de Formularios"
 			headerContent={
@@ -146,6 +168,7 @@ export function SalesResponsesContent({
 				onUpdateStatus={handleUpdateStatus}
 				onConfirmWhatsapp={handleConfirmWhatsapp}
 				onUpdateNotes={handleEditResponse}
+				onSendWhatsApp={handleSendWhatsAppMessage}
 			/>
 
 			<SalesResponseNotesDialog

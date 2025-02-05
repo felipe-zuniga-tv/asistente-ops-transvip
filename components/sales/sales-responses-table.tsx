@@ -23,12 +23,14 @@ interface SalesResponsesTableProps {
 	onUpdateStatus: (id: string, status: string) => Promise<void>
 	onConfirmWhatsapp: (id: string, confirmed: boolean) => Promise<void>
 	onUpdateNotes: (id: string) => void
+	onSendWhatsApp: (response: SalesResponse) => void
 }
 
 export function SalesResponsesTable({
 	data,
 	onConfirmWhatsapp,
 	onUpdateNotes,
+	onSendWhatsApp,
 }: SalesResponsesTableProps) {
 	const [sorting, setSorting] = React.useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -55,7 +57,7 @@ export function SalesResponsesTable({
 		onSortingChange: setSorting,
 		onColumnFiltersChange: setColumnFilters,
 		state: { sorting, columnFilters },
-		meta: { onConfirmWhatsapp, onUpdateNotes },
+		meta: { onConfirmWhatsapp, onUpdateNotes, onSendWhatsApp },
 	});
 
 	return (
