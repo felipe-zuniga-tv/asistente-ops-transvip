@@ -38,6 +38,7 @@
     "@supabase/ssr": "^0.5.2",
     "@tanstack/react-table": "^8.20.6",
     "@types/cheerio": "^0.22.35",
+    "@vercel/speed-insights": "^1.1.0",
     "@yudiel/react-qr-scanner": "^2.0.8",
     "ai": "^3.1.1",
     "cheerio": "^1.0.0",
