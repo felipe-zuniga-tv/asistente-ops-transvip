@@ -10,6 +10,8 @@ import { createShift, updateShift } from "@/lib/database/actions";
 import { useTransition } from "react";
 import { WEEKDAYS, Shift } from "./shifts-definition";
 import { useState, useEffect } from "react";
+import { getBranches } from "@/lib/services/admin";
+import { Branch } from "@/lib/types/admin";
 
 interface ShiftDialogProps {
     shift?: Shift | null;
@@ -19,14 +21,30 @@ interface ShiftDialogProps {
 
 export function ShiftDialog({ shift, open, onOpenChange }: ShiftDialogProps) {
     const [isPending, startTransition] = useTransition();
+    const [branches, setBranches] = useState<Branch[]>([]);
     const [formData, setFormData] = useState({
         name: "",
         start_time: "",
         end_time: "",
         free_day: 1,
+        branch_name: "",
     });
 
     const isEditing = Boolean(shift);
+
+    useEffect(() => {
+        const fetchBranches = async () => {
+            try {
+                const branchesData = await getBranches();
+                setBranches(branchesData);
+            } catch (error) {
+                console.error('Error fetching branches:', error);
+                toast.error('Error al cargar las sucursales');
+            }
+        };
+
+        fetchBranches();
+    }, []);
 
     useEffect(() => {
         if (shift) {
@@ -35,6 +53,7 @@ export function ShiftDialog({ shift, open, onOpenChange }: ShiftDialogProps) {
                 start_time: shift.start_time,
                 end_time: shift.end_time,
                 free_day: shift.free_day,
+                branch_name: shift.branch_name,
             });
         } else {
             setFormData({
@@ -42,6 +61,7 @@ export function ShiftDialog({ shift, open, onOpenChange }: ShiftDialogProps) {
                 start_time: "",
                 end_time: "",
                 free_day: 1,
+                branch_name: "",
             });
         }
     }, [shift]);
@@ -81,6 +101,25 @@ export function ShiftDialog({ shift, open, onOpenChange }: ShiftDialogProps) {
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             required
                         />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="branch_name">Sucursal</Label>
+                        <Select
+                            value={formData.branch_name}
+                            onValueChange={(value) => setFormData({ ...formData, branch_name: value })}
+                            required
+                        >
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Seleccionar sucursal" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {branches.map((branch) => (
+                                    <SelectItem key={branch.id} value={branch.name}>
+                                        {branch.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">

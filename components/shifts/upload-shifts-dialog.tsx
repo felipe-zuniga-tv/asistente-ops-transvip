@@ -38,6 +38,7 @@ export function UploadShiftsDialog({ open, onOpenChange }: UploadShiftsDialogPro
 
     const validateShift = (row: any): row is Shift => {
         return (
+            typeof row.branch_name === "string" &&
             typeof row.name === "string" &&
             typeof row.start_time === "string" &&
             typeof row.end_time === "string" &&
@@ -62,10 +63,11 @@ export function UploadShiftsDialog({ open, onOpenChange }: UploadShiftsDialogPro
             try {
                 const row = rows[i].split(",");
                 const shiftData = {
-                    name: row[0]?.trim(),
-                    start_time: row[1]?.trim(),
-                    end_time: row[2]?.trim(),
-                    free_day: parseInt(row[3]?.trim()),
+                    branch_name: row[0]?.trim(),
+                    name: row[1]?.trim(),
+                    start_time: row[2]?.trim(),
+                    end_time: row[3]?.trim(),
+                    free_day: parseInt(row[4]?.trim()),
                 };
 
                 if (validateShift(shiftData)) {
@@ -100,7 +102,7 @@ export function UploadShiftsDialog({ open, onOpenChange }: UploadShiftsDialogPro
                 <div className="flex flex-col gap-4">
                     <div className="text-sm flex flex-col gap-1 py-2">
                         <span>El archivo debe tener el siguiente formato:</span>
-                        <span className="font-bold text-gray-500">Nombre, Hora de Inicio, Hora de Fin, Día Libre (1 a 7)</span>
+                        <span className="font-bold text-gray-500">Sucursal,Nombre, Hora de Inicio, Hora de Fin, Día Libre (1 a 7)</span>
                     </div>
                     <div className="space-y-2">
                         <Label>Sube tu archivo CSV</Label>

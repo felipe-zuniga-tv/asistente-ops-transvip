@@ -9,7 +9,6 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
@@ -23,6 +22,11 @@ declare module '@tanstack/table-core' {
 }
 
 export const columns: ColumnDef<Shift>[] = [
+    {
+        accessorKey: "branch_name",
+        header: () => <div className="text-center">Sucursal</div>,
+        cell: ({ row }) => <div className="text-center">{row.original.branch_name}</div>
+    },
     {
         accessorKey: "name",
         header: ({ column }) => {

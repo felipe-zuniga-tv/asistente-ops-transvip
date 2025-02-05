@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Upload } from "lucide-react";
+import { Upload, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { AlertDialogDeleteShift } from "./delete-shift-alert-dialog";
 import { toast } from "sonner";
 import { ConfigCardContainer } from "../tables/config-card-container";
+import { downloadFile } from "@/lib/utils/file";
 
 export const WEEKDAYS = [
     { value: "1", label: "Lunes" },
@@ -34,6 +35,7 @@ export interface Shift {
     end_time: string;
     free_day: number;
     created_timestamp: string;
+    branch_name: string;
 }
 
 interface ShiftsCardProps {
@@ -91,6 +93,21 @@ export function ShiftsDefinition({ shifts }: ShiftsCardProps) {
         }
     };
 
+    const generateShiftsTemplate = () => {
+        const headers = ["Sucursal", "Nombre", "Hora Inicio", "Hora Fin", "Día Libre"]
+        const example = ["Santiago", "Turno AM", "08:00", "16:00", "1"]
+        return [headers.join(","), example.join(",")].join("\n")
+    }
+
+    const handleDownloadTemplate = async () => {
+        const template = generateShiftsTemplate()
+        await downloadFile(template, "plantilla-turnos.csv", {
+            onError: () => {
+                toast.error("No se pudo descargar el archivo")
+            }
+        })
+    }
+
     return (
         <ConfigCardContainer
             title="Jornadas de Conexión"
@@ -102,14 +119,24 @@ export function ShiftsDefinition({ shifts }: ShiftsCardProps) {
                     <Switch checked={showFilters} onCheckedChange={setShowFilters} />
                     <Label>{showFilters ? "Ocultar" : "Mostrar"} Filtros</Label>
                 </div>
-                <Button
-                    variant={"outline"}
-                    size="sm"
-                    onClick={() => setIsUploadDialogOpen(true)}
-                >
-                    <Upload className="w-4 h-4" />
-                    Carga Masiva
-                </Button>
+                <div className="flex gap-2">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleDownloadTemplate}
+                    >
+                        <Download className="w-4 h-4" />
+                        Plantilla CSV
+                    </Button>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setIsUploadDialogOpen(true)}
+                    >
+                        <Upload className="w-4 h-4" />
+                        Carga Masiva
+                    </Button>
+                </div>
             </div>
 
             {showFilters && (

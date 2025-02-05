@@ -23,11 +23,27 @@ export async function getShifts() {
 
 	const { data, error } = await supabase
 		.from('shifts')
-		.select('*')
+		.select(`
+			*,
+			branches (
+				id,
+				name
+			)
+		`)
 		.order('name', { ascending: true })
 
 	if (error) throw new Error(error.message)
-	return data
+	revalidatePath(Routes.CONTROL_FLOTA.SHIFTS)
+	
+	return data.map(shift => ({
+		id: shift.id,
+		name: shift.name,
+		start_time: shift.start_time,
+		end_time: shift.end_time,
+		free_day: shift.free_day,
+		created_timestamp: shift.created_timestamp,
+		branch_name: shift.branches?.name,
+	}))
 }
 
 export async function getVehicleShifts(): Promise<VehicleShiftWithShiftInfo[]> {
@@ -42,7 +58,11 @@ export async function getVehicleShifts(): Promise<VehicleShiftWithShiftInfo[]> {
 				name,
 				start_time,
 				end_time,
-				free_day
+				free_day,
+				branches (
+					id,
+					name
+				)
 			)
 		`)
 		.order('vehicle_number', { ascending: true })
@@ -61,6 +81,7 @@ export async function getVehicleShifts(): Promise<VehicleShiftWithShiftInfo[]> {
 		shift_start_time: shift.shift_data.start_time,
 		shift_end_time: shift.shift_data.end_time,
 		shift_free_day: shift.shift_data.free_day,
+		branch_name: shift.shift_data.branches?.name,
 	})) as VehicleShiftWithShiftInfo[]
 }
 

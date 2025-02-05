@@ -7,7 +7,7 @@ export const revalidate = 0;
 
 export default async function ShiftsDefinitionPage() {
   const shifts = await getShifts();
-
+  
   return (
     <Suspense fallback={<SuspenseLoading />}>
       <ShiftsDefinition shifts={shifts} />

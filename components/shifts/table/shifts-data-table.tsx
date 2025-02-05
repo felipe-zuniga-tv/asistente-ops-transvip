@@ -10,12 +10,12 @@ import {
 	getSortedRowModel,
 	useReactTable,
 } from "@tanstack/react-table"
-import { Search } from "lucide-react"
-import { useState, useEffect } from "react"
-import { Input } from "@/components/ui/input"
+import { useState, useEffect, useMemo } from "react"
 import { DataTableHeader } from "@/components/tables/data-table-header"
 import { DataTablePagination } from "@/components/tables/data-table-pagination"
 import { DataTableContent } from "@/components/tables/data-table-content"
+import { DataTableSearch } from "@/components/tables/data-table-search"
+import { DataTableSelect } from "@/components/tables/data-table-select"
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
@@ -34,6 +34,11 @@ export function ShiftsDataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+
+	const uniqueBranches = useMemo(() => (
+		Array.from(new Set((data as any[]).map(item => item.branch_name)))
+			.map(branch => ({ label: branch, value: branch }))
+	), [data])
 
 	const table = useReactTable({
 		data,
@@ -67,18 +72,19 @@ export function ShiftsDataTable<TData, TValue>({
 	return (
 		<>
 			<div className="flex items-center justify-between gap-4 py-1">
-				<div className="relative">
-					<Input
+				<div className="flex items-center gap-4">
+					<DataTableSearch
+						table={table}
 						placeholder="Filtrar por nombre..."
-						value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-						onChange={(event) =>
-							table.getColumn("name")?.setFilterValue(event.target.value)
-						}
-						className="peer pe-9 ps-9 max-w-sm"
+						searchColumnId="name"
 					/>
-					<div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
-						<Search size={16} strokeWidth={2} />
-					</div>
+					<DataTableSelect
+						table={table}
+						options={uniqueBranches}
+						placeholder="Filtrar por sucursal"
+						filterColumnId="branch_name"
+						className="w-[180px]"
+					/>
 				</div>
 			</div>
 			<DataTableHeader table={table} />
