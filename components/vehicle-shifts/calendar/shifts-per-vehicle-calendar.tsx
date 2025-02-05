@@ -82,7 +82,7 @@ export function ShiftsPerVehicleCalendar({ shifts, hasSearched, daysToShow, vehi
 
         return (
             <div key={date.toISOString()}
-                className={`p-1 border rounded-sm transition-colors min-h-[4rem] ${
+                className={`p-1 border rounded-sm transition-colors min-h-[3.5rem] ${
                     shift?.isFreeDay ? "bg-green-50 hover:bg-green-100" :
                     shift?.isStatus ? `bg-opacity-10 hover:bg-opacity-20` :
                     shift ? "bg-blue-50 hover:bg-blue-100" : "hover:bg-muted/50"

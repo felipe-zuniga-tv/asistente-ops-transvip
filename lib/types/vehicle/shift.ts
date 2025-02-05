@@ -2,18 +2,20 @@ export interface VehicleShift {
     id: string;
     vehicle_number: number;
     shift_name: string;
+    shift_id: string;
+    branch_id: string;
+    branch_name: string;
     start_date: string;
     end_date: string;
     start_time?: string;
     end_time?: string;
+    priority: number;
 }
 
 export interface VehicleShiftWithShiftInfo extends VehicleShift {
     free_day?: number;
     status_color?: string;
     isStatus?: boolean;
-    shift_id: string;
-    priority: number;
     created_at: string;
 }
 
@@ -25,6 +27,7 @@ export interface VehicleShiftWithFreeDay extends VehicleShiftWithShiftInfo {
 
 export interface ShiftData {
     id?: string;
+    branch_id: string;
     name: string;
     start_time: string;
     end_time: string;

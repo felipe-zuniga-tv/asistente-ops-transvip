@@ -6,7 +6,7 @@ import { Suspense } from "react";
 export const revalidate = 0;
 
 export default async function ShiftsDefinitionPage() {
-  const shifts = await getShifts();
+  const shifts = await getShifts()
   
   return (
     <Suspense fallback={<SuspenseLoading />}>

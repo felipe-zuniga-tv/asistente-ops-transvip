@@ -42,6 +42,7 @@ export async function getShifts() {
 		end_time: shift.end_time,
 		free_day: shift.free_day,
 		created_timestamp: shift.created_timestamp,
+		branch_id: shift.branches?.id,
 		branch_name: shift.branches?.name,
 	}))
 }
@@ -81,6 +82,7 @@ export async function getVehicleShifts(): Promise<VehicleShiftWithShiftInfo[]> {
 		shift_start_time: shift.shift_data.start_time,
 		shift_end_time: shift.shift_data.end_time,
 		shift_free_day: shift.shift_data.free_day,
+		branch_id: shift.shift_data.branches?.id,
 		branch_name: shift.shift_data.branches?.name,
 	})) as VehicleShiftWithShiftInfo[]
 }
@@ -125,8 +127,11 @@ export async function deleteShift(id: string) {
 export async function getVehicleShiftsByDateRange(
 	vehicleNumber: number,
 	startDate: string,
-	endDate: string
+	endDate: string,
+	branchId?: string
 ) {
+	console.log(vehicleNumber, startDate, endDate, branchId)
+
 	try {
 		const supabase = await getSupabaseClient()
 
@@ -134,19 +139,28 @@ export async function getVehicleShiftsByDateRange(
 			.from("vehicle_shifts")
 			.select(`
 				*,
-				shifts (
+				shifts!inner (
 					name,
 					start_time,
 					end_time,
-					free_day
+					free_day,
+					branch_id,
+					branches (
+						id,
+						name
+					)
 				)
 			`)
 			.or(`start_date.lte.${endDate},end_date.gte.${startDate}`)
-			.order("priority", { ascending: false })
 
 		// Only apply vehicle number filter if not 0
 		if (vehicleNumber !== 0) {
 			query = query.eq("vehicle_number", vehicleNumber)
+		}
+
+		// Only apply branch filter if provided
+		if (branchId) {
+			query = query.eq("shifts.branch_id", branchId)
 		}
 
 		const { data: vehicleShifts, error } = await query
@@ -155,6 +169,7 @@ export async function getVehicleShiftsByDateRange(
 			console.error("Database error:", error)
 			return { error: "Error fetching vehicle shifts" }
 		}
+
 		// Transform the data to include shift times
 		const transformedShifts = vehicleShifts.map(shift => ({
 			...shift,
@@ -162,7 +177,8 @@ export async function getVehicleShiftsByDateRange(
 			start_time: shift.shifts?.start_time,
 			end_time: shift.shifts?.end_time,
 			free_day: shift.shifts?.free_day,
-			shifts: undefined // Remove the nested shifts object
+			branch_id: shift.shifts?.branches?.id,
+			branch_name: shift.shifts?.branches?.name,
 		}))
 
 		revalidatePath(Routes.CONTROL_FLOTA.SHIFTS_PER_VEHICLE)
@@ -171,7 +187,7 @@ export async function getVehicleShiftsByDateRange(
 		console.error("Error in getVehicleShiftsByDateRange:", error)
 		return { error: "Error fetching vehicle shifts" }
 	}
-} 
+}
 
 // VEHICLE STATUS
 export async function getVehicleStatusConfigs() {

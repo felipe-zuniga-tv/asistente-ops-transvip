@@ -31,7 +31,7 @@ export function CalendarGrid({ months, renderCell }: CalendarGridProps) {
                             <div className="grid grid-cols-7 gap-1.5">
                                 {/* Empty cells for first week alignment */}
                                 {Array.from({ length: firstDayIndex }, (_, i) => (
-                                    <div key={`empty-start-${i}`} className="p-1 border-0 rounded-sm min-h-[4rem] bg-transparent" />
+                                    <div key={`empty-start-${i}`} className="p-1 border-0 rounded-sm min-h-[3rem] bg-transparent" />
                                 ))}
 
                                 {/* Days of the month */}

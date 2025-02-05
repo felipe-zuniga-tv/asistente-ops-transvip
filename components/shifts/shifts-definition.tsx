@@ -34,8 +34,9 @@ export interface Shift {
     start_time: string;
     end_time: string;
     free_day: number;
-    created_timestamp: string;
+    branch_id: string;
     branch_name: string;
+    created_timestamp: string;
 }
 
 interface ShiftsCardProps {

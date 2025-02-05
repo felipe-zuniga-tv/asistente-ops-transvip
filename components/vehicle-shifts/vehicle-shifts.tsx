@@ -22,6 +22,7 @@ export interface VehicleShift {
     vehicle_number: number
     shift_id: string
     shift_name: string
+    branch_id: string
     start_date: string
     end_date: string
     priority: number
@@ -34,6 +35,7 @@ interface VehicleShiftsContentProps {
     shifts: {
         id: string
         name: string
+        branch_id: string
     }[]
     vehicleShifts: VehicleShift[]
 }

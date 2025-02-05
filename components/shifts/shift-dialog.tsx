@@ -27,7 +27,7 @@ export function ShiftDialog({ shift, open, onOpenChange }: ShiftDialogProps) {
         start_time: "",
         end_time: "",
         free_day: 1,
-        branch_name: "",
+        branch_id: "",
     });
 
     const isEditing = Boolean(shift);
@@ -53,7 +53,7 @@ export function ShiftDialog({ shift, open, onOpenChange }: ShiftDialogProps) {
                 start_time: shift.start_time,
                 end_time: shift.end_time,
                 free_day: shift.free_day,
-                branch_name: shift.branch_name,
+                branch_id: shift.branch_id,
             });
         } else {
             setFormData({
@@ -61,7 +61,7 @@ export function ShiftDialog({ shift, open, onOpenChange }: ShiftDialogProps) {
                 start_time: "",
                 end_time: "",
                 free_day: 1,
-                branch_name: "",
+                branch_id: "",
             });
         }
     }, [shift]);
@@ -93,6 +93,26 @@ export function ShiftDialog({ shift, open, onOpenChange }: ShiftDialogProps) {
                     <DialogTitle>{isEditing ? "Editar" : "Nueva"} Jornada</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2">
+                        <Label htmlFor="branch_id">Sucursal</Label>
+                        <Select
+                            name="branch_id"
+                            value={formData.branch_id}
+                            onValueChange={(value) => setFormData({ ...formData, branch_id: value })}
+                            required
+                        >
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Seleccionar sucursal" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {branches.map((branch) => (
+                                    <SelectItem key={branch.id} value={branch.id}>
+                                        {branch.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
                     <div className="space-y-2">
                         <Label htmlFor="name">Nombre del Turno</Label>
                         <Input
@@ -101,26 +121,7 @@ export function ShiftDialog({ shift, open, onOpenChange }: ShiftDialogProps) {
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             required
                         />
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="branch_name">Sucursal</Label>
-                        <Select
-                            value={formData.branch_name}
-                            onValueChange={(value) => setFormData({ ...formData, branch_name: value })}
-                            required
-                        >
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Seleccionar sucursal" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {branches.map((branch) => (
-                                    <SelectItem key={branch.id} value={branch.name}>
-                                        {branch.name}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
+                    </div>                    
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <Label htmlFor="startTime">Hora Inicio</Label>

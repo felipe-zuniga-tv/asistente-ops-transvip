@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useMemo, useRef } from "react"
+import { useState, useCallback, useMemo, useRef, useEffect } from "react"
 import { startOfToday, addDays, format, parseISO } from "date-fns"
 import { es } from "date-fns/locale"
 import { Card } from "@/components/ui/card"
@@ -20,6 +20,9 @@ import type { ShiftSummary } from "@/lib/types/calendar"
 import {
     Badge,
 } from "@/components/ui/badge"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { getBranches } from "@/lib/services/admin"
+import type { Branch } from "@/lib/types/admin"
 
 interface ShiftOption {
     value: string
@@ -31,9 +34,27 @@ export function VehicleShiftsSummary() {
     const [summaries, setSummaries] = useState<ShiftSummary[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [selectedDate, setSelectedDate] = useState<string | null>(null)
-    const [selectedShifts, setSelectedShifts] = useState<string[]>([])
+    const [branches, setBranches] = useState<Branch[]>([])
+    const [selectedBranch, setSelectedBranch] = useState<string>("")
     const { toast } = useToast()
     const summaryRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        const fetchBranches = async () => {
+            try {
+                const branchesData = await getBranches()
+                setBranches(branchesData)
+            } catch (error) {
+                console.error('Error fetching branches:', error)
+                toast({
+                    variant: "destructive",
+                    title: "Error",
+                    description: "Error al cargar las sucursales"
+                })
+            }
+        }
+        fetchBranches()
+    }, [toast])
 
     const fetchShiftsSummary = useCallback(async () => {
         try {
@@ -45,8 +66,10 @@ export function VehicleShiftsSummary() {
             const result = await getVehicleShiftsByDateRange(
                 0,
                 startDateStr,
-                endDateStr
+                endDateStr,
+                selectedBranch === "all" ? undefined : selectedBranch
             )
+            console.log(result)
 
             if (result.error) {
                 toast({
@@ -89,7 +112,7 @@ export function VehicleShiftsSummary() {
                     date,
                     vehicles: shifts.map(shift => ({
                         number: shift.vehicle_number,
-                        shiftType: shift.shift_name,
+                        shiftName: shift.shift_name,
                         startTime: shift.start_time,
                         endTime: shift.end_time
                     })).sort((a, b) => a.number - b.number)
@@ -110,7 +133,7 @@ export function VehicleShiftsSummary() {
         } finally {
             setIsLoading(false)
         }
-    }, [date, toast])
+    }, [date, selectedBranch, toast])
 
     const selectedDateSummary = useMemo(() => {
         if (!selectedDate) return null
@@ -129,9 +152,8 @@ export function VehicleShiftsSummary() {
         return (
             <div
                 key={dateStr}
-                // variant="outline"
                 className={cn(
-                    "p-1 border rounded-sm min-h-[4rem] text-left hover:cursor-pointer hover:border-muted-foreground",
+                    "p-1 border rounded-sm min-h-[3.5rem] text-left hover:cursor-pointer hover:border-muted-foreground",
                     isSelected ? "ring-2 ring-primary" : "",
                     vehicleCount > 0 ? "bg-blue-50 hover:bg-blue-100" : "hover:bg-muted/50"
                 )}
@@ -177,23 +199,12 @@ export function VehicleShiftsSummary() {
         }
     }
 
-    const filteredSummaries = useMemo(() => {
-        if (!selectedShifts.length) return summaries
-        return summaries.map(summary => ({
-            ...summary,
-            vehicles: summary.vehicles.filter(vehicle => {
-                const shiftKey = `${vehicle.shiftType} (${vehicle.startTime} - ${vehicle.endTime})`
-                return selectedShifts.includes(shiftKey)
-            })
-        }))
-    }, [summaries, selectedShifts])
-
     const groupedVehicles = useMemo(() => {
         if (!selectedDateSummary) return []
         
         const groups = new Map<string, number[]>()
         selectedDateSummary.vehicles.forEach(vehicle => {
-            const shiftKey = `${vehicle.shiftType} (${vehicle.startTime} - ${vehicle.endTime})`
+            const shiftKey = `${vehicle.shiftName} (${vehicle.startTime} - ${vehicle.endTime})`
             if (!groups.has(shiftKey)) {
                 groups.set(shiftKey, [])
             }
@@ -207,7 +218,7 @@ export function VehicleShiftsSummary() {
     }, [selectedDateSummary])
 
     return (
-        <div className="space-y-6 max-w-full">
+        <div className="space-y-2 max-w-full">
             <Card className="p-6">
                 <div className="space-y-4">
                     <div className="flex flex-col space-y-1.5">
@@ -216,31 +227,49 @@ export function VehicleShiftsSummary() {
                             <h2 className="font-semibold text-lg">Resumen de Turnos por Fecha</h2>
                         </div>
                         <p className="text-sm text-muted-foreground">
-                            Seleccione una fecha para ver los vehículos con turno en los próximos 30 días
+                            Seleccione una fecha y sucursal para ver los vehículos con turno en los próximos 30 días
                         </p>
                     </div>
                     <div className="flex items-center gap-4">
-                        <Label className="text-sm text-muted-foreground">Fecha de inicio</Label>
-                        <Popover>
-                            <PopoverTrigger asChild>
-                                <Button
-                                    variant="outline"
-                                    className="justify-start text-left font-normal"
-                                >
-                                    <CalendarIcon className="h-4 w-4" />
-                                    {date ? format(date, "PPP", { locale: es }) : <span>Seleccionar fecha</span>}
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                                <Calendar
-                                    mode="single"
-                                    selected={date}
-                                    onSelect={(newDate) => newDate && setDate(newDate)}
-                                    initialFocus
-                                    locale={es}
-                                />
-                            </PopoverContent>
-                        </Popover>
+                        <div className="flex items-center gap-4">
+                            <Label className="text-sm text-muted-foreground">Sucursal</Label>
+                            <Select value={selectedBranch} onValueChange={setSelectedBranch}>
+                                <SelectTrigger className="w-[200px]">
+                                    <SelectValue placeholder="Seleccionar sucursal" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">Todas</SelectItem>
+                                    {branches.map((branch) => (
+                                        <SelectItem key={branch.id} value={branch.id}>
+                                            {branch.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <Label className="text-sm text-muted-foreground">Fecha de inicio</Label>
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <Button
+                                        variant="outline"
+                                        className="justify-start text-left font-normal"
+                                    >
+                                        <CalendarIcon className="h-4 w-4" />
+                                        {date ? format(date, "PPP", { locale: es }) : <span>Seleccionar fecha</span>}
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0">
+                                    <Calendar
+                                        mode="single"
+                                        selected={date}
+                                        onSelect={(newDate) => newDate && setDate(newDate)}
+                                        initialFocus
+                                        locale={es}
+                                    />
+                                </PopoverContent>
+                            </Popover>
+                        </div>
 
                         <Button
                             onClick={fetchShiftsSummary}

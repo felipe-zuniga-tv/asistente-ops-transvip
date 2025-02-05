@@ -19,7 +19,7 @@ export interface ShiftSummary {
     date: string
     vehicles: {
         number: number
-        shiftType: string
+        shiftName: string
         startTime?: string
         endTime?: string
     }[]

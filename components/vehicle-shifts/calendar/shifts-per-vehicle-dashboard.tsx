@@ -45,7 +45,8 @@ export function ShiftsPerVehicleDashboard({
             const shiftsResult = await getVehicleShiftsByDateRange(
                 vNumber,
                 startDateStr,
-                endDateStr
+                endDateStr,
+                undefined
             )
 
             if (shiftsResult.error) {
