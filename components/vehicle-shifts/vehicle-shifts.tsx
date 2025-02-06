@@ -54,7 +54,7 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
         if (!isDialogOpen || !editingAssignment) {
             // Pushing the change to the end of the call stack
             const timer = setTimeout(() => {
-              document.body.style.pointerEvents = ";
+              document.body.style.pointerEvents = "";
             }, 0);
       
             return () => clearTimeout(timer);

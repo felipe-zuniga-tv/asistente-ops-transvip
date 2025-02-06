@@ -23,7 +23,7 @@ export function PaymentMethodConfig({ data }: PaymentMethodConfigProps) {
         if (!isDialogOpen || !paymentMethodToEdit || !paymentMethodToDelete) {
             // Pushing the change to the end of the call stack
             const timer = setTimeout(() => {
-              document.body.style.pointerEvents = ";
+              document.body.style.pointerEvents = "";
             }, 0);
       
             return () => clearTimeout(timer);

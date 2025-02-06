@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/select"
 import { createVehicleShift, updateVehicleShift } from "@/lib/shifts/actions"
 import { VehicleShift } from "./vehicle-shifts"
-import { getBranches } from "@/lib/services/admin/index"/index"
+import { getBranches } from "@/lib/services/admin/index"
 import { Branch } from "@/lib/types/admin"
 
 const formSchema = z.object({

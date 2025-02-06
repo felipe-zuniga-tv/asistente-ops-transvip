@@ -20,7 +20,7 @@ export function BranchConfig({ data }: BranchConfigProps) {
     useEffect(() => {
         if (!isDialogOpen || !branchToEdit) {
             const timer = setTimeout(() => {
-                document.body.style.pointerEvents = ";
+                document.body.style.pointerEvents = "auto";
             }, 0);
 
             return () => clearTimeout(timer);

@@ -25,7 +25,7 @@ export function VehicleTypesConfig({ data = [] }: VehicleTypesConfigProps) {
         if (!isDialogOpen || !vehicleTypeToEdit) {
             // Pushing the change to the end of the call stack
             const timer = setTimeout(() => {
-              document.body.style.pointerEvents = ";
+                document.body.style.pointerEvents = "auto";
             }, 0);
       
             return () => clearTimeout(timer);
