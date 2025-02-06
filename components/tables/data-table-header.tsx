@@ -24,8 +24,7 @@ export function DataTableHeader<TData>({
                     <span className="font-semibold">Total:</span> {table.getFilteredRowModel().rows.length} {table.getFilteredRowModel().rows.length === 1 ? "resultado" : "resultados"}
                 </div>
                 <div className="flex w-fit items-center justify-center text-sm font-normal text-muted-foreground">
-                    Página {table.getState().pagination.pageIndex + 1} de{" "}
-                    {table.getPageCount()}
+                    Página {table.getState().pagination.pageIndex + 1} de{" "}{table.getPageCount()}
                 </div>
                 <div className="flex items-center space-x-2">
                     <p className="text-sm font-normal text-muted-foreground">Filas por página</p>

@@ -4,6 +4,7 @@ import * as React from "react";
 import {
     ColumnDef,
     ColumnFiltersState,
+    PaginationState,
     SortingState,
     getCoreRowModel,
     getFilteredRowModel,
@@ -35,6 +36,10 @@ export function VehicleStatusConfigDataTable({
 }: DataTableProps) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const [pagination, setPagination] = useState<PaginationState>({
+        pageIndex: 0,
+        pageSize: 10,
+    })
 
     const table = useReactTable({
         data,
@@ -45,9 +50,11 @@ export function VehicleStatusConfigDataTable({
         getSortedRowModel: getSortedRowModel(),
         onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
+        onPaginationChange: setPagination,
         state: {
             sorting,
             columnFilters,
+            pagination,
         },
         meta: {
             onEdit: (config: VehicleStatusConfig) => {

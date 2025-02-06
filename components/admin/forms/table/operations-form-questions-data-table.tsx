@@ -1,9 +1,10 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import {
     // ColumnDef,
     ColumnFiltersState,
+    PaginationState,
     SortingState,
     getCoreRowModel,
     getFilteredRowModel,
@@ -29,8 +30,12 @@ export function OperationsFormQuestionsDataTable({
     onEdit,
     onDelete,
 }: OperationsFormQuestionsDataTableProps) {
-    const [sorting, setSorting] = React.useState<SortingState>([]);
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+    const [sorting, setSorting] = useState<SortingState>([]);
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const [pagination, setPagination] = useState<PaginationState>({
+        pageIndex: 0,
+        pageSize: 10,
+    })
 
     const table = useReactTable({
         data,
@@ -41,9 +46,11 @@ export function OperationsFormQuestionsDataTable({
         getSortedRowModel: getSortedRowModel(),
         onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
+        onPaginationChange: setPagination,
         state: {
             sorting,
             columnFilters,
+            pagination,
         },
         meta: {
             onEdit,

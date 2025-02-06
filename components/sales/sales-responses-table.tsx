@@ -1,8 +1,9 @@
 "use client";
 
-import * as React from "react";
+import { useState, useMemo } from "react";
 import {
 	ColumnFiltersState,
+	PaginationState,
 	SortingState,
 	getCoreRowModel,
 	getFilteredRowModel,
@@ -32,15 +33,19 @@ export function SalesResponsesTable({
 	onUpdateNotes,
 	onSendWhatsApp,
 }: SalesResponsesTableProps) {
-	const [sorting, setSorting] = React.useState<SortingState>([]);
-	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+	const [sorting, setSorting] = useState<SortingState>([]);
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+	const [pagination, setPagination] = useState<PaginationState>({
+		pageIndex: 0,
+		pageSize: 10,
+	})
 
-	const uniqueBranches = React.useMemo(() => (
+	const uniqueBranches = useMemo(() => (
 		Array.from(new Set(data.map(item => item.branch_name)))
 			.map(branch => ({ label: branch, value: branch }))
 	), [data]);
 
-	const statusOptions = React.useMemo(() => (
+	const statusOptions = useMemo(() => (
 		Object.entries(statusLabels).map(([value, label]) => ({
 			label,
 			value
@@ -56,7 +61,8 @@ export function SalesResponsesTable({
 		getFilteredRowModel: getFilteredRowModel(),
 		onSortingChange: setSorting,
 		onColumnFiltersChange: setColumnFilters,
-		state: { sorting, columnFilters },
+		onPaginationChange: setPagination,
+		state: { sorting, columnFilters, pagination },
 		meta: { onConfirmWhatsapp, onUpdateNotes, onSendWhatsApp },
 	});
 

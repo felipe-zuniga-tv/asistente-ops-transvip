@@ -3,6 +3,7 @@
 import {
     ColumnDef,
     ColumnFiltersState,
+    PaginationState,
     SortingState,
     getCoreRowModel,
     getFilteredRowModel,
@@ -50,6 +51,10 @@ export function VehicleShiftsTable({
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [globalFilter, setGlobalFilter] = useState<string>("")
     const [rowSelection, setRowSelection] = useState({})
+    const [pagination, setPagination] = useState<PaginationState>({
+        pageIndex: 0,
+        pageSize: 10,
+    })
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
     const table = useReactTable({
@@ -63,7 +68,9 @@ export function VehicleShiftsTable({
         onColumnFiltersChange: setColumnFilters,
         onGlobalFilterChange: setGlobalFilter,
         onRowSelectionChange: setRowSelection,
+        onPaginationChange: setPagination,
         state: {
+            pagination,
             sorting,
             columnFilters,
             globalFilter,
@@ -176,7 +183,7 @@ export function VehicleShiftsTable({
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
-        
+
             <DataTableHeader table={table} />
             <DataTableContent table={table} columns={columns.length} />
             <DataTablePagination table={table} />

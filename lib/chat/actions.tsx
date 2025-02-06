@@ -27,11 +27,6 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/com
 import { VehicleInfoCard } from "@/components/mtt/vehicle-info-card";
 import { getSystemConfigs } from "../services/system";
 
-// export const OPENAI_GPT_4o_MINI = 'gpt-4o-mini' // 'gpt-4'
-// export const OPENAI_GPT_4o      = 'gpt-4o' // 'gpt-4'
-// const modelInstance = openai(OPENAI_GPT_4o_MINI)
-// const modelInstanceSmart = openai(OPENAI_GPT_4o)
-
 async function submitUserMessage(content: string) {
 	"use server";
 	const session = await getSession()
