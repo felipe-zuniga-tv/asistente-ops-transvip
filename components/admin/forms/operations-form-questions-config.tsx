@@ -25,7 +25,7 @@ export function OperationsFormQuestionsConfig({ data = [], sectionId }: Operatio
     useEffect(() => {
         if (!isDialogOpen || !questionToEdit) {
             const timer = setTimeout(() => {
-                document.body.style.pointerEvents = ";
+                document.body.style.pointerEvents = "";
             }, 0);
             return () => clearTimeout(timer);
         } else {

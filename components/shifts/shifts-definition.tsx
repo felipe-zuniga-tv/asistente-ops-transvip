@@ -55,11 +55,11 @@ export function ShiftsDefinition({ shifts }: ShiftsCardProps) {
     useEffect(() => {
         if (!isDialogOpen) {
             // Reset pointer-events when dialog closes
-            document.body.style.pointerEvents = ";
+            document.body.style.pointerEvents = "";
         }
         return () => {
             // Cleanup
-            document.body.style.pointerEvents = ";
+            document.body.style.pointerEvents = "auto";
         };
     }, [isDialogOpen]);
 
