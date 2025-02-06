@@ -29,6 +29,7 @@ export interface VehicleShift {
     created_at: string
     start_time?: string
     end_time?: string
+    branch_name: string
 }
 
 interface VehicleShiftsContentProps {
@@ -76,9 +77,10 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
     }
 
     const handleBulkDownload = async (selectedShifts: VehicleShift[]) => {
-        const headers = ["Móvil", "Turno", "Fecha Inicio", "Fecha Fin", "Prioridad"]
+        const headers = ["Móvil", "Sucursal", "Turno", "Fecha Inicio", "Fecha Fin", "Prioridad"]
         const rows = selectedShifts.map(shift => [
             shift.vehicle_number,
+            shift.branch_name,
             shift.shift_name,
             shift.start_date,
             shift.end_date,

@@ -47,6 +47,11 @@ export const columns: ColumnDef<VehicleShift>[] = [
         }
     },
     {
+        accessorKey: "branch_name",
+        header: () => <div className="text-center">Sucursal</div>,
+        cell: ({ row }) => <div className="text-center">{row.getValue("branch_name")}</div>,
+    },
+    {
         accessorKey: "shift_name",
         header: () => <div className="text-center">Turno</div>,
         cell: ({ row }) => <div className="text-center">{row.getValue("shift_name")}</div>,

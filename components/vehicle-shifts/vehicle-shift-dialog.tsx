@@ -10,11 +10,10 @@ import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-} from "@/components/ui/dialog"
+	SimpleDialog,
+	SimpleDialogHeader,
+	SimpleDialogTitle,
+} from "@/components/ui/simple-dialog"
 import {
 	Form,
 	FormControl,
@@ -162,152 +161,151 @@ export function VehicleShiftDialog({ open, onOpenChange, shifts, assignment }: P
 		}
 	}
 
-	function handleOpenChange(open: boolean) {
+	function handleClose() {
 		form.reset(defaultValues)
-		onOpenChange(open)
+		onOpenChange(false)
 	}
 
 	return (
-		<Dialog open={open} onOpenChange={handleOpenChange}>
-			<DialogContent className="max-w-[425px]">
-				<DialogHeader>
-					<DialogTitle>
-						{isEditMode ? "Editar Asignación de Vehículo" : "Nueva Asignación de Vehículo"}
-					</DialogTitle>
-				</DialogHeader>
-				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-						<FormField
-							control={form.control}
-							name="branch_id"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Sucursal</FormLabel>
-									<Select onValueChange={field.onChange} value={field.value}>
-										<FormControl>
-											<SelectTrigger>
-												<SelectValue placeholder="Seleccione una sucursal" />
-											</SelectTrigger>
-										</FormControl>
-										<SelectContent>
-											{branches.map((branch) => (
-												<SelectItem key={branch.id} value={branch.id}>
-													{branch.name}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+		<SimpleDialog isOpen={open} onClose={handleClose}>
+			<SimpleDialogHeader>
+				<SimpleDialogTitle>
+					{isEditMode ? "Editar Asignación de Vehículo" : "Nueva Asignación de Vehículo"}
+				</SimpleDialogTitle>
+			</SimpleDialogHeader>
 
-						<FormField
-							control={form.control}
-							name="shift_id"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Turno</FormLabel>
-									<Select
-										onValueChange={field.onChange}
-										value={field.value}
-										disabled={!form.getValues("branch_id")}
-									>
-										<FormControl>
-											<SelectTrigger>
-												<SelectValue placeholder={form.getValues("branch_id") ? "Seleccione un turno" : "Primero seleccione una sucursal"} />
-											</SelectTrigger>
-										</FormControl>
-										<SelectContent>
-											{filteredShifts.map((shift) => (
-												<SelectItem key={shift.id} value={shift.id}>
-													{shift.name}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-
-						<FormField
-							control={form.control}
-							name="vehicle_number"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Número de Móvil</FormLabel>
+			<Form {...form}>
+				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+					<FormField
+						control={form.control}
+						name="branch_id"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Sucursal</FormLabel>
+								<Select onValueChange={field.onChange} value={field.value}>
 									<FormControl>
-										<Input type="number" {...field} />
+										<SelectTrigger>
+											<SelectValue placeholder="Seleccione una sucursal" />
+										</SelectTrigger>
+									</FormControl>
+									<SelectContent>
+										{branches.map((branch) => (
+											<SelectItem key={branch.id} value={branch.id}>
+												{branch.name}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name="shift_id"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Turno</FormLabel>
+								<Select
+									onValueChange={field.onChange}
+									value={field.value}
+									disabled={!form.getValues("branch_id")}
+								>
+									<FormControl>
+										<SelectTrigger>
+											<SelectValue placeholder={form.getValues("branch_id") ? "Seleccione un turno" : "Primero seleccione una sucursal"} />
+										</SelectTrigger>
+									</FormControl>
+									<SelectContent>
+										{filteredShifts.map((shift) => (
+											<SelectItem key={shift.id} value={shift.id}>
+												{shift.name}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name="vehicle_number"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Número de Móvil</FormLabel>
+								<FormControl>
+									<Input type="number" {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<div className="grid grid-cols-2 gap-4">
+						<FormField
+							control={form.control}
+							name="start_date"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Fecha Inicio</FormLabel>
+									<FormControl>
+										<Input type="date" {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
 							)}
 						/>
 
-						<div className="grid grid-cols-2 gap-4">
-							<FormField
-								control={form.control}
-								name="start_date"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Fecha Inicio</FormLabel>
-										<FormControl>
-											<Input type="date" {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-
-							<FormField
-								control={form.control}
-								name="end_date"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Fecha Fin</FormLabel>
-										<FormControl>
-											<Input
-												type="date"
-												{...field}
-												min={form.getValues("start_date")}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-
 						<FormField
 							control={form.control}
-							name="priority"
+							name="end_date"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Prioridad</FormLabel>
+									<FormLabel>Fecha Fin</FormLabel>
 									<FormControl>
-										<Input type="number" {...field} min={1} max={100} />
+										<Input
+											type="date"
+											{...field}
+											min={form.getValues("start_date")}
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>
 							)}
 						/>
+					</div>
 
-						<div className="flex justify-end space-x-2 pt-4">
-							<Button
-								type="button"
-								variant="outline"
-								onClick={() => handleOpenChange(false)}
-							>
-								Cancelar
-							</Button>
-							<Button type="submit">
-								{isEditMode ? "Guardar" : "Crear"}
-							</Button>
-						</div>
-					</form>
-				</Form>
-			</DialogContent>
-		</Dialog>
+					<FormField
+						control={form.control}
+						name="priority"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Prioridad</FormLabel>
+								<FormControl>
+									<Input type="number" {...field} min={1} max={100} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<div className="flex justify-end space-x-2 pt-4">
+						<Button
+							type="button"
+							variant="outline"
+							onClick={handleClose}
+						>
+							Cancelar
+						</Button>
+						<Button type="submit">
+							{isEditMode ? "Guardar" : "Crear"}
+						</Button>
+					</div>
+				</form>
+			</Form>
+		</SimpleDialog>
 	)
 }

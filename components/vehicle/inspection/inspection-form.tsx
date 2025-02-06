@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { saveOperationsFormAnswer, updateInspectionStatus, updateOperationsFormAnswer } from "@/lib/services/forms";
 
-interface InspectionFormProps {
+interface OperationsFormProps {
     inspectionId: string;
     formId: string;
     vehicleNumber: number;
@@ -20,7 +20,7 @@ interface InspectionFormProps {
     answers: Record<string, { id?: string; value: string }>;
 }
 
-export function InspectionForm({ inspectionId, formId, vehicleNumber, sections, answers }: InspectionFormProps) {
+export function OperationsForm({ inspectionId, formId, vehicleNumber, sections, answers }: OperationsFormProps) {
     const [currentSection, setCurrentSection] = useState(0);
     const [localAnswers, setLocalAnswers] = useState<Record<string, { id?: string; value: string }>>(answers);
     const { toast } = useToast();

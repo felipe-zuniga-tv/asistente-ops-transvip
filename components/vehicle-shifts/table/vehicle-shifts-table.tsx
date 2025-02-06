@@ -27,6 +27,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog"
 import { DataTableSearch } from "@/components/tables/data-table-search"
+import { DataTableSelect } from "@/components/tables/data-table-select"
 
 interface DataTableProps {
     columns: ColumnDef<VehicleShift>[]
@@ -94,18 +95,31 @@ export function VehicleShiftsTable({
         setRowSelection({})
     }
 
+    // Get unique branch options from data
+    const branchOptions = Array.from(new Set(data.map(shift => shift.branch_name))).map(name => ({
+        label: name,
+        value: name
+    }))
+
     return (
         <>
             <div className="flex items-center justify-start gap-4 py-1">
-                <DataTableSearch
+                <DataTableSelect
                     table={table}
-                    placeholder="Filtrar por móvil..."
-                    searchColumnId="vehicle_number"
+                    options={branchOptions}
+                    placeholder="Filtrar por sucursal..."
+                    filterColumnId="branch_name"
+                    className="w-[200px]"
                 />
                 <DataTableSearch
                     table={table}
                     placeholder="Filtrar por turno..."
                     searchColumnId="shift_name"
+                />
+                <DataTableSearch
+                    table={table}
+                    placeholder="Filtrar por móvil..."
+                    searchColumnId="vehicle_number"
                 />
             </div>
 

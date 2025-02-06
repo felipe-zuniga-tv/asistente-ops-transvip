@@ -50,7 +50,7 @@ export function NavMain({ items, handleClick, showHints }: {
 				<Search className="text-gray-500 size-4 absolute left-2 top-1/2 transform -translate-y-1/2" />
 				<Input type="text"
 					name="sidebar_search"
-					placeholder="Filtra..."
+					placeholder="Busca tu herramienta..."
 					value={searchQuery}
 					className="p-3 pl-8 border border-blue-200 group-data-[state=open]/collapsible"
 					onChange={(e: any) => setSearchQuery(e.target.value)}
