@@ -80,13 +80,14 @@ export interface UpdateOperationsFormQuestionInput extends Partial<Omit<CreateOp
     is_active?: boolean;
 }
 
-export interface CreateVehicleInspectionInput {
+export interface CreateOperationsFormResponseInput {
     form_id: string;
     vehicle_number: number;
 }
 
 export interface CreateOperationsFormAnswerInput {
-    inspection_id: string;
+    form_id: string;
+    vehicle_number: number;
     question_id: string;
     answer: string;
 } 

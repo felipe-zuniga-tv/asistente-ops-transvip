@@ -56,7 +56,7 @@ export interface AirportVehicleType {
 
 export interface AirportVehicleDetail {
     unique_car_id: string
-    tipo_contrato: string
+    contract_type: string
     name: string
     action: number
     fleet_id: number

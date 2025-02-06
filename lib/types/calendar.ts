@@ -1,4 +1,4 @@
-import { VehicleShift, VehicleStatus } from "@/lib/types"
+import { VehicleShift } from "@/lib/types"
 
 export interface VehicleShiftWithShiftInfo extends VehicleShift {
     free_day?: number;

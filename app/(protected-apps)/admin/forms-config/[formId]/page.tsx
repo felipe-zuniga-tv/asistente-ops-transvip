@@ -15,20 +15,20 @@ export async function generateMetadata({ params }: InspectionFormPageProps) {
     if (!form) return notFound();
 
     return {
-        title: `${form.title} | Configuración de Inspección | Transvip`,
+        title: `${form.title} | Transvip`,
         description: form.description,
     };
 }
 
-export default async function InspectionFormPage({ params }: InspectionFormPageProps) {
+export default async function OperationsFormPage({ params }: InspectionFormPageProps) {
     return (
         <Suspense fallback={<SuspenseLoading />}>
-            <InspectionFormEditorContainer formId={params.formId} />
+            <OperationsFormEditorContainer formId={params.formId} />
         </Suspense>
     );
 }
 
-async function InspectionFormEditorContainer({ formId }: { formId: string }) {
+async function OperationsFormEditorContainer({ formId }: { formId: string }) {
     const form = await getFormById(formId);
     if (!form) return notFound();
 

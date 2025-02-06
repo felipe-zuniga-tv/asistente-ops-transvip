@@ -1,10 +1,10 @@
 "use client";
 
-import { useTransition } from "react";
+import { useTransition, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { SimpleDialog, SimpleDialogHeader, SimpleDialogTitle } from "@/components/ui/simple-dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -52,13 +52,25 @@ export function OperationsFormQuestionDialog({
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            label: question?.label ?? "",
-            type: question?.type ?? "text",
-            order: question?.order ?? currentOrder,
-            is_active: question?.is_active ?? true,
-            allow_gallery_access: question?.allow_gallery_access ?? false,
+            label: "",
+            type: "text",
+            order: currentOrder,
+            is_active: true,
+            allow_gallery_access: false,
         },
     });
+
+    useEffect(() => {
+        if (open) {
+            form.reset({
+                label: question?.label ?? "",
+                type: question?.type ?? "text",
+                order: question?.order ?? currentOrder,
+                is_active: question?.is_active ?? true,
+                allow_gallery_access: question?.allow_gallery_access ?? false,
+            });
+        }
+    }, [open, question, currentOrder, form]);
 
     const questionType = form.watch("type");
 
@@ -94,83 +106,108 @@ export function OperationsFormQuestionDialog({
     }
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent aria-describedby="dialog-description">
-                <DialogHeader>
-                    <DialogTitle>
-                        {question ? "Editar Pregunta" : "Nueva Pregunta"}
-                    </DialogTitle>
-                </DialogHeader>
+        <SimpleDialog 
+            isOpen={open} 
+            onClose={() => onOpenChange(false)}
+            className="sm:max-w-[600px]"
+        >
+            <SimpleDialogHeader>
+                <SimpleDialogTitle>
+                    {question ? "Editar Pregunta" : "Nueva Pregunta"}
+                </SimpleDialogTitle>
+            </SimpleDialogHeader>
 
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                        <FormField
-                            control={form.control}
-                            name="label"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Etiqueta</FormLabel>
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <FormField
+                        control={form.control}
+                        name="label"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Etiqueta</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Ingresa tus datos..." {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="type"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Tipo de Pregunta</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
-                                        <Input placeholder="Ingresa tus datos..." {...field} />
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Selecciona un tipo" />
+                                        </SelectTrigger>
                                     </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                                    <SelectContent>
+                                        {QUESTION_TYPES.map((type) => (
+                                            <SelectItem key={type.value} value={type.value}>
+                                                {type.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
+                    <FormField
+                        control={form.control}
+                        name="order"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Orden</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="number"
+                                        min={0}
+                                        {...field}
+                                        onChange={e => field.onChange(parseInt(e.target.value))}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="is_active"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                                <div className="space-y-0.5">
+                                    <FormLabel>Estado</FormLabel>
+                                    <FormDescription>
+                                        Activar o desactivar la pregunta
+                                    </FormDescription>
+                                </div>
+                                <FormControl>
+                                    <Switch
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+
+                    {questionType === "image" && (
                         <FormField
                             control={form.control}
-                            name="type"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Tipo de Pregunta</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Selecciona un tipo" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {QUESTION_TYPES.map((type) => (
-                                                <SelectItem key={type.value} value={type.value}>
-                                                    {type.label}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="order"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Orden</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="number"
-                                            min={0}
-                                            {...field}
-                                            onChange={e => field.onChange(parseInt(e.target.value))}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
-                            control={form.control}
-                            name="is_active"
+                            name="allow_gallery_access"
                             render={({ field }) => (
                                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
                                     <div className="space-y-0.5">
-                                        <FormLabel>Estado</FormLabel>
+                                        <FormLabel>Acceso a Galería</FormLabel>
                                         <FormDescription>
-                                            Activar o desactivar la pregunta
+                                            Permitir acceso a la galería del dispositivo
                                         </FormDescription>
                                     </div>
                                     <FormControl>
@@ -182,38 +219,15 @@ export function OperationsFormQuestionDialog({
                                 </FormItem>
                             )}
                         />
+                    )}
 
-                        {questionType === "image" && (
-                            <FormField
-                                control={form.control}
-                                name="allow_gallery_access"
-                                render={({ field }) => (
-                                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                                        <div className="space-y-0.5">
-                                            <FormLabel>Acceso a Galería</FormLabel>
-                                            <FormDescription>
-                                                Permitir acceso a la galería del dispositivo
-                                            </FormDescription>
-                                        </div>
-                                        <FormControl>
-                                            <Switch
-                                                checked={field.value}
-                                                onCheckedChange={field.onChange}
-                                            />
-                                        </FormControl>
-                                    </FormItem>
-                                )}
-                            />
-                        )}
-
-                        <div className="flex justify-end">
-                            <Button type="submit" disabled={isPending}>
-                                {question ? "Actualizar" : "Crear"} Pregunta
-                            </Button>
-                        </div>
-                    </form>
-                </Form>
-            </DialogContent>
-        </Dialog>
+                    <div className="flex justify-end">
+                        <Button type="submit" disabled={isPending}>
+                            {question ? "Actualizar" : "Crear"} Pregunta
+                        </Button>
+                    </div>
+                </form>
+            </Form>
+        </SimpleDialog>
     );
 } 

@@ -34,6 +34,7 @@ export function ShiftsDataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+	const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 })
 
 	const uniqueBranches = useMemo(() => (
 		Array.from(new Set((data as any[]).map(item => item.branch_name)))
@@ -49,13 +50,15 @@ export function ShiftsDataTable<TData, TValue>({
 		onSortingChange: setSorting,
 		getSortedRowModel: getSortedRowModel(),
 		onColumnFiltersChange: setColumnFilters,
+		onPaginationChange: setPagination,
 		state: {
 			sorting,
 			columnFilters,
+			pagination,
 		},
 		filterFns: {
 			freeDaysFilter: (row, columnId, filterValue: number[]) => {
-				const freeDay = (row.original as any).free_day
+				const freeDay = (row.getValue(columnId) as number)
 				return filterValue.includes(freeDay)
 			},
 		},
@@ -63,8 +66,16 @@ export function ShiftsDataTable<TData, TValue>({
 			onEdit,
 			onDelete,
 		},
+		manualPagination: false,
+		pageCount: Math.ceil(data.length / pagination.pageSize),
 	})
 
+	// Reset pagination when data changes
+	useEffect(() => {
+		table.resetPagination()
+	}, [data, table])
+
+	// Apply free days filter
 	useEffect(() => {
 		table.getColumn('free_day')?.setFilterValue(selectedDays)
 	}, [selectedDays, table])

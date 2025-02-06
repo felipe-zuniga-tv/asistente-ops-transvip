@@ -53,30 +53,27 @@ export function ShiftsDefinition({ shifts }: ShiftsCardProps) {
     const [shiftToDelete, setShiftToDelete] = useState<Shift | null>(null);
 
     useEffect(() => {
-        if (!isDialogOpen || !editingShift) {
-            // Pushing the change to the end of the call stack
-            const timer = setTimeout(() => {
-              document.body.style.pointerEvents = "";
-            }, 0);
-      
-            return () => clearTimeout(timer);
-          } else {
-            document.body.style.pointerEvents = "auto";
-          }
-    }, [isDialogOpen, editingShift]);
+        if (!isDialogOpen) {
+            // Reset pointer-events when dialog closes
+            document.body.style.pointerEvents = "";
+        }
+        return () => {
+            // Cleanup
+            document.body.style.pointerEvents = "";
+        };
+    }, [isDialogOpen]);
 
     const handleEditShift = (shift: Shift) => {
         setEditingShift(shift);
-        setIsDialogOpen(true);
+        // Set dialog open after setting the shift
+        setTimeout(() => {
+            setIsDialogOpen(true);
+        }, 0);
     };
 
-    const handleDialogClose = async () => {
+    const handleDialogClose = () => {
         setIsDialogOpen(false);
         setEditingShift(null);
-        router.refresh();
-        setTimeout(() => {
-            window.location.reload();
-        }, 100);
     };
 
     const handleDeleteShift = async (shift: Shift) => {
@@ -84,10 +81,6 @@ export function ShiftsDefinition({ shifts }: ShiftsCardProps) {
             await deleteShift(shift.id);
             router.refresh();
             toast.success("Turno eliminado exitosamente");
-
-            setTimeout(() => {
-                window.location.reload();
-            }, 100);
         } catch (error) {
             console.error('Error deleting shift:', error);
             toast.error("Error al eliminar el turno");
@@ -110,8 +103,7 @@ export function ShiftsDefinition({ shifts }: ShiftsCardProps) {
     }
 
     return (
-        <ConfigCardContainer
-            title="Jornadas de Conexión"
+        <ConfigCardContainer title="Jornadas de Conexión"
             onAdd={() => setIsDialogOpen(true)}
             className="max-w-full"
         >
@@ -185,13 +177,13 @@ export function ShiftsDefinition({ shifts }: ShiftsCardProps) {
 
             <ShiftDialog
                 shift={editingShift}
-                open={isDialogOpen}
-                onOpenChange={handleDialogClose}
+                isOpen={isDialogOpen}
+                onClose={handleDialogClose}
             />
 
             <UploadShiftsDialog
-                open={isUploadDialogOpen}
-                onOpenChange={setIsUploadDialogOpen}
+                isOpen={isUploadDialogOpen}
+                onClose={() => setIsUploadDialogOpen(false)}
             />
 
             <AlertDialogDeleteShift

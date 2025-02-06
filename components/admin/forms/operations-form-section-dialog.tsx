@@ -1,10 +1,10 @@
 "use client";
 
-import { useTransition } from "react";
+import { useTransition, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { SimpleDialog, SimpleDialogHeader, SimpleDialogTitle } from "@/components/ui/simple-dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -48,6 +48,22 @@ export function OperationsFormSectionDialog({
         },
     });
 
+    useEffect(() => {
+        if (section) {
+            form.reset({
+                title: section.title,
+                description: section.description,
+                order: section.order,
+            });
+        } else {
+            form.reset({
+                title: "",
+                description: "",
+                order: currentOrder,
+            });
+        }
+    }, [section, currentOrder, form]);
+
     function onSubmit(values: z.infer<typeof formSchema>) {
         startTransition(async () => {
             try {
@@ -80,74 +96,72 @@ export function OperationsFormSectionDialog({
     }
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>
-                        {section ? "Editar Sección" : "Nueva Sección"}
-                    </DialogTitle>
-                </DialogHeader>
+        <SimpleDialog isOpen={open} onClose={() => onOpenChange(false)}>
+            <SimpleDialogHeader>
+                <SimpleDialogTitle>
+                    {section ? "Editar Sección" : "Nueva Sección"}
+                </SimpleDialogTitle>
+            </SimpleDialogHeader>
 
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                        <FormField
-                            control={form.control}
-                            name="title"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Título</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Sección de Inspección" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <FormField
+                        control={form.control}
+                        name="title"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Título</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Título de Sección" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-                        <FormField
-                            control={form.control}
-                            name="description"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Descripción</FormLabel>
-                                    <FormControl>
-                                        <Textarea
-                                            placeholder="Descripción de la sección..."
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                    <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Descripción</FormLabel>
+                                <FormControl>
+                                    <Textarea
+                                        placeholder="Descripción de la sección..."
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-                        <FormField
-                            control={form.control}
-                            name="order"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Orden</FormLabel>
-                                    <FormControl>
-                                        <Input 
-                                            type="number" 
-                                            min={0}
-                                            {...field}
-                                            onChange={e => field.onChange(parseInt(e.target.value))}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                    <FormField
+                        control={form.control}
+                        name="order"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Orden</FormLabel>
+                                <FormControl>
+                                    <Input 
+                                        type="number" 
+                                        min={0}
+                                        {...field}
+                                        onChange={e => field.onChange(parseInt(e.target.value))}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-                        <div className="flex justify-end">
-                            <Button type="submit" disabled={isPending}>
-                                {section ? "Actualizar" : "Crear"} Sección
-                            </Button>
-                        </div>
-                    </form>
-                </Form>
-            </DialogContent>
-        </Dialog>
+                    <div className="flex justify-end">
+                        <Button type="submit" disabled={isPending}>
+                            {section ? "Actualizar" : "Crear"} Sección
+                        </Button>
+                    </div>
+                </form>
+            </Form>
+        </SimpleDialog>
     );
-} 
+}

@@ -36,16 +36,17 @@ export function OperationsFormsList({ data }: OperationsFormsListProps) {
             <ConfigCardContainer
                 title="Formularios Transvip"
                 onAdd={() => setOpen(true)}
+                className="max-w-full"
             >
                 <div className="rounded-md border">
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead className="w-[50px] text-center"></TableHead>
                                 <TableHead>Título</TableHead>
                                 <TableHead>Descripción</TableHead>
                                 <TableHead className="text-center">Estado</TableHead>
                                 <TableHead className="text-center">Fecha de Creación</TableHead>
+                                <TableHead className="w-[50px] text-center"></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -55,16 +56,6 @@ export function OperationsFormsList({ data }: OperationsFormsListProps) {
                                     className="cursor-pointer hover:bg-gray-50 text-xs"
 
                                 >
-                                    <TableCell className="flex justify-center">
-                                        <Button
-                                            variant="default"
-                                            size="icon"
-                                            onClick={(e) => handleView(form.id, e)}
-                                            className="h-8 w-8 bg-transvip hover:bg-transvip/80 text-white hover:text-white"
-                                        >
-                                            <Pencil className="h-4 w-4" />
-                                        </Button>
-                                    </TableCell>
                                     <TableCell>{form.title}</TableCell>
                                     <TableCell>{form.description}</TableCell>
                                     <TableCell className="text-center">
@@ -73,6 +64,16 @@ export function OperationsFormsList({ data }: OperationsFormsListProps) {
                                         </Badge>
                                     </TableCell>
                                     <TableCell className="text-center">{formatDate(form.created_at)}</TableCell>
+                                    <TableCell className="flex justify-center">
+                                        <Button
+                                            variant="outline"
+                                            size="icon"
+                                            onClick={(e) => handleView(form.id, e)}
+                                            className="h-8 w-8"
+                                        >
+                                            <Pencil className="h-4 w-4" />
+                                        </Button>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
