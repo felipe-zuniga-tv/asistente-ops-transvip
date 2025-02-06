@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
-import { deleteVehicleType } from '@/lib/services/admin'
+import { deleteVehicleType } from '@/lib/services/admin/index'
 import {
     AlertDialog,
     AlertDialogAction,

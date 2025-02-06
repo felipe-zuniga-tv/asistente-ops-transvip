@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { getSystemConfigs } from '@/lib/services/admin'
+import { getSystemConfigs } from '@/lib/services/admin/index'
 import { SystemConfigForm } from '@/components/admin/system-config/system-config-form'
 import SuspenseLoading from '@/components/ui/suspense'
 
