@@ -73,7 +73,11 @@ export function ShiftDialog({ shift, isOpen, onClose }: ShiftDialogProps) {
                     await updateShift(shift.id, formData);
                     toast.success("Turno actualizado exitosamente");
                 } else {
-                    await createShift(formData);
+                    const selectedBranch = branches.find(b => b.id === formData.branch_id);
+                    if (!selectedBranch) throw new Error("Sucursal no encontrada");
+                    
+                    const { branch_id, ...shiftData } = formData;
+                    await createShift({ ...shiftData, branch_name: selectedBranch.name });
                     toast.success("Turno creado exitosamente");
                 }
                 onClose();
@@ -82,7 +86,7 @@ export function ShiftDialog({ shift, isOpen, onClose }: ShiftDialogProps) {
                 console.error(error);
             }
         });
-    }, [formData, isEditing, shift?.id, onClose]);
+    }, [formData, isEditing, shift?.id, onClose, branches]);
 
     const handleInputChange = useCallback((field: keyof typeof formData, value: string | number) => {
         setFormData(prev => ({ ...prev, [field]: value }));
