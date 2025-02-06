@@ -9,6 +9,7 @@ export const Routes = Object.freeze({
 		VEHICLE_STATUS_CONFIG: '/admin/vehicle-status-config',
 		VEHICLE_TYPES: '/admin/vehicle-types',
 		PAYMENT_CONFIG: '/admin/payment-config',
+		SYSTEM_CONFIG: '/admin/system-config',
 	},
 	AIRPORT: {
 		HOME: '/aeropuerto',

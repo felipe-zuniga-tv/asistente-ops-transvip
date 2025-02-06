@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Routes } from "@/utils/routes";
-import { Settings, CreditCard, Car, Building2 } from "lucide-react";
+import { Settings, CreditCard, Car, Building2, Cog } from "lucide-react";
 import { TransvipLogo } from '@/components/transvip/transvip-logo';
 import { cn } from '@/lib/utils';
 
@@ -15,6 +15,7 @@ const adminTools = [
     { name: 'Métodos de Pago', href: Routes.ADMIN.PAYMENT_CONFIG, icon: CreditCard },
     { name: 'Estados de Vehículos', href: Routes.ADMIN.VEHICLE_STATUS_CONFIG, icon: Settings },
     { name: 'Tipos de Vehículos', href: Routes.ADMIN.VEHICLE_TYPES, icon: Car },
+    { name: 'Configuración Sistema', href: Routes.ADMIN.SYSTEM_CONFIG, icon: Cog },
 ];
 
 export const revalidate = 0;

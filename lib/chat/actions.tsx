@@ -26,16 +26,19 @@ import { google } from "@ai-sdk/google";
 import { getMTTVehiclesInfo } from "../services/mtt/actions";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { VehicleInfoCard } from "@/components/mtt/vehicle-info-card";
+import { getSystemConfig } from '../services/admin'
 
 // export const OPENAI_GPT_4o_MINI = 'gpt-4o-mini' // 'gpt-4'
 // export const OPENAI_GPT_4o      = 'gpt-4o' // 'gpt-4'
 // const modelInstance = openai(OPENAI_GPT_4o_MINI)
 // const modelInstanceSmart = openai(OPENAI_GPT_4o)
-const modelInstanceGoogle = google('gemini-2.0-flash-exp')
 
 async function submitUserMessage(content: string) {
 	"use server";
 	const session = await getSession()
+	const llmConfig = await getSystemConfig('llm_model_name')
+	const modelName = llmConfig?.value || 'gemini-2.0-flash-lite-preview-02-05' // fallback to default
+	const modelInstanceGoogle = google(modelName)
 
 	const aiState = getMutableAIState<typeof AI>();
 
@@ -371,7 +374,7 @@ async function submitUserMessage(content: string) {
 
 					// Create text response for current search results
 					const content = await generateText({
-						model: modelInstanceSmart,
+						model: modelInstanceGoogle,
 						system: SYSTEM_MESSAGE + CREATE_DRIVER_RATINGS_SUMMARY,
 						messages: [{
 							role: 'assistant',

@@ -217,6 +217,12 @@ const adminMenu: SidebarItem = {
 			url: Routes.ADMIN.FORMS_CONFIG,
 			active: false
 		},
+		{
+			title: 'Configuración de Sistema',
+			icon: Settings2,
+			url: Routes.ADMIN.SYSTEM_CONFIG,
+			active: false
+		},
 	],
 }
 
