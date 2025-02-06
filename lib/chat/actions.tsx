@@ -6,7 +6,6 @@ import {
 	createAI,
 	streamUI
 } from "ai/rsc";
-
 import { z } from "zod";
 import { getSession } from "../auth";
 import { VEHICLE_STATUS, getDriverRatingSummary, nanoid } from "@/lib/utils";
