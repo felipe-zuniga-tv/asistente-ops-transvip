@@ -1,7 +1,7 @@
 'use client'
 
 import { useToast } from '@/hooks/use-toast'
-import { deleteBranch } from '@/lib/services/admin/index'
+import { deleteBranch } from '@/lib/services/admin'
 import {
     AlertDialog,
     AlertDialogAction,

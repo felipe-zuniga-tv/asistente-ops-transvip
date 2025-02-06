@@ -1,5 +1,5 @@
 import { revalidatePath } from "next/cache"
-import { getSupabaseClient } from "../database/actions"
+import { getSupabaseClient } from "@/lib/database/actions"
 import { Routes } from "@/utils/routes"
 
 export async function getSystemConfigs() {

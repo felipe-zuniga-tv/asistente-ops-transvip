@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import SalesPageContent from '@/components/sales/sales-page-content'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import { getBranches } from '@/lib/services/admin/index'
+import { getBranches } from '@/lib/services/admin'
 
 function SalesPageSkeleton() {
 	return (

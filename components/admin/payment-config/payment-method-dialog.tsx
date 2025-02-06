@@ -32,7 +32,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { icons } from '@/components/ui/icons-list'
-import { createPaymentMethod, updatePaymentMethod } from '@/lib/services/admin/index'
+import { createPaymentMethod, updatePaymentMethod } from '@/lib/services/admin'
 import { type PaymentMethod } from '@/lib/types/admin'
 import { Label } from '@/components/ui/label'
 

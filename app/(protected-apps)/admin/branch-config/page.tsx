@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
-import { getBranches } from '@/lib/services/admin/index'
 import { BranchConfig } from '@/components/admin/branch-config/branch-config'
 import SuspenseLoading from '@/components/ui/suspense'
+import { getBranches } from '@/lib/services/admin'
 
 export const metadata = {
     title: 'Configuración de Sucursales | Transvip',

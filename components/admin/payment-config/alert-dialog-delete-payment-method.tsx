@@ -12,7 +12,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { deletePaymentMethod } from '@/lib/services/admin/index'
+import { deletePaymentMethod } from '@/lib/services/admin'
 
 interface AlertDialogDeletePaymentMethodProps {
     method: PaymentMethod | null

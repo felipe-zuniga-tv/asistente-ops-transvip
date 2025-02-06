@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { getPaymentMethods } from '@/lib/services/admin/index'
+import { getPaymentMethods } from '@/lib/services/admin'
 import { PaymentMethodConfig } from '@/components/admin/payment-config/payment-method-config'
 import SuspenseLoading from '@/components/ui/suspense'
 
