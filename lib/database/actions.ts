@@ -88,12 +88,27 @@ export async function getVehicleShifts(): Promise<VehicleShiftWithShiftInfo[]> {
 }
 
 // SHIFTS
-export async function createShift(shiftData: ShiftData) {
+export async function createShift(shiftData: Omit<ShiftData, 'branch_id'> & { branch_name: string }) {
 	const supabase = await getSupabaseClient()
+
+	// Get branch_id from branch_name
+	const { data: branchData, error: branchError } = await supabase
+		.from('branches')
+		.select('id')
+		.ilike('name', shiftData.branch_name)
+		.single()
+
+	if (branchError) throw new Error(`Branch not found: ${shiftData.branch_name}`)
+
+	const { branch_name, ...restData } = shiftData
+	const shiftWithBranchId: ShiftData = {
+		...restData,
+		branch_id: branchData.id,
+	}
 
 	const { error } = await supabase
 		.from('shifts')
-		.insert([shiftData])
+		.insert([shiftWithBranchId])
 
 	if (error) throw new Error(error.message)
 	revalidatePath(Routes.CONTROL_FLOTA.SHIFTS)

@@ -99,7 +99,9 @@ export function UploadShiftsDialog({ isOpen, onClose }: UploadShiftsDialogProps)
             <div className="flex flex-col gap-4">
                 <div className="text-sm flex flex-col gap-1 py-2">
                     <span>El archivo debe tener el siguiente formato:</span>
-                    <span className="font-bold text-gray-500">Sucursal, Nombre, Hora de Inicio, Hora de Fin, Día Libre (1 a 7)</span>
+                    <div className="p-1.5 py-2.5 rounded-md shadow-md bg-gray-100 flex flex-row items-center justify-center">
+                        <span className="font-semibold font-sans text-black">Sucursal, Nombre, Hora de Inicio, Hora de Fin, Día Libre (1 a 7)</span>
+                    </div>
                 </div>
                 <div className="space-y-2">
                     <Label>Sube tu archivo CSV</Label>
@@ -108,7 +110,7 @@ export function UploadShiftsDialog({ isOpen, onClose }: UploadShiftsDialogProps)
                         accept=".csv"
                         onChange={(e) => e.target.files?.[0] && processCSV(e.target.files[0])}
                         disabled={isUploading}
-                        className="bg-orange-100 cursor-pointer p-1.5 file:me-2 file:border-0 file:border-e file:border-gray-300" 
+                        className="bg-gray-100 cursor-pointer p-1.5 file:me-2 file:border-0 file:border-e file:border-gray-300" 
                     />
                 </div>
 
