@@ -21,7 +21,7 @@ import {
     Badge,
 } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { getBranches } from "@/lib/services/admin/index"
+import { getBranches } from "@/lib/services/admin/index"/index"
 import type { Branch } from "@/lib/types/admin"
 
 interface ShiftOption {

@@ -28,9 +28,9 @@ export function DataTableSearch<TData>({
 
     const getValue = () => {
         if (Array.isArray(searchColumnId)) {
-            return (table.getColumn(searchColumnId[0])?.getFilterValue() as string) ?? "";
+            return (table.getColumn(searchColumnId[0])?.getFilterValue() as string) ?? ";
         }
-        return (table.getColumn(searchColumnId)?.getFilterValue() as string) ?? "";
+        return (table.getColumn(searchColumnId)?.getFilterValue() as string) ?? ";
     };
 
     return (

@@ -1,5 +1,5 @@
 import { VehicleTypesConfig } from "@/components/admin/vehicle-types/vehicle-types-config";
-import { getVehicleTypes } from "@/lib/services/admin";
+import { getVehicleTypes } from "@/lib/services/admin/index"
 import { Suspense } from "react";
 import SuspenseLoading from "@/components/ui/suspense";
 

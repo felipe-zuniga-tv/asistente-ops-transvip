@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { VehicleTypeDialog } from "./vehicle-type-dialog";
 import { AlertDialogDeleteVehicleType } from "./alert-dialog-delete-vehicle-type";
 import { toast } from "sonner";
-import { deleteVehicleType } from "@/lib/services/admin";
+import { deleteVehicleType } from "@/lib/services/admin/index";
 import type { VehicleType } from "@/lib/types/admin";
 import { ConfigCardContainer } from "@/components/tables/config-card-container";
 
@@ -25,7 +25,7 @@ export function VehicleTypesConfig({ data = [] }: VehicleTypesConfigProps) {
         if (!isDialogOpen || !vehicleTypeToEdit) {
             // Pushing the change to the end of the call stack
             const timer = setTimeout(() => {
-              document.body.style.pointerEvents = "";
+              document.body.style.pointerEvents = ";
             }, 0);
       
             return () => clearTimeout(timer);
