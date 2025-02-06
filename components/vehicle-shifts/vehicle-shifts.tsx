@@ -12,7 +12,7 @@ import { VehicleShiftDialog } from "./vehicle-shift-dialog"
 import { UploadShiftsDialog } from "./upload-vehicle-shifts-dialog"
 import { AlertDialogDeleteVehicleShift } from "./delete-vehicle-shift-alert-dialog"
 import { generateVehicleShiftsTemplate } from "@/lib/csv/vehicle-shifts-template"
-import { deleteVehicleShift } from "@/lib/shifts/actions"
+import { deleteVehicleShift, bulkDeleteVehicleShifts } from "@/lib/shifts/actions"
 import { useToast } from "@/hooks/use-toast"
 import { ConfigCardContainer } from "../tables/config-card-container"
 import { downloadFile } from "@/lib/utils/file"
@@ -120,21 +120,18 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
 
     const handleBulkDelete = async (selectedShifts: VehicleShift[]) => {
         try {
-            const results = await Promise.all(
-                selectedShifts.map(shift => deleteVehicleShift(shift.id))
-            )
+            const { error } = await bulkDeleteVehicleShifts(selectedShifts.map(shift => shift.id))
 
-            const errors = results.filter(result => result.error)
-            if (errors.length > 0) {
+            if (error) {
                 toast({
                     variant: "destructive",
                     title: "Error",
-                    description: `Error al eliminar ${errors.length} asignaciones`
+                    description: error
                 })
             } else {
                 toast({
                     title: "Éxito",
-                    description: `${results.length} asignaciones eliminadas correctamente`
+                    description: `${selectedShifts.length} asignaciones eliminadas correctamente`
                 })
             }
 
