@@ -26,7 +26,7 @@ import { google } from "@ai-sdk/google";
 import { getMTTVehiclesInfo } from "../services/mtt/actions";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { VehicleInfoCard } from "@/components/mtt/vehicle-info-card";
-import { getSystemConfig } from '../services/admin'
+import { getSystemConfigs } from "../services/system";
 
 // export const OPENAI_GPT_4o_MINI = 'gpt-4o-mini' // 'gpt-4'
 // export const OPENAI_GPT_4o      = 'gpt-4o' // 'gpt-4'
@@ -36,7 +36,7 @@ import { getSystemConfig } from '../services/admin'
 async function submitUserMessage(content: string) {
 	"use server";
 	const session = await getSession()
-	const llmConfig = await getSystemConfig('llm_model_name')
+	const llmConfig = await getSystemConfigs('llm_model_name')
 	const modelName = llmConfig?.value || 'gemini-2.0-flash-lite-preview-02-05' // fallback to default
 	const modelInstanceGoogle = google(modelName)
 
