@@ -12,13 +12,15 @@ import { saveOperationsFormAnswer, updateInspectionStatus, updateOperationsFormA
 
 interface InspectionFormProps {
     inspectionId: string;
+    formId: string;
+    vehicleNumber: number;
     sections: (OperationsFormSection & {
         questions: OperationsFormQuestion[];
     })[];
     answers: Record<string, { id?: string; value: string }>;
 }
 
-export function InspectionForm({ inspectionId, sections, answers }: InspectionFormProps) {
+export function InspectionForm({ inspectionId, formId, vehicleNumber, sections, answers }: InspectionFormProps) {
     const [currentSection, setCurrentSection] = useState(0);
     const [localAnswers, setLocalAnswers] = useState<Record<string, { id?: string; value: string }>>(answers);
     const { toast } = useToast();
@@ -38,7 +40,8 @@ export function InspectionForm({ inspectionId, sections, answers }: InspectionFo
             } else {
                 // Create new answer
                 const answer = await saveOperationsFormAnswer({
-                    inspection_id: inspectionId,
+                    form_id: formId,
+                    vehicle_number: vehicleNumber,
                     question_id: questionId,
                     answer: value,
                 });
