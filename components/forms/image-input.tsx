@@ -67,7 +67,7 @@ export function ImageInput({ value, onChange, allowGallery }: ImageInputProps) {
             const compressedFile = await new Promise<string>((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    const img = new Image();
+                    const img = document.createElement('img');
                     img.onload = () => {
                         const canvas = document.createElement("canvas");
                         let width = img.width;
