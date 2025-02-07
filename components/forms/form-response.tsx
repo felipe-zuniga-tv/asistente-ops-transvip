@@ -5,22 +5,20 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { OperationsFormQuestion, OperationsFormSection } from "@/lib/types/vehicle/forms";
-import { QuestionInput } from "./question-input";
+import { QuestionInput } from "@/components/vehicle/inspection/question-input";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { saveOperationsFormAnswer, updateInspectionStatus, updateOperationsFormAnswer } from "@/lib/services/forms";
+import { saveOperationsFormAnswer, updateOperationsFormAnswer } from "@/lib/services/forms";
 
-interface OperationsFormProps {
-    inspectionId: string;
+interface FormResponseProps {
     formId: string;
-    vehicleNumber: number;
     sections: (OperationsFormSection & {
         questions: OperationsFormQuestion[];
     })[];
     answers: Record<string, { id?: string; value: string }>;
 }
 
-export function OperationsForm({ inspectionId, formId, vehicleNumber, sections, answers }: OperationsFormProps) {
+export function FormResponse({ formId, sections, answers }: FormResponseProps) {
     const [currentSection, setCurrentSection] = useState(0);
     const [localAnswers, setLocalAnswers] = useState<Record<string, { id?: string; value: string }>>(answers);
     const { toast } = useToast();
@@ -41,7 +39,7 @@ export function OperationsForm({ inspectionId, formId, vehicleNumber, sections, 
                 // Create new answer
                 const answer = await saveOperationsFormAnswer({
                     form_id: formId,
-                    vehicle_number: vehicleNumber,
+                    vehicle_number: 0, // We'll need to adapt this in the backend to be optional
                     question_id: questionId,
                     answer: value,
                 });
@@ -69,17 +67,17 @@ export function OperationsForm({ inspectionId, formId, vehicleNumber, sections, 
 
     async function onComplete() {
         try {
-            await updateInspectionStatus(inspectionId, "completed");
+            // Here we'll need to implement a way to mark the form response as completed
             toast({
-                title: "Inspección completada",
-                description: "La inspección ha sido completada exitosamente.",
+                title: "Formulario completado",
+                description: "El formulario ha sido completado exitosamente.",
             });
             router.refresh();
-            router.push("/vehicle/inspections");
+            router.push("/formularios");
         } catch (error) {
             toast({
                 title: "Error",
-                description: "Ha ocurrido un error al completar la inspección.",
+                description: "Ha ocurrido un error al completar el formulario.",
                 variant: "destructive",
             });
         }
@@ -87,7 +85,7 @@ export function OperationsForm({ inspectionId, formId, vehicleNumber, sections, 
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col gap-2 justify-start items-center">
                 <h2 className="text-2xl font-bold tracking-tight">
                     {section.title}
                 </h2>
@@ -99,7 +97,7 @@ export function OperationsForm({ inspectionId, formId, vehicleNumber, sections, 
             <Card>
                 <CardHeader>
                     <CardTitle>{section.title}</CardTitle>
-                    <CardDescription>{section.description}</CardDescription>
+                    <CardDescription className="text-xs text-muted-foreground">{section.description}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                     {section.questions.map((question) => (
@@ -124,13 +122,14 @@ export function OperationsForm({ inspectionId, formId, vehicleNumber, sections, 
                 </Button>
 
                 {isLastSection ? (
-                    <Button onClick={onComplete}>
+                    <Button onClick={onComplete} className="bg-transvip hover:bg-transvip/80">
                         Completar
                     </Button>
                 ) : (
                     <Button
                         onClick={() => setCurrentSection((prev) => prev + 1)}
                         disabled={isLastSection}
+                        className="bg-transvip hover:bg-transvip/80"
                     >
                         Siguiente
                         <ChevronRightIcon className="h-4 w-4 ml-2" />

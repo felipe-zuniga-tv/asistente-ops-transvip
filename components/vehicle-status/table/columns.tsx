@@ -27,7 +27,7 @@ export const columns: ColumnDef<VehicleStatus>[] = [
         cell: ({ row }) => {
             const status = row.original;
             return (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-center gap-2">
                     <div
                         className="w-3 h-3 rounded-full"
                         style={{ backgroundColor: status.status_color }}

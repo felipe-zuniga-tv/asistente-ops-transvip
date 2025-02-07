@@ -113,7 +113,7 @@ export function VehicleShiftDialog({ open, onOpenChange, shifts, assignment }: P
 		} else {
 			setFilteredShifts([])
 		}
-	}, [form.watch("branch_id"), shifts])
+	}, [shifts, form])
 
 	// Reset form when dialog opens/closes or when switching between create/edit modes
 	useEffect(() => {
@@ -131,7 +131,7 @@ export function VehicleShiftDialog({ open, onOpenChange, shifts, assignment }: P
 				form.reset(defaultValues)
 			}
 		}
-	}, [open, assignment, form])
+	}, [open, assignment, form, defaultValues])
 
 	async function onSubmit(values: FormValues) {
 		try {

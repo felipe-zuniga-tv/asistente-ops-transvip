@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { VehicleStatusConfigDataTable } from "./table/vehicle-status-config-data-table";
 import { columns } from "./table/columns";
 import { useRouter } from "next/navigation";
@@ -20,19 +20,6 @@ export function VehicleStatusConfig({ configs = [] }: VehicleStatusConfigProps) 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [configToDelete, setConfigToDelete] = useState<VehicleStatusConfigType | null>(null);
     const [configToEdit, setConfigToEdit] = useState<VehicleStatusConfigType | null>(null);
-
-    useEffect(() => {
-        if (!isDialogOpen || !configToEdit) {
-            // Pushing the change to the end of the call stack
-            const timer = setTimeout(() => {
-              document.body.style.pointerEvents = "";
-            }, 0);
-      
-            return () => clearTimeout(timer);
-          } else {
-            document.body.style.pointerEvents = "auto";
-          }
-    }, [isDialogOpen, configToEdit]);
 
     const handleDeleteConfig = async (config: VehicleStatusConfigType) => {
         try {
@@ -56,7 +43,10 @@ export function VehicleStatusConfig({ configs = [] }: VehicleStatusConfigProps) 
     };
 
     return (
-        <ConfigCardContainer title="Estados de Vehículos" onAdd={() => setIsDialogOpen(true)}>
+        <ConfigCardContainer title="Estados de Vehículos" 
+            onAdd={() => setIsDialogOpen(true)}
+            className="max-w-full"
+        >
             <VehicleStatusConfigDataTable
                 columns={columns}
                 data={configs}

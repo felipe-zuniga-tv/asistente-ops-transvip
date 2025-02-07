@@ -44,7 +44,7 @@ export default function AirportStatusClient({ vehicleTypesList, zone: initialZon
         const interval = setInterval(fetchUpdates, secondsToUpdate * 1000)
 
         return () => clearInterval(interval)
-    }, [selectedZone])
+    }, [selectedZone.zone_id, selectedZone.branch_id])
 
     useEffect(() => {
         const fetchVehicles = async () => {
@@ -71,7 +71,7 @@ export default function AirportStatusClient({ vehicleTypesList, zone: initialZon
         }
 
         fetchVehicles()
-    }, [selectedType, vehicleTypes]) // Dependency on selectedType and vehicleTypes
+    }, [selectedType, vehicleTypes, selectedZone.zone_id, selectedZone.branch_id]) // Added missing dependencies
 
     return (
         <div className="flex flex-col h-screen bg-gray-100">

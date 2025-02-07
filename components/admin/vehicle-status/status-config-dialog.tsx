@@ -6,13 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
+    SimpleDialog,
+    SimpleDialogHeader,
+    SimpleDialogFooter,
+    SimpleDialogTitle,
+    SimpleDialogDescription,
+} from "@/components/ui/simple-dialog";
 import {
     Form,
     FormControl,
@@ -104,83 +103,81 @@ export function StatusConfigDialog({
     }
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                    <DialogTitle>
-                        {isEditMode ? "Editar Estado" : "Crear Nuevo Estado"}
-                    </DialogTitle>
-                    <DialogDescription>
-                        {isEditMode
-                            ? "Modifique los datos del estado"
-                            : "Ingrese los datos del nuevo estado"}
-                    </DialogDescription>
-                </DialogHeader>
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                        <FormField
-                            control={form.control}
-                            name="label"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Nombre del Estado</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Ej: En Servicio" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+        <SimpleDialog isOpen={open} onClose={() => onOpenChange(false)}>
+            <SimpleDialogHeader>
+                <SimpleDialogTitle>
+                    {isEditMode ? "Editar Estado" : "Crear Nuevo Estado"}
+                </SimpleDialogTitle>
+                <SimpleDialogDescription>
+                    {isEditMode
+                        ? "Modifique los datos del estado"
+                        : "Ingrese los datos del nuevo estado"}
+                </SimpleDialogDescription>
+            </SimpleDialogHeader>
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <FormField
+                        control={form.control}
+                        name="label"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Nombre del Estado</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Ej: En Servicio" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-                        <FormField
-                            control={form.control}
-                            name="description"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Descripción</FormLabel>
-                                    <FormControl>
-                                        <Textarea
-                                            placeholder="Descripción del estado..."
-                                            className="resize-none"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                    <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Descripción</FormLabel>
+                                <FormControl>
+                                    <Textarea
+                                        placeholder="Descripción del estado..."
+                                        className="resize-none"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-                        <FormField
-                            control={form.control}
-                            name="color"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Color</FormLabel>
-                                    <FormControl>
-                                        <div className="flex gap-2 items-center">
-                                            <Input type="color" {...field} className="w-12 h-8 p-0" />
-                                            <Input {...field} placeholder="#000000" className="flex-1" />
-                                        </div>
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                    <FormField
+                        control={form.control}
+                        name="color"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Color</FormLabel>
+                                <FormControl>
+                                    <div className="flex gap-2 items-center">
+                                        <Input type="color" {...field} className="w-12 h-8 p-0" />
+                                        <Input {...field} placeholder="#000000" className="flex-1" />
+                                    </div>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-                        <DialogFooter>
-                            <Button type="submit" disabled={isLoading}>
-                                {isLoading
-                                    ? isEditMode
-                                        ? "Actualizando..."
-                                        : "Creando..."
-                                    : isEditMode
-                                    ? "Actualizar Estado"
-                                    : "Crear Estado"}
-                            </Button>
-                        </DialogFooter>
-                    </form>
-                </Form>
-            </DialogContent>
-        </Dialog>
+                    <SimpleDialogFooter>
+                        <Button type="submit" disabled={isLoading}>
+                            {isLoading
+                                ? isEditMode
+                                    ? "Actualizando..."
+                                    : "Creando..."
+                                : isEditMode
+                                ? "Actualizar Estado"
+                                : "Crear Estado"}
+                        </Button>
+                    </SimpleDialogFooter>
+                </form>
+            </Form>
+        </SimpleDialog>
     );
 } 

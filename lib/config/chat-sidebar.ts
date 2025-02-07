@@ -215,13 +215,13 @@ const adminMenu: SidebarItem = {
 			title: 'Formularios',
 			icon: ListChecks,
 			url: Routes.ADMIN.FORMS_CONFIG,
-			active: false
+			active: true
 		},
 		{
 			title: 'Configuración de Sistema',
 			icon: Settings2,
 			url: Routes.ADMIN.SYSTEM_CONFIG,
-			active: false
+			active: true
 		},
 	],
 }

@@ -39,7 +39,7 @@ export const columns: ColumnDef<VehicleStatusConfig>[] = [
         accessorKey: "color",
         header: () => <div className="text-center">Color</div>,
         cell: ({ row }) => (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center gap-2">
                 <div
                     className="w-3 h-3 rounded-full"
                     style={{ backgroundColor: row.original.color }}

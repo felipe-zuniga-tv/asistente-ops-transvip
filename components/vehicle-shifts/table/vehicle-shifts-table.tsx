@@ -1,24 +1,11 @@
 "use client"
 
-import {
-    ColumnDef,
-    ColumnFiltersState,
-    PaginationState,
-    SortingState,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-    useReactTable,
-} from "@tanstack/react-table"
-
+import { useState, useMemo } from "react"
+import type { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { Download, Trash2 } from "lucide-react"
-import { useState } from "react"
-import { VehicleShift } from "../vehicle-shifts"
-import { DataTableHeader } from "@/components/tables/data-table-header"
-import { DataTablePagination } from "@/components/tables/data-table-pagination"
-import { DataTableContent } from "@/components/tables/data-table-content"
+import type { VehicleShift } from "../vehicle-shifts"
+import { DataTable } from "@/components/tables/data-table"
 import {
     Dialog,
     DialogContent,
@@ -27,8 +14,6 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
-import { DataTableSearch } from "@/components/tables/data-table-search"
-import { DataTableSelect } from "@/components/tables/data-table-select"
 
 interface DataTableProps {
     columns: ColumnDef<VehicleShift>[]
@@ -47,113 +32,69 @@ export function VehicleShiftsTable({
     onBulkDelete,
     onBulkDownload,
 }: DataTableProps) {
-    const [sorting, setSorting] = useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-    const [globalFilter, setGlobalFilter] = useState<string>("")
-    const [rowSelection, setRowSelection] = useState({})
-    const [pagination, setPagination] = useState<PaginationState>({
-        pageIndex: 0,
-        pageSize: 10,
-    })
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+    const [selectedRows, setSelectedRows] = useState<VehicleShift[]>([])
 
-    const table = useReactTable({
-        data,
-        columns,
-        getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
-        onSortingChange: setSorting,
-        onColumnFiltersChange: setColumnFilters,
-        onGlobalFilterChange: setGlobalFilter,
-        onRowSelectionChange: setRowSelection,
-        onPaginationChange: setPagination,
-        state: {
-            pagination,
-            sorting,
-            columnFilters,
-            globalFilter,
-            rowSelection,
-        },
-        filterFns: {
-            fuzzy: (row, columnId, value) => {
-                const rowValue = String(row.getValue(columnId))
-                return rowValue.toLowerCase().includes(String(value).toLowerCase())
-            },
-        },
-        meta: {
-            onEdit,
-            onDelete,
-        },
-    })
+    // Get unique branch options from data
+    const branchOptions = useMemo(() => 
+        Array.from(new Set(data.map(shift => shift.branch_name))).map(name => ({
+            label: name,
+            value: name
+        }))
+    , [data])
 
-    // Get selected rows data
-    const getSelectedRows = () => {
-        return table
-            .getFilteredSelectedRowModel()
-            .rows.map((row) => row.original)
+    const handleSelectionChange = (rows: VehicleShift[]) => {
+        setSelectedRows(rows)
     }
 
     const handleBulkDelete = () => {
-        const selectedShifts = getSelectedRows()
-        onBulkDelete?.(selectedShifts)
+        onBulkDelete?.(selectedRows)
         setIsDeleteDialogOpen(false)
-        setRowSelection({})
     }
-
-    // Get unique branch options from data
-    const branchOptions = Array.from(new Set(data.map(shift => shift.branch_name))).map(name => ({
-        label: name,
-        value: name
-    }))
 
     return (
         <>
-            <div className="flex items-center justify-start gap-4 py-1">
-                <DataTableSelect
-                    table={table}
-                    options={branchOptions}
-                    placeholder="Filtrar por sucursal..."
-                    filterColumnId="branch_name"
-                    className="w-[200px]"
-                />
-                <DataTableSearch
-                    table={table}
-                    placeholder="Filtrar por turno..."
-                    searchColumnId="shift_name"
-                />
-                <DataTableSearch
-                    table={table}
-                    placeholder="Filtrar por móvil..."
-                    searchColumnId="vehicle_number"
-                />
-            </div>
-
-            {/* Show bulk action buttons when rows are selected */}
-            {table.getFilteredSelectedRowModel().rows.length > 0 && (
-                <div className="w-full flex items-center justify-end gap-2">
-                    <span className="text-sm font-semibold">Seleccionados:</span>
-                    <Button
-                        variant="secondary"
-                        size="sm"
-                        className="shadow"
-                        onClick={() => onBulkDownload?.(getSelectedRows())}
-                    >
-                        <Download className="h-4 w-4" />
-                        Descargar
-                    </Button>
-                    <Button
-                        variant="destructive"
-                        size="sm"
-                        className="shadow"
-                        onClick={() => setIsDeleteDialogOpen(true)}
-                    >
-                        <Trash2 className="h-4 w-4" />
-                        Eliminar
-                    </Button>
-                </div>
-            )}
+            <DataTable
+                data={data}
+                columns={columns}
+                onEdit={onEdit}
+                onDelete={onDelete}
+                enableRowSelection={true}
+                onSelectionChange={handleSelectionChange}
+                filterOptions={[
+                    {
+                        columnId: "branch_name",
+                        options: branchOptions,
+                        placeholder: "Filtrar por sucursal..."
+                    }
+                ]}
+                searchColumnId="shift_name"
+                searchPlaceholder="Filtrar por turno..."
+            >
+                {selectedRows.length > 0 && (
+                    <div className="w-full flex items-center justify-end gap-2">
+                        <span className="text-sm font-semibold">Seleccionados:</span>
+                        <Button
+                            variant="secondary"
+                            size="sm"
+                            className="shadow"
+                            onClick={() => onBulkDownload?.(selectedRows)}
+                        >
+                            <Download className="h-4 w-4" />
+                            Descargar
+                        </Button>
+                        <Button
+                            variant="destructive"
+                            size="sm"
+                            className="shadow"
+                            onClick={() => setIsDeleteDialogOpen(true)}
+                        >
+                            <Trash2 className="h-4 w-4" />
+                            Eliminar
+                        </Button>
+                    </div>
+                )}
+            </DataTable>
 
             {/* Delete confirmation dialog */}
             <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
@@ -162,7 +103,7 @@ export function VehicleShiftsTable({
                         <DialogTitle>Confirmar eliminación</DialogTitle>
                         <DialogDescription className="pt-4">
                             <div className="flex flex-col gap-2">
-                                <p>¿Estás seguro que deseas eliminar los {table.getFilteredSelectedRowModel().rows.length} turnos seleccionados?</p>
+                                <p>¿Estás seguro que deseas eliminar los {selectedRows.length} turnos seleccionados?</p>
                                 <p>Esta acción <b>no</b> se puede deshacer.</p>
                             </div>
                         </DialogDescription>
@@ -183,10 +124,6 @@ export function VehicleShiftsTable({
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
-
-            <DataTableHeader table={table} />
-            <DataTableContent table={table} columns={columns.length} />
-            <DataTablePagination table={table} />
         </>
     )
 }

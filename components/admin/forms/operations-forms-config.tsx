@@ -1,0 +1,79 @@
+"use client";
+
+import { useState, useTransition } from "react";
+import { OperationsForm } from "@/lib/types/vehicle/forms";
+import { OperationsFormDialog } from "./dialogs/operations-form-dialog";
+import { useRouter } from "next/navigation";
+import { ConfigCardContainer } from "@/components/tables/config-card-container";
+import { DataTable } from "@/components/tables/data-table";
+import { columns } from "./form-table/columns";
+import { updateOperationsForm } from "@/lib/services/forms";
+import { useToast } from "@/hooks/use-toast";
+
+interface OperationsFormsListProps {
+    data: OperationsForm[];
+}
+
+export function OperationsFormsConfiguration({ data }: OperationsFormsListProps) {
+    const [open, setOpen] = useState(false);
+    const router = useRouter();
+    const { toast } = useToast();
+    const [isPending, startTransition] = useTransition();
+
+    const handleView = (formId: string) => {
+        router.push(`/admin/forms-config/${formId}`);
+    };
+
+    const handleToggleStatus = async (form: OperationsForm) => {
+        startTransition(async () => {
+            try {
+                await updateOperationsForm(form.id, {
+                    is_active: !form.is_active
+                });
+                toast({
+                    title: "Estado actualizado",
+                    description: `El formulario ha sido ${form.is_active ? 'desactivado' : 'activado'} exitosamente.`,
+                });
+                router.refresh();
+            } catch (error) {
+                toast({
+                    title: "Error",
+                    description: "Ha ocurrido un error al actualizar el estado del formulario.",
+                    variant: "destructive",
+                });
+            }
+        });
+    };
+
+    const filterOptions = [
+        {
+            columnId: "is_active",
+            options: [
+                { label: "Activo", value: "true" },
+                { label: "Inactivo", value: "false" },
+            ],
+            placeholder: "Filtrar por estado",
+        },
+    ];
+
+    return (
+        <ConfigCardContainer title="Formularios Transvip"
+            onAdd={() => setOpen(true)}
+            className="max-w-full"
+        >
+            <DataTable
+                data={data}
+                columns={columns({ handleView, onToggleStatus: handleToggleStatus })}
+                searchPlaceholder="Buscar formulario..."
+                searchColumnId="title"
+                filterOptions={filterOptions}
+                enableSearch={true}
+            />
+
+            <OperationsFormDialog
+                open={open}
+                onOpenChange={setOpen}
+            />
+        </ConfigCardContainer>
+    );
+} 

@@ -1,24 +1,8 @@
 'use client'
 
-import * as React from "react"
-import {
-    ColumnDef,
-    ColumnFiltersState,
-    PaginationState,
-    SortingState,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-    useReactTable,
-} from "@tanstack/react-table"
-
-import { useState } from "react"
-import { DataTableHeader } from "@/components/tables/data-table-header"
-import { DataTablePagination } from "@/components/tables/data-table-pagination"
-import { DataTableContent } from "@/components/tables/data-table-content"
-import { DataTableSearch } from "@/components/tables/data-table-search"
+import type { ColumnDef } from "@tanstack/react-table"
 import type { PaymentMethod } from '@/lib/types/admin'
+import { DataTable } from "@/components/tables/data-table"
 
 interface PaymentMethodDataTableProps {
     columns: ColumnDef<PaymentMethod>[]
@@ -33,45 +17,15 @@ export function PaymentMethodDataTable({
     onEdit,
     onDelete,
 }: PaymentMethodDataTableProps) {
-    const [sorting, setSorting] = useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-    const [pagination, setPagination] = useState<PaginationState>({
-        pageIndex: 0,
-        pageSize: 10,
-    })
-
-    const table = useReactTable({
-        data,
-        columns,
-        getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        onSortingChange: setSorting,
-        getSortedRowModel: getSortedRowModel(),
-        onColumnFiltersChange: setColumnFilters,
-        getFilteredRowModel: getFilteredRowModel(),
-        onPaginationChange: setPagination,
-        state: {
-            sorting,
-            columnFilters,
-            pagination,
-        },
-        meta: {
-            onEdit: (method: PaymentMethod) => {
-                onEdit?.(method)
-            },
-            onDelete: (method: PaymentMethod) => {
-                onDelete?.(method)
-            },
-        },
-    })
-
     return (
-        <div className="space-y-4">
-            <DataTableSearch table={table} placeholder="Buscar método de pago..." 
-                searchColumnId="name" />
-            <DataTableHeader table={table} />
-            <DataTableContent columns={columns.length} table={table} />
-            <DataTablePagination table={table} />
-        </div>
+        <DataTable
+            data={data}
+            columns={columns}
+            onEdit={onEdit}
+            onDelete={onDelete}
+            searchPlaceholder="Buscar método de pago..."
+            searchColumnId="name"
+            enableSearch={true}
+        />
     )
 } 

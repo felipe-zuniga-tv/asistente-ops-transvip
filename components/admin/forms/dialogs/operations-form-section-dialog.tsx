@@ -17,7 +17,7 @@ import { OperationsFormSection } from "@/lib/types/vehicle/forms";
 const formSchema = z.object({
     title: z.string().min(1, "El título es requerido"),
     description: z.string().min(1, "La descripción es requerida"),
-    order: z.number().min(0),
+    order: z.number().min(1, "El orden debe ser mayor a 0"),
 });
 
 interface OperationsFormSectionDialogProps {
@@ -33,7 +33,7 @@ export function OperationsFormSectionDialog({
     onOpenChange, 
     formId, 
     section,
-    currentOrder = 0 
+    currentOrder = 1
 }: OperationsFormSectionDialogProps) {
     const [isPending, startTransition] = useTransition();
     const { toast } = useToast();
@@ -42,27 +42,23 @@ export function OperationsFormSectionDialog({
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            title: section?.title ?? "",
-            description: section?.description ?? "",
-            order: section?.order ?? currentOrder,
+            title: "",
+            description: "",
+            order: currentOrder,
         },
     });
 
+    // Reset form when dialog opens/closes or when section/currentOrder changes
     useEffect(() => {
-        if (section) {
+        if (open) {
             form.reset({
-                title: section.title,
-                description: section.description,
-                order: section.order,
-            });
-        } else {
-            form.reset({
-                title: "",
-                description: "",
-                order: currentOrder,
+                title: section?.title ?? "",
+                description: section?.description ?? "",
+                // If editing, use the current position, if creating new use the next available position
+                order: section ? currentOrder : currentOrder,
             });
         }
-    }, [section, currentOrder, form]);
+    }, [open, section, currentOrder, form]);
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         startTransition(async () => {
@@ -145,9 +141,10 @@ export function OperationsFormSectionDialog({
                                 <FormControl>
                                     <Input 
                                         type="number" 
-                                        min={0}
+                                        min={1}
                                         {...field}
                                         onChange={e => field.onChange(parseInt(e.target.value))}
+                                        value={field.value}
                                     />
                                 </FormControl>
                                 <FormMessage />

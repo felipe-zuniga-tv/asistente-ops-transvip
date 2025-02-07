@@ -69,7 +69,6 @@ export function VehicleShiftsSummary() {
                 endDateStr,
                 selectedBranch === "all" ? undefined : selectedBranch
             )
-            console.log(result)
 
             if (result.error) {
                 toast({
@@ -119,8 +118,6 @@ export function VehicleShiftsSummary() {
                 }))
                 .sort((a, b) => a.date.localeCompare(b.date))
 
-            console.log(newSummaries)
-
             setSummaries(newSummaries)
         } catch (error) {
             console.error("Error fetching shifts summary:", error)
@@ -165,6 +162,11 @@ export function VehicleShiftsSummary() {
                 {vehicleCount > 0 && (
                     <div className="text-xs text-blue-600 font-medium text-center pt-1.5">
                         {vehicleCount} móvil{vehicleCount !== 1 ? 'es' : ''}
+                    </div>
+                )}
+                {vehicleCount === 0 && (
+                    <div className="text-sm text-red-600 font-medium text-center pt-0">
+                        Sin vehículos
                     </div>
                 )}
             </div>

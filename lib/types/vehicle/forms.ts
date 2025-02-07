@@ -1,4 +1,11 @@
-export type QuestionType = 'text' | 'number' | 'image' | 'email';
+export const QUESTION_TYPE_CONFIG = {
+    text: { label: "Texto" },
+    number: { label: "Número" },
+    image: { label: "Imagen" },
+    email: { label: "Correo" },
+} as const;
+
+export type QuestionType = keyof typeof QUESTION_TYPE_CONFIG;
 
 export interface OperationsForm {
     id: string;

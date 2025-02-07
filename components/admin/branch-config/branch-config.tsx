@@ -17,18 +17,6 @@ export function BranchConfig({ data }: BranchConfigProps) {
     const [branchToDelete, setBranchToDelete] = useState<Branch | null>(null)
     const [branchToEdit, setBranchToEdit] = useState<Branch | null>(null)
 
-    useEffect(() => {
-        if (!isDialogOpen || !branchToEdit) {
-            const timer = setTimeout(() => {
-                document.body.style.pointerEvents = "auto";
-            }, 0);
-
-            return () => clearTimeout(timer);
-        } else {
-            document.body.style.pointerEvents = "auto";
-        }
-    }, [isDialogOpen, branchToEdit]);
-
     const handleEdit = useCallback((branch: Branch) => {
         setBranchToEdit(branch)
         setIsDialogOpen(true)
@@ -81,6 +69,7 @@ export function BranchConfig({ data }: BranchConfigProps) {
     return (
         <ConfigCardContainer title="Sucursales"
             onAdd={() => setIsDialogOpen(true)}
+            className="max-w-full"
         >
             <BranchConfigDataTable
                 data={branches}

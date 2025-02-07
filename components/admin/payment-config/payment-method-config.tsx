@@ -58,7 +58,10 @@ export function PaymentMethodConfig({ data }: PaymentMethodConfigProps) {
     }
 
     return (
-        <ConfigCardContainer title="Métodos de Pago" onAdd={() => setIsDialogOpen(true)}>
+        <ConfigCardContainer title="Métodos de Pago" 
+            onAdd={() => setIsDialogOpen(true)}
+            className="max-w-full"
+        >
             <PaymentMethodDataTable
                 columns={columns}
                 data={data}

@@ -3,11 +3,11 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { OperationsFormQuestionsDataTable } from "./table/operations-form-questions-data-table";
-import { OperationsFormQuestionDialog } from "./operations-form-question-dialog";
+import { OperationsFormQuestionsDataTable } from "./questions-table/operations-form-questions-data-table";
+import { OperationsFormQuestionDialog } from "./dialogs/operations-form-question-dialog";
 import { AlertDialogDeleteQuestion } from "./alert-dialog-delete-question";
 import { ConfigCardContainer } from "@/components/tables/config-card-container";
-import { deleteInspectionQuestion } from "@/lib/services/forms";
+import { deleteQuestion } from "@/lib/services/forms";
 import type { OperationsFormQuestion } from "@/lib/types/vehicle/forms";
 
 interface OperationsFormQuestionsConfigProps {
@@ -59,7 +59,7 @@ export function OperationsFormQuestionsConfig({ data = [], sectionId }: Operatio
 
     const handleQuestionDelete = useCallback(async (question: OperationsFormQuestion) => {
         try {
-            await deleteInspectionQuestion(question.id);
+            await deleteQuestion(question.id);
             setQuestions(prevQuestions =>
                 prevQuestions.filter(q => q.id !== question.id)
             );

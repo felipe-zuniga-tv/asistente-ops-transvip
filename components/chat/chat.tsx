@@ -39,7 +39,7 @@ export function Chat({ id, initialMessages, className, session }: ChatProps) {
 
     useEffect(() => {
         setNewChatId(id)
-    }, [id])
+    }, [id, setNewChatId])
 
     const { messagesRef, scrollRef, visibilityRef, isAtBottom, scrollToBottom } = useScrollAnchor()
 

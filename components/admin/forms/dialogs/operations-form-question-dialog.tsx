@@ -12,15 +12,13 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { OperationsFormQuestion, QuestionType } from "@/lib/types/vehicle/forms";
+import { OperationsFormQuestion, QuestionType, QUESTION_TYPE_CONFIG } from "@/lib/types/vehicle/forms";
 import { createQuestion, updateQuestion } from "@/lib/services/forms";
 
-const QUESTION_TYPES: { label: string; value: QuestionType }[] = [
-    { label: "Texto", value: "text" },
-    { label: "Número", value: "number" },
-    { label: "Imagen", value: "image" },
-    { label: "Correo", value: "email" },
-];
+const QUESTION_TYPES = Object.entries(QUESTION_TYPE_CONFIG).map(([value, config]) => ({
+    value: value as QuestionType,
+    label: config.label,
+}));
 
 const formSchema = z.object({
     label: z.string().min(1, "La etiqueta es requerida"),

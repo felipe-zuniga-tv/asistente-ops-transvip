@@ -1,25 +1,8 @@
 "use client";
 
-import * as React from "react";
-import {
-    ColumnDef,
-    ColumnFiltersState,
-    PaginationState,
-    SortingState,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-    useReactTable,
-} from "@tanstack/react-table";
-
-import { Search } from "lucide-react";
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { DataTableHeader } from "@/components/tables/data-table-header";
-import { DataTablePagination } from "@/components/tables/data-table-pagination";
-import { DataTableContent } from "@/components/tables/data-table-content";
-import { VehicleStatus } from "@/lib/types";
+import type { ColumnDef } from "@tanstack/react-table";
+import type { VehicleStatus } from "@/lib/types";
+import { DataTable } from "@/components/tables/data-table";
 
 interface DataTableProps {
     columns: ColumnDef<VehicleStatus>[];
@@ -34,63 +17,28 @@ export function VehicleStatusDataTable({
     onEdit,
     onDelete,
 }: DataTableProps) {
-    const [sorting, setSorting] = useState<SortingState>([]);
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-    const [globalFilter, setGlobalFilter] = useState<string>("");
-    const [pagination, setPagination] = useState<PaginationState>({
-        pageIndex: 0,
-        pageSize: 10,
-    })
-
-    const table = useReactTable({
-        data,
-        columns,
-        getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
-        onSortingChange: setSorting,
-        onColumnFiltersChange: setColumnFilters,
-        onGlobalFilterChange: setGlobalFilter,
-        onPaginationChange: setPagination,
-        state: {
-            sorting,
-            columnFilters,
-            globalFilter,
-            pagination,
-        },
-        filterFns: {
-            fuzzy: (row, columnId, value) => {
-                const rowValue = String(row.getValue(columnId))
-                return rowValue.toLowerCase().includes(String(value).toLowerCase())
-            },
-        },
-        meta: {
-            onEdit,
-            onDelete,
-        },
-    });
+    // Create unique status options from data
+    const statusOptions = Array.from(new Set(data.map(item => item.status_label))).map(label => ({
+        label,
+        value: label,
+    }));
 
     return (
-        <>
-            <div className="flex items-center justify-between gap-4 py-1">
-                <div className="relative">
-                    <Input
-                        placeholder="Filtrar por móvil..."
-                        value={(table.getColumn("vehicle_number")?.getFilterValue() as string) ?? ""}
-                        onChange={(event) => {
-                            table.getColumn("vehicle_number")?.setFilterValue(event.target.value);
-                        }}
-                        className="peer pe-9 ps-9 max-w-xs"
-                    />
-                    <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
-                        <Search size={16} strokeWidth={2} />
-                    </div>
-                </div>
-            </div>
-            <DataTableHeader table={table} />
-            <DataTableContent table={table} columns={columns.length} />
-            <DataTablePagination table={table} />
-        </>
+        <DataTable
+            data={data}
+            columns={columns}
+            onEdit={onEdit}
+            onDelete={onDelete}
+            searchPlaceholder="Filtrar por móvil..."
+            searchColumnId="vehicle_number"
+            enableSearch={true}
+            filterOptions={[
+                {
+                    columnId: "status_label",
+                    options: statusOptions,
+                    placeholder: "Filtrar por estado",
+                },
+            ]}
+        />
     );
 } 

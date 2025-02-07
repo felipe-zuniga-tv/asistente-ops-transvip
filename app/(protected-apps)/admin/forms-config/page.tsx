@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { OperationsFormsList } from "@/components/admin/forms/operations-forms-list";
+import { OperationsFormsConfiguration } from "@/components/admin/forms/operations-forms-config";
 import { getForms } from "@/lib/services/forms";
 import SuspenseLoading from "@/components/ui/suspense";
 
@@ -18,5 +18,5 @@ export default async function FormsConfigPage() {
 
 async function FormsConfigDashboard() {
     const forms = await getForms();
-    return <OperationsFormsList data={forms} />;
+    return <OperationsFormsConfiguration data={forms} />;
 } 

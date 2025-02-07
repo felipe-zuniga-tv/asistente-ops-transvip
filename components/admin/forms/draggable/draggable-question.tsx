@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Draggable, DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd";
 import { GripVertical, Settings2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { OperationsFormQuestion } from "@/lib/types/vehicle/forms";
+import { OperationsFormQuestion, QUESTION_TYPE_CONFIG } from "@/lib/types/vehicle/forms";
 
 interface DraggableQuestionProps {
     question: OperationsFormQuestion;
@@ -33,7 +33,7 @@ export function DraggableQuestion({ question, index, onEdit }: DraggableQuestion
                                 {question.label}
                             </p>
                             <p className="text-xs text-muted-foreground">
-                                Tipo: {question.type}
+                                Tipo: {QUESTION_TYPE_CONFIG[question.type].label}
                             </p>
                         </div>
                     </div>

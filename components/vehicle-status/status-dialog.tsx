@@ -8,13 +8,11 @@ import { format, parseISO } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
+    SimpleDialog,
+    SimpleDialogHeader,
+    SimpleDialogFooter,
+    SimpleDialogTitle,
+} from "@/components/ui/simple-dialog";
 import {
     Form,
     FormControl,
@@ -152,115 +150,73 @@ export function StatusDialog({
     }
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                    <DialogTitle>{statusToEdit ? "Editar" : "Registrar"} Estado de Móvil</DialogTitle>
-                </DialogHeader>
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                        <FormField
-                            control={form.control}
-                            name="vehicle_number"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Número de Móvil</FormLabel>
+        <SimpleDialog isOpen={open} onClose={() => onOpenChange(false)}>
+            <SimpleDialogHeader>
+                <SimpleDialogTitle>{statusToEdit ? "Editar" : "Registrar"} Estado de Móvil</SimpleDialogTitle>
+            </SimpleDialogHeader>
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <FormField
+                        control={form.control}
+                        name="vehicle_number"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Número de Móvil</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Ej: 123" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="status_id"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Estado</FormLabel>
+                                <Select onValueChange={field.onChange} value={field.value}>
                                     <FormControl>
-                                        <Input placeholder="Ej: 123" {...field} />
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Seleccione un estado" />
+                                        </SelectTrigger>
                                     </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                                    <SelectContent>
+                                        {statusConfigs.map((config) => (
+                                            <SelectItem key={config.id} value={config.id}>
+                                                <div className="flex items-center gap-2">
+                                                    <div
+                                                        className="w-3 h-3 rounded-full"
+                                                        style={{ backgroundColor: config.color }}
+                                                    />
+                                                    <span>{config.label}</span>
+                                                </div>
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
+                    <div className="grid grid-cols-2 gap-4">
                         <FormField
                             control={form.control}
-                            name="status_id"
+                            name="start_date"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Estado</FormLabel>
-                                    <Select onValueChange={field.onChange} value={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Seleccione un estado" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {statusConfigs.map((config) => (
-                                                <SelectItem key={config.id} value={config.id}>
-                                                    <div className="flex items-center gap-2">
-                                                        <div
-                                                            className="w-3 h-3 rounded-full"
-                                                            style={{ backgroundColor: config.color }}
-                                                        />
-                                                        <span>{config.label}</span>
-                                                    </div>
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <div className="grid grid-cols-2 gap-4">
-                            <FormField
-                                control={form.control}
-                                name="start_date"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Fecha Inicio</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type="date"
-                                                {...field}
-                                                value={field.value ? format(field.value, 'yyyy-MM-dd') : ''}
-                                                onChange={e => {
-                                                    const date = new Date(e.target.value);
-                                                    field.onChange(date);
-                                                }}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="end_date"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Fecha Fin</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type="date"
-                                                {...field}
-                                                value={field.value ? format(field.value, 'yyyy-MM-dd') : ''}
-                                                onChange={e => {
-                                                    const date = new Date(e.target.value);
-                                                    field.onChange(date);
-                                                }}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-
-                        <FormField
-                            control={form.control}
-                            name="comments"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Comentarios</FormLabel>
+                                    <FormLabel>Fecha Inicio</FormLabel>
                                     <FormControl>
-                                        <Textarea
-                                            placeholder="Ingrese comentarios adicionales..."
-                                            className="resize-none"
+                                        <Input
+                                            type="date"
                                             {...field}
+                                            value={field.value ? format(field.value, 'yyyy-MM-dd') : ''}
+                                            onChange={e => {
+                                                const date = new Date(e.target.value);
+                                                field.onChange(date);
+                                            }}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -268,14 +224,54 @@ export function StatusDialog({
                             )}
                         />
 
-                        <DialogFooter>
-                            <Button type="submit" disabled={isLoading}>
-                                {isLoading ? "Guardando..." : (statusToEdit ? "Actualizar" : "Guardar")}
-                            </Button>
-                        </DialogFooter>
-                    </form>
-                </Form>
-            </DialogContent>
-        </Dialog>
+                        <FormField
+                            control={form.control}
+                            name="end_date"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Fecha Fin</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="date"
+                                            {...field}
+                                            value={field.value ? format(field.value, 'yyyy-MM-dd') : ''}
+                                            onChange={e => {
+                                                const date = new Date(e.target.value);
+                                                field.onChange(date);
+                                            }}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+
+                    <FormField
+                        control={form.control}
+                        name="comments"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Comentarios</FormLabel>
+                                <FormControl>
+                                    <Textarea
+                                        placeholder="Ingrese comentarios adicionales..."
+                                        className="resize-none"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <SimpleDialogFooter>
+                        <Button type="submit" disabled={isLoading}>
+                            {isLoading ? "Guardando..." : (statusToEdit ? "Actualizar" : "Guardar")}
+                        </Button>
+                    </SimpleDialogFooter>
+                </form>
+            </Form>
+        </SimpleDialog>
     );
 } 

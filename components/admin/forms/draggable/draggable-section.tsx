@@ -6,7 +6,7 @@ import { Draggable, Droppable, DroppableProvided, DraggableProvided, DraggableSt
 import { GripVertical, PlusCircle, Pencil, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { OperationsFormSection, OperationsFormQuestion } from "@/lib/types/vehicle/forms";
-import { DraggableQuestion } from "./draggable/draggable-question";
+import { DraggableQuestion } from "./draggable-question";
 import { Separator } from "@/components/ui/separator";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useState } from "react";
@@ -70,9 +70,9 @@ export function DraggableSection({ section, index, onEditSection, onAddQuestion,
                         <CollapsibleContent>
                             <Separator className="mt-2 mb-3" />
                             <CardContent>
-                                <div className="space-y-4">
-                                    <div className="flex items-center justify-between">
-                                        <h4 className="text-sm font-medium">Preguntas</h4>
+                                <div className="space-y-3">
+                                    <div className="flex items-center justify-start gap-8">
+                                        <h3 className="text-sm font-medium">Preguntas</h3>
                                         <Button
                                             variant="secondary"
                                             size="sm"
@@ -84,7 +84,7 @@ export function DraggableSection({ section, index, onEditSection, onAddQuestion,
                                         </Button>
                                     </div>
 
-                                    <Droppable droppableId={`questions-${section.id}`}>
+                                    <Droppable droppableId={`questions-${section.id}`} type="question">
                                         {(provided: DroppableProvided) => (
                                             <div
                                                 {...provided.droppableProps}

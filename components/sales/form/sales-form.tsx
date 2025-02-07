@@ -118,7 +118,7 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 		} finally {
 			isSubmitting.current = false;
 		}
-	}, [branchCode, branchName, formData, initialLanguage, onSuccess, t.error.description, t.error.title, t.success.description, t.success.title]);
+	}, [branchCode, branchName, formData, initialLanguage, onSuccess, t.error.description, t.error.title, t.success.description, t.success.title, toast]);
 
 	return (
 		<Card>
