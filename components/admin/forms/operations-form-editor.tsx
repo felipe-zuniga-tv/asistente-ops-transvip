@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -33,6 +33,22 @@ export function OperationsFormEditor({ form }: OperationsFormEditorProps) {
     const [selectedSection, setSelectedSection] = useState<OperationsFormSection & { questions: OperationsFormQuestion[] }>();
     const [selectedQuestion, setSelectedQuestion] = useState<OperationsFormQuestion>();
     const [sections, setSections] = useState(form.sections);
+
+    const handleQuestionUpdate = useCallback((updatedQuestion: OperationsFormQuestion) => {
+        setSections(prevSections => 
+            prevSections.map(section => {
+                if (section.id === selectedSection?.id) {
+                    return {
+                        ...section,
+                        questions: section.questions.map(q => 
+                            q.id === updatedQuestion.id ? updatedQuestion : q
+                        )
+                    };
+                }
+                return section;
+            })
+        );
+    }, [selectedSection?.id]);
 
     async function onDragEnd(result: DropResult) {
         if (!result.destination) return;
@@ -211,6 +227,7 @@ export function OperationsFormEditor({ form }: OperationsFormEditorProps) {
                     sectionId={selectedSection.id}
                     question={selectedQuestion}
                     currentOrder={selectedSection.questions.length}
+                    onQuestionUpdate={handleQuestionUpdate}
                 />
             )}
         </ConfigCardContainer>

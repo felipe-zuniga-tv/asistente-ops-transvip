@@ -8,6 +8,7 @@ import {
     CardContent,
 } from "@/components/ui/card";
 import Image from "next/image";
+import { Input } from "@/components/ui/input";
 
 interface ImageInputProps {
     value?: string;
@@ -20,23 +21,35 @@ export function ImageInput({ value, onChange, allowGallery }: ImageInputProps) {
 
     const handleCameraCapture = useCallback(async () => {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const stream = await navigator.mediaDevices.getUserMedia({ 
+                video: {
+                    facingMode: 'environment' // Prefer back camera
+                }
+            });
+            
             const video = document.createElement("video");
-            const canvas = document.createElement("canvas");
-
             video.srcObject = stream;
-            await video.play();
+            
+            // Wait for video metadata to load
+            await new Promise((resolve) => {
+                video.onloadedmetadata = () => {
+                    video.play().then(resolve);
+                };
+            });
 
+            const canvas = document.createElement("canvas");
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
 
             const context = canvas.getContext("2d");
-            context?.drawImage(video, 0, 0);
+            if (!context) throw new Error("Could not get canvas context");
+            
+            context.drawImage(video, 0, 0);
 
-            const tracks = stream.getTracks();
-            tracks.forEach(track => track.stop());
+            // Stop all tracks
+            stream.getTracks().forEach(track => track.stop());
 
-            const imageData = canvas.toDataURL("image/jpeg");
+            const imageData = canvas.toDataURL("image/jpeg", 0.8); // Compress to 80% quality
             onChange(imageData);
         } catch (error) {
             console.error("Error accessing camera:", error);
@@ -50,14 +63,55 @@ export function ImageInput({ value, onChange, allowGallery }: ImageInputProps) {
         setIsLoading(true);
 
         try {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                onChange(reader.result as string);
-                setIsLoading(false);
-            };
-            reader.readAsDataURL(file);
+            // Compress image before converting to base64
+            const compressedFile = await new Promise<string>((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement("canvas");
+                        let width = img.width;
+                        let height = img.height;
+
+                        // Max dimensions
+                        const MAX_WIDTH = 1920;
+                        const MAX_HEIGHT = 1080;
+
+                        if (width > height) {
+                            if (width > MAX_WIDTH) {
+                                height *= MAX_WIDTH / width;
+                                width = MAX_WIDTH;
+                            }
+                        } else {
+                            if (height > MAX_HEIGHT) {
+                                width *= MAX_HEIGHT / height;
+                                height = MAX_HEIGHT;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+
+                        const ctx = canvas.getContext("2d");
+                        if (!ctx) {
+                            reject(new Error("Could not get canvas context"));
+                            return;
+                        }
+
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL("image/jpeg", 0.8)); // Compress to 80% quality
+                    };
+                    img.onerror = reject;
+                    img.src = e.target?.result as string;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+
+            onChange(compressedFile);
         } catch (error) {
             console.error("Error reading file:", error);
+        } finally {
             setIsLoading(false);
         }
     }, [onChange]);
@@ -99,7 +153,7 @@ export function ImageInput({ value, onChange, allowGallery }: ImageInputProps) {
                 className="w-full"
                 onClick={handleCameraCapture}
             >
-                <Camera className="mr-2 h-4 w-4" />
+                <Camera className="h-4 w-4 mr-2" />
                 Tomar Foto
             </Button>
 
@@ -111,10 +165,10 @@ export function ImageInput({ value, onChange, allowGallery }: ImageInputProps) {
                         className="w-full"
                         disabled={isLoading}
                     >
-                        <ImageIcon className="mr-2 h-4 w-4" />
+                        <ImageIcon className="h-4 w-4 mr-2" />
                         Seleccionar de Galería
                     </Button>
-                    <input
+                    <Input
                         type="file"
                         accept="image/*"
                         className="absolute inset-0 opacity-0 cursor-pointer"

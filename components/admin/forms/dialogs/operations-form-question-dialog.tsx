@@ -25,6 +25,7 @@ const formSchema = z.object({
     type: z.enum(["text", "number", "image", "email"] as const),
     order: z.number().min(0),
     is_active: z.boolean().default(true),
+    is_required: z.boolean().default(true),
     allow_gallery_access: z.boolean().optional(),
 });
 
@@ -34,6 +35,7 @@ interface OperationsFormQuestionDialogProps {
     sectionId: string;
     question?: OperationsFormQuestion;
     currentOrder?: number;
+    onQuestionUpdate?: (question: OperationsFormQuestion) => void;
 }
 
 export function OperationsFormQuestionDialog({
@@ -42,6 +44,7 @@ export function OperationsFormQuestionDialog({
     sectionId,
     question,
     currentOrder = 0,
+    onQuestionUpdate,
 }: OperationsFormQuestionDialogProps) {
     const [isPending, startTransition] = useTransition();
     const { toast } = useToast();
@@ -54,6 +57,7 @@ export function OperationsFormQuestionDialog({
             type: "text",
             order: currentOrder,
             is_active: true,
+            is_required: true,
             allow_gallery_access: false,
         },
     });
@@ -65,6 +69,7 @@ export function OperationsFormQuestionDialog({
                 type: question?.type ?? "text",
                 order: question?.order ?? currentOrder,
                 is_active: question?.is_active ?? true,
+                is_required: question?.is_required ?? true,
                 allow_gallery_access: question?.allow_gallery_access ?? false,
             });
         }
@@ -76,11 +81,12 @@ export function OperationsFormQuestionDialog({
         startTransition(async () => {
             try {
                 if (question) {
-                    await updateQuestion(question.id, values);
+                    const updatedQuestion = await updateQuestion(question.id, values);
                     toast({
                         title: "Pregunta actualizada",
                         description: "La pregunta ha sido actualizada exitosamente.",
                     });
+                    onQuestionUpdate?.(updatedQuestion);
                 } else {
                     await createQuestion({
                         ...values,
@@ -184,6 +190,27 @@ export function OperationsFormQuestionDialog({
                                     <FormLabel>Estado</FormLabel>
                                     <FormDescription>
                                         Activar o desactivar la pregunta
+                                    </FormDescription>
+                                </div>
+                                <FormControl>
+                                    <Switch
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="is_required"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                                <div className="space-y-0.5">
+                                    <FormLabel>Obligatoria</FormLabel>
+                                    <FormDescription>
+                                        Marcar la pregunta como obligatoria
                                     </FormDescription>
                                 </div>
                                 <FormControl>

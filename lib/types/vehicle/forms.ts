@@ -2,7 +2,7 @@ export const QUESTION_TYPE_CONFIG = {
     text: { label: "Texto" },
     number: { label: "Número" },
     image: { label: "Imagen" },
-    email: { label: "Correo" },
+    email: { label: "Email" },
 } as const;
 
 export type QuestionType = keyof typeof QUESTION_TYPE_CONFIG;
@@ -33,6 +33,7 @@ export interface OperationsFormQuestion {
     type: QuestionType;
     order: number;
     is_active: boolean;
+    is_required: boolean;
     allow_gallery_access?: boolean;
     created_at: string;
     updated_at: string;
@@ -80,6 +81,7 @@ export interface CreateOperationsFormQuestionInput {
     label: string;
     type: QuestionType;
     order: number;
+    is_required?: boolean;
     allow_gallery_access?: boolean;
 }
 

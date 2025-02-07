@@ -14,8 +14,9 @@ import type {
     CreateOperationsFormSectionInput,
     UpdateOperationsFormSectionInput,
 } from "@/lib/types/vehicle/forms";
-import { QUESTION_TYPE_CONFIG } from "@/lib/types/vehicle/forms";
 import { getSupabaseClient } from "@/lib/database/actions";
+import { revalidatePath } from "next/cache";
+import { Routes } from "@/utils/routes";
 
 // Forms Management
 export async function getForms() {
@@ -27,6 +28,7 @@ export async function getForms() {
         .order("created_at", { ascending: false });
 
     if (error) throw error;
+    revalidatePath(Routes.ADMIN.FORMS_CONFIG)
     return data as OperationsForm[];
 }
 
@@ -46,6 +48,8 @@ export async function getFormById(id: string) {
         .single();
 
     if (error) throw error;
+    revalidatePath(Routes.ADMIN.FORMS_CONFIG)
+    revalidatePath(`${Routes.ADMIN.FORMS_CONFIG}/${id}`)
     return data as OperationsForm & {
         sections: (OperationsFormSection & {
             questions: OperationsFormQuestion[];
@@ -63,6 +67,7 @@ export async function createOperationsForm(input: CreateOperationsFormInput) {
         .single();
 
     if (error) throw error;
+    revalidatePath(Routes.ADMIN.FORMS_CONFIG)
     return data as OperationsForm;
 }
 
@@ -77,6 +82,8 @@ export async function updateOperationsForm(id: string, input: UpdateOperationsFo
         .single();
 
     if (error) throw error;
+    revalidatePath(Routes.ADMIN.FORMS_CONFIG)
+    revalidatePath(`${Routes.ADMIN.FORMS_CONFIG}/${id}`)
     return data as OperationsForm;
 }
 
@@ -138,12 +145,12 @@ export async function createQuestion(input: CreateOperationsFormQuestionInput) {
         .from("operations_forms_questions")
         .insert({
             ...input,
-            type_label: QUESTION_TYPE_CONFIG[input.type].label
         })
         .select()
         .single();
 
     if (error) throw error;
+    revalidatePath(Routes.ADMIN.FORMS_CONFIG)
     return data as OperationsFormQuestion;
 }
 
@@ -154,13 +161,14 @@ export async function updateQuestion(id: string, input: UpdateOperationsFormQues
         .from("operations_forms_questions")
         .update({
             ...input,
-            ...(input.type && { type_label: QUESTION_TYPE_CONFIG[input.type].label })
         })
         .eq("id", id)
         .select()
         .single();
 
     if (error) throw error;
+    revalidatePath(Routes.ADMIN.FORMS_CONFIG)
+    
     return data as OperationsFormQuestion;
 }
 
@@ -171,6 +179,8 @@ export async function deleteQuestion(id: string) {
         .from("operations_forms_questions")
         .delete()
         .eq("id", id);
+
+    revalidatePath(Routes.ADMIN.FORMS_CONFIG)
 
     if (error) throw error;
 }
