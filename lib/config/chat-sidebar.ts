@@ -26,6 +26,7 @@ import {
 	Sun,
 	ListChecks,
 	House,
+	ClipboardList,
 } from "lucide-react"
 import { toolsList } from "./tools";
 
@@ -54,6 +55,33 @@ export const publicSidebar: SidebarItem = {
 			title: "Turnos Flota",
 			url: Routes.PUBLIC.TURNOS,
 			icon: CalendarClock,
+			active: true,
+		},
+		{
+			title: "Forms Operaciones",
+			url: Routes.PUBLIC.FORMULARIOS,
+			icon: ListChecks,
+			active: true,
+		},
+	],
+}
+
+const formsMenu: SidebarItem = {
+	title: "Formularios Operaciones",
+	url: Routes.OPERATIONS_FORMS.HOME,
+	icon: ListChecks,
+	isActive: false,
+	items: [
+		{
+			title: "Forms Activos",
+			url: Routes.OPERATIONS_FORMS.HOME,
+			icon: ClipboardList,
+			active: true,
+		},
+		{
+			title: "Configuración",
+			url: Routes.OPERATIONS_FORMS.CONFIG,
+			icon: Settings,
 			active: true,
 		},
 	],
@@ -212,12 +240,6 @@ const adminMenu: SidebarItem = {
 			active: true
 		},
 		{
-			title: 'Formularios',
-			icon: ListChecks,
-			url: Routes.ADMIN.FORMS_CONFIG,
-			active: true
-		},
-		{
 			title: 'Configuración de Sistema',
 			icon: Settings2,
 			url: Routes.ADMIN.SYSTEM_CONFIG,
@@ -232,6 +254,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 		chatbotMenu,
 		toolsMenu,
 		branchesFormsMenu,
+		formsMenu,
 		controlFlotaMenu,
 		{
 			title: "Reservas",

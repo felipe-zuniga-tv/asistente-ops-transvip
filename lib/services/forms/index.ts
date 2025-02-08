@@ -28,7 +28,7 @@ export async function getForms() {
         .order("created_at", { ascending: false });
 
     if (error) throw error;
-    revalidatePath(Routes.ADMIN.FORMS_CONFIG)
+    revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
     return data as OperationsForm[];
 }
 
@@ -48,8 +48,8 @@ export async function getFormById(id: string) {
         .single();
 
     if (error) throw error;
-    revalidatePath(Routes.ADMIN.FORMS_CONFIG)
-    revalidatePath(`${Routes.ADMIN.FORMS_CONFIG}/${id}`)
+    revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
+    revalidatePath(`${Routes.OPERATIONS_FORMS.CONFIG}/${id}`)
     return data as OperationsForm & {
         sections: (OperationsFormSection & {
             questions: OperationsFormQuestion[];
@@ -67,7 +67,7 @@ export async function createOperationsForm(input: CreateOperationsFormInput) {
         .single();
 
     if (error) throw error;
-    revalidatePath(Routes.ADMIN.FORMS_CONFIG)
+    revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
     return data as OperationsForm;
 }
 
@@ -82,8 +82,8 @@ export async function updateOperationsForm(id: string, input: UpdateOperationsFo
         .single();
 
     if (error) throw error;
-    revalidatePath(Routes.ADMIN.FORMS_CONFIG)
-    revalidatePath(`${Routes.ADMIN.FORMS_CONFIG}/${id}`)
+    revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
+    revalidatePath(`${Routes.OPERATIONS_FORMS.CONFIG}/${id}`)
     return data as OperationsForm;
 }
 
@@ -150,7 +150,7 @@ export async function createQuestion(input: CreateOperationsFormQuestionInput) {
         .single();
 
     if (error) throw error;
-    revalidatePath(Routes.ADMIN.FORMS_CONFIG)
+    revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
     return data as OperationsFormQuestion;
 }
 
@@ -167,8 +167,8 @@ export async function updateQuestion(id: string, input: UpdateOperationsFormQues
         .single();
 
     if (error) throw error;
-    revalidatePath(Routes.ADMIN.FORMS_CONFIG)
-    
+    revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
+
     return data as OperationsFormQuestion;
 }
 
@@ -180,7 +180,7 @@ export async function deleteQuestion(id: string) {
         .delete()
         .eq("id", id);
 
-    revalidatePath(Routes.ADMIN.FORMS_CONFIG)
+    revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
 
     if (error) throw error;
 }

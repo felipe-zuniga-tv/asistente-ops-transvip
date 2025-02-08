@@ -145,7 +145,7 @@ export function OperationsFormEditor({ form }: OperationsFormEditorProps) {
                 </Badge>
             </div>
             <Button variant="default" size="sm" asChild>
-                <Link href={Routes.ADMIN.FORMS_CONFIG} className="text-sm text-muted-foreground">
+                <Link href={Routes.OPERATIONS_FORMS.CONFIG} className="text-sm text-muted-foreground">
                     <ArrowLeft /> Volver a formularios
                 </Link>
             </Button>

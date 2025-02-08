@@ -5,7 +5,6 @@ export const Routes = Object.freeze({
 	ADMIN: {
 		HOME: '/admin',
 		BRANCH_CONFIG: '/admin/branch-config',
-		FORMS_CONFIG: '/admin/forms-config',
 		VEHICLE_STATUS_CONFIG: '/admin/vehicle-status-config',
 		VEHICLE_TYPES: '/admin/vehicle-types',
 		PAYMENT_CONFIG: '/admin/payment-config',
@@ -39,10 +38,15 @@ export const Routes = Object.freeze({
 	FINANCE: {
 		TICKETS: '/finanzas/tickets',
 	},
+	OPERATIONS_FORMS: {
+		HOME: '/forms',
+		CONFIG: '/forms/config',
+	},
 	PUBLIC: {
 		SUCURSALES: '/sucursales',
 		VENTA_SUCURSALES: '/sucursales/venta',
 		TURNOS: '/turnos',
+		FORMULARIOS: '/formularios',
 	},
 	QR_GEN: '/qr-code',
 	ROUTING: {

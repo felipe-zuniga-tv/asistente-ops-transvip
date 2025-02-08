@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { OperationsFormQuestion, OperationsFormSection } from "@/lib/types/vehicle/forms";
-import { QuestionInput } from "@/components/vehicle/inspection/question-input";
+import { QuestionInput } from "@/components/forms/question-input";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { saveOperationsFormAnswer, updateOperationsFormAnswer } from "@/lib/services/forms";
@@ -76,9 +76,10 @@ export function FormResponse({ formId, sections, answers }: FormResponseProps) {
                 [questionId]: { ...prev[questionId], value },
             }));
         } catch (error) {
+            console.error(error);
             toast({
                 title: "Error",
-                description: "Ha ocurrido un error al guardar la respuesta.",
+                description: "Ha ocurrido un error al guardar la respuesta X.",
                 variant: "destructive",
             });
         }
@@ -130,7 +131,7 @@ export function FormResponse({ formId, sections, answers }: FormResponseProps) {
                 </div>
             </div>
 
-            <Card>
+            <Card className="border-0 shadow-none bg-white">
                 <CardHeader>
                     <CardTitle>{section.title}</CardTitle>
                     <CardDescription className="text-xs text-muted-foreground">{section.description}</CardDescription>

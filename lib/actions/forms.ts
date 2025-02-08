@@ -23,8 +23,8 @@ export async function reorderSections(formId: string, input: ReorderSectionsInpu
 
         if (error) throw error
 
-        revalidatePath(Routes.ADMIN.FORMS_CONFIG)
-        revalidatePath(`${Routes.ADMIN.FORMS_CONFIG}/${formId}`)
+        revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
+        revalidatePath(`${Routes.OPERATIONS_FORMS.CONFIG}/${formId}`)
 
         return { success: true }
     } catch (error) {

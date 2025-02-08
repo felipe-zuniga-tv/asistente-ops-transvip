@@ -7,7 +7,7 @@ export default function PublicDashboardShiftsPage() {
                 daysToShow={30} 
                 shifts={[]}
                 vehicleStatuses={[]}
-                className="max-w-4xl mx-auto"
+                className="max-w-4xl mx-auto flex-1"
             />
         </div>
     )
