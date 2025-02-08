@@ -1,19 +1,18 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useCallback } from "react"
 import type { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { Download, Trash2 } from "lucide-react"
 import type { VehicleShift } from "../vehicle-shifts"
 import { DataTable } from "@/components/tables/data-table"
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog"
+    SimpleDialog,
+    SimpleDialogDescription,
+    SimpleDialogFooter,
+    SimpleDialogHeader,
+    SimpleDialogTitle,
+} from "@/components/ui/simple-dialog"
 
 interface DataTableProps {
     columns: ColumnDef<VehicleShift>[]
@@ -43,14 +42,23 @@ export function VehicleShiftsTable({
         }))
     , [data])
 
-    const handleSelectionChange = (rows: VehicleShift[]) => {
+    const handleSelectionChange = useCallback((rows: VehicleShift[]) => {
         setSelectedRows(rows)
-    }
+    }, [])
 
-    const handleBulkDelete = () => {
-        onBulkDelete?.(selectedRows)
-        setIsDeleteDialogOpen(false)
-    }
+    const handleBulkDelete = useCallback(() => {
+        if (selectedRows.length > 0) {
+            onBulkDelete?.(selectedRows)
+            setIsDeleteDialogOpen(false)
+            setSelectedRows([])
+        }
+    }, [selectedRows, onBulkDelete])
+
+    const handleBulkDownload = useCallback(() => {
+        if (selectedRows.length > 0) {
+            onBulkDownload?.(selectedRows)
+        }
+    }, [selectedRows, onBulkDownload])
 
     return (
         <>
@@ -73,12 +81,14 @@ export function VehicleShiftsTable({
             >
                 {selectedRows.length > 0 && (
                     <div className="w-full flex items-center justify-end gap-2">
-                        <span className="text-sm font-semibold">Seleccionados:</span>
+                        <span className="text-sm font-semibold">
+                            Seleccionados: {selectedRows.length}
+                        </span>
                         <Button
                             variant="secondary"
                             size="sm"
                             className="shadow"
-                            onClick={() => onBulkDownload?.(selectedRows)}
+                            onClick={handleBulkDownload}
                         >
                             <Download className="h-4 w-4" />
                             Descargar
@@ -97,33 +107,34 @@ export function VehicleShiftsTable({
             </DataTable>
 
             {/* Delete confirmation dialog */}
-            <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Confirmar eliminación</DialogTitle>
-                        <DialogDescription className="pt-4">
-                            <div className="flex flex-col gap-2">
-                                <p>¿Estás seguro que deseas eliminar los {selectedRows.length} turnos seleccionados?</p>
-                                <p>Esta acción <b>no</b> se puede deshacer.</p>
-                            </div>
-                        </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                        <Button
-                            variant="outline"
-                            onClick={() => setIsDeleteDialogOpen(false)}
-                        >
-                            Cancelar
-                        </Button>
-                        <Button
-                            variant="destructive"
-                            onClick={handleBulkDelete}
-                        >
-                            Eliminar
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+            <SimpleDialog 
+                isOpen={isDeleteDialogOpen} 
+                onClose={() => setIsDeleteDialogOpen(false)}
+            >
+                <SimpleDialogHeader>
+                    <SimpleDialogTitle>Confirmar eliminación</SimpleDialogTitle>
+                    <SimpleDialogDescription className="pt-4">
+                        <div className="flex flex-col gap-2">
+                            <p>¿Estás seguro que deseas eliminar los {selectedRows.length} turnos seleccionados?</p>
+                            <p>Esta acción <b>no</b> se puede deshacer.</p>
+                        </div>
+                    </SimpleDialogDescription>
+                </SimpleDialogHeader>
+                <SimpleDialogFooter>
+                    <Button
+                        variant="outline"
+                        onClick={() => setIsDeleteDialogOpen(false)}
+                    >
+                        Cancelar
+                    </Button>
+                    <Button
+                        variant="destructive"
+                        onClick={handleBulkDelete}
+                    >
+                        Eliminar
+                    </Button>
+                </SimpleDialogFooter>
+            </SimpleDialog>
         </>
     )
 }

@@ -8,17 +8,18 @@ import { OperationsFormQuestion, OperationsFormSection } from "@/lib/types/vehic
 import { QuestionInput } from "@/components/forms/question-input";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { saveOperationsFormAnswer, updateOperationsFormAnswer } from "@/lib/services/forms";
+import { saveOperationsFormAnswer, updateOperationsFormAnswer, updateFormResponse } from "@/lib/services/forms";
 
 interface FormResponseProps {
     formId: string;
+    responseId: string;
     sections: (OperationsFormSection & {
         questions: OperationsFormQuestion[];
     })[];
     answers: Record<string, { id?: string; value: string }>;
 }
 
-export function FormResponse({ formId, sections, answers }: FormResponseProps) {
+export function FormResponse({ formId, responseId, sections, answers }: FormResponseProps) {
     const [currentSection, setCurrentSection] = useState(0);
     const [localAnswers, setLocalAnswers] = useState<Record<string, { id?: string; value: string }>>(answers);
     const { toast } = useToast();
@@ -58,7 +59,7 @@ export function FormResponse({ formId, sections, answers }: FormResponseProps) {
                 // Create new answer
                 const answer = await saveOperationsFormAnswer({
                     form_id: formId,
-                    vehicle_number: 0,
+                    response_id: responseId,
                     question_id: questionId,
                     answer: value,
                 });
@@ -79,7 +80,7 @@ export function FormResponse({ formId, sections, answers }: FormResponseProps) {
             console.error(error);
             toast({
                 title: "Error",
-                description: "Ha ocurrido un error al guardar la respuesta X.",
+                description: "Ha ocurrido un error al guardar la respuesta.",
                 variant: "destructive",
             });
         }
@@ -105,6 +106,12 @@ export function FormResponse({ formId, sections, answers }: FormResponseProps) {
         }
 
         try {
+            // Mark the response as completed
+            await updateFormResponse(responseId, {
+                status: 'completed',
+                completed_at: new Date().toISOString()
+            });
+
             toast({
                 title: "Formulario completado",
                 description: "El formulario ha sido completado exitosamente.",

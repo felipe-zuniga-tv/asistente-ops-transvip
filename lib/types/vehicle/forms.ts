@@ -42,7 +42,6 @@ export interface OperationsFormQuestion {
 export interface OperationsFormResponses {
     id: string;
     form_id: string;
-    vehicle_number: number;
     status: 'draft' | 'completed';
     created_by: string;
     created_at: string;
@@ -53,6 +52,7 @@ export interface OperationsFormResponses {
 export interface OperationsFormAnswer {
     id: string;
     form_id: string;
+    response_id: string;
     question_id: string;
     answer: string;
     created_at: string;
@@ -91,12 +91,12 @@ export interface UpdateOperationsFormQuestionInput extends Partial<Omit<CreateOp
 
 export interface CreateOperationsFormResponseInput {
     form_id: string;
-    vehicle_number: number;
+    id: string;
 }
 
 export interface CreateOperationsFormAnswerInput {
     form_id: string;
-    vehicle_number: number;
+    response_id: string;
     question_id: string;
     answer: string;
 } 

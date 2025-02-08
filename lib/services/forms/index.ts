@@ -13,6 +13,7 @@ import type {
     UpdateOperationsFormInput,
     CreateOperationsFormSectionInput,
     UpdateOperationsFormSectionInput,
+    CreateOperationsFormResponseInput,
 } from "@/lib/types/vehicle/forms";
 import { getSupabaseClient } from "@/lib/database/actions";
 import { revalidatePath } from "next/cache";
@@ -196,6 +197,38 @@ export async function getSectionQuestions(sectionId: string) {
 
     if (error) throw error;
     return data as OperationsFormQuestion[];
+}
+
+// Response Management
+export async function createFormResponse(input: CreateOperationsFormResponseInput) {
+    const supabase = await getSupabaseClient();
+
+    const { data, error } = await supabase
+        .from("operations_forms_responses")
+        .insert({
+            id: input.id,
+            form_id: input.form_id,
+            status: 'draft'
+        })
+        .select()
+        .single();
+
+    if (error) throw error;
+    return data as OperationsFormResponses;
+}
+
+export async function updateFormResponse(id: string, input: { status: 'draft' | 'completed', completed_at?: string }) {
+    const supabase = await getSupabaseClient();
+
+    const { data, error } = await supabase
+        .from("operations_forms_responses")
+        .update(input)
+        .eq("id", id)
+        .select()
+        .single();
+
+    if (error) throw error;
+    return data as OperationsFormResponses;
 }
 
 // Answer Management

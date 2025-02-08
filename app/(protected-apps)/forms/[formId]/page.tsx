@@ -1,8 +1,9 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { v4 as uuidv4 } from "uuid";
 import { Routes } from "@/utils/routes";
-import { getFormById } from "@/lib/services/forms";
+import { getFormById, createFormResponse } from "@/lib/services/forms";
 import { FormResponse } from "@/components/forms/form-response";
 import SuspenseLoading from "@/components/ui/suspense";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -36,6 +37,13 @@ export async function FormContainer({ formId }: { formId: string }) {
     const form = await getFormById(formId);
     if (!form) return notFound();
 
+    // Generate a unique response ID and create the form response
+    const responseId = uuidv4();
+    await createFormResponse({
+        id: responseId,
+        form_id: formId
+    });
+
     // Initialize empty answers for each question
     const answers: Record<string, { value: string }> = {};
     form.sections.forEach(section => {
@@ -56,6 +64,7 @@ export async function FormContainer({ formId }: { formId: string }) {
                     
                     <FormResponse
                         formId={form.id}
+                        responseId={responseId}
                         sections={form.sections}
                         answers={answers}
                     />

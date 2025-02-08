@@ -108,7 +108,7 @@ export function SimpleDialogDescription({
 	...props
 }: SimpleDialogDescriptionProps) {
 	return (
-		<p
+		<div
 			className={cn("text-sm text-muted-foreground", className)}
 			{...props}
 		/>

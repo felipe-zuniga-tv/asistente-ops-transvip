@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, type ReactNode, useEffect, useCallback } from "react";
 import type {
     ColumnDef,
     ColumnFiltersState,
     PaginationState,
     SortingState,
     Table as TanstackTable,
+    RowSelectionState,
+    OnChangeFn,
 } from "@tanstack/react-table";
 import {
     getCoreRowModel,
@@ -68,11 +70,37 @@ export function DataTable<TData>({
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [globalFilter, setGlobalFilter] = useState<string>("");
-    const [rowSelection, setRowSelection] = useState({});
+    const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: initialPageSize,
     });
+
+    // Reset selection when data changes
+    useEffect(() => {
+        if (data.length === 0) {
+            setRowSelection({});
+            onSelectionChange?.([]);
+        }
+    }, [data, onSelectionChange]);
+
+    const handleRowSelectionChange: OnChangeFn<RowSelectionState> = useCallback((updaterOrValue) => {
+        const updatedSelection = typeof updaterOrValue === 'function' 
+            ? updaterOrValue(rowSelection)
+            : updaterOrValue;
+
+        setRowSelection(updatedSelection);
+        
+        if (onSelectionChange) {
+            // Map the selection state to actual data rows
+            const selectedRows = Object.entries(updatedSelection)
+                .filter(([_, isSelected]) => isSelected)
+                .map(([index]) => data[parseInt(index)])
+                .filter(Boolean);
+
+            onSelectionChange(selectedRows);
+        }
+    }, [data, onSelectionChange, rowSelection]);
 
     const table = useReactTable({
         data,
@@ -85,25 +113,14 @@ export function DataTable<TData>({
         onColumnFiltersChange: setColumnFilters,
         onGlobalFilterChange: setGlobalFilter,
         onPaginationChange: setPagination,
-        ...(enableRowSelection && {
-            onRowSelectionChange: (updatedSelection) => {
-                setRowSelection(updatedSelection);
-                if (onSelectionChange) {
-                    const selectedRows = table
-                        .getFilteredSelectedRowModel()
-                        .rows.map((row) => row.original);
-                    onSelectionChange(selectedRows);
-                }
-            },
-        }),
+        enableRowSelection: enableRowSelection,
+        onRowSelectionChange: handleRowSelectionChange,
         state: {
             sorting,
             columnFilters,
             globalFilter,
             pagination,
-            ...(enableRowSelection && {
-                rowSelection,
-            }),
+            rowSelection: enableRowSelection ? rowSelection : {},
         },
         filterFns: {
             fuzzy: (row, columnId, value) => {
