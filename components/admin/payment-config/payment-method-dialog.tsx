@@ -8,12 +8,11 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogDescription,
-} from '@/components/ui/dialog'
+    SimpleDialog,
+    SimpleDialogHeader,
+    SimpleDialogTitle,
+    SimpleDialogDescription,
+} from '@/components/ui/simple-dialog'
 import {
     Form,
     FormControl,
@@ -138,118 +137,116 @@ export function PaymentMethodDialog({
     }
 
     return (
-        <Dialog open={open} onOpenChange={handleOpenChange}>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>
-                        {isEditing ? 'Editar Método de Pago' : 'Nuevo Método de Pago'}
-                    </DialogTitle>
-                    <DialogDescription>
-                        {isEditing 
-                            ? 'Modifica los detalles del método de pago.'
-                            : 'Crea un nuevo método de pago para el sistema.'
-                        }
-                    </DialogDescription>
-                </DialogHeader>
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Nombre</FormLabel>
+        <SimpleDialog isOpen={open} onClose={() => handleOpenChange(false)}>
+            <SimpleDialogHeader>
+                <SimpleDialogTitle>
+                    {isEditing ? 'Editar Método de Pago' : 'Nuevo Método de Pago'}
+                </SimpleDialogTitle>
+                <SimpleDialogDescription>
+                    {isEditing 
+                        ? 'Modifica los detalles del método de pago.'
+                        : 'Crea un nuevo método de pago para el sistema.'
+                    }
+                </SimpleDialogDescription>
+            </SimpleDialogHeader>
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Nombre</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Efectivo" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="code"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Código</FormLabel>
+                                <FormControl>
+                                    <Input 
+                                        placeholder="EFECTIVO" 
+                                        {...field} 
+                                        disabled={isEditing}
+                                        className={cn("bg-muted", isEditing ? 'opacity-50' : '')}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="icon_name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Ícono</FormLabel>
+                                <Select onValueChange={field.onChange} value={field.value}>
                                     <FormControl>
-                                        <Input placeholder="Efectivo" {...field} />
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Selecciona un ícono" />
+                                        </SelectTrigger>
                                     </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="code"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Código</FormLabel>
-                                    <FormControl>
-                                        <Input 
-                                            placeholder="EFECTIVO" 
-                                            {...field} 
-                                            disabled={isEditing}
-                                            className={cn("bg-muted", isEditing ? 'opacity-50' : '')}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="icon_name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Ícono</FormLabel>
-                                    <Select onValueChange={field.onChange} value={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Selecciona un ícono" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {icons.map((icon) => {
-                                                const Icon = icon.icon
-                                                return (
-                                                    <SelectItem
-                                                        key={icon.value}
-                                                        value={icon.value}
-                                                        className="flex items-center gap-2"
-                                                    >
-                                                        <div className="flex items-center gap-2">
-                                                            <Icon className="h-4 w-4" />
-                                                            <span>{icon.label}</span>
-                                                        </div>
-                                                    </SelectItem>
-                                                )
-                                            })}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="is_active"
-                            render={({ field }) => (
-                                <FormItem className="flex items-center space-x-2">
-                                    <FormControl>
-                                        <Switch
-                                            checked={field.value}
-                                            onCheckedChange={field.onChange}
-                                            className="data-[state=checked]:bg-green-400"
-                                        />
-                                    </FormControl>
-                                    <Label style={{ marginTop: 0 }}>Activo</Label>
-                                </FormItem>
-                            )}
-                        />
-                        <div className="flex justify-end space-x-2 pt-4">
-                            <Button 
-                                type="button" 
-                                variant="outline" 
-                                onClick={() => handleOpenChange(false)}
-                                disabled={isSubmitting}
-                            >
-                                Cancelar
-                            </Button>
-                            <Button type="submit" disabled={isSubmitting}>
-                                {isSubmitting ? "Guardando..." : "Guardar"}
-                            </Button>
-                        </div>
-                    </form>
-                </Form>
-            </DialogContent>
-        </Dialog>
+                                    <SelectContent>
+                                        {icons.map((icon) => {
+                                            const Icon = icon.icon
+                                            return (
+                                                <SelectItem
+                                                    key={icon.value}
+                                                    value={icon.value}
+                                                    className="flex items-center gap-2"
+                                                >
+                                                    <div className="flex items-center gap-2">
+                                                        <Icon className="h-4 w-4" />
+                                                        <span>{icon.label}</span>
+                                                    </div>
+                                                </SelectItem>
+                                            )
+                                        })}
+                                    </SelectContent>
+                                </Select>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="is_active"
+                        render={({ field }) => (
+                            <FormItem className="flex items-center space-x-2">
+                                <FormControl>
+                                    <Switch
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                        className="data-[state=checked]:bg-green-400"
+                                    />
+                                </FormControl>
+                                <Label style={{ marginTop: 0 }}>Activo</Label>
+                            </FormItem>
+                        )}
+                    />
+                    <div className="flex justify-end space-x-2 pt-4">
+                        <Button 
+                            type="button" 
+                            variant="outline" 
+                            onClick={() => handleOpenChange(false)}
+                            disabled={isSubmitting}
+                        >
+                            Cancelar
+                        </Button>
+                        <Button type="submit" disabled={isSubmitting}>
+                            {isSubmitting ? "Guardando..." : "Guardar"}
+                        </Button>
+                    </div>
+                </form>
+            </Form>
+        </SimpleDialog>
     )
 } 

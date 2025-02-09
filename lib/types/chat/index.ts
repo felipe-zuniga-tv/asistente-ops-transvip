@@ -286,9 +286,9 @@ export interface IDriverProfile {
 
 // UI
 export interface User {
-    full_name: string;
+    fullName: string;
     email: string;
-    accessToken?: string
+    accessToken?: string;
 }
 
 export interface Session {

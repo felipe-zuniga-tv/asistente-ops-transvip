@@ -93,24 +93,6 @@ export const columns: ColumnDef<SalesResponse>[] = [
 			);
 		},
 	},
-	// {
-	// 	accessorKey: "first_name",
-	// 	header: () => <div className="text-center">Nombre</div>,
-	// 	cell: ({ row }) => (
-	// 		<div className="text-center text-sm">
-	// 			{row.original.first_name}
-	// 		</div>
-	// 	),
-	// },
-	// {
-	// 	accessorKey: "last_name",
-	// 	header: () => <div className="text-center">Apellido</div>,
-	// 	cell: ({ row }) => (
-	// 		<div className="text-center text-sm">
-	// 			{row.original.last_name}
-	// 		</div>
-	// 	),
-	// },
 	{
 		accessorKey: "email",
 		header: () => <div className="text-center">Email</div>,
@@ -129,11 +111,11 @@ export const columns: ColumnDef<SalesResponse>[] = [
 				<Button
 					variant="ghost"
 					size="sm"
-					className="h-6 px-2 bg-green-300 hover:bg-green-400"
+					className="h-6 px-2 bg-green-600 hover:bg-green-700"
 					onClick={() => table.options.meta?.onSendWhatsApp?.(row.original)}
 				>
 					<WhatsappIcon className="h-4 w-4" />
-					<span>Enviar mensaje</span>
+					<span className="text-white">Enviar mensaje</span>
 				</Button>
 			</div>
 		),
