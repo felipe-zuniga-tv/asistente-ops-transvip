@@ -27,6 +27,7 @@ import {
 	ListChecks,
 	House,
 	ClipboardList,
+	UserRound,
 } from "lucide-react"
 import { toolsList } from "./tools";
 
@@ -211,6 +212,36 @@ const vehiclesMenu: SidebarItem = {
 	],
 }
 
+const driversMenu: SidebarItem = {
+	title: "Conductores",
+	url: "#",
+	icon: UserRound,
+	isActive: false,
+	items: [
+		{
+			title: 'Buscar Conductores',
+			icon: UserRound,
+			url: Routes.DRIVERS.HOME,
+			active: true
+		},
+	],
+}
+
+const bookingsMenu: SidebarItem = {
+	title: "Reservas",
+	url: "#",
+	icon: BookPlusIcon,
+	isActive: false,
+	items: [
+		{
+			title: 'Compartidas',
+			icon: BusFront,
+			url: Routes.BOOKINGS.SHARED,
+			active: true
+		},
+	],
+}
+
 const adminMenu: SidebarItem = {
 	title: "Configuración",
 	url: Routes.ADMIN.HOME,
@@ -258,20 +289,8 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 		branchesFormsMenu,
 		formsMenu,
 		controlFlotaMenu,
-		{
-			title: "Reservas",
-			url: "#",
-			icon: BookPlusIcon,
-			isActive: false,
-			items: [
-				{
-					title: 'Compartidas',
-					icon: BusFront,
-					url: Routes.BOOKINGS.SHARED,
-					active: true
-				},
-			],
-		},
+		bookingsMenu,
+		// driversMenu,
 		// vehiclesMenu,
 		adminMenu,
 		// {

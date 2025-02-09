@@ -94,9 +94,9 @@ export const columns: ColumnDef<SalesResponse>[] = [
 	},
 	{
 		accessorKey: "phone_number",
-		header: () => <div className="text-center">Teléfono</div>,
+		header: () => <div className="text-center hidden">Teléfono</div>,
 		cell: ({ row }) => (
-			<div className="text-center">{row.original.phone_country} {row.original.phone_number}</div>
+			<div className="text-center hidden">{row.original.phone_country} {row.original.phone_number}</div>
 		),
 	},
 	{

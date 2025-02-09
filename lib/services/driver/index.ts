@@ -4,6 +4,7 @@ import { branches } from "../../config/transvip-general"
 import { DRIVER_SEARCH_API_URL, DRIVER_PROFILE_API_URL, DRIVER_RATINGS_API_URL } from "../../chat/config/urls"
 import { getResponseFromURL, getAssignedVehicles } from "../../chat/utils/helpers"
 import { IDriverProfile } from "@/lib/types"
+import { getAccessToken, buildUrlParams } from "@/lib/utils/helpers"
 
 export async function searchDriver(driver_email: string) {
     const session = await getSession()
@@ -27,19 +28,40 @@ export async function searchDriver(driver_email: string) {
 
     if (status !== 200) return null
 
-    const { customerCount, result } = data
+    const { result } = data
     
-    if (customerCount > 0) {
+    if (result.length > 0) {
         return result[0].fleet_id
     }
 
     return null
 }
 
+export async function searchDrivers({ limit = 10, offset = 0 }: { limit?: number, offset?: number }) {
+    const accessToken = await getAccessToken()
+
+    const LIMIT_RESULTS = limit
+    const OFFSET_RESULTS = offset
+
+    const params = buildUrlParams({
+        access_token: accessToken,
+        limit: LIMIT_RESULTS,
+        offset: OFFSET_RESULTS,
+        driver_type: 0,
+        driver_status: 1,
+        search_filter: 0,
+    })
+
+    const { status, data } = await getResponseFromURL(`${DRIVER_SEARCH_API_URL}?${params}`)
+
+    if (status !== 200) return null
+
+    const { result } = data
+    return result.length > 0 ? result : null
+}
+
 export async function getDriverProfile(fleet_id: number) {
-    const session = await getSession()
-    const currentUser = session?.user as any
-    const accessToken = currentUser?.accessToken as string
+    const accessToken = await getAccessToken()
 
     const params = [
         `access_token=${accessToken}`,

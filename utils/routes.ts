@@ -32,6 +32,10 @@ export const Routes = Object.freeze({
 		HOME: '/data',
 		GEOFENCES: '/data/geofences',
 	},
+	DRIVERS: {
+		HOME: '/conductores',
+		PROFILE: '/conductores/perfil',
+	},
 	FEEDBACK: {
 		GOOGLE_FORMS: 'https://forms.gle/qeiBzwNhUwD5WcLt8',
 	},

@@ -4,20 +4,7 @@ import { VEHICLE_STATUS_API_URL, VEHICLE_DETAIL_API_URL } from "../../chat/confi
 import { getResponseFromURL, cleanDriverInfo } from "../../chat/utils/helpers"
 import { VEHICLE_STATUS } from "@/lib/utils"
 import { IVehicleDetail } from "@/lib/types"
-
-// Utility function to get access token
-async function getAccessToken() {
-    const session = await getSession()
-    const currentUser = session?.user as any
-    return currentUser?.accessToken as string
-}
-
-// Utility function to build URL parameters
-function buildUrlParams(params: Record<string, string | number>) {
-    return Object.entries(params)
-        .map(([key, value]) => `${key}=${value}`)
-        .join("&")
-}
+import { buildUrlParams, getAccessToken } from "@/lib/utils/helpers"
 
 // Utility function to map API response to IVehicleDetail
 function mapToVehicleDetail(data: any): IVehicleDetail {
