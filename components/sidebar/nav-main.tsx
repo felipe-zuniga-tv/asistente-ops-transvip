@@ -29,6 +29,7 @@ export function NavMain({ items, handleClick, showHints }: {
 		href?: string
 		icon?: LucideIcon
 		isActive?: boolean
+		highlight?: boolean
 		items?: Tool[]
 	}[]
 	handleClick: any
@@ -68,7 +69,7 @@ export function NavMain({ items, handleClick, showHints }: {
 					>
 						<SidebarMenuItem>
 							<CollapsibleTrigger asChild>
-								<SidebarMenuButton tooltip={item.title}>
+								<SidebarMenuButton tooltip={item.title} className={item.highlight ? "bg-transvip/20 hover:bg-transvip/30" : ""}>
 									{item.icon && <item.icon />}
 									<span>{item.title}</span>
 									<ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />

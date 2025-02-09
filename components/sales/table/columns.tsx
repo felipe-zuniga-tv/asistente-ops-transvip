@@ -2,19 +2,9 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { MoreHorizontal, Check, X, Eye, PlusCircle, Pencil } from "lucide-react";
+import { MoreHorizontal, Check, X, PlusCircle, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-	DialogFooter
-} from "@/components/ui/dialog";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -105,9 +95,15 @@ export const columns: ColumnDef<SalesResponse>[] = [
 	{
 		accessorKey: "phone_number",
 		header: () => <div className="text-center">Teléfono</div>,
+		cell: ({ row }) => (
+			<div className="text-center">{row.original.phone_country} {row.original.phone_number}</div>
+		),
+	},
+	{
+		accessorKey: "send_whatsapp",
+		header: () => <div className="text-center">Enviar WhatsApp</div>,
 		cell: ({ row, table }) => (
-			<div className="flex flex-col gap-1 items-center text-center text-sm">
-				<span className="hidden">{row.original.phone_country} {row.original.phone_number}</span>
+			<div className="text-center">
 				<Button
 					variant="ghost"
 					size="sm"

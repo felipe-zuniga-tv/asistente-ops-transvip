@@ -62,12 +62,12 @@ export function EmptyScreen({ session }: { session: any }) {
                     <div className="mt-4 max-w-sm">
                         <Select onValueChange={handleSelect}>
                             <SelectTrigger className="w-full bg-white text-black h-12">
-                                <SelectValue placeholder="Selecciona una consulta..." />
+                                <SelectValue placeholder="Selecciona una herramienta..." />
                             </SelectTrigger>
                             <SelectContent>
                                 {Object.entries(toolGroups).map(([group, tools]) => tools.length > 0 && (
                                     <SelectGroup key={group}>
-                                        <SelectLabel className="text-slate-700 bg-slate-100 rounded-md">{group}</SelectLabel>
+                                        <SelectLabel className="text-slate-700 bg-slate-200 rounded-md">{group}</SelectLabel>
                                         {tools.map((tool) => (
                                             <SelectItem 
                                                 key={tool.title} 

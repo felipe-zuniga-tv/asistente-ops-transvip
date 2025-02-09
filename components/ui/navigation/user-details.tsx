@@ -7,12 +7,10 @@ export default async function UserDetails() {
     if (!session) return null;
 
     return (
-        <div className="hidden md:block">
-            <div className="flex flex-row gap-1 text-black text-xs xl:text-base">
-                <span className="font-bold">Usuario:</span>
-                <span>{session.user.fullName}</span>
-                <span className="hidden lg:block">({session.user.email})</span>
-            </div>
+        <div className="flex flex-row items-center gap-1 text-black text-sm">
+            <span className="font-bold">Usuario:</span>
+            <span>{session.user.full_name}</span>
+            <span className="hidden md:block">({session.user.email})</span>
         </div>
     );
 }

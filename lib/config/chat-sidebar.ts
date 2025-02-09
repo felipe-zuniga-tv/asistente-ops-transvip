@@ -36,6 +36,7 @@ export interface SidebarItem {
 	icon: LucideIcon;
 	isActive?: boolean;
 	items?: Tool[]; // Recursive type for nested items
+	highlight?: boolean;
 }
 
 // Sidebar content
@@ -44,6 +45,7 @@ export const publicSidebar: SidebarItem = {
 	url: "#",
 	icon: Sun,
 	isActive: false,
+	highlight: true,
 	items: [
 		{
 			title: "Form Ventas Sucursales",
@@ -159,7 +161,7 @@ const controlFlotaMenu: SidebarItem = {
 	title: "Control de Flota",
 	url: "#",
 	icon: TowerControl,
-	isActive: true,
+	isActive: false,
 	items: [
 		{
 			title: 'Definición de Turnos',
