@@ -1,6 +1,5 @@
 'use client'
 
-import { Message } from '@/lib/chat/actions'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { useScrollAnchor } from '@/hooks/use-scroll-anchor'
 import { cn } from '@/lib/utils'
@@ -45,7 +44,7 @@ export function Chat({ id, initialMessages, className, session }: ChatProps) {
 
     return (
         <div ref={scrollRef} className="flex flex-col size-full mx-auto overflow-auto justify-between">
-            <div className={cn('flex-1 pb-[120px] overflow-auto max-h-[76vh]', className as string)} ref={messagesRef}>
+            <div className={cn('flex-1 pb-[30px] overflow-auto max-h-[76vh]', className as string)} ref={messagesRef}>
                 {messages.length ? 
                     (<MessagesList messages={messages} isShared={false} session={session} />) :
                     (<EmptyScreen session={session} />)
