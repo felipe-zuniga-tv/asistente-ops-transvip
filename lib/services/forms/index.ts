@@ -141,36 +141,81 @@ export async function deleteSection(id: string) {
 
 export async function createQuestion(input: CreateOperationsFormQuestionInput) {
     const supabase = await getSupabaseClient();
+    const { options, ...questionData } = input;
 
-    const { data, error } = await supabase
+    console.log(questionData)
+    console.log(options)
+
+    const { data: question, error: questionError } = await supabase
         .from("operations_forms_questions")
         .insert({
-            ...input,
+            ...questionData,
         })
         .select()
         .single();
 
-    if (error) throw error;
-    revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
-    return data as OperationsFormQuestion;
+    if (questionError) throw questionError;
+
+    if (options && options.length > 0) {
+        const { error: optionsError } = await supabase
+            .from("operations_form_question_options")
+            .insert(
+                options.map((option, index) => ({
+                    question_id: question.id,
+                    label: option.label,
+                    order_number: option.order,
+                }))
+            );
+
+        if (optionsError) throw optionsError;
+    }
+
+    revalidatePath(Routes.OPERATIONS_FORMS.CONFIG);
+    return question as OperationsFormQuestion;
 }
 
 export async function updateQuestion(id: string, input: UpdateOperationsFormQuestionInput) {
     const supabase = await getSupabaseClient();
+    const { options, ...questionData } = input;
 
-    const { data, error } = await supabase
+    const { data: question, error: questionError } = await supabase
         .from("operations_forms_questions")
         .update({
-            ...input,
+            ...questionData,
         })
         .eq("id", id)
         .select()
         .single();
 
-    if (error) throw error;
-    revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
+    if (questionError) throw questionError;
 
-    return data as OperationsFormQuestion;
+    if (options) {
+        // Delete existing options
+        const { error: deleteError } = await supabase
+            .from("operations_form_question_options")
+            .delete()
+            .eq("question_id", id);
+
+        if (deleteError) throw deleteError;
+
+        // Insert new options if any
+        if (options.length > 0) {
+            const { error: optionsError } = await supabase
+                .from("operations_form_question_options")
+                .insert(
+                    options.map((option, index) => ({
+                        question_id: id,
+                        label: option.label,
+                        order_number: option.order,
+                    }))
+                );
+
+            if (optionsError) throw optionsError;
+        }
+    }
+
+    revalidatePath(Routes.OPERATIONS_FORMS.CONFIG);
+    return question as OperationsFormQuestion;
 }
 
 export async function deleteQuestion(id: string) {
@@ -191,7 +236,10 @@ export async function getSectionQuestions(sectionId: string) {
 
     const { data, error } = await supabase
         .from("operations_forms_questions")
-        .select("*")
+        .select(`
+            *,
+            options:operations_form_question_options(*)
+        `)
         .eq("section_id", sectionId)
         .order("order");
 

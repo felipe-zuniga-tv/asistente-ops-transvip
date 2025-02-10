@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition, useEffect } from "react";
+import { useTransition, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -14,19 +14,26 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { OperationsFormQuestion, QuestionType, QUESTION_TYPE_CONFIG } from "@/lib/types/vehicle/forms";
 import { createQuestion, updateQuestion } from "@/lib/services/forms";
+import { Plus, Trash2 } from "lucide-react";
 
 const QUESTION_TYPES = Object.entries(QUESTION_TYPE_CONFIG).map(([value, config]) => ({
     value: value as QuestionType,
     label: config.label,
 }));
 
+const optionSchema = z.object({
+    label: z.string().min(1, "La etiqueta es requerida"),
+    order: z.number(),
+});
+
 const formSchema = z.object({
     label: z.string().min(1, "La etiqueta es requerida"),
-    type: z.enum(["text", "number", "image", "email"] as const),
+    type: z.enum(["text", "number", "image", "email", "options"] as const),
     order: z.number().min(0),
     is_active: z.boolean().default(true),
     is_required: z.boolean().default(true),
     allow_gallery_access: z.boolean().optional(),
+    options: z.array(optionSchema).optional(),
 });
 
 interface OperationsFormQuestionDialogProps {
@@ -49,6 +56,7 @@ export function OperationsFormQuestionDialog({
     const [isPending, startTransition] = useTransition();
     const { toast } = useToast();
     const router = useRouter();
+    const [options, setOptions] = useState<{ label: string; order: number; }[]>([]);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -59,6 +67,7 @@ export function OperationsFormQuestionDialog({
             is_active: true,
             is_required: true,
             allow_gallery_access: false,
+            options: [],
         },
     });
 
@@ -71,17 +80,52 @@ export function OperationsFormQuestionDialog({
                 is_active: question?.is_active ?? true,
                 is_required: question?.is_required ?? true,
                 allow_gallery_access: question?.allow_gallery_access ?? false,
+                options: question?.options?.map(opt => ({ label: opt.label, order: opt.order })) ?? [],
             });
+            setOptions(question?.options?.map(opt => ({ label: opt.label, order: opt.order })) ?? []);
         }
     }, [open, question, currentOrder, form]);
 
     const questionType = form.watch("type");
 
+    const addOption = () => {
+        const newOption = {
+            label: "",
+            order: options.length,
+        };
+        setOptions([...options, newOption]);
+    };
+
+    const removeOption = (index: number) => {
+        const newOptions = [...options];
+        newOptions.splice(index, 1);
+        newOptions.forEach((opt, idx) => {
+            opt.order = idx;
+        });
+        setOptions(newOptions);
+    };
+
+    const updateOptionLabel = (index: number, label: string) => {
+        const newOptions = [...options];
+        newOptions[index] = { ...newOptions[index], label };
+        setOptions(newOptions);
+    };
+
     function onSubmit(values: z.infer<typeof formSchema>) {
         startTransition(async () => {
             try {
+                const submitData = {
+                    ...values,
+                    options: questionType === 'options' 
+                        ? options.map((opt, index) => ({
+                            ...opt,
+                            order: index + 1
+                        }))
+                        : undefined,
+                };
+
                 if (question) {
-                    const updatedQuestion = await updateQuestion(question.id, values);
+                    const updatedQuestion = await updateQuestion(question.id, submitData);
                     toast({
                         title: "Pregunta actualizada",
                         description: "La pregunta ha sido actualizada exitosamente.",
@@ -89,7 +133,7 @@ export function OperationsFormQuestionDialog({
                     onQuestionUpdate?.(updatedQuestion);
                 } else {
                     await createQuestion({
-                        ...values,
+                        ...submitData,
                         section_id: sectionId,
                     });
                     toast({
@@ -110,8 +154,8 @@ export function OperationsFormQuestionDialog({
     }
 
     return (
-        <SimpleDialog 
-            isOpen={open} 
+        <SimpleDialog
+            isOpen={open}
             onClose={() => onOpenChange(false)}
             className="sm:max-w-[600px]"
         >
@@ -161,6 +205,45 @@ export function OperationsFormQuestionDialog({
                             </FormItem>
                         )}
                     />
+
+                    {questionType === 'options' && (
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between">
+                                <FormLabel>Opciones</FormLabel>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={addOption}
+                                >
+                                    <Plus className="h-4 w-4 mr-2" />
+                                    Agregar Opción
+                                </Button>
+                            </div>
+                            { options.length > 0 && 
+                                <div className="space-y-2 p-2 rounded-md bg-muted">
+                                    {options.map((option, index) => (
+                                        <div key={index} className="flex items-center gap-2">
+                                            <Input
+                                                placeholder="Ingresa la opción..."
+                                                value={option.label}
+                                                onChange={(e) => updateOptionLabel(index, e.target.value)}
+                                                className="bg-white text-black"
+                                            />
+                                            <Button
+                                                type="button"
+                                                variant="ghost"
+                                                size="icon"
+                                                onClick={() => removeOption(index)}
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                    ))}
+                                </div>
+                            }
+                        </div>
+                    )}
 
                     <FormField
                         control={form.control}

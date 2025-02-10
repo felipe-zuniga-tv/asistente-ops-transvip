@@ -3,6 +3,7 @@ export const QUESTION_TYPE_CONFIG = {
     number: { label: "Número" },
     image: { label: "Imagen" },
     email: { label: "Email" },
+    options: { label: "Opciones" },
 } as const;
 
 export type QuestionType = keyof typeof QUESTION_TYPE_CONFIG;
@@ -26,6 +27,15 @@ export interface OperationsFormSection {
     updated_at: string;
 }
 
+export interface OperationsFormQuestionOption {
+    id: string;
+    question_id: string;
+    label: string;
+    order: number;
+    created_at: string;
+    updated_at: string;
+}
+
 export interface OperationsFormQuestion {
     id: string;
     section_id: string;
@@ -35,6 +45,7 @@ export interface OperationsFormQuestion {
     is_active: boolean;
     is_required: boolean;
     allow_gallery_access?: boolean;
+    options?: OperationsFormQuestionOption[];
     created_at: string;
     updated_at: string;
 }
@@ -83,6 +94,7 @@ export interface CreateOperationsFormQuestionInput {
     order: number;
     is_required?: boolean;
     allow_gallery_access?: boolean;
+    options?: { label: string; order: number; }[];
 }
 
 export interface UpdateOperationsFormQuestionInput extends Partial<Omit<CreateOperationsFormQuestionInput, 'section_id'>> {
