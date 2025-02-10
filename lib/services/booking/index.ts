@@ -87,7 +87,7 @@ async function mapBookingToOutput(bookingData: any, vehicleDetail: any): Promise
         arrived_identity,
         started_identity,
         completed_identity,
-        no_show_identity,
+        noshow_identity: no_show_identity,
         cancellation_identity,
         fleet_image,
         payment_method_id,
