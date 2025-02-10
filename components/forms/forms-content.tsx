@@ -22,7 +22,7 @@ export async function FormulariosContent({ activeForms, baseUrl }: {
 					Selecciona un formulario para comenzar a responderlo
 				</CardDescription>
 			</CardHeader>
-			<CardContent className="grid gap-4 grid-cols-1 lg:grid-cols-2">
+			<CardContent className={`grid gap-4 ${activeForms.length > 1 ? 'grid-cols-1 xl:grid-cols-2' : 'grid-cols-1'}`}>
 				{activeForms.map((form) => (
 					<Link key={form.id} href={`${baseUrl}/${form.id}`} className="block hover:opacity-90">
 						<Card className="h-full">

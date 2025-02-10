@@ -49,7 +49,7 @@ export function OperationsFormDialog({ open, onOpenChange }: OperationsFormDialo
                 });
                 onOpenChange(false);
                 router.refresh();
-                router.push(`/admin/forms-config/${form.id}`);
+                router.push(`/forms/config/${form.id}`);
             } catch (error) {
                 toast({
                     title: "Error",

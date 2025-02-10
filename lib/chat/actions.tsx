@@ -27,11 +27,13 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/com
 import { VehicleInfoCard } from "@/components/mtt/vehicle-info-card";
 import { getSystemConfigs } from "../services/system";
 
+const GOOGLE_MODEL_NAME_DEFAULT = 'gemini-2.0-flash-exp'
+
 async function submitUserMessage(content: string) {
 	"use server";
 	const session = await getSession()
 	const llmConfig = await getSystemConfigs('llm_model_name')
-	const modelName = llmConfig?.value || 'gemini-2.0-flash-lite-preview-02-05' // fallback to default
+	const modelName = llmConfig?.value || GOOGLE_MODEL_NAME_DEFAULT // fallback to default
 	const modelInstanceGoogle = google(modelName)
 
 	const aiState = getMutableAIState<typeof AI>();
@@ -150,11 +152,12 @@ async function submitUserMessage(content: string) {
 				}
 			},
 			getBookingInfo: {
-				description: `Útil para obtener el detalle de una reserva o servicio solicitado en Transvip`,
+				description: `Útil para obtener el detalle de una reserva o servicio solicitado en Transvip. 
+				Si es reserva, tendrá 8 números, si es paquete, tendrá 7 números.`,
 				parameters: z.object({
 					bookingId: z
 						.number()
-						.describe("El número o código de la reserva, servicio o paquete del cual se necesita saber su detalle"),
+						.describe("El número o código de la reserva o paquete del cual se necesita saber su detalle"),
 				}).required(),
 				generate: async function* ({ bookingId }) {
 					yield <LoadingMessage text={`Buscando la reserva/paquete ${bookingId}...`} 
@@ -164,6 +167,8 @@ async function submitUserMessage(content: string) {
 					const not_shared_booking = await getBookingInfo(bookingId, false) // NOT SHARED
 					const shared_booking     = await getBookingInfo(bookingId, true)  // SHAREDs
 					const bookingInformation = not_shared_booking ? not_shared_booking : shared_booking
+
+					console.log(bookingInformation)
 
 					// Sort by Job Pickup datetime ascending
 					bookingInformation?.

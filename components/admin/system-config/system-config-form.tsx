@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -26,17 +25,19 @@ import { Switch } from "@/components/ui/switch"
 import { Input } from "@/components/ui/input"
 import { updateSystemConfig } from "@/lib/admin/actions"
 import { ConfigCardContainer } from "@/components/tables/config-card-container"
+import { useTransition } from "react"
+import { useToast } from "@/hooks/use-toast"
 
 const GEMINI_MODELS = [
-	{
-		value: "gemini-2.0-flash-lite-preview-02-05",
-		label: "Gemini 2.0 Flash Lite (Preview)",
-		description: "Modelo rápido y eficiente, ideal para respuestas cortas"
-	},
 	{
 		value: "gemini-2.0-flash-exp",
 		label: "Gemini 2.0 Flash (Experimental)",
 		description: "Modelo balanceado entre velocidad y calidad"
+	},
+	{
+		value: "gemini-2.0-flash-lite-preview-02-05",
+		label: "Gemini 2.0 Flash Lite (Preview)",
+		description: "Modelo rápido y eficiente, ideal para respuestas cortas"
 	},
 	{
 		value: "gemini-2.0-flash-thinking-exp-01-21",
@@ -74,6 +75,9 @@ interface SystemConfigFormProps {
 }
 
 export function SystemConfigForm({ initialData }: SystemConfigFormProps) {
+	const [isPending, startTransition] = useTransition()
+	const { toast } = useToast()
+	
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -105,10 +109,15 @@ export function SystemConfigForm({ initialData }: SystemConfigFormProps) {
 					value: values.maintenance_mode.toString(),
 				}),
 			])
-			toast.success('Configuración actualizada exitosamente')
+			toast({
+				title: 'Configuración actualizada exitosamente',
+			})
 		} catch (error) {
 			console.error('Error updating system config:', error)
-			toast.error('Error al actualizar la configuración')
+			toast({
+				title: 'Error al actualizar la configuración',
+				variant: 'destructive',
+			})
 		}
 	}
 

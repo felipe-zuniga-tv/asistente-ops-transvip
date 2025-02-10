@@ -145,8 +145,6 @@ export async function getVehicleShiftsByDateRange(
 	endDate: string,
 	branchId?: string
 ) {
-	console.log(vehicleNumber, startDate, endDate, branchId)
-
 	try {
 		const supabase = await getSupabaseClient()
 

@@ -9,6 +9,7 @@ import { DataTable } from "@/components/tables/data-table";
 import { columns } from "./form-table/columns";
 import { updateOperationsForm } from "@/lib/services/forms";
 import { useToast } from "@/hooks/use-toast";
+import { OperationsFormEditDialog } from "./dialogs/operations-form-edit-dialog";
 
 interface OperationsFormsListProps {
     data: OperationsForm[];
@@ -19,9 +20,11 @@ export function OperationsFormsConfiguration({ data }: OperationsFormsListProps)
     const router = useRouter();
     const { toast } = useToast();
     const [isPending, startTransition] = useTransition();
+    const [isEditOpen, setIsEditOpen] = useState(false);
+    const [editingForm, setEditingForm] = useState<OperationsForm | null>(null);
 
     const handleView = (formId: string) => {
-        router.push(`/admin/forms-config/${formId}`);
+        router.push(`/forms/config/${formId}`);
     };
 
     const handleToggleStatus = async (form: OperationsForm) => {
@@ -45,6 +48,11 @@ export function OperationsFormsConfiguration({ data }: OperationsFormsListProps)
         });
     };
 
+    const handleEdit = (form: OperationsForm) => {
+        setEditingForm(form);
+        setIsEditOpen(true);
+    };
+
     const filterOptions = [
         {
             columnId: "is_active",
@@ -63,7 +71,7 @@ export function OperationsFormsConfiguration({ data }: OperationsFormsListProps)
         >
             <DataTable
                 data={data}
-                columns={columns({ handleView, onToggleStatus: handleToggleStatus })}
+                columns={columns({ handleView, onToggleStatus: handleToggleStatus, onEdit: handleEdit })}
                 searchPlaceholder="Buscar formulario..."
                 searchColumnId="title"
                 filterOptions={filterOptions}
@@ -74,6 +82,14 @@ export function OperationsFormsConfiguration({ data }: OperationsFormsListProps)
                 open={open}
                 onOpenChange={setOpen}
             />
+
+            {isEditOpen && editingForm && (
+                <OperationsFormEditDialog
+                    editingForm={editingForm}
+                    onClose={() => { setIsEditOpen(false); setEditingForm(null); }}
+                    onEditSuccess={() => router.refresh()}
+                />
+            )}
         </ConfigCardContainer>
     );
 } 

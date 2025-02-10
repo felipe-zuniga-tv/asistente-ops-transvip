@@ -2,13 +2,19 @@ import { revalidatePath } from "next/cache"
 import { getSupabaseClient } from "@/lib/database/actions"
 import { Routes } from "@/utils/routes"
 
-export async function getSystemConfigs() {
+export async function getSystemConfigs(key?: string) {
     const supabase = await getSupabaseClient()
 
-    const { data, error } = await supabase
+    const query = supabase
         .from('system_configs')
         .select('*')
-        .order('key')
+
+    if (key) {
+        query.eq('key', key)
+        return (await query.single()).data
+    }
+
+    const { data, error } = await query.order('key')
 
     if (error) {
         console.error('Error fetching system configs:', error)

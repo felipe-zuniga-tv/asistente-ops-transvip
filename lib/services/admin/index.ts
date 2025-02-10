@@ -50,8 +50,6 @@ export async function createPaymentMethod(input: CreatePaymentMethodInput) {
 export async function updatePaymentMethod(id: string, input: UpdatePaymentMethodInput) {
     const supabase = await getSupabaseClient()
 
-    console.log(input)
-
     const { data, error } = await supabase
         .from('payment_methods')
         .update(input)

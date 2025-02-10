@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from "react"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -24,6 +23,7 @@ import {
 import { ChevronDownIcon } from "@radix-ui/react-icons"
 import { ResetButton } from "../ui/buttons"
 import { CopyWrapper } from "../ui/copy-wrapper"
+import { ConfigCardContainer } from "../tables/config-card-container"
 
 export interface Option {
     value: string;
@@ -103,7 +103,6 @@ export default function TextWriter() {
             })
 
             const generatedTexts = JSON.parse(results.text.replace('```json', '').replace('```', ''))
-            console.log(generatedTexts)
 
             setFormData(prev => ({
                 ...prev,
@@ -116,18 +115,19 @@ export default function TextWriter() {
         }
     }
 
+    const headerContent = (
+        <div className="flex items-center gap-2">
+            <ResetButton handleReset={handleReset} />
+        </div>
+    )
+
     return (
-        <Card className="max-w-4xl lg:mx-auto">
-            <CardHeader>
-                <CardTitle>
-                    <div className="flex flex-row items-center gap-2">
-                        <TransvipLogo size={20} />
-                        <span>Escribe un texto</span>
-                        <ResetButton handleReset={handleReset} />
-                    </div>
-                </CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-4">
+        <ConfigCardContainer 
+            title="Escribe un texto"
+            headerContent={headerContent}
+            className="max-w-full"
+        >
+            <div className="flex flex-col gap-4">
                 <div className="flex flex-col lg:flex-row gap-4 justify-between items-center">
                     <div className="space-y-2 w-full">
                         <label className="text-sm font-medium">Objetivo del texto</label>
@@ -285,7 +285,7 @@ export default function TextWriter() {
                         </div>
                     </div>
                 )}
-            </CardContent>
-        </Card>
+            </div>
+        </ConfigCardContainer>
     )
 }

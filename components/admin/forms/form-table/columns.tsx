@@ -3,10 +3,9 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Edit2, Trash2, MoreHorizontal, Eye, Power } from "lucide-react";
+import { Edit2, Trash2, MoreHorizontal, Eye, Power, Pencil } from "lucide-react";
 import type { OperationsFormQuestion, OperationsForm } from "@/lib/types/vehicle/forms";
 import { formatDate } from "@/utils/dates";
-import { Pencil } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -17,9 +16,10 @@ import {
 interface ColumnsProps {
     handleView: (formId: string) => void;
     onToggleStatus?: (form: OperationsForm) => void;
+    onEdit?: (form: OperationsForm) => void;
 }
 
-export const columns = ({ handleView, onToggleStatus }: ColumnsProps): ColumnDef<OperationsForm>[] => [
+export const columns = ({ handleView, onToggleStatus, onEdit }: ColumnsProps): ColumnDef<OperationsForm>[] => [
     {
         accessorKey: "title",
         header: () => <div className="text-center">Título</div>,
@@ -36,7 +36,7 @@ export const columns = ({ handleView, onToggleStatus }: ColumnsProps): ColumnDef
         header: () => <div className="text-center">Descripción</div>,
         cell: ({ row }) => {
             return (
-                <div className="text-center">
+                <div className="text-center max-w-lg mx-auto truncate">
                     {row.getValue("description")}
                 </div>
             );
@@ -89,6 +89,12 @@ export const columns = ({ handleView, onToggleStatus }: ColumnsProps): ColumnDef
                                 <Eye className="h-4 w-4" />
                                 <span>Ver formulario</span>
                             </DropdownMenuItem>
+                            {onEdit && (
+                                <DropdownMenuItem onClick={() => onEdit(form)}>
+                                    <Pencil className="h-4 w-4" />
+                                    <span>Editar formulario</span>
+                                </DropdownMenuItem>
+                            )}
                             <DropdownMenuItem onClick={() => onToggleStatus?.(form)}>
                                 <Power className="h-4 w-4" />
                                 <span>{form.is_active ? 'Desactivar' : 'Activar'} formulario</span>
