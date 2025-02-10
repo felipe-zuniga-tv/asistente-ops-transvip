@@ -2,6 +2,9 @@ import { Suspense } from 'react'
 import { getSystemConfigs } from '@/lib/services/system'
 import { SystemConfigForm } from '@/components/admin/system-config/system-config-form'
 import SuspenseLoading from '@/components/ui/suspense'
+import type { Database } from '@/lib/database.types'
+
+type SystemConfig = Database['public']['Tables']['system_configs']['Row']
 
 export const metadata = {
     title: 'Configuración del Sistema | Transvip',
@@ -19,10 +22,10 @@ export default async function SystemConfigPage() {
 async function SystemConfigDashboard() {
     const configs = await getSystemConfigs()
     
-    const llmConfig = configs?.find(config => config.key === 'llm_model_name')
-    const languageConfig = configs?.find(config => config.key === 'default_language')
-    const timeoutConfig = configs?.find(config => config.key === 'session_timeout')
-    const maintenanceConfig = configs?.find(config => config.key === 'maintenance_mode')
+    const llmConfig = configs?.find((config: SystemConfig) => config.key === 'llm_model_name')
+    const languageConfig = configs?.find((config: SystemConfig) => config.key === 'default_language')
+    const timeoutConfig = configs?.find((config: SystemConfig) => config.key === 'session_timeout')
+    const maintenanceConfig = configs?.find((config: SystemConfig) => config.key === 'maintenance_mode')
     
     return (
         <SystemConfigForm

@@ -164,7 +164,7 @@ export function SystemConfigForm({ initialData }: SystemConfigFormProps) {
 							control={form.control}
 							name="default_language"
 							render={({ field }) => (
-								<FormItem>
+								<FormItem className="hidden">
 									<FormLabel>Idioma por defecto</FormLabel>
 									<Select onValueChange={field.onChange} defaultValue={field.value}>
 										<FormControl>
@@ -192,7 +192,7 @@ export function SystemConfigForm({ initialData }: SystemConfigFormProps) {
 							control={form.control}
 							name="session_timeout"
 							render={({ field }) => (
-								<FormItem>
+								<FormItem className="hidden">
 									<FormLabel>Tiempo de sesión (minutos)</FormLabel>
 									<FormControl>
 										<Input
@@ -215,7 +215,7 @@ export function SystemConfigForm({ initialData }: SystemConfigFormProps) {
 							control={form.control}
 							name="maintenance_mode"
 							render={({ field }) => (
-								<FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
+								<FormItem className="hidden flex flex-row items-center justify-between rounded-lg border p-3">
 									<div className="space-y-0.5">
 										<FormLabel className="text-base">Modo mantenimiento</FormLabel>
 										<FormDescription>
