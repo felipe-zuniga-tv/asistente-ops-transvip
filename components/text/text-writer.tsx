@@ -24,6 +24,7 @@ import { ChevronDownIcon } from "@radix-ui/react-icons"
 import { ResetButton } from "../ui/buttons"
 import { CopyWrapper } from "../ui/copy-wrapper"
 import { ConfigCardContainer } from "../tables/config-card-container"
+import { Switch } from "@/components/ui/switch"
 
 export interface Option {
     value: string;
@@ -55,7 +56,7 @@ const INITIAL_FORM_DATA: FormData = {
     fleetTypes: [],
     vehicleTypes: [],
     referenceText: '',
-    writingStyle: '',
+    writingStyle: 'formal',
     variations: '1',
     generatedTexts: [],
 }
@@ -85,6 +86,7 @@ const VARIATIONS_OPTIONS = [
 export default function TextWriter() {
     const [formData, setFormData] = useState<FormData>(INITIAL_FORM_DATA)
     const [isLoading, setIsLoading] = useState(false)
+    const [showAdvancedOptions, setShowAdvancedOptions] = useState(false)
 
     const handleReset = () => {
         setFormData(INITIAL_FORM_DATA)
@@ -92,6 +94,7 @@ export default function TextWriter() {
 
     const handleSubmit = async () => {
         setIsLoading(true)
+        setShowAdvancedOptions(false)
         try {
             const results = await createText({
                 objective: formData.objective,
@@ -203,50 +206,67 @@ export default function TextWriter() {
                         </div>
                     </div>
 
-                    <div className="space-y-2">
-                        <Label className="text-sm font-medium">Estilo de Escritura</Label>
-                        <Select value={formData.writingStyle}
-                            onValueChange={(value) => setFormData(prev => ({ ...prev, writingStyle: value }))}>
-                            <SelectTrigger className="text-slate-500">
-                                <SelectValue placeholder="Seleccione un estilo" />
-                            </SelectTrigger>
-                            <SelectContent className="text-slate-700">
-                                {WRITING_STYLES.map((style) => (
-                                    <SelectItem key={style.id} value={style.id}>
-                                        {style.label}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                        <Label className="text-sm font-medium">Número de Variaciones</Label>
-                        <Select value={formData.variations}
-                            onValueChange={(value) => setFormData(prev => ({ ...prev, variations: value }))}>
-                            <SelectTrigger className="text-slate-500">
-                                <SelectValue placeholder="Seleccione cantidad" />
-                            </SelectTrigger>
-                            <SelectContent className="text-slate-700">
-                                {VARIATIONS_OPTIONS.map((option) => (
-                                    <SelectItem key={option.id} value={option.id.toString()}>
-                                        {option.label}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+                    <div className="flex items-center space-x-2">
+                        <Switch
+                            id="advanced-options"
+                            checked={showAdvancedOptions}
+                            onCheckedChange={setShowAdvancedOptions}
+                        />
+                        <Label htmlFor="advanced-options" className="text-sm font-medium cursor-pointer">
+                            Opciones Avanzadas
+                        </Label>
                     </div>
                 </div>
 
-                <div className="space-y-2">
-                    <label className="text-sm font-medium">Texto de Referencia</label>
-                    <Textarea
-                        value={formData.referenceText}
-                        onChange={(e) => setFormData(prev => ({ ...prev, referenceText: e.target.value }))}
-                        placeholder="Ingrese el texto de referencia, se usará como base"
-                        className="resize-none h-32 placeholder:text-sm text-sm"
-                    />
-                </div>
+                <Collapsible open={showAdvancedOptions}>
+                    <CollapsibleContent>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+                            <div className="space-y-2">
+                                <Label className="text-sm font-medium">Estilo de Escritura</Label>
+                                <Select value={formData.writingStyle}
+                                    onValueChange={(value) => setFormData(prev => ({ ...prev, writingStyle: value }))}>
+                                    <SelectTrigger className="text-slate-500">
+                                        <SelectValue placeholder="Seleccione un estilo" />
+                                    </SelectTrigger>
+                                    <SelectContent className="text-slate-700">
+                                        {WRITING_STYLES.map((style) => (
+                                            <SelectItem key={style.id} value={style.id}>
+                                                {style.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label className="text-sm font-medium">Número de Variaciones</Label>
+                                <Select value={formData.variations}
+                                    onValueChange={(value) => setFormData(prev => ({ ...prev, variations: value }))}>
+                                    <SelectTrigger className="text-slate-500">
+                                        <SelectValue placeholder="Seleccione cantidad" />
+                                    </SelectTrigger>
+                                    <SelectContent className="text-slate-700">
+                                        {VARIATIONS_OPTIONS.map((option) => (
+                                            <SelectItem key={option.id} value={option.id.toString()}>
+                                                {option.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+
+                        <div className="space-y-2 mt-4">
+                            <label className="text-sm font-medium">Texto de Referencia</label>
+                            <Textarea
+                                value={formData.referenceText}
+                                onChange={(e) => setFormData(prev => ({ ...prev, referenceText: e.target.value }))}
+                                placeholder="Ingrese el texto de referencia, se usará como base"
+                                className="resize-none h-32 placeholder:text-sm text-sm"
+                            />
+                        </div>
+                    </CollapsibleContent>
+                </Collapsible>
 
                 <div className="flex items-center justify-center">
                     <Button

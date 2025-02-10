@@ -18,11 +18,11 @@ export function Chat({ id, initialMessages, className, session }: ChatProps) {
     const [messages] = useUIState()
     const [aiState] = useAIState()
 
-    const [_, setNewChatId] = useLocalStorage('newChatId', id)
-
+    // const [_, setNewChatId] = useLocalStorage('newChatId', id)
+// 
     // useEffect(() => {
     //     if (session?.user) {
-    //         if (!path.includes('chat') && messages.length === 1) {
+    //         if (path.includes('chat') && messages.length === 0) {
     //             window.history.replaceState({}, '', `/chat/${id}`)
     //             console.log("redirigir")
     //         }
@@ -36,9 +36,9 @@ export function Chat({ id, initialMessages, className, session }: ChatProps) {
         }
     }, [aiState.messages, router])
 
-    useEffect(() => {
-        setNewChatId(id)
-    }, [id, setNewChatId])
+    // useEffect(() => {
+    //     setNewChatId(id)
+    // }, [id, setNewChatId])
 
     const { messagesRef, scrollRef, visibilityRef, isAtBottom, scrollToBottom } = useScrollAnchor()
 
