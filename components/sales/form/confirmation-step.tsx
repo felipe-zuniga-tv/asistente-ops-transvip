@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 import { CheckCircle2 } from 'lucide-react'
 import { format } from 'date-fns'
 import { type Language } from '@/lib/translations'
+import { es } from 'date-fns/locale'
 
 interface ConfirmationStepProps {
 	formData: {
@@ -11,7 +12,6 @@ interface ConfirmationStepProps {
 		firstName: string
 		lastName: string
 		email: string
-		phoneCountry: string
 		phoneNumber: string
 		returnDate: Date | null
 		returnTime: string
@@ -53,22 +53,25 @@ export function ConfirmationStep({ formData, translations, onSubmit }: Confirmat
 			<div className="space-y-4 text-left p-6 bg-muted rounded-lg">
 				<div>
 					<h3 className="font-medium">{translations.personalInfo}</h3>
-					<p className="text-sm">{formData.firstName} {formData.lastName}</p>
-					<p className="text-sm">{formData.email}</p>
+					<div className="flex flex-row gap-2">
+						<p className="text-sm">{formData.firstName} {formData.lastName}</p>
+						<span>·</span>
+						<p className="text-sm">{formData.email}</p>
+					</div>
 				</div>
 
 				<div>
 					<h3 className="font-medium">{translations.contactInfo}</h3>
-					<p className="text-sm">{formData.phoneCountry} {formData.phoneNumber}</p>
+					<p className="text-sm">{formData.phoneNumber}</p>
 				</div>
 
 				<div>
 					<h3 className="font-medium">{translations.returnFlight}</h3>
 					<p className="text-sm">
 						{formData.returnDate
-							? format(formData.returnDate, 'PPP')
+							? format(formData.returnDate, 'PPP', { locale: es })
 							: translations.notSpecified}{' '}
-						at {formData.returnTime}
+						· {formData.returnTime}
 					</p>
 				</div>
 

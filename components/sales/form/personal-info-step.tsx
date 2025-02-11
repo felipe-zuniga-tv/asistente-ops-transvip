@@ -41,6 +41,11 @@ interface PersonalInfoStepProps {
 			lastName: string
 			email: string
 		}
+		placeholders: {
+			firstName: string
+			lastName: string
+			email: string
+		}
 	}
 }
 
@@ -95,7 +100,7 @@ export function PersonalInfoStep({
 							<FormItem>
 								<FormLabel>{translations.firstName}</FormLabel>
 								<FormControl>
-									<Input placeholder="John" {...field} />
+									<Input placeholder={translations.placeholders.firstName} {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -109,7 +114,7 @@ export function PersonalInfoStep({
 							<FormItem>
 								<FormLabel>{translations.lastName}</FormLabel>
 								<FormControl>
-									<Input placeholder="Doe" {...field} />
+									<Input placeholder={translations.placeholders.lastName} {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -124,7 +129,7 @@ export function PersonalInfoStep({
 								<FormLabel>{translations.email}</FormLabel>
 								<FormControl>
 									<Input
-										placeholder="email@ejemplo.com"
+										placeholder={translations.placeholders.email}
 										type="email"
 										{...field}
 									/>

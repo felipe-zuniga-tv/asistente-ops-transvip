@@ -36,16 +36,15 @@ import {
 } from "@/components/ui/command"
 import * as React from "react"
 import { TimePickerInput } from '@/components/ui/time-picker'
+import { PhoneNumberInput } from '@/components/ui/phone-number-input'
 
 interface TravelInfoStepProps {
 	data: {
-		phoneCountry: string
 		phoneNumber: string
 		returnDate: Date | null
 		returnTime: string
 	}
 	onChange: (data: {
-		phoneCountry: string
 		phoneNumber: string
 		returnDate: Date | null
 		returnTime: string
@@ -55,7 +54,6 @@ interface TravelInfoStepProps {
 	translations: {
 		title: string
 		description: string
-		countryCode: string
 		phoneNumber: string
 		returnDate: string
 		returnTime: string
@@ -63,7 +61,6 @@ interface TravelInfoStepProps {
 		continue: string
 		back: string
 		validation: {
-			countryCode: string
 			phoneNumber: string
 			returnDate: string
 			returnTime: string
@@ -81,9 +78,6 @@ export function TravelInfoStep({
 	const [isSubmitting, setIsSubmitting] = useState(false)
 
 	const formSchema = z.object({
-		phoneCountry: z.string().min(1, {
-			message: translations.validation.countryCode,
-		}),
 		phoneNumber: z.string().min(6, {
 			message: translations.validation.phoneNumber,
 		}),
@@ -98,7 +92,6 @@ export function TravelInfoStep({
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			phoneCountry: data.phoneCountry,
 			phoneNumber: data.phoneNumber,
 			returnDate: data.returnDate || undefined,
 			returnTime: data.returnTime,
@@ -129,77 +122,20 @@ export function TravelInfoStep({
 					<div className="space-y-4">
 						<FormItem className="space-y-1">
 							<FormLabel>{translations.phoneNumber}</FormLabel>
-							<div className="flex gap-0">
-								<div className="">
-									<FormField
-										control={form.control}
-										name="phoneCountry"
-										render={({ field }) => (
-											<FormControl>
-												<>
-													<Popover>
-														<PopoverTrigger asChild>
-															<Button
-																variant="outline"
-																role="combobox"
-																className={cn(
-																	"w-full justify-between rounded-r-none",
-																	!field.value ? "text-muted-foreground" : ""
-																)}
-															>
-																{field.value
-																	? countryCodes.find(
-																		(code) => code.value === field.value
-																	)?.label
-																	: "Selecciona..."}
-																<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-															</Button>
-														</PopoverTrigger>
-														<PopoverContent className="w-[200px] p-0">
-															<Command>
-																<CommandInput placeholder="Buscar..." />
-																<CommandList>
-																	<CommandEmpty>Sin resultados</CommandEmpty>
-																	<CommandGroup>
-																		{countryCodes.map((code) => (
-																			<CommandItem
-																				key={code.value}
-																				value={`${code.label} ${code.value}`}
-																				onSelect={() => {
-																					field.onChange(code.value)
-																				}}
-																			>
-																				<Check
-																					className={cn(
-																						"mr-2 h-4 w-4",
-																						field.value === code.value ? "opacity-100" : "opacity-0"
-																					)}
-																				/>
-																				{code.label}
-																			</CommandItem>
-																		))}
-																	</CommandGroup>
-																</CommandList>
-															</Command>
-														</PopoverContent>
-													</Popover>
-													<FormMessage />
-												</>
-											</FormControl>
-										)}
-									/>
-								</div>
-
-								<FormField
-									control={form.control}
-									name="phoneNumber"
-									render={({ field }) => (
-										<FormControl>
-											<Input type="tel" placeholder="123456789" {...field} className="rounded-l-none flex-1" />
-										</FormControl>
-									)}
-								/>
-							</div>
+							<FormField
+								control={form.control}
+								name="phoneNumber"
+								render={({ field }) => (
+									<FormControl>
+										<PhoneNumberInput
+											id={field.name}
+											value={field.value}
+											onChange={field.onChange}
+											placeholder="123456789"
+										/>
+									</FormControl>
+								)}
+							/>
 							<FormMessage />
 						</FormItem>
 					</div>

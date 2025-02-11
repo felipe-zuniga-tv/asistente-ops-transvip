@@ -22,7 +22,6 @@ interface SalesFormData {
 	firstName: string
 	lastName: string
 	email: string
-	phoneCountry: string
 	phoneNumber: string
 	returnDate: Date | null
 	returnTime: string
@@ -44,7 +43,6 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 		firstName: '',
 		lastName: '',
 		email: '',
-		phoneCountry: '+56',
 		phoneNumber: '',
 		returnDate: null,
 		returnTime: '',
@@ -79,7 +77,6 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 				first_name: formData.firstName,
 				last_name: formData.lastName,
 				email: formData.email,
-				phone_country: formData.phoneCountry,
 				phone_number: formData.phoneNumber,
 				return_date: formData.returnDate ? new Date(formData.returnDate).toISOString() : null,
 				return_time: formData.returnTime || null,
@@ -101,7 +98,6 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 					firstName: '',
 					lastName: '',
 					email: '',
-					phoneCountry: '+56',
 					phoneNumber: '',
 					returnDate: null,
 					returnTime: '',
@@ -158,7 +154,6 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 					{step === 3 && (
 						<TravelInfoStep
 							data={{
-								phoneCountry: formData.phoneCountry,
 								phoneNumber: formData.phoneNumber,
 								returnDate: formData.returnDate,
 								returnTime: formData.returnTime

@@ -23,6 +23,11 @@ export const translations = {
           firstName: 'El nombre debe tener al menos 2 caracteres.',
           lastName: 'El apellido debe tener al menos 2 caracteres.',
           email: 'Por favor ingresa un correo electrónico válido.'
+        },
+        placeholders: {
+          firstName: 'Tu nombre',
+          lastName: 'Tu apellido',
+          email: 'correo@ejemplo.com'
         }
       },
       travel: {
@@ -97,6 +102,11 @@ export const translations = {
           firstName: 'First name must be at least 2 characters.',
           lastName: 'Last name must be at least 2 characters.',
           email: 'Please enter a valid email address.'
+        },
+        placeholders: {
+          firstName: 'Your first name',
+          lastName: 'Your last name',
+          email: 'email@example.com'
         }
       },
       travel: {
@@ -171,6 +181,11 @@ export const translations = {
           firstName: 'Der Vorname muss mindestens 2 Zeichen lang sein.',
           lastName: 'Der Nachname muss mindestens 2 Zeichen lang sein.',
           email: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.'
+        },
+        placeholders: {
+          firstName: 'Ihr Vorname',
+          lastName: 'Ihr Nachname',
+          email: 'email@beispiel.de'
         }
       },
       travel: {
@@ -245,6 +260,11 @@ export const translations = {
           firstName: 'O nome deve ter pelo menos 2 caracteres.',
           lastName: 'O sobrenome deve ter pelo menos 2 caracteres.',
           email: 'Por favor, insira um endereço de e-mail válido.'
+        },
+        placeholders: {
+          firstName: 'Seu nome',
+          lastName: 'Seu sobrenome',
+          email: 'email@exemplo.com'
         }
       },
       travel: {

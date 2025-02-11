@@ -142,7 +142,7 @@ export function SalesResponsesContent({
 
 	const handleSendWhatsAppMessage = (response: SalesResponse) => {
 		const message = getWhatsAppMessage(response.first_name, response.language);
-		sendWhatsAppMessage(`${response.phone_country}${response.phone_number}`, message);
+		sendWhatsAppMessage(response.phone_number, message);
 	}
 
 	return (

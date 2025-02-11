@@ -8,7 +8,6 @@ export interface SalesResponse {
   first_name: string
   last_name: string
   email: string
-  phone_country: string
   phone_number: string
   return_date: string | null
   return_time: string | null
