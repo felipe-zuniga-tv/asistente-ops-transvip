@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
-import { Button } from "@/components/ui/button"
 import {
 	Form,
 	FormControl,
@@ -21,8 +20,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
 import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import { updateSystemConfig } from "@/lib/admin/actions"
 import { ConfigCardContainer } from "@/components/tables/config-card-container"
 import { useTransition } from "react"
@@ -62,7 +61,6 @@ const formSchema = z.object({
 		.min(15, "El tiempo mínimo es 15 minutos")
 		.max(1440, "El tiempo máximo es 24 horas (1440 minutos)")
 		.default(60),
-	maintenance_mode: z.boolean().default(false),
 })
 
 interface SystemConfigFormProps {
@@ -70,7 +68,6 @@ interface SystemConfigFormProps {
 		llm_model_name: string
 		default_language: string
 		session_timeout: number
-		maintenance_mode: boolean
 	}
 }
 
@@ -84,7 +81,6 @@ export function SystemConfigForm({ initialData }: SystemConfigFormProps) {
 			llm_model_name: initialData.llm_model_name as typeof GEMINI_MODELS[number]['value'],
 			default_language: initialData.default_language as typeof LANGUAGES[number]['value'],
 			session_timeout: initialData.session_timeout,
-			maintenance_mode: initialData.maintenance_mode,
 		},
 	})
 
@@ -103,10 +99,6 @@ export function SystemConfigForm({ initialData }: SystemConfigFormProps) {
 				updateSystemConfig({
 					key: 'session_timeout',
 					value: values.session_timeout.toString(),
-				}),
-				updateSystemConfig({
-					key: 'maintenance_mode',
-					value: values.maintenance_mode.toString(),
 				}),
 			])
 			toast({
@@ -207,27 +199,6 @@ export function SystemConfigForm({ initialData }: SystemConfigFormProps) {
 										Tiempo de inactividad antes de cerrar la sesión (entre 15 minutos y 24 horas).
 									</FormDescription>
 									<FormMessage />
-								</FormItem>
-							)}
-						/>
-
-						<FormField
-							control={form.control}
-							name="maintenance_mode"
-							render={({ field }) => (
-								<FormItem className="hidden flex flex-row items-center justify-between rounded-lg border p-3">
-									<div className="space-y-0.5">
-										<FormLabel className="text-base">Modo mantenimiento</FormLabel>
-										<FormDescription>
-											Activa el modo mantenimiento para mostrar un mensaje a los usuarios.
-										</FormDescription>
-									</div>
-									<FormControl>
-										<Switch
-											checked={field.value}
-											onCheckedChange={field.onChange}
-										/>
-									</FormControl>
 								</FormItem>
 							)}
 						/>
