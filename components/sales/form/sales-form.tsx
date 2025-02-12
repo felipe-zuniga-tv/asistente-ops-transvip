@@ -8,6 +8,7 @@ import { Progress } from '@/components/ui/progress'
 import { useToast } from '@/hooks/use-toast'
 import { getTranslation, type Language } from '@/lib/translations/'
 import { createSalesResponse } from '@/lib/services/sales'
+import { createCustomerAccount } from '@/lib/services/customer'
 
 // Form Steps
 import { LanguageStep } from './language-step'
@@ -70,7 +71,21 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 		
 		try {
 			isSubmitting.current = true;
-			await createSalesResponse({
+
+			// First create the customer account
+			const customerResult = await createCustomerAccount({
+				firstName: formData.firstName,
+				lastName: formData.lastName,
+				email: formData.email,
+				language: formData.language,
+			})
+
+			if (!customerResult || customerResult.error) {
+				throw new Error(customerResult?.error || 'Failed to create customer account')
+			}
+
+			// Then create the sales response
+			const salesResult = await createSalesResponse({
 				branch_code: branchCode,
 				branch_name: branchName,
 				language: formData.language,
@@ -82,6 +97,10 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 				return_time: formData.returnTime || null,
 				accommodation: formData.accommodation,
 			})
+
+			if (!salesResult) {
+				throw new Error('Failed to create sales response')
+			}
 
 			// Show success message
 			toast({
@@ -106,9 +125,10 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 				onSuccess?.()
 			}, 3000)
 		} catch (error) {
+			console.error('Form submission error:', error)
 			toast({
 				title: t.error.title,
-				description: t.error.description,
+				description: error instanceof Error ? error.message : t.error.description,
 				variant: 'destructive',
 			})
 		} finally {

@@ -1,14 +1,17 @@
 import { getSession } from "../../auth"
 import { branches } from "../../config/transvip-general"
-import { ZONA_ILUMINADA_CITY, ZONA_ILUMINADA_SERVICES, AIRPORT_ZONE_API_URL } from "@/lib/chat/config/urls"
-import { getResponseFromURL } from "@/lib/chat/utils/helpers"
+import { ZONA_ILUMINADA_CITY, ZONA_ILUMINADA_SERVICES, AIRPORT_ZONE_API_URL } from "@/lib/services/config/urls"
+import { getResponseFromURL } from "@/lib/services/utils/helpers"
 
 export async function getZonaIluminada(cityName = 'Santiago') {
     const session = await getSession()
     const currentUser = session?.user as any
     const accessToken = currentUser?.accessToken as string
 
-    const branchId = branches.filter(x => x.name === cityName)[0].branch_id
+    const branch = branches.find(x => x.name === cityName)
+    const branchId = branch ? branch.branch_id : null
+
+    if (!branchId) return
     
     const params = [
         `access_token=${accessToken}`,

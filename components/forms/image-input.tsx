@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { Camera, Image as ImageIcon, Trash2 } from "lucide-react";
+import { Image as ImageIcon, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -153,7 +153,7 @@ export function ImageInput({ value, onChange, allowGallery }: ImageInputProps) {
                 className="w-full"
                 onClick={handleCameraCapture}
             >
-                <Camera className="h-4 w-4 mr-2" />
+                <ImageIcon className="h-4 w-4" />
                 Tomar Foto
             </Button>
 
@@ -165,7 +165,7 @@ export function ImageInput({ value, onChange, allowGallery }: ImageInputProps) {
                         className="w-full"
                         disabled={isLoading}
                     >
-                        <ImageIcon className="h-4 w-4 mr-2" />
+                        <ImageIcon className="h-4 w-4" />
                         Seleccionar de Galería
                     </Button>
                     <Input

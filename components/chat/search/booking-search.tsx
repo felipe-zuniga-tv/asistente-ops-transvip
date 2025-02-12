@@ -1,18 +1,9 @@
 'use client'
-import {
-    useActions,
-    useUIState
-} from 'ai/rsc'
-import { nanoid } from 'nanoid';
-import Link from 'next/link';
-import { addMinutes, differenceInDays, differenceInMinutes } from 'date-fns';
 import { IBookingInfoOutput } from '@/lib/types/chat';
-import { AssistantMessageContent, UserMessage } from '../message';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { CheckIcon, Clock, GoalIcon, MailIcon, MapIcon, MapPin, Pencil, PhoneIcon, SearchIcon, UserCircleIcon, X } from 'lucide-react';
 import { WhatsappIcon } from '@/components/ui/icons-list';
-import { buildGoogleMapsURL, buildWhatsappLink } from '@/lib/chat/utils/helpers'
+import { buildGoogleMapsURL, buildWhatsappLink } from '@/lib/services/utils/helpers'
 import { BookingStatusBadge, CityBadge, CustomerVipBadge, PaymentRouteType, PaymentStatusBadge, ServiceNameBadge } from '../badges/chat-badges';
 import { BookingIdBadge } from '../badges/booking-badge';
 import DriverAvatar from '@/components/driver/driver-avatar';
@@ -20,6 +11,9 @@ import Zoom from 'react-medium-image-zoom'
 import Image from 'next/image';
 import EmailLink from '@/components/ui/email-link';
 import GoogleMapsButton from './google-maps-url-button';
+import { addMinutes, differenceInDays, differenceInMinutes } from 'date-fns';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 let chileanPeso = new Intl.NumberFormat('es-CL', {
     style: 'currency',
@@ -55,26 +49,9 @@ export function BookingIdSearch({ session, searchResults, content }: {
     searchResults: IBookingInfoOutput[],
     content?: string
 }) {
-    const [_, setMessages] = useUIState()
-    const { submitUserMessage } = useActions()
-
     const handleClick = async (result: IBookingInfoOutput, request: BookingSearchRequest) => {
         const userMessageContent = MESSAGE_TEMPLATES[request]?.(result) ??
             `Me gustaría saber más información sobre el vehículo con patente ${result.vehicle.license_plate}.`;
-
-        setMessages((currentMessages: any) => [
-            ...currentMessages,
-            {
-                id: nanoid(),
-                display: <UserMessage content={userMessageContent} session={session} />
-            }
-        ])
-
-        const response = await submitUserMessage(userMessageContent)
-        setMessages((currentMessages: any) => [
-            ...currentMessages,
-            response
-        ])
     }
 
     return (
@@ -95,10 +72,6 @@ export function BookingIdSearch({ session, searchResults, content }: {
                     />
                 ))}
             </div>
-            {/* {content &&
-                <div className='search-results-text mt-4'>
-                    <AssistantMessageContent content={content} />
-                </div>} */}
         </div>
     )
 }

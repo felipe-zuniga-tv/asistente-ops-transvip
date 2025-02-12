@@ -2,8 +2,8 @@
 import { addHours } from "date-fns"
 import { getSession } from "../../auth"
 import { branches, paymentMethods } from "@/lib/config/transvip-general"
-import { BOOKING_DETAIL_URL, BOOKING_ID_API_URL, BOOKING_INFO_FULL_URL } from "@/lib/chat/config/urls"
-import { getResponseFromURL } from "@/lib/chat/utils/helpers"
+import { BOOKING_DETAIL_URL, BOOKING_ID_API_URL, BOOKING_INFO_FULL_URL } from "@/lib/services/config/urls"
+import { getResponseFromURL } from "@/lib/services/utils/helpers"
 import { IBookingInfo, IBookingInfoOutput } from "@/lib/types"
 import { getVehicleDetail } from "../vehicle"
 

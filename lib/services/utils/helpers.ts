@@ -10,13 +10,12 @@ export function buildAPIUrl(endpoint: string | undefined) {
     return `${cleanBaseUrl}/${cleanEndpoint}`;
 }
 
-export function buildWhatsappLink(phone_number : string, text: string) {
+export function buildWhatsappLink(phone_number: string, text: string) {
     return encodeURI(`https://wa.me/${phone_number.replace('+', '').trim()}?text=${text.trim()}`)
 }
 
 export function buildGoogleMapsURL(originAddress: string, destinationAddress: string, waypoints?: string[]) {
-    const BASE_GOOGLE_MAPS_URL = 'https://www.google.com/maps/dir/'
-
+    const BASE_GOOGLE_MAPS_URL = 'https://www.google.com/maps/dir/';
     const params = [
         `api=1`,
         `travelmode=driving`,
@@ -24,17 +23,10 @@ export function buildGoogleMapsURL(originAddress: string, destinationAddress: st
         `destination=${encodeURIComponent(destinationAddress)}`,
     ]
     
-    const waypointsList = waypoints?.join("|")
-    // Check for waypoints
-    if (waypoints && waypoints?.length > 0) {
-        params.push(`waypoints=${waypointsList}`)
+    if (waypoints && waypoints.length > 0) {
+        params.push(`waypoints=${waypoints.join("|")}`)
     }
-
-    // URL Params
-    const paramsURL = params.join("&")
-    const googleMapsUrl = `${BASE_GOOGLE_MAPS_URL}?${paramsURL}`
-
-    return googleMapsUrl
+    return `${BASE_GOOGLE_MAPS_URL}?${params.join("&")}`
 }
 
 export async function getResponseFromURL(URL: string) {
@@ -45,13 +37,31 @@ export async function getResponseFromURL(URL: string) {
                 'content-language': 'es'
             }
         };
+        const response = await fetch(URL, options);
+        const output = await response.json();
+        return output;
+    } catch (e) {
+        console.log(e);
+        return null;
+    }
+}
+
+export async function postJSONRequest(URL: string, data: Record<string, any>) {
+    try {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'content-language': 'es'
+            },
+            body: JSON.stringify(data)
+        };
         const response = await fetch(URL, options)
         const output = await response.json()
-
-        return output
+        return output;
     } catch (e) {
         console.log(e)
-        return null
+        return null;
     }
 }
 

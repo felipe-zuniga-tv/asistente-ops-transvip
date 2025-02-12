@@ -1,7 +1,6 @@
-import { getSession } from "../../auth"
 import { branches, vehicleTypes } from "../../config/transvip-general"
-import { VEHICLE_STATUS_API_URL, VEHICLE_DETAIL_API_URL } from "../../chat/config/urls"
-import { getResponseFromURL, cleanDriverInfo } from "../../chat/utils/helpers"
+import { VEHICLE_STATUS_API_URL, VEHICLE_DETAIL_API_URL } from "@/lib/services/config/urls"
+import { getResponseFromURL, cleanDriverInfo } from "@/lib/services/utils/helpers"
 import { VEHICLE_STATUS } from "@/lib/utils"
 import { IVehicleDetail } from "@/lib/types"
 import { buildUrlParams, getAccessToken } from "@/lib/utils/helpers"
@@ -184,4 +183,4 @@ export async function getAirportMinibusList(airport_code: string) {
     return result
         .filter((vehicle: { car_type: number }) => vehicle.car_type === minibusType?.id)
         .map(mapToVehicleDetail)
-} 
+}

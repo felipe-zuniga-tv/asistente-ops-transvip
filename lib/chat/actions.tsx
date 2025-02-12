@@ -7,24 +7,32 @@ import {
 	streamUI
 } from "ai/rsc";
 import { z } from "zod";
-import { getSession } from "../auth";
-import { VEHICLE_STATUS, getDriverRatingSummary, nanoid } from "@/lib/utils";
-import { CREATE_DRIVER_RATINGS_SUMMARY, CREATE_TEXT_PROMPT, EMAIL_TEXT_OPS_EXAMPLE, SYSTEM_MESSAGE } from "../config/chat";
-import { getVehicleStatus, getBookingInfo, getVehicleDetail, getDriverProfile, searchDriver, getDriverRatings, getBookings, getZonaIluminadaServices } from "./functions";
-import { BotCard, AssistantMessage, LoadingMessage, UserMessage } from "@/components/chat/message";
-import { VehicleStatusSearch } from "@/components/chat/search/vehicle-status-search";
-import { BookingCard, BookingIdSearch } from "@/components/chat/search/booking-search";
-import { IVehicleDetail, VehicleDetail } from "@/components/chat/search/vehicle-detail-search";
 import { generateText } from "ai";
-import { DriverProfile, IDriverProfile } from "@/components/chat/search/driver-profile-search";
-import AirportStatus from "@/components/chat/airport/airport-status";
-import { airportZones } from "../config/airport";
 import QRCode from "react-qr-code";
 // import { openai } from "@ai-sdk/openai";
 import { google } from "@ai-sdk/google";
-import { getMTTVehiclesInfo } from "../services/mtt/actions";
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+
+import { getSession } from "../auth";
+
+import { BotCard, AssistantMessage, LoadingMessage, UserMessage } from "@/components/chat/message";
+import { VehicleStatusSearch } from "@/components/chat/search/vehicle-status-search";
+import { BookingCard, BookingIdSearch } from "@/components/chat/search/booking-search";
+import { IVehicleDetail, IDriverProfile } from "../types";
+import { VehicleDetail } from "@/components/chat/search/vehicle-detail-search";
+import { DriverProfile } from "@/components/chat/search/driver-profile-search";
+import AirportStatus from "@/components/chat/airport/airport-status";
 import { VehicleInfoCard } from "@/components/mtt/vehicle-info-card";
+
+import { VEHICLE_STATUS, nanoid } from "@/lib/utils";
+import { CREATE_DRIVER_RATINGS_SUMMARY, CREATE_TEXT_PROMPT, EMAIL_TEXT_OPS_EXAMPLE, SYSTEM_MESSAGE } from "@/lib/config/chat"
+import { getVehicleStatus, getVehicleDetail } from "@/lib/services/vehicle";
+import { getDriverProfile, searchDriver, getDriverRatings, getDriverRatingSummary } from "@/lib/services/driver";
+import { getBookingInfo, getBookings } from "@/lib/services/booking";
+import { getZonaIluminadaServices } from "@/lib/services/zone";
+
+import { airportZones } from "../config/airport";
+
+import { getMTTVehiclesInfo } from "@/lib/services/mtt/actions";
 import { getSystemConfigs } from "../services/system";
 
 const GOOGLE_MODEL_NAME_DEFAULT = 'gemini-2.0-flash-exp'

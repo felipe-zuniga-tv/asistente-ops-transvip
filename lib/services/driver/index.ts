@@ -1,8 +1,8 @@
 import { format } from "date-fns"
 import { getSession } from "../../auth"
 import { branches } from "../../config/transvip-general"
-import { DRIVER_SEARCH_API_URL, DRIVER_PROFILE_API_URL, DRIVER_RATINGS_API_URL } from "../../chat/config/urls"
-import { getResponseFromURL, getAssignedVehicles } from "../../chat/utils/helpers"
+import { DRIVER_SEARCH_API_URL, DRIVER_PROFILE_API_URL, DRIVER_RATINGS_API_URL } from "@/lib/services/config/urls"
+import { getResponseFromURL, getAssignedVehicles } from "@/lib/services/utils/helpers"
 import { IDriverProfile } from "@/lib/types"
 import { getAccessToken, buildUrlParams } from "@/lib/utils/helpers"
 
@@ -29,7 +29,7 @@ export async function searchDriver(driver_email: string) {
     if (status !== 200) return null
 
     const { result } = data
-    
+
     if (result.length > 0) {
         return result[0].fleet_id
     }
@@ -95,7 +95,7 @@ export async function getDriverProfile(fleet_id: number) {
         assigned_cars,
     } = driver_detail
 
-    const output_item : IDriverProfile = {
+    const output_item: IDriverProfile = {
         id: driver_id,
         created_at: creation_datetime,
         last_login,
@@ -182,4 +182,29 @@ export async function getDriverRatings(fleet_id: number) {
     if (status !== 200) return null
 
     return data
-} 
+}
+
+// Driver rating summary interface
+interface DriverRating {
+    fleet_rating: number;
+    fleet_comment: string;
+}
+
+export const getDriverRatingSummary = (driverRatings: DriverRating[]): Record<string, { count: number; comments: Record<string, number> }> => {
+    const summary = driverRatings.reduce((acc, job) => {
+        const rating = job.fleet_rating.toString();
+        if (!acc[rating]) {
+            acc[rating] = { count: 0, comments: {} };
+        }
+        acc[rating].count++;
+        const comment = job.fleet_comment;
+        if (!acc[rating].comments[comment]) {
+            acc[rating].comments[comment] = 0; // Create an entry if it doesn't exist
+        }
+        acc[rating].comments[comment]++; // Increment the comment count
+
+        return acc;
+    }, {} as Record<string, { count: number; comments: Record<string, number> }>);
+
+    return summary
+}
