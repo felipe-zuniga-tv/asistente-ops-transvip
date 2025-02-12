@@ -9,6 +9,7 @@ import { QuestionInput } from "@/components/forms/question-input";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { saveOperationsFormAnswer, updateOperationsFormAnswer, updateFormResponse } from "@/lib/services/forms";
+import { Routes } from "@/utils/routes";
 
 interface FormResponseProps {
     formId: string;
@@ -117,7 +118,7 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
                 description: "El formulario ha sido completado exitosamente.",
             });
             router.refresh();
-            router.push("/formularios");
+            router.push(Routes.PUBLIC.FORMULARIOS);
         } catch (error) {
             toast({
                 title: "Error",

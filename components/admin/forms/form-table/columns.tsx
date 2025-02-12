@@ -10,6 +10,7 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -86,8 +87,8 @@ export const columns = ({ handleView, onToggleStatus, onEdit }: ColumnsProps): C
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuItem onClick={() => handleView(form.id)}>
-                                <Eye className="h-4 w-4" />
-                                <span>Ver formulario</span>
+                                <Pencil className="h-4 w-4" />
+                                <span>Editar preguntas</span>
                             </DropdownMenuItem>
                             {onEdit && (
                                 <DropdownMenuItem onClick={() => onEdit(form)}>
@@ -95,6 +96,7 @@ export const columns = ({ handleView, onToggleStatus, onEdit }: ColumnsProps): C
                                     <span>Editar formulario</span>
                                 </DropdownMenuItem>
                             )}
+                            <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={() => onToggleStatus?.(form)}>
                                 <Power className="h-4 w-4" />
                                 <span>{form.is_active ? 'Desactivar' : 'Activar'} formulario</span>
