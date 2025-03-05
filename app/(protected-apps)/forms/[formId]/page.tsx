@@ -53,7 +53,7 @@ export async function FormContainer({ formId }: { formId: string }) {
     });
 
     return (
-        <div className="max-w-screen-lg mx-auto">
+        <div className="max-w-lg mx-auto">
             <Card>
                 <CardContent className="pt-6">
                     <div className="flex justify-center mb-4">

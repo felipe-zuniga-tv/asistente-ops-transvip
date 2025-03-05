@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export default function LoginPage() {
 	return (
-		<div className="container flex h-screen w-screen flex-col items-center justify-center">
+		<div className="flex h-screen flex-col items-center justify-center">
 			<Card className="w-full max-w-md">
 				<CardHeader className="flex flex-col items-center gap-2">
 					<TransvipLogo colored={true} size={24} />
