@@ -80,8 +80,8 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 				language: formData.language,
 			})
 
-			if (!customerResult || customerResult.error) {
-				throw new Error(customerResult?.error || 'Failed to create customer account')
+			if (!customerResult || 'error' in customerResult) {
+				throw new Error('Failed to create customer account')
 			}
 
 			// Then create the sales response
