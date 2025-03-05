@@ -1,5 +1,5 @@
 import { Suspense } from "react"
-import { DriversDataTable } from "@/components/drivers/table"
+import { DriversDataTable } from "@/components/drivers-list/table"
 import { searchDrivers } from "@/lib/services/driver"
 import SuspenseLoading from "@/components/ui/suspense"
 

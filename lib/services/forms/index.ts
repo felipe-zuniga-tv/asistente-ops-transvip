@@ -143,9 +143,6 @@ export async function createQuestion(input: CreateOperationsFormQuestionInput) {
     const supabase = await getSupabaseClient();
     const { options, ...questionData } = input;
 
-    console.log(questionData)
-    console.log(options)
-
     const { data: question, error: questionError } = await supabase
         .from("operations_forms_questions")
         .insert({

@@ -3,14 +3,15 @@ import { postJSONRequest } from "@/lib/services/utils/helpers";
 
 const BASE_PASSWORD = 'Contraseña123!'
 
-// TODO: Add the fixed token (and add it to the payload and .env file)
-
 export async function createCustomerAccount(formData: {
     firstName: string;
     lastName: string;
     email: string;
     language: string;
 }) {
+    const now = new Date();
+    const deviceTimezoneOffset = now.getTimezoneOffset();
+
     const payload = {
         first_name: formData.firstName,
         last_name: formData.lastName,
@@ -18,11 +19,14 @@ export async function createCustomerAccount(formData: {
         password: BASE_PASSWORD,
         device_token: "-",
         device_type: 1,
-        lang: formData.language === 'es' ? 2 : 1,
+        lang: 2,
         app_version: "-",
-        timezone: "180"
+        timezone: deviceTimezoneOffset.toString()
     }
 
-    const result = await postJSONRequest(CUSTOMER_SIGNUP_API_URL, payload)
+    console.log(payload)
+
+    // const result = await postJSONRequest(CUSTOMER_SIGNUP_API_URL, payload)
+    const result = null
     return result
 } 

@@ -107,12 +107,23 @@ export function VehicleShiftDialog({ open, onOpenChange, shifts, assignment }: P
 
 	// Filter shifts when branch changes
 	useEffect(() => {
-		const selectedBranchId = form.watch("branch_id")
-		if (selectedBranchId) {
-			setFilteredShifts(shifts.filter(shift => shift.branch_id === selectedBranchId))
+		const subscription = form.watch((value, { name }) => {
+			if (name === "branch_id" && value.branch_id) {
+				setFilteredShifts(shifts.filter(shift => shift.branch_id === value.branch_id))
+			} else if (name === "branch_id") {
+				setFilteredShifts([])
+			}
+		})
+
+		// Initial filter
+		const currentBranchId = form.getValues("branch_id")
+		if (currentBranchId) {
+			setFilteredShifts(shifts.filter(shift => shift.branch_id === currentBranchId))
 		} else {
 			setFilteredShifts([])
 		}
+
+		return () => subscription.unsubscribe()
 	}, [shifts, form])
 
 	// Reset form when dialog opens/closes or when switching between create/edit modes
