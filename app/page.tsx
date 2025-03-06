@@ -9,12 +9,21 @@ export const metadata: Metadata = {
 
 export default function Home(): JSX.Element {
 	return (
-		<div className="w-full min-h-screen bg-main text-white items-center flex bg-center bg-cover backdrop-brightness-50 px-2">
-			<div className="mx-auto flex flex-col items-center justify-center text-lg md:text-lg h-full bg-gray-900/70 p-2 md:p-6 py-8 text-black rounded-xl">
-				<TransvipLogo colored={false} size={40} />
-				<section className="flex flex-col items-center justify-center p-4 sm:px-8">
+		<div className="flex min-h-screen flex-col items-center justify-center p-4 bg-main rounded-lg">
+			<div className="w-full max-w-lg bg-white rounded-lg_">
+				<div className="flex flex-col gap-1 items-center p-6 pb-0 text-center">
+					<TransvipLogo colored={true} size={28} />
+					<h1 className="text-xl font-semibold tracking-tight">
+						Portal de Operaciones
+					</h1>
+					<p className="text-sm text-muted-foreground">
+						Ingresa tus credenciales para continuar
+					</p>
+				</div>
+
+				<div className="p-6">
 					<LoginFormServer />
-				</section>
+				</div>
 			</div>
 		</div>
 	);

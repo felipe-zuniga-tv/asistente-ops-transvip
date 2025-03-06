@@ -6,7 +6,7 @@ export default function LoginPage() {
 	return (
 		<div className="flex h-screen flex-col items-center justify-center">
 			<Card className="w-full max-w-md">
-				<CardHeader className="flex flex-col items-center gap-2">
+				<CardHeader className="flex flex-col items-center gap-1">
 					<TransvipLogo colored={true} size={24} />
 					<CardTitle>
 						<span>Inicio de Sesión · Conductor</span>
