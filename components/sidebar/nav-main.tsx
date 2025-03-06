@@ -38,16 +38,21 @@ export function NavMain({ items, handleClick, showHints }: {
 	const [searchQuery, setSearchQuery] = useState("");
 
 	const filteredItems = items.filter(item => {
+		// If search is empty, show all items
+		if (!searchQuery) return true;
+
 		const isItemMatch = item.title.toLowerCase().includes(searchQuery.toLowerCase());
 		const hasMatchingSubItems = item.items?.some(subItem => 
 			subItem.title.toLowerCase().includes(searchQuery.toLowerCase())
 		);
-		return isItemMatch || (hasMatchingSubItems && item.isActive);
+
+		// Show the item if either the item title matches or it has matching sub-items
+		return isItemMatch || hasMatchingSubItems;
 	});
 
 	return (
 		<SidebarGroup>
-			<div className="relative bg-white rounded-lg flex items-center m-2 mt-0">
+			<div className="relative bg-white rounded-lg flex items-center m-2 mx-0">
 				<Search className="text-gray-500 size-4 absolute left-2 top-1/2 transform -translate-y-1/2" />
 				<Input type="text"
 					name="sidebar_search"

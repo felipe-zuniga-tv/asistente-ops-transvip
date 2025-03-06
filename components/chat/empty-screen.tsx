@@ -59,7 +59,7 @@ export function EmptyScreen({ session }: { session: any }) {
                     </div>
                     <span className="font-bold">¿Con qué puedo ayudarte hoy?</span>
                     
-                    <div className="mt-4 max-w-sm">
+                    <div className="mt-2 max-w-sm">
                         <Select onValueChange={handleSelect}>
                             <SelectTrigger className="w-full bg-white text-black h-12">
                                 <SelectValue placeholder="Selecciona una herramienta..." />

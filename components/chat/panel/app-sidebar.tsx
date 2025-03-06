@@ -78,15 +78,12 @@ export function AppSidebar({ session, ...props }: { session: any & React.Compone
 
 	return (
 		<Sidebar collapsible="icon" {...props}>
-				<SidebarHeader>
-					{/* <TeamSwitcher teams={opsTeams} /> */}
-					<NavUser user={session.user} />
-				</SidebarHeader>
 				<SidebarContent>
 					<NavMain items={sidebarItems} handleClick={handleClick} showHints={showHints} />
 				</SidebarContent>
 				<SidebarFooter>
 					<NavSecondary items={sidebarData.navSecondary} className="mt-auto" />
+					<NavUser user={session.user} />
 				</SidebarFooter>
 				<SidebarRail />
 			</Sidebar>
