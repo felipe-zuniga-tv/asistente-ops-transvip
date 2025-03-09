@@ -49,7 +49,7 @@ export function LoginFormClient() {
     }
 
     return (
-        <>
+        <div className="flex flex-col gap-2">
             {error && (
                 <Alert variant="destructive">
                     <AlertDescription>{error}</AlertDescription>
@@ -88,6 +88,6 @@ export function LoginFormClient() {
                     {isLoading ? "Verificando..." : "Continuar"}
                 </Button>
             </form>
-        </>
+        </div>
     )
 }
