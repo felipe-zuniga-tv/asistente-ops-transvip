@@ -284,9 +284,11 @@ export function VehicleShiftsSummary() {
                 </div>
             </Card>
 
-            <Card className="p-6">
-                <CalendarGrid months={months} renderCell={renderCell} />
-            </Card>
+            { summaries.length > 0 && (
+                <Card className="p-6">
+                    <CalendarGrid months={months} renderCell={renderCell} />
+                </Card>
+            )}
 
             {selectedDate && (
                 <Card ref={summaryRef} className="p-6">
