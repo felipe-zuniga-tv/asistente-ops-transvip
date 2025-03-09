@@ -1,4 +1,5 @@
 import type { ParkingTicket } from '@/types'
+import { cleanMarkdownCodeBlocks } from '@/lib/utils'
 
 interface ParsedTicketData {
   nro_boleta: string
@@ -40,15 +41,14 @@ export async function parseTicketImage(imageBase64: string): Promise<ParsedTicke
   }
 
   const data = await response.json()
-  const parsedResult = JSON.parse(data.results[0])
-
-  console.log(parsedResult)
+  const cleanResult = cleanMarkdownCodeBlocks(data.results[0])
+  const parsedResult = JSON.parse(cleanResult)
 
   return {
     nro_boleta: parsedResult.nro_boleta,
     entry_timestamp: parsedResult.entry_date + 'T' + parsedResult.entry_time + ':00',
     exit_timestamp: parsedResult.exit_date + 'T' + parsedResult.exit_time + ':00',
     amount: parsedResult.valor,
-    location: 'SCL Airport Parking'
+    location: 'Estacionamiento Aeropuerto de Santiago'
   }
 } 

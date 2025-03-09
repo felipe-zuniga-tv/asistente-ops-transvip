@@ -7,8 +7,9 @@ import { columns } from "@/components/finance/tickets/table/columns"
 import Link from "next/link"
 import { EmptyState } from "@/components/ui/empty-state"
 import { redirect } from "next/navigation"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, PlusCircle } from "lucide-react"
 import { ParkingTicketsDataTable } from "@/components/finance/tickets/table/parking-tickets-data-table"
+import { TransvipLogo } from "@/components/transvip/transvip-logo"
 
 export default async function Dashboard() {
 	const session = await getDriverSession()
@@ -20,9 +21,13 @@ export default async function Dashboard() {
 	return (
 		<div className="space-y-6">
 			<div className="flex justify-between items-center">
-				<h1 className="text-2xl font-bold">Tickets de Estacionamiento</h1>
-				<Button asChild>
+				<div className="w-full flex justify-start items-center gap-2">
+					<TransvipLogo size={24} />
+					<span className="text-xl font-bold">Tickets de Estacionamiento</span>
+				</div>
+				<Button variant="default" size="sm" className="bg-transvip hover:bg-transvip/70" asChild>
 					<Link href="/drivers/tickets/parking/upload">
+						<PlusCircle className="h-4 w-4" />
 						Subir Nuevo Ticket
 					</Link>
 				</Button>
@@ -47,8 +52,9 @@ export default async function Dashboard() {
 							title="No hay tickets aún"
 							description="Envía tu primer ticket de estacionamiento para empezar"
 							action={
-								<Button asChild>
+								<Button variant="default" className="bg-transvip hover:bg-transvip/70" asChild>
 									<Link href="/drivers/tickets/parking/upload">
+										<PlusCircle className="h-4 w-4" />
 										Subir Ticket
 									</Link>
 								</Button>

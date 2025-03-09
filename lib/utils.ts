@@ -36,3 +36,14 @@ export function getInitials(fullName: string): string {
   const initials = names.slice(0, 2).map(name => name.charAt(0).toUpperCase()).join("");
   return initials || "N/A"; // Fallback if no initials are found
 }
+
+/**
+ * Removes markdown code block indicators from a string
+ * Useful for cleaning AI-generated responses that contain markdown formatting
+ */
+export function cleanMarkdownCodeBlocks(text: string): string {
+  return text
+    .replaceAll('```json\n', '')
+    .replaceAll('```\n', '')
+    .replaceAll('```', '')
+}
