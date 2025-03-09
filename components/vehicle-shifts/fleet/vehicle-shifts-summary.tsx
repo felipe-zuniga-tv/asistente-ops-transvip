@@ -3,58 +3,47 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from "react"
 import { startOfToday, addDays, format, parseISO, getDay } from "date-fns"
 import { es } from "date-fns/locale"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { useToast } from "@/hooks/use-toast"
-import { getVehicleShiftsByDateRange } from "@/lib/database/actions"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { cn } from "@/lib/utils"
 import { CalendarIcon, X, Download } from "lucide-react"
-import { TransvipLogo } from "@/components/transvip/transvip-logo"
-import { Label } from "@/components/ui/label"
-import { CalendarGrid } from "@/components/ui/calendar-grid"
-import { generateNextXDays, generateCalendarMonths } from "@/lib/utils/date"
 import { toPng } from "html-to-image"
+import { useToast } from "@/hooks/use-toast"
+import { getVehicleShiftsByDateRange, getVehicleStatuses } from "@/lib/database/actions"
+import { cn } from "@/lib/utils"
+import { TransvipLogo } from "@/components/transvip/transvip-logo"
+import { generateNextXDays, generateCalendarMonths } from "@/lib/utils/date"
 import type { ShiftSummary } from "@/lib/types/calendar"
-import {
-    Badge,
-} from "@/components/ui/badge"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { getBranches } from "@/lib/services/admin/index"
 import type { Branch } from "@/lib/types/admin"
+
+// UI Components
+import { Badge, Button, Calendar, CalendarGrid, Card, Label, Popover, PopoverContent, PopoverTrigger, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui"
 
 interface ShiftOption {
     value: string
     label: string
 }
 
-export function VehicleShiftsSummary() {
+export function VehicleShiftsSummary({ branches }: { branches: Branch[] }) {
     const [date, setDate] = useState<Date>(startOfToday())
     const [summaries, setSummaries] = useState<ShiftSummary[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [selectedDate, setSelectedDate] = useState<string | null>(null)
-    const [branches, setBranches] = useState<Branch[]>([])
     const [selectedBranch, setSelectedBranch] = useState<string>("")
+    const [vehicleStatuses, setVehicleStatuses] = useState<any[]>([])
     const { toast } = useToast()
     const summaryRef = useRef<HTMLDivElement>(null)
 
+    // Load vehicle statuses
     useEffect(() => {
-        const fetchBranches = async () => {
+        const loadVehicleStatuses = async () => {
             try {
-                const branchesData = await getBranches()
-                setBranches(branchesData)
+                const statuses = await getVehicleStatuses()
+                setVehicleStatuses(statuses || [])
             } catch (error) {
-                console.error('Error fetching branches:', error)
-                toast({
-                    variant: "destructive",
-                    title: "Error",
-                    description: "Error al cargar las sucursales"
-                })
+                console.error("Error loading vehicle statuses:", error)
             }
         }
-        fetchBranches()
-    }, [toast])
+
+        loadVehicleStatuses()
+    }, [])
 
     const fetchShiftsSummary = useCallback(async () => {
         try {
@@ -96,7 +85,7 @@ export function VehicleShiftsSummary() {
                 let currentDate = shiftStart
                 while (currentDate <= shiftEnd) {
                     const dateStr = format(currentDate, "yyyy-MM-dd")
-                    
+
                     // Skip if this day is the vehicle's free day
                     // free_day should be 1-7 (1 = Monday, 7 = Sunday)
                     const dayOfWeek = getDay(currentDate) === 0 ? 7 : getDay(currentDate)
@@ -104,7 +93,23 @@ export function VehicleShiftsSummary() {
                         currentDate = addDays(currentDate, 1)
                         continue
                     }
-                    
+
+                    // Skip if vehicle has a status for this date
+                    const hasStatus = vehicleStatuses.some(status => {
+                        // Check if the vehicle number matches
+                        if (status.vehicle_number !== shift.vehicle_number) return false
+
+                        // Check if the status applies to this date
+                        const statusStart = parseISO(status.start_date)
+                        const statusEnd = parseISO(status.end_date)
+                        return currentDate >= statusStart && currentDate <= statusEnd
+                    })
+
+                    if (hasStatus) {
+                        currentDate = addDays(currentDate, 1)
+                        continue
+                    }
+
                     if (shiftsMap.has(dateStr)) {
                         const existing = shiftsMap.get(dateStr) || []
                         shiftsMap.set(dateStr, [...existing, shift])
@@ -141,7 +146,7 @@ export function VehicleShiftsSummary() {
         } finally {
             setIsLoading(false)
         }
-    }, [date, selectedBranch, toast])
+    }, [date, selectedBranch, toast, vehicleStatuses])
 
     const selectedDateSummary = useMemo(() => {
         if (!selectedDate) return null
@@ -214,7 +219,7 @@ export function VehicleShiftsSummary() {
 
     const groupedVehicles = useMemo(() => {
         if (!selectedDateSummary) return []
-        
+
         const groups = new Map<string, number[]>()
         selectedDateSummary.vehicles.forEach(vehicle => {
             const shiftKey = `${vehicle.shiftName} (${vehicle.startTime} - ${vehicle.endTime})`
@@ -295,7 +300,7 @@ export function VehicleShiftsSummary() {
                 </div>
             </Card>
 
-            { summaries.length > 0 && (
+            {summaries.length > 0 && (
                 <Card className="p-6">
                     <CalendarGrid months={months} renderCell={renderCell} />
                 </Card>
