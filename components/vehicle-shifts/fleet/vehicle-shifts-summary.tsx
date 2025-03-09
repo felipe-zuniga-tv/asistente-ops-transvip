@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useMemo, useRef, useEffect } from "react"
-import { startOfToday, addDays, format, parseISO } from "date-fns"
+import { startOfToday, addDays, format, parseISO, getDay } from "date-fns"
 import { es } from "date-fns/locale"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -96,6 +96,15 @@ export function VehicleShiftsSummary() {
                 let currentDate = shiftStart
                 while (currentDate <= shiftEnd) {
                     const dateStr = format(currentDate, "yyyy-MM-dd")
+                    
+                    // Skip if this day is the vehicle's free day
+                    // free_day should be 1-7 (1 = Monday, 7 = Sunday)
+                    const dayOfWeek = getDay(currentDate) === 0 ? 7 : getDay(currentDate)
+                    if (shift.free_day !== undefined && shift.free_day === dayOfWeek) {
+                        currentDate = addDays(currentDate, 1)
+                        continue
+                    }
+                    
                     if (shiftsMap.has(dateStr)) {
                         const existing = shiftsMap.get(dateStr) || []
                         shiftsMap.set(dateStr, [...existing, shift])
@@ -103,6 +112,8 @@ export function VehicleShiftsSummary() {
                     currentDate = addDays(currentDate, 1)
                 }
             })
+
+            console.log(shiftsMap)
 
             // Create summaries
             const newSummaries: ShiftSummary[] = Array
