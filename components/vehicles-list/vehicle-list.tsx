@@ -1,32 +1,28 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import MaxWidthWrapper from '@/components/ui/max-width-wrapper'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { branches, vehicleTypes } from '@/lib/config/transvip-general'
+import { IVehicleDetail } from '@/lib/types/chat'
+import { getVehicles } from '@/lib/general/actions'
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from '@/components/ui/select'
-import { branches, vehicleTypes } from '@/lib/config/transvip-general'
-import {
 	Table,
 	TableBody,
 	TableCell,
 	TableHead,
 	TableHeader,
 	TableRow,
-} from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
-import { IVehicleDetail } from '@/lib/types/chat'
-import { getVehicleList } from '@/lib/chat/functions'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { TransvipLogo } from '../transvip/transvip-logo'
-import { Switch } from '@/components/ui/switch'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
-import { getVehicles } from '@/lib/general/actions'
+	Button,
+	Input,
+	Label,
+	Switch
+} from '@/components/ui'
+import { ConfigCardContainer } from '../tables/config-card-container'
 
 interface VehicleListProps {
 	branch: number
@@ -72,12 +68,18 @@ export function VehicleList({ branch: initialBranch, initialVehicles = [], onSea
 		setPage(1)
 	}, [branch])
 
+	useEffect(() => {
+		fetchVehicles();
+	}, [branch, page]);
+
 	const filteredVehicles = vehicles.filter((vehicle) => {
 		const searchLower = filters.search.toLowerCase()
+		const vehicleTypeLower = vehicle.type.name.toLowerCase();
+		const filterVehicleTypeLower = filters.vehicleType.toLowerCase();
 
 		return (
 			(filters.branch === 'Todos' || vehicle.branch.name === filters.branch) &&
-			(filters.vehicleType === 'Todos' || vehicle.type.name === filters.vehicleType) &&
+			(filters.vehicleType === 'Todos' || vehicleTypeLower === filterVehicleTypeLower) &&
 			(filters.status === 'Todos' || vehicle.status.toString() === filters.status) &&
 			(filters.search === '' ||
 				vehicle.license_plate.toLowerCase().includes(searchLower) ||
@@ -89,13 +91,9 @@ export function VehicleList({ branch: initialBranch, initialVehicles = [], onSea
 	})
 
 	return (
-		<MaxWidthWrapper>
-			<div className="space-y-6">
-				<div className='flex flex-row gap-2 items-center justify-start'>
-					<TransvipLogo size={20} />
-					<h1 className="text-2xl font-semibold tracking-tight">Vehículos</h1>
-				</div>
-
+		<ConfigCardContainer title="Lista de Vehículos"
+			className="max-w-full">
+			<div className="space-y-4">
 				<div className="flex items-center gap-2">
 					<Switch
 						checked={showFilters}
@@ -230,6 +228,6 @@ export function VehicleList({ branch: initialBranch, initialVehicles = [], onSea
 					</TableBody>
 				</Table>
 			</div>
-		</MaxWidthWrapper>
+		</ConfigCardContainer>
 	)
 }

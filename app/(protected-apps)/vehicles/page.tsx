@@ -1,14 +1,19 @@
-import { VehicleList } from "@/components/vehicles/vehicle-list"
+import React, { Suspense } from 'react';
+import { VehicleList } from "@/components/vehicles-list/vehicle-list"
 import { getVehicleList } from "@/lib/chat/functions"
+import SuspenseLoading from '@/components/ui/suspense';
 
 const DEFAULT_BRANCH = 1 // Santiago
 
-export default async function VehiclesPage() {
-    try {
-        const vehicles = await getVehicleList(DEFAULT_BRANCH) || []
-        return <VehicleList branch={DEFAULT_BRANCH} initialVehicles={vehicles} />
-    } catch (error) {
-        // Consider using error.tsx boundary instead
-        throw new Error('Failed to load vehicles')
-    }
+export default function VehiclesPage() {
+    return (
+        <Suspense fallback={<SuspenseLoading text="Cargando vehículos..." />}>
+            <VehiclesContent />
+        </Suspense>
+    );
+}
+
+async function VehiclesContent() {
+    const vehicles = await getVehicleList(DEFAULT_BRANCH) || [];
+    return <VehicleList branch={DEFAULT_BRANCH} initialVehicles={vehicles} />;
 }

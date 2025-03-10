@@ -25,7 +25,6 @@ export * from "./input";
 export * from "./label";
 export * from "./live-clock";
 export * from "./loading";
-export * from "./max-width-wrapper";
 export * from "./phone-number-input";
 export * from "./popover";
 export * from "./progress";
