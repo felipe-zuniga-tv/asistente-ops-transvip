@@ -1,25 +1,23 @@
+'use client'
+
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
 import {
+	Button,
 	Command,
 	CommandEmpty,
 	CommandGroup,
 	CommandInput,
 	CommandItem,
 	CommandList,
-} from "@/components/ui/command"
-import {
 	FormControl,
 	FormField,
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form"
-import {
 	Popover,
 	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover"
+	PopoverTrigger
+} from "@/components/ui"
 import { Check, ChevronsUpDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Control } from "react-hook-form"
