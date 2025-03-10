@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Transvip Operations Portal
+
+A modern web application built with Next.js 14 for managing Transvip Chile's operations.
+
+## Features
+
+- 🔐 Secure authentication system
+- 🎨 Modern UI with Tailwind CSS and Radix UI components
+- 📱 Responsive design for all devices
+- 🔄 Real-time updates with SWR
+- 🌐 Supabase integration
+- 🎭 Role-based access control
+
+## Tech Stack
+
+- **Framework:** Next.js 14
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **UI Components:** Radix UI
+- **Database:** Supabase
+- **State Management:** Zustand
+- **Form Handling:** React Hook Form
+- **Data Fetching:** SWR
+- **Authentication:** Custom auth with jose
+- **Date Handling:** date-fns
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Copy the environment variables:
+   ```bash
+   cp .env.example .env.local
+   ```
+4. Configure your environment variables in `.env.local`
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+5. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- `app/` - Next.js 14 app directory containing pages and API routes
+- `components/` - Reusable UI components
+- `hooks/` - Custom React hooks
+- `lib/` - Utility functions and shared logic
+- `types/` - TypeScript type definitions
+- `utils/` - Helper functions
+- `public/` - Static assets
+- `messages/` - Internationalization files
+- `supabase/` - Supabase configuration and types
 
-## Learn More
+## Development
 
-To learn more about Next.js, take a look at the following resources:
+The project uses several quality tools:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- ESLint for code linting
+- TypeScript for type checking
+- Prettier for code formatting
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Environment Variables
 
-## Deploy on Vercel
+Required environment variables:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Database configuration
+- Authentication secrets
+- API endpoints
+- Feature flags
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+See `.env.example` for all required variables.
+
+## License
+
+Private - All rights reserved © Transvip Chile
