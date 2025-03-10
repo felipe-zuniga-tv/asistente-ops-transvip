@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { useState, useEffect, useCallback } from "react";
+import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { OperationsFormQuestion, OperationsFormSection } from "@/lib/types/vehicle/forms";
 import { QuestionInput } from "@/components/forms/question-input";
 import { useToast } from "@/hooks/use-toast";
@@ -31,13 +30,13 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
     const isLastSection = currentSection === sections.length - 1;
 
     // Check if all required questions in the current section are answered
-    const areRequiredQuestionsAnswered = () => {
+    const areRequiredQuestionsAnswered = useCallback(() => {
         return section.questions.every(question => {
             if (!question.is_required) return true;
             const answer = localAnswers[question.id]?.value;
             return answer !== undefined && answer !== "";
         });
-    };
+    }, [localAnswers, section.questions]);
 
     // Auto-advance to next section when all required questions are answered
     useEffect(() => {
@@ -47,7 +46,7 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
             }, 500); // Small delay for better UX
             return () => clearTimeout(timer);
         }
-    }, [localAnswers, isLastSection]);
+    }, [localAnswers, isLastSection, areRequiredQuestionsAnswered]);
 
     async function onAnswerChange(questionId: string, value: string) {
         try {
@@ -163,7 +162,7 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
                     onClick={() => setCurrentSection((prev) => prev - 1)}
                     disabled={isFirstSection}
                 >
-                    <ChevronLeftIcon className="h-4 w-4 mr-2" />
+                    <ChevronLeft className="h-4 w-4 mr-2" />
                     Anterior
                 </Button>
 
@@ -182,7 +181,7 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
                         className="bg-transvip hover:bg-transvip/80"
                     >
                         Siguiente
-                        <ChevronRightIcon className="h-4 w-4 ml-2" />
+                        <ChevronRight className="h-4 w-4 ml-2" />
                     </Button>
                 )}
             </div>

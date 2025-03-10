@@ -7,8 +7,7 @@ import { z } from "zod"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Button, Input } from "@/components/ui"
 import {
 	SimpleDialog,
 	SimpleDialogHeader,
@@ -142,7 +141,7 @@ export function VehicleShiftDialog({ open, onOpenChange, shifts, assignment }: P
 				form.reset(defaultValues)
 			}
 		}
-	}, [open, assignment, form, defaultValues])
+	}, [open, assignment, form])
 
 	async function onSubmit(values: FormValues) {
 		try {

@@ -183,13 +183,13 @@ const controlFlotaMenu: SidebarItem = {
 			active: true
 		},
 		{
-			title: 'Turnos por Móvil',
+			title: 'Ver Turnos por Móvil',
 			icon: Calendar,
 			url: Routes.CONTROL_FLOTA.SHIFTS_PER_VEHICLE,
 			active: true
 		},
 		{
-			title: 'Calendario de Turnos',
+			title: 'Ver Calendario de Turnos',
 			icon: Calendar,
 			url: Routes.CONTROL_FLOTA.FLEET_SHIFTS_CALENDAR,
 			active: true

@@ -48,7 +48,5 @@ export * from "./toaster";
 export * from "./tooltip";
 
 // Navigation components
-export * from "./navigation/header";
-export * from "./navigation/layout-navbar";
-export * from "./navigation/sheet";
-export * from "./navigation/user-details";
+export * from "./header";
+export * from "./user-details";

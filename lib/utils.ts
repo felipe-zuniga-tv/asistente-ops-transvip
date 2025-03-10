@@ -1,9 +1,9 @@
-import { clsx } from "clsx"
+import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { customAlphabet } from 'nanoid'
 
 // Utility function to merge class names
-export function cn(...inputs: string[]): string {
+export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
@@ -46,4 +46,13 @@ export function cleanMarkdownCodeBlocks(text: string): string {
     .replaceAll('```json\n', '')
     .replaceAll('```\n', '')
     .replaceAll('```', '')
+}
+
+/**
+ * Generates a UUID for use in the chat system
+ * This is a simplified implementation - in production, use a proper UUID library
+ */
+export function generateUUID(): string {
+  return Math.random().toString(36).substring(2, 15) + 
+         Math.random().toString(36).substring(2, 15);
 }

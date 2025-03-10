@@ -1,6 +1,6 @@
 import { getSession } from '@/lib/auth';
 import { nanoid } from 'nanoid';
-import { Chat } from '@/components/chat/chat';
+import { TransvipPanel } from '@/components/chat-new/panel';
 
 export default async function TransvipChat() {
 	const id = nanoid();
@@ -8,9 +8,7 @@ export default async function TransvipChat() {
 
 	return (
 		<div className="h-full flex flex-col gap-4 items-center">
-			<div className="border flex h-full w-full min-h-[50vh] flex-col rounded-xl bg-muted/50 max-w-4xl mx-auto p-2 md:p-3">
-				<Chat id={id} session={session} />
-			</div>
+			<TransvipPanel id={id} session={session} />
 		</div>
 	);
 }

@@ -1,0 +1,1587 @@
+---
+description: Vercel AI Chatbot - AI SDK 4.1
+globs: 
+alwaysApply: false
+---
+================================================
+File: package.json
+================================================
+{
+  "name": "ai-chatbot",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbo",
+    "build": "tsx lib/db/migrate && next build",
+    "start": "next start",
+    "lint": "next lint && biome lint --write --unsafe",
+    "lint:fix": "next lint --fix && biome lint --write --unsafe",
+    "format": "biome format --write",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "npx tsx lib/db/migrate.ts",
+    "db:studio": "drizzle-kit studio",
+    "db:push": "drizzle-kit push",
+    "db:pull": "drizzle-kit pull",
+    "db:check": "drizzle-kit check",
+    "db:up": "drizzle-kit up",
+    "test": "export PLAYWRIGHT=True && pnpm exec playwright test --workers=4"
+  },
+  "dependencies": {
+    "@ai-sdk/fireworks": "0.1.12",
+    "@ai-sdk/openai": "1.2.0",
+    "@ai-sdk/react": "^1.1.20",
+    "@codemirror/lang-javascript": "^6.2.2",
+    "@codemirror/lang-python": "^6.1.6",
+    "@codemirror/state": "^6.5.0",
+    "@codemirror/theme-one-dark": "^6.1.2",
+    "@codemirror/view": "^6.35.3",
+    "@radix-ui/react-alert-dialog": "^1.1.2",
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-dropdown-menu": "^2.1.2",
+    "@radix-ui/react-icons": "^1.3.0",
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-select": "^2.1.2",
+    "@radix-ui/react-separator": "^1.1.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-tooltip": "^1.1.3",
+    "@radix-ui/react-visually-hidden": "^1.1.0",
+    "@vercel/analytics": "^1.3.1",
+    "@vercel/blob": "^0.24.1",
+    "@vercel/postgres": "^0.10.0",
+    "ai": "4.1.50",
+    "bcrypt-ts": "^5.0.2",
+    "class-variance-authority": "^0.7.0",
+    "classnames": "^2.5.1",
+    "clsx": "^2.1.1",
+    "codemirror": "^6.0.1",
+    "date-fns": "^4.1.0",
+    "diff-match-patch": "^1.0.5",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.34.0",
+    "fast-deep-equal": "^3.1.3",
+    "framer-motion": "^11.3.19",
+    "geist": "^1.3.1",
+    "lucide-react": "^0.446.0",
+    "nanoid": "^5.0.8",
+    "next": "15.2.2-canary.1",
+    "next-auth": "5.0.0-beta.25",
+    "next-themes": "^0.3.0",
+    "orderedmap": "^2.1.1",
+    "papaparse": "^5.5.2",
+    "postgres": "^3.4.4",
+    "prosemirror-example-setup": "^1.2.3",
+    "prosemirror-inputrules": "^1.4.0",
+    "prosemirror-markdown": "^1.13.1",
+    "prosemirror-model": "^1.23.0",
+    "prosemirror-schema-basic": "^1.2.3",
+    "prosemirror-schema-list": "^1.4.1",
+    "prosemirror-state": "^1.4.3",
+    "prosemirror-view": "^1.34.3",
+    "react": "19.0.0-rc-45804af1-20241021",
+    "react-data-grid": "7.0.0-beta.47",
+    "react-dom": "19.0.0-rc-45804af1-20241021",
+    "react-markdown": "^9.0.1",
+    "react-resizable-panels": "^2.1.7",
+    "remark-gfm": "^4.0.0",
+    "server-only": "^0.0.1",
+    "sonner": "^1.5.0",
+    "swr": "^2.2.5",
+    "tailwind-merge": "^2.5.2",
+    "tailwindcss-animate": "^1.0.7",
+    "usehooks-ts": "^3.1.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@playwright/test": "^1.50.1",
+    "@tailwindcss/typography": "^0.5.15",
+    "@types/d3-scale": "^4.0.8",
+    "@types/node": "^22.8.6",
+    "@types/papaparse": "^5.3.15",
+    "@types/pdf-parse": "^1.1.4",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "drizzle-kit": "^0.25.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.2.5",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
+    "eslint-plugin-tailwindcss": "^3.17.5",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3"
+  }
+}
+
+================================================
+File: tailwind.config.ts
+================================================
+import type { Config } from 'tailwindcss';
+
+const config: Config = {
+  darkMode: ['class'],
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    fontFamily: {
+      sans: ['geist'],
+      mono: ['geist-mono'],
+    },
+    extend: {
+      screens: {
+        'toast-mobile': '600px',
+      },
+      borderRadius: {
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
+      },
+      colors: {
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+        },
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        chart: {
+          '1': 'hsl(var(--chart-1))',
+          '2': 'hsl(var(--chart-2))',
+          '3': 'hsl(var(--chart-3))',
+          '4': 'hsl(var(--chart-4))',
+          '5': 'hsl(var(--chart-5))',
+        },
+        sidebar: {
+          DEFAULT: 'hsl(var(--sidebar-background))',
+          foreground: 'hsl(var(--sidebar-foreground))',
+          primary: 'hsl(var(--sidebar-primary))',
+          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+          accent: 'hsl(var(--sidebar-accent))',
+          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+          border: 'hsl(var(--sidebar-border))',
+          ring: 'hsl(var(--sidebar-ring))',
+        },
+      },
+    },
+  },
+  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
+};
+export default config;
+
+================================================
+File: app/(chat)/actions.ts
+================================================
+'use server';
+
+import { generateText, Message } from 'ai';
+import { cookies } from 'next/headers';
+
+import {
+  deleteMessagesByChatIdAfterTimestamp,
+  getMessageById,
+  updateChatVisiblityById,
+} from '@/lib/db/queries';
+import { VisibilityType } from '@/components/visibility-selector';
+import { myProvider } from '@/lib/ai/providers';
+
+export async function saveChatModelAsCookie(model: string) {
+  const cookieStore = await cookies();
+  cookieStore.set('chat-model', model);
+}
+
+export async function generateTitleFromUserMessage({
+  message,
+}: {
+  message: Message;
+}) {
+  const { text: title } = await generateText({
+    model: myProvider.languageModel('title-model'),
+    system: `\n
+    - you will generate a short title based on the first message a user begins a conversation with
+    - ensure it is not more than 80 characters long
+    - the title should be a summary of the user's message
+    - do not use quotes or colons`,
+    prompt: JSON.stringify(message),
+  });
+
+  return title;
+}
+
+export async function deleteTrailingMessages({ id }: { id: string }) {
+  const [message] = await getMessageById({ id });
+
+  await deleteMessagesByChatIdAfterTimestamp({
+    chatId: message.chatId,
+    timestamp: message.createdAt,
+  });
+}
+
+export async function updateChatVisibility({
+  chatId,
+  visibility,
+}: {
+  chatId: string;
+  visibility: VisibilityType;
+}) {
+  await updateChatVisiblityById({ chatId, visibility });
+}
+
+
+================================================
+File: app/(chat)/layout.tsx
+================================================
+import { cookies } from 'next/headers';
+
+import { AppSidebar } from '@/components/app-sidebar';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+
+import { auth } from '../(auth)/auth';
+import Script from 'next/script';
+
+export const experimental_ppr = true;
+
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [session, cookieStore] = await Promise.all([auth(), cookies()]);
+  const isCollapsed = cookieStore.get('sidebar:state')?.value !== 'true';
+
+  return (
+    <>
+      <Script
+        src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"
+        strategy="beforeInteractive"
+      />
+      <SidebarProvider defaultOpen={!isCollapsed}>
+        <AppSidebar user={session?.user} />
+        <SidebarInset>{children}</SidebarInset>
+      </SidebarProvider>
+    </>
+  );
+}
+
+================================================
+File: app/(chat)/page.tsx
+================================================
+import { cookies } from 'next/headers';
+
+import { Chat } from '@/components/chat';
+import { DEFAULT_CHAT_MODEL } from '@/lib/ai/models';
+import { generateUUID } from '@/lib/utils';
+import { DataStreamHandler } from '@/components/data-stream-handler';
+
+export default async function Page() {
+  const id = generateUUID();
+
+  const cookieStore = await cookies();
+  const modelIdFromCookie = cookieStore.get('chat-model');
+
+  if (!modelIdFromCookie) {
+    return (
+      <>
+        <Chat
+          key={id}
+          id={id}
+          initialMessages={[]}
+          selectedChatModel={DEFAULT_CHAT_MODEL}
+          selectedVisibilityType="private"
+          isReadonly={false}
+        />
+        <DataStreamHandler id={id} />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Chat
+        key={id}
+        id={id}
+        initialMessages={[]}
+        selectedChatModel={modelIdFromCookie.value}
+        selectedVisibilityType="private"
+        isReadonly={false}
+      />
+      <DataStreamHandler id={id} />
+    </>
+  );
+}
+
+
+================================================
+File: components/chat.tsx
+================================================
+'use client';
+
+import type { Attachment, Message } from 'ai';
+import { useChat } from '@ai-sdk/react';
+import { useState } from 'react';
+import useSWR, { useSWRConfig } from 'swr';
+import { ChatHeader } from '@/components/chat-header';
+import type { Vote } from '@/lib/db/schema';
+import { fetcher, generateUUID } from '@/lib/utils';
+import { Artifact } from './artifact';
+import { MultimodalInput } from './multimodal-input';
+import { Messages } from './messages';
+import { VisibilityType } from './visibility-selector';
+import { useArtifactSelector } from '@/hooks/use-artifact';
+import { toast } from 'sonner';
+
+export function Chat({
+  id,
+  initialMessages,
+  selectedChatModel,
+  selectedVisibilityType,
+  isReadonly,
+}: {
+  id: string;
+  initialMessages: Array<Message>;
+  selectedChatModel: string;
+  selectedVisibilityType: VisibilityType;
+  isReadonly: boolean;
+}) {
+  const { mutate } = useSWRConfig();
+
+  const {
+    messages,
+    setMessages,
+    handleSubmit,
+    input,
+    setInput,
+    append,
+    isLoading,
+    stop,
+    reload,
+  } = useChat({
+    id,
+    body: { id, selectedChatModel: selectedChatModel },
+    initialMessages,
+    experimental_throttle: 100,
+    sendExtraMessageFields: true,
+    generateId: generateUUID,
+    onFinish: () => {
+      mutate('/api/history');
+    },
+    onError: () => {
+      toast.error('An error occured, please try again!');
+    },
+  });
+
+  const { data: votes } = useSWR<Array<Vote>>(
+    `/api/vote?chatId=${id}`,
+    fetcher,
+  );
+
+  const [attachments, setAttachments] = useState<Array<Attachment>>([]);
+  const isArtifactVisible = useArtifactSelector((state) => state.isVisible);
+
+  return (
+    <>
+      <div className="flex flex-col min-w-0 h-dvh bg-background">
+        <ChatHeader
+          chatId={id}
+          selectedModelId={selectedChatModel}
+          selectedVisibilityType={selectedVisibilityType}
+          isReadonly={isReadonly}
+        />
+
+        <Messages
+          chatId={id}
+          isLoading={isLoading}
+          votes={votes}
+          messages={messages}
+          setMessages={setMessages}
+          reload={reload}
+          isReadonly={isReadonly}
+          isArtifactVisible={isArtifactVisible}
+        />
+
+        <form className="flex mx-auto px-4 bg-background pb-4 md:pb-6 gap-2 w-full md:max-w-3xl">
+          {!isReadonly && (
+            <MultimodalInput
+              chatId={id}
+              input={input}
+              setInput={setInput}
+              handleSubmit={handleSubmit}
+              isLoading={isLoading}
+              stop={stop}
+              attachments={attachments}
+              setAttachments={setAttachments}
+              messages={messages}
+              setMessages={setMessages}
+              append={append}
+            />
+          )}
+        </form>
+      </div>
+
+      <Artifact
+        chatId={id}
+        input={input}
+        setInput={setInput}
+        handleSubmit={handleSubmit}
+        isLoading={isLoading}
+        stop={stop}
+        attachments={attachments}
+        setAttachments={setAttachments}
+        append={append}
+        messages={messages}
+        setMessages={setMessages}
+        reload={reload}
+        votes={votes}
+        isReadonly={isReadonly}
+      />
+    </>
+  );
+}
+
+
+================================================
+File: components/chat-header.tsx
+================================================
+'use client';
+
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useWindowSize } from 'usehooks-ts';
+
+import { ModelSelector } from '@/components/model-selector';
+import { SidebarToggle } from '@/components/sidebar-toggle';
+import { Button } from '@/components/ui/button';
+import { PlusIcon, VercelIcon } from './icons';
+import { useSidebar } from './ui/sidebar';
+import { memo } from 'react';
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import { VisibilityType, VisibilitySelector } from './visibility-selector';
+
+function PureChatHeader({
+  chatId,
+  selectedModelId,
+  selectedVisibilityType,
+  isReadonly,
+}: {
+  chatId: string;
+  selectedModelId: string;
+  selectedVisibilityType: VisibilityType;
+  isReadonly: boolean;
+}) {
+  const router = useRouter();
+  const { open } = useSidebar();
+
+  const { width: windowWidth } = useWindowSize();
+
+  return (
+    <header className="flex sticky top-0 bg-background py-1.5 items-center px-2 md:px-2 gap-2">
+      <SidebarToggle />
+
+      {(!open || windowWidth < 768) && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="outline"
+              className="order-2 md:order-1 md:px-2 px-2 md:h-fit ml-auto md:ml-0"
+              onClick={() => {
+                router.push('/');
+                router.refresh();
+              }}
+            >
+              <PlusIcon />
+              <span className="md:sr-only">New Chat</span>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>New Chat</TooltipContent>
+        </Tooltip>
+      )}
+
+      {!isReadonly && (
+        <ModelSelector
+          selectedModelId={selectedModelId}
+          className="order-1 md:order-2"
+        />
+      )}
+
+      {!isReadonly && (
+        <VisibilitySelector
+          chatId={chatId}
+          selectedVisibilityType={selectedVisibilityType}
+          className="order-1 md:order-3"
+        />
+      )}
+
+      <Button
+        className="bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-zinc-50 dark:text-zinc-900 hidden md:flex py-1.5 px-2 h-fit md:h-[34px] order-4 md:ml-auto"
+        asChild
+      >
+        <Link
+          href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fai-chatbot&env=AUTH_SECRET,OPENAI_API_KEY&envDescription=Learn%20more%20about%20how%20to%20get%20the%20API%20Keys%20for%20the%20application&envLink=https%3A%2F%2Fgithub.com%2Fvercel%2Fai-chatbot%2Fblob%2Fmain%2F.env.example&demo-title=AI%20Chatbot&demo-description=An%20Open-Source%20AI%20Chatbot%20Template%20Built%20With%20Next.js%20and%20the%20AI%20SDK%20by%20Vercel.&demo-url=https%3A%2F%2Fchat.vercel.ai&stores=%5B%7B%22type%22:%22postgres%22%7D,%7B%22type%22:%22blob%22%7D%5D"
+          target="_noblank"
+        >
+          <VercelIcon size={16} />
+          Deploy with Vercel
+        </Link>
+      </Button>
+    </header>
+  );
+}
+
+export const ChatHeader = memo(PureChatHeader, (prevProps, nextProps) => {
+  return prevProps.selectedModelId === nextProps.selectedModelId;
+});
+
+
+================================================
+File: components/multimodal-input.tsx
+================================================
+'use client';
+
+import type {
+  Attachment,
+  ChatRequestOptions,
+  CreateMessage,
+  Message,
+} from 'ai';
+import cx from 'classnames';
+import type React from 'react';
+import {
+  useRef,
+  useEffect,
+  useState,
+  useCallback,
+  type Dispatch,
+  type SetStateAction,
+  type ChangeEvent,
+  memo,
+} from 'react';
+import { toast } from 'sonner';
+import { useLocalStorage, useWindowSize } from 'usehooks-ts';
+
+import { sanitizeUIMessages } from '@/lib/utils';
+
+import { ArrowUpIcon, PaperclipIcon, StopIcon } from './icons';
+import { PreviewAttachment } from './preview-attachment';
+import { Button } from './ui/button';
+import { Textarea } from './ui/textarea';
+import { SuggestedActions } from './suggested-actions';
+import equal from 'fast-deep-equal';
+
+function PureMultimodalInput({
+  chatId,
+  input,
+  setInput,
+  isLoading,
+  stop,
+  attachments,
+  setAttachments,
+  messages,
+  setMessages,
+  append,
+  handleSubmit,
+  className,
+}: {
+  chatId: string;
+  input: string;
+  setInput: (value: string) => void;
+  isLoading: boolean;
+  stop: () => void;
+  attachments: Array<Attachment>;
+  setAttachments: Dispatch<SetStateAction<Array<Attachment>>>;
+  messages: Array<Message>;
+  setMessages: Dispatch<SetStateAction<Array<Message>>>;
+  append: (
+    message: Message | CreateMessage,
+    chatRequestOptions?: ChatRequestOptions,
+  ) => Promise<string | null | undefined>;
+  handleSubmit: (
+    event?: {
+      preventDefault?: () => void;
+    },
+    chatRequestOptions?: ChatRequestOptions,
+  ) => void;
+  className?: string;
+}) {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { width } = useWindowSize();
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      adjustHeight();
+    }
+  }, []);
+
+  const adjustHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight + 2}px`;
+    }
+  };
+
+  const resetHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = '98px';
+    }
+  };
+
+  const [localStorageInput, setLocalStorageInput] = useLocalStorage(
+    'input',
+    '',
+  );
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      const domValue = textareaRef.current.value;
+      // Prefer DOM value over localStorage to handle hydration
+      const finalValue = domValue || localStorageInput || '';
+      setInput(finalValue);
+      adjustHeight();
+    }
+    // Only run once after hydration
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    setLocalStorageInput(input);
+  }, [input, setLocalStorageInput]);
+
+  const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(event.target.value);
+    adjustHeight();
+  };
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadQueue, setUploadQueue] = useState<Array<string>>([]);
+
+  const submitForm = useCallback(() => {
+    window.history.replaceState({}, '', `/chat/${chatId}`);
+
+    handleSubmit(undefined, {
+      experimental_attachments: attachments,
+    });
+
+    setAttachments([]);
+    setLocalStorageInput('');
+    resetHeight();
+
+    if (width && width > 768) {
+      textareaRef.current?.focus();
+    }
+  }, [
+    attachments,
+    handleSubmit,
+    setAttachments,
+    setLocalStorageInput,
+    width,
+    chatId,
+  ]);
+
+  const uploadFile = async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch('/api/files/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const { url, pathname, contentType } = data;
+
+        return {
+          url,
+          name: pathname,
+          contentType: contentType,
+        };
+      }
+      const { error } = await response.json();
+      toast.error(error);
+    } catch (error) {
+      toast.error('Failed to upload file, please try again!');
+    }
+  };
+
+  const handleFileChange = useCallback(
+    async (event: ChangeEvent<HTMLInputElement>) => {
+      const files = Array.from(event.target.files || []);
+
+      setUploadQueue(files.map((file) => file.name));
+
+      try {
+        const uploadPromises = files.map((file) => uploadFile(file));
+        const uploadedAttachments = await Promise.all(uploadPromises);
+        const successfullyUploadedAttachments = uploadedAttachments.filter(
+          (attachment) => attachment !== undefined,
+        );
+
+        setAttachments((currentAttachments) => [
+          ...currentAttachments,
+          ...successfullyUploadedAttachments,
+        ]);
+      } catch (error) {
+        console.error('Error uploading files!', error);
+      } finally {
+        setUploadQueue([]);
+      }
+    },
+    [setAttachments],
+  );
+
+  return (
+    <div className="relative w-full flex flex-col gap-4">
+      {messages.length === 0 &&
+        attachments.length === 0 &&
+        uploadQueue.length === 0 && (
+          <SuggestedActions append={append} chatId={chatId} />
+        )}
+
+      <input
+        type="file"
+        className="fixed -top-4 -left-4 size-0.5 opacity-0 pointer-events-none"
+        ref={fileInputRef}
+        multiple
+        onChange={handleFileChange}
+        tabIndex={-1}
+      />
+
+      {(attachments.length > 0 || uploadQueue.length > 0) && (
+        <div
+          data-testid="attachments-preview"
+          className="flex flex-row gap-2 overflow-x-scroll items-end"
+        >
+          {attachments.map((attachment) => (
+            <PreviewAttachment key={attachment.url} attachment={attachment} />
+          ))}
+
+          {uploadQueue.map((filename) => (
+            <PreviewAttachment
+              key={filename}
+              attachment={{
+                url: '',
+                name: filename,
+                contentType: '',
+              }}
+              isUploading={true}
+            />
+          ))}
+        </div>
+      )}
+
+      <Textarea
+        data-testid="multimodal-input"
+        ref={textareaRef}
+        placeholder="Send a message..."
+        value={input}
+        onChange={handleInput}
+        className={cx(
+          'min-h-[24px] max-h-[calc(75dvh)] overflow-hidden resize-none rounded-2xl !text-base bg-muted pb-10 dark:border-zinc-700',
+          className,
+        )}
+        rows={2}
+        autoFocus
+        onKeyDown={(event) => {
+          if (
+            event.key === "Enter" &&
+            !event.shiftKey &&
+            !event.nativeEvent.isComposing
+          ) {
+            event.preventDefault();
+
+            if (isLoading) {
+              toast.error('Please wait for the model to finish its response!');
+            } else {
+              submitForm();
+            }
+          }
+        }}
+      />
+
+      <div className="absolute bottom-0 p-2 w-fit flex flex-row justify-start">
+        <AttachmentsButton fileInputRef={fileInputRef} isLoading={isLoading} />
+      </div>
+
+      <div className="absolute bottom-0 right-0 p-2 w-fit flex flex-row justify-end">
+        {isLoading ? (
+          <StopButton stop={stop} setMessages={setMessages} />
+        ) : (
+          <SendButton
+            input={input}
+            submitForm={submitForm}
+            uploadQueue={uploadQueue}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+export const MultimodalInput = memo(
+  PureMultimodalInput,
+  (prevProps, nextProps) => {
+    if (prevProps.input !== nextProps.input) return false;
+    if (prevProps.isLoading !== nextProps.isLoading) return false;
+    if (!equal(prevProps.attachments, nextProps.attachments)) return false;
+
+    return true;
+  },
+);
+
+function PureAttachmentsButton({
+  fileInputRef,
+  isLoading,
+}: {
+  fileInputRef: React.MutableRefObject<HTMLInputElement | null>;
+  isLoading: boolean;
+}) {
+  return (
+    <Button
+      data-testid="attachments-button"
+      className="rounded-md rounded-bl-lg p-[7px] h-fit dark:border-zinc-700 hover:dark:bg-zinc-900 hover:bg-zinc-200"
+      onClick={(event) => {
+        event.preventDefault();
+        fileInputRef.current?.click();
+      }}
+      disabled={isLoading}
+      variant="ghost"
+    >
+      <PaperclipIcon size={14} />
+    </Button>
+  );
+}
+
+const AttachmentsButton = memo(PureAttachmentsButton);
+
+function PureStopButton({
+  stop,
+  setMessages,
+}: {
+  stop: () => void;
+  setMessages: Dispatch<SetStateAction<Array<Message>>>;
+}) {
+  return (
+    <Button
+      data-testid="stop-button"
+      className="rounded-full p-1.5 h-fit border dark:border-zinc-600"
+      onClick={(event) => {
+        event.preventDefault();
+        stop();
+        setMessages((messages) => sanitizeUIMessages(messages));
+      }}
+    >
+      <StopIcon size={14} />
+    </Button>
+  );
+}
+
+const StopButton = memo(PureStopButton);
+
+function PureSendButton({
+  submitForm,
+  input,
+  uploadQueue,
+}: {
+  submitForm: () => void;
+  input: string;
+  uploadQueue: Array<string>;
+}) {
+  return (
+    <Button
+      data-testid="send-button"
+      className="rounded-full p-1.5 h-fit border dark:border-zinc-600"
+      onClick={(event) => {
+        event.preventDefault();
+        submitForm();
+      }}
+      disabled={input.length === 0 || uploadQueue.length > 0}
+    >
+      <ArrowUpIcon size={14} />
+    </Button>
+  );
+}
+
+const SendButton = memo(PureSendButton, (prevProps, nextProps) => {
+  if (prevProps.uploadQueue.length !== nextProps.uploadQueue.length)
+    return false;
+  if (prevProps.input !== nextProps.input) return false;
+  return true;
+});
+
+================================================
+File: components/messages.tsx
+================================================
+import { ChatRequestOptions, Message } from 'ai';
+import { PreviewMessage, ThinkingMessage } from './message';
+import { useScrollToBottom } from './use-scroll-to-bottom';
+import { Overview } from './overview';
+import { memo } from 'react';
+import { Vote } from '@/lib/db/schema';
+import equal from 'fast-deep-equal';
+
+interface MessagesProps {
+  chatId: string;
+  isLoading: boolean;
+  votes: Array<Vote> | undefined;
+  messages: Array<Message>;
+  setMessages: (
+    messages: Message[] | ((messages: Message[]) => Message[]),
+  ) => void;
+  reload: (
+    chatRequestOptions?: ChatRequestOptions,
+  ) => Promise<string | null | undefined>;
+  isReadonly: boolean;
+  isArtifactVisible: boolean;
+}
+
+function PureMessages({
+  chatId,
+  isLoading,
+  votes,
+  messages,
+  setMessages,
+  reload,
+  isReadonly,
+}: MessagesProps) {
+  const [messagesContainerRef, messagesEndRef] =
+    useScrollToBottom<HTMLDivElement>();
+
+  return (
+    <div
+      ref={messagesContainerRef}
+      className="flex flex-col min-w-0 gap-6 flex-1 overflow-y-scroll pt-4"
+    >
+      {messages.length === 0 && <Overview />}
+
+      {messages.map((message, index) => (
+        <PreviewMessage
+          key={message.id}
+          index={index}
+          chatId={chatId}
+          message={message}
+          isLoading={isLoading && messages.length - 1 === index}
+          vote={
+            votes
+              ? votes.find((vote) => vote.messageId === message.id)
+              : undefined
+          }
+          setMessages={setMessages}
+          reload={reload}
+          isReadonly={isReadonly}
+        />
+      ))}
+
+      {isLoading &&
+        messages.length > 0 &&
+        messages[messages.length - 1].role === 'user' && <ThinkingMessage />}
+
+      <div
+        ref={messagesEndRef}
+        className="shrink-0 min-w-[24px] min-h-[24px]"
+      />
+    </div>
+  );
+}
+
+export const Messages = memo(PureMessages, (prevProps, nextProps) => {
+  if (prevProps.isArtifactVisible && nextProps.isArtifactVisible) return true;
+
+  if (prevProps.isLoading !== nextProps.isLoading) return false;
+  if (prevProps.isLoading && nextProps.isLoading) return false;
+  if (prevProps.messages.length !== nextProps.messages.length) return false;
+  if (!equal(prevProps.messages, nextProps.messages)) return false;
+  if (!equal(prevProps.votes, nextProps.votes)) return false;
+
+  return true;
+});
+
+
+================================================
+File: app/(chat)/api/chat/route.ts
+================================================
+import {
+  type Message,
+  createDataStreamResponse,
+  smoothStream,
+  streamText,
+} from 'ai';
+import { auth } from '@/app/(auth)/auth';
+import { systemPrompt } from '@/lib/ai/prompts';
+import {
+  deleteChatById,
+  getChatById,
+  saveChat,
+  saveMessages,
+} from '@/lib/db/queries';
+import {
+  generateUUID,
+  getMostRecentUserMessage,
+  sanitizeResponseMessages,
+} from '@/lib/utils';
+import { generateTitleFromUserMessage } from '../../actions';
+import { createDocument } from '@/lib/ai/tools/create-document';
+import { updateDocument } from '@/lib/ai/tools/update-document';
+import { requestSuggestions } from '@/lib/ai/tools/request-suggestions';
+import { getWeather } from '@/lib/ai/tools/get-weather';
+import { isProductionEnvironment } from '@/lib/constants';
+import { NextResponse } from 'next/server';
+import { myProvider } from '@/lib/ai/providers';
+
+export const maxDuration = 60;
+
+export async function POST(request: Request) {
+  try {
+    const {
+      id,
+      messages,
+      selectedChatModel,
+    }: {
+      id: string;
+      messages: Array<Message>;
+      selectedChatModel: string;
+    } = await request.json();
+
+    const session = await auth();
+
+    if (!session || !session.user || !session.user.id) {
+      return new Response('Unauthorized', { status: 401 });
+    }
+
+    const userMessage = getMostRecentUserMessage(messages);
+
+    if (!userMessage) {
+      return new Response('No user message found', { status: 400 });
+    }
+
+    const chat = await getChatById({ id });
+
+    if (!chat) {
+      const title = await generateTitleFromUserMessage({
+        message: userMessage,
+      });
+
+      await saveChat({ id, userId: session.user.id, title });
+    } else {
+      if (chat.userId !== session.user.id) {
+        return new Response('Unauthorized', { status: 401 });
+      }
+    }
+
+    await saveMessages({
+      messages: [{ ...userMessage, createdAt: new Date(), chatId: id }],
+    });
+
+    return createDataStreamResponse({
+      execute: (dataStream) => {
+        const result = streamText({
+          model: myProvider.languageModel(selectedChatModel),
+          system: systemPrompt({ selectedChatModel }),
+          messages,
+          maxSteps: 5,
+          experimental_activeTools:
+            selectedChatModel === 'chat-model-reasoning'
+              ? []
+              : [
+                  'getWeather',
+                  'createDocument',
+                  'updateDocument',
+                  'requestSuggestions',
+                ],
+          experimental_transform: smoothStream({ chunking: 'word' }),
+          experimental_generateMessageId: generateUUID,
+          tools: {
+            getWeather,
+            createDocument: createDocument({ session, dataStream }),
+            updateDocument: updateDocument({ session, dataStream }),
+            requestSuggestions: requestSuggestions({
+              session,
+              dataStream,
+            }),
+          },
+          onFinish: async ({ response, reasoning }) => {
+            if (session.user?.id) {
+              try {
+                const sanitizedResponseMessages = sanitizeResponseMessages({
+                  messages: response.messages,
+                  reasoning,
+                });
+
+                await saveMessages({
+                  messages: sanitizedResponseMessages.map((message) => {
+                    return {
+                      id: message.id,
+                      chatId: id,
+                      role: message.role,
+                      content: message.content,
+                      createdAt: new Date(),
+                    };
+                  }),
+                });
+              } catch (error) {
+                console.error('Failed to save chat');
+              }
+            }
+          },
+          experimental_telemetry: {
+            isEnabled: isProductionEnvironment,
+            functionId: 'stream-text',
+          },
+        });
+
+        result.consumeStream();
+
+        result.mergeIntoDataStream(dataStream, {
+          sendReasoning: true,
+        });
+      },
+      onError: () => {
+        return 'Oops, an error occured!';
+      },
+    });
+  } catch (error) {
+    return NextResponse.json({ error }, { status: 400 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+
+  if (!id) {
+    return new Response('Not Found', { status: 404 });
+  }
+
+  const session = await auth();
+
+  if (!session || !session.user) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+
+  try {
+    const chat = await getChatById({ id });
+
+    if (chat.userId !== session.user.id) {
+      return new Response('Unauthorized', { status: 401 });
+    }
+
+    await deleteChatById({ id });
+
+    return new Response('Chat deleted', { status: 200 });
+  } catch (error) {
+    return new Response('An error occurred while processing your request', {
+      status: 500,
+    });
+  }
+}
+
+
+================================================
+File: app/(chat)/api/document/route.ts
+================================================
+import { auth } from '@/app/(auth)/auth';
+import { ArtifactKind } from '@/components/artifact';
+import {
+  deleteDocumentsByIdAfterTimestamp,
+  getDocumentsById,
+  saveDocument,
+} from '@/lib/db/queries';
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+
+  if (!id) {
+    return new Response('Missing id', { status: 400 });
+  }
+
+  const session = await auth();
+
+  if (!session || !session.user) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+
+  const documents = await getDocumentsById({ id });
+
+  const [document] = documents;
+
+  if (!document) {
+    return new Response('Not Found', { status: 404 });
+  }
+
+  if (document.userId !== session.user.id) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+
+  return Response.json(documents, { status: 200 });
+}
+
+export async function POST(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+
+  if (!id) {
+    return new Response('Missing id', { status: 400 });
+  }
+
+  const session = await auth();
+
+  if (!session) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+
+  const {
+    content,
+    title,
+    kind,
+  }: { content: string; title: string; kind: ArtifactKind } =
+    await request.json();
+
+  if (session.user?.id) {
+    const document = await saveDocument({
+      id,
+      content,
+      title,
+      kind,
+      userId: session.user.id,
+    });
+
+    return Response.json(document, { status: 200 });
+  }
+
+  return new Response('Unauthorized', { status: 401 });
+}
+
+export async function PATCH(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+
+  const { timestamp }: { timestamp: string } = await request.json();
+
+  if (!id) {
+    return new Response('Missing id', { status: 400 });
+  }
+
+  const session = await auth();
+
+  if (!session || !session.user) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+
+  const documents = await getDocumentsById({ id });
+
+  const [document] = documents;
+
+  if (document.userId !== session.user.id) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+
+  await deleteDocumentsByIdAfterTimestamp({
+    id,
+    timestamp: new Date(timestamp),
+  });
+
+  return new Response('Deleted', { status: 200 });
+}
+
+
+================================================
+File: app/(chat)/api/files/upload/route.ts
+================================================
+import { put } from '@vercel/blob';
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
+
+import { auth } from '@/app/(auth)/auth';
+
+// Use Blob instead of File since File is not available in Node.js environment
+const FileSchema = z.object({
+  file: z
+    .instanceof(Blob)
+    .refine((file) => file.size <= 5 * 1024 * 1024, {
+      message: 'File size should be less than 5MB',
+    })
+    // Update the file type based on the kind of files you want to accept
+    .refine((file) => ['image/jpeg', 'image/png'].includes(file.type), {
+      message: 'File type should be JPEG or PNG',
+    }),
+});
+
+export async function POST(request: Request) {
+  const session = await auth();
+
+  if (!session) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  if (request.body === null) {
+    return new Response('Request body is empty', { status: 400 });
+  }
+
+  try {
+    const formData = await request.formData();
+    const file = formData.get('file') as Blob;
+
+    if (!file) {
+      return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
+    }
+
+    const validatedFile = FileSchema.safeParse({ file });
+
+    if (!validatedFile.success) {
+      const errorMessage = validatedFile.error.errors
+        .map((error) => error.message)
+        .join(', ');
+
+      return NextResponse.json({ error: errorMessage }, { status: 400 });
+    }
+
+    // Get filename from formData since Blob doesn't have name property
+    const filename = (formData.get('file') as File).name;
+    const fileBuffer = await file.arrayBuffer();
+
+    try {
+      const data = await put(`${filename}`, fileBuffer, {
+        access: 'public',
+      });
+
+      return NextResponse.json(data);
+    } catch (error) {
+      return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+    }
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Failed to process request' },
+      { status: 500 },
+    );
+  }
+}
+
+
+================================================
+File: app/(chat)/api/history/route.ts
+================================================
+import { auth } from '@/app/(auth)/auth';
+import { getChatsByUserId } from '@/lib/db/queries';
+
+export async function GET() {
+  const session = await auth();
+
+  if (!session || !session.user) {
+    return Response.json('Unauthorized!', { status: 401 });
+  }
+
+  // biome-ignore lint: Forbidden non-null assertion.
+  const chats = await getChatsByUserId({ id: session.user.id! });
+  return Response.json(chats);
+}
+
+
+================================================
+File: app/(chat)/api/suggestions/route.ts
+================================================
+import { auth } from '@/app/(auth)/auth';
+import { getSuggestionsByDocumentId } from '@/lib/db/queries';
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const documentId = searchParams.get('documentId');
+
+  if (!documentId) {
+    return new Response('Not Found', { status: 404 });
+  }
+
+  const session = await auth();
+
+  if (!session || !session.user) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+
+  const suggestions = await getSuggestionsByDocumentId({
+    documentId,
+  });
+
+  const [suggestion] = suggestions;
+
+  if (!suggestion) {
+    return Response.json([], { status: 200 });
+  }
+
+  if (suggestion.userId !== session.user.id) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+
+  return Response.json(suggestions, { status: 200 });
+}
+
+
+================================================
+File: app/(chat)/api/vote/route.ts
+================================================
+import { auth } from '@/app/(auth)/auth';
+import { getChatById, getVotesByChatId, voteMessage } from '@/lib/db/queries';
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const chatId = searchParams.get('chatId');
+
+  if (!chatId) {
+    return new Response('chatId is required', { status: 400 });
+  }
+
+  const session = await auth();
+
+  if (!session || !session.user || !session.user.email) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+
+  const chat = await getChatById({ id: chatId });
+
+  if (!chat) {
+    return new Response('Chat not found', { status: 404 });
+  }
+
+  if (chat.userId !== session.user.id) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+
+  const votes = await getVotesByChatId({ id: chatId });
+
+  return Response.json(votes, { status: 200 });
+}
+
+export async function PATCH(request: Request) {
+  const {
+    chatId,
+    messageId,
+    type,
+  }: { chatId: string; messageId: string; type: 'up' | 'down' } =
+    await request.json();
+
+  if (!chatId || !messageId || !type) {
+    return new Response('messageId and type are required', { status: 400 });
+  }
+
+  const session = await auth();
+
+  if (!session || !session.user || !session.user.email) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+
+  const chat = await getChatById({ id: chatId });
+
+  if (!chat) {
+    return new Response('Chat not found', { status: 404 });
+  }
+
+  if (chat.userId !== session.user.id) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+
+  await voteMessage({
+    chatId,
+    messageId,
+    type: type,
+  });
+
+  return new Response('Message voted', { status: 200 });
+}
+
+================================================
+File: app/(chat)/chat/[id]/page.tsx
+================================================
+import { cookies } from 'next/headers';
+import { notFound } from 'next/navigation';
+
+import { auth } from '@/app/(auth)/auth';
+import { Chat } from '@/components/chat';
+import { getChatById, getMessagesByChatId } from '@/lib/db/queries';
+import { convertToUIMessages } from '@/lib/utils';
+import { DataStreamHandler } from '@/components/data-stream-handler';
+import { DEFAULT_CHAT_MODEL } from '@/lib/ai/models';
+
+export default async function Page(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
+  const { id } = params;
+  const chat = await getChatById({ id });
+
+  if (!chat) {
+    notFound();
+  }
+
+  const session = await auth();
+
+  if (chat.visibility === 'private') {
+    if (!session || !session.user) {
+      return notFound();
+    }
+
+    if (session.user.id !== chat.userId) {
+      return notFound();
+    }
+  }
+
+  const messagesFromDb = await getMessagesByChatId({
+    id,
+  });
+
+  const cookieStore = await cookies();
+  const chatModelFromCookie = cookieStore.get('chat-model');
+
+  if (!chatModelFromCookie) {
+    return (
+      <>
+        <Chat
+          id={chat.id}
+          initialMessages={convertToUIMessages(messagesFromDb)}
+          selectedChatModel={DEFAULT_CHAT_MODEL}
+          selectedVisibilityType={chat.visibility}
+          isReadonly={session?.user?.id !== chat.userId}
+        />
+        <DataStreamHandler id={id} />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Chat
+        id={chat.id}
+        initialMessages={convertToUIMessages(messagesFromDb)}
+        selectedChatModel={chatModelFromCookie.value}
+        selectedVisibilityType={chat.visibility}
+        isReadonly={session?.user?.id !== chat.userId}
+      />
+      <DataStreamHandler id={id} />
+    </>
+  );
+}
