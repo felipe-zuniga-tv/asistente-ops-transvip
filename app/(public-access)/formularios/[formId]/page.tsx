@@ -1,4 +1,4 @@
-import { FormContainer } from "@/app/(protected-apps)/forms/[formId]/page";
+import FormContainer from "@/components/forms/form-container";
 import SuspenseLoading from "@/components/ui/suspense";
 import { Suspense } from "react";
 
