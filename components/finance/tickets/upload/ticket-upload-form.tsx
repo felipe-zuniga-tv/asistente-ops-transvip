@@ -2,34 +2,23 @@
 
 import { useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
-import Image from "next/image"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { validateBookingForDriver, validateTicketTiming } from "@/lib/booking"
 import { parseTicketImage } from "@/lib/ai"
 import { createTicket } from "@/lib/tickets"
-import { ImageIcon, Loader2, X } from "lucide-react"
-
-const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
-
-const formSchema = z.object({
-	booking_id: z.string().min(1, "El ID de reserva es requerido"),
-	image: z.custom<File>()
-		.refine((file): file is File => file instanceof File, "Se requiere un archivo")
-		.refine((file) => file.size <= MAX_FILE_SIZE, "La imagen debe ser menor a 10MB")
-		.refine(
-			(file) => ['image/jpeg', 'image/png'].includes(file.type),
-			"Solo se permiten archivos PNG o JPEG"
-		)
-		.optional()
-})
-
-type FormValues = z.infer<typeof formSchema>
+import { uploadTicketImageServer } from "@/lib/storage"
+import { ImageUploadStep } from "./image-upload-step"
+import { ConfirmationStep } from "./confirmation-step"
+import { 
+	imageUploadSchema, 
+	confirmationSchema, 
+	ImageUploadValues, 
+	ConfirmationValues,
+	ParsedTicketData,
+	ensureString
+} from "./schemas"
 
 interface TicketUploadFormProps {
 	driverId: string
@@ -37,65 +26,160 @@ interface TicketUploadFormProps {
 
 export function TicketUploadForm({ driverId }: TicketUploadFormProps) {
 	const [isPending, startTransition] = useTransition()
+	const [isProcessing, setIsProcessing] = useState(false)
 	const router = useRouter()
 
-	const form = useForm<FormValues>({
-		resolver: zodResolver(formSchema),
+	// Track the current step in the flow
+	const [currentStep, setCurrentStep] = useState<'upload' | 'confirm'>('upload')
+	
+	// State for image toggle visibility
+	const [showImage, setShowImage] = useState(false)
+
+	// Store parsed data from the image
+	const [parsedData, setParsedData] = useState<ParsedTicketData | null>(null)
+
+	// Image upload form
+	const imageForm = useForm<ImageUploadValues>({
+		resolver: zodResolver(imageUploadSchema),
+		defaultValues: {}
+	})
+
+	// Confirmation form
+	const confirmForm = useForm<ConfirmationValues>({
+		resolver: zodResolver(confirmationSchema),
 		defaultValues: {
 			booking_id: "",
+			nro_boleta: "",
+			entry_timestamp: "",
+			exit_timestamp: "",
+			amount: "",
+			location: "",
+			confirm: false
 		}
 	})
 
+	// Debug state to track booking_id value
+	const [debugBookingId, setDebugBookingId] = useState<string>("")
+
 	const [error, setError] = useState<string>()
 	const [imagePreview, setImagePreview] = useState<string>()
+	const [uploadedImageUrl, setUploadedImageUrl] = useState<string>()
 
-	async function onSubmit(values: FormValues) {
-		setError(undefined)
-		
+	// When transitioning to confirmation step
+	const moveToConfirmationStep = () => {
+		// Ensure form values are reset when moving to confirmation
+		if (parsedData) {
+			confirmForm.reset({
+				booking_id: "",
+				nro_boleta: parsedData.nro_boleta,
+				entry_timestamp: parsedData.entry_timestamp,
+				exit_timestamp: parsedData.exit_timestamp,
+				amount: parsedData.amount.toString(),
+				location: parsedData.location,
+				confirm: false
+			});
+		} else {
+			resetConfirmationForm();
+		}
+		setCurrentStep('confirm');
+	};
+
+	// Process the image after upload
+	async function processImage(values: ImageUploadValues) {
 		if (!values.image) {
 			setError('Por favor, selecciona una imagen')
 			return
 		}
-		
+
+		setIsProcessing(true)
+		setError(undefined)
+
+		try {
+			// Convert image to base64
+			const imageBase64 = await new Promise<string>((resolve, reject) => {
+				const reader = new FileReader()
+				reader.onload = () => resolve(reader.result as string)
+				reader.onerror = reject
+				reader.readAsDataURL(values.image as Blob)
+			})
+
+			// Parse ticket with AI
+			const extractedData = await parseTicketImage(imageBase64)
+			setParsedData(extractedData)
+
+			// Upload image to storage to get URL using server function
+			const imageUrl = await uploadTicketImageServer(driverId, "temp", imageBase64)
+			setUploadedImageUrl(imageUrl)
+
+			// Reset confirmation form with the extracted data directly
+			confirmForm.reset({
+				booking_id: "",
+				nro_boleta: extractedData.nro_boleta,
+				entry_timestamp: extractedData.entry_timestamp,
+				exit_timestamp: extractedData.exit_timestamp,
+				amount: extractedData.amount.toString(),
+				location: extractedData.location,
+				confirm: false
+			});
+
+			// Move to the confirmation step
+			setCurrentStep('confirm');
+		} catch (err) {
+			console.error(err)
+			setError(err instanceof Error ? err.message : 'Error al procesar la imagen')
+		} finally {
+			setIsProcessing(false)
+		}
+	}
+
+	// Final submission after confirmation
+	async function submitTicket(values: ConfirmationValues) {
+		if (!uploadedImageUrl) {
+			setError('Información del ticket incompleta. Por favor, intenta de nuevo.')
+			return
+		}
+
+		// Store for display
+		setDebugBookingId(ensureString(values.booking_id))
+
+		setError(undefined)
 		startTransition(async () => {
 			try {
-				const { booking_id, image } = values
+				// Ensure booking_id is a string
+				const booking_id = ensureString(values.booking_id)
 
-				// Validate booking belongs to driver
-				const bookingValidation = await validateBookingForDriver(booking_id, driverId)
-				if (!bookingValidation.isValid) {
-					throw new Error(bookingValidation.error || 'ID de reserva inválido')
-				}
+				// // Validate booking belongs to driver
+				// const bookingValidation = await validateBookingForDriver(booking_id, driverId)
+				// // if (!bookingValidation.isValid) {
+				// // 	throw new Error(bookingValidation.error || 'ID de reserva inválido')
+				// // }
+ 
+				// // Validate ticket timing
+				// const timingValidation = await validateTicketTiming(values.exit_timestamp, booking_id)
+				// // if (!timingValidation.isValid) {
+				// // 	throw new Error(timingValidation.error || 'Tiempo de ticket inválido')
+				// // }
 
-				// Convert image to base64
-				const imageBase64 = await new Promise<string>((resolve, reject) => {
-					const reader = new FileReader()
-					reader.onload = () => resolve(reader.result as string)
-					reader.onerror = reject
-					reader.readAsDataURL(image as Blob)
+				// Create ticket with form data and image URL
+				await createTicket(driverId, booking_id, uploadedImageUrl, {
+					nro_boleta: values.nro_boleta,
+					entry_timestamp: values.entry_timestamp,
+					exit_timestamp: values.exit_timestamp,
+					amount: parseFloat(values.amount),
+					location: values.location,
+					image_url: uploadedImageUrl
 				})
 
-				// Parse ticket with AI
-				const parsedData = await parseTicketImage(imageBase64)
-
-				// Validate ticket timing
-				const timingValidation = await validateTicketTiming(parsedData.exit_timestamp, booking_id)
-				if (!timingValidation.isValid) {
-					throw new Error(timingValidation.error || 'Tiempo de ticket inválido')
-				}
-
-				// Create ticket
-				await createTicket(driverId, booking_id, imageBase64, {
-					...parsedData,
-					image_url: imageBase64
-				})
-
-				// Reset form
-				form.reset()
+				// Reset forms and state
+				imageForm.reset()
+				confirmForm.reset()
 				setImagePreview(undefined)
+				setParsedData(null)
+				setUploadedImageUrl(undefined)
+				setCurrentStep('upload')
 
 				// Redirect to history page
-				router.push('/drivers/tickets/parking/history')
+				router.push('/conductores/tickets/parking/history')
 			} catch (err) {
 				console.error(err)
 				setError(err instanceof Error ? err.message : 'Ha ocurrido un error')
@@ -103,17 +187,36 @@ export function TicketUploadForm({ driverId }: TicketUploadFormProps) {
 		})
 	}
 
+	// Reset confirmation form and initialize with empty values
+	const resetConfirmationForm = () => {
+		confirmForm.reset({
+			booking_id: '',
+			nro_boleta: '',
+			entry_timestamp: '',
+			exit_timestamp: '',
+			amount: '',
+			location: '',
+			confirm: false
+		});
+	};
+
+	// Use this function when moving between steps
+	const moveToUploadStep = () => {
+		setCurrentStep('upload');
+		resetConfirmationForm();
+	};
+
 	function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
 		const file = event.target.files?.[0]
 		if (file) {
-			form.setValue('image', file, { shouldValidate: true })
+			imageForm.setValue('image', file, { shouldValidate: true })
 			setImagePreview(URL.createObjectURL(file))
 			setError(undefined)
 		}
 	}
 
 	function handleRemoveImage() {
-		form.setValue('image', undefined, { shouldValidate: true })
+		imageForm.reset()
 		setImagePreview(undefined)
 		setError(undefined)
 	}
@@ -126,103 +229,28 @@ export function TicketUploadForm({ driverId }: TicketUploadFormProps) {
 				</Alert>
 			)}
 
-			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
-					<FormField
-						control={form.control}
-						name="booking_id"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>ID Reserva</FormLabel>
-								<FormControl>
-									<Input
-										placeholder="Ingresa tu ID Reserva"
-										disabled={isPending}
-										{...field}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-
-					<FormField
-						control={form.control}
-						name="image"
-						render={({ field: { onChange, value, ...field } }) => (
-							<FormItem>
-								<FormLabel>Imagen del Ticket</FormLabel>
-								<FormControl>
-									<div className="space-y-2">
-										{imagePreview ? (
-											<div className="relative aspect-[4/3] w-full h-[300px]">
-												<Image
-													src={imagePreview}
-													alt="Ticket preview"
-													fill
-													className="rounded-lg object-contain w-auto"
-												/>
-												<Button
-													type="button"
-													variant="secondary"
-													size="icon"
-													className="absolute right-2 top-2"
-													onClick={handleRemoveImage}
-												>
-													<X className="h-4 w-4" />
-												</Button>
-											</div>
-										) : (
-											<div className="flex flex-col items-center gap-4 rounded-lg border border-dashed p-8">
-												<div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-													<ImageIcon className="h-6 w-6" />
-												</div>
-												<div className="space-y-1 text-center">
-													<p className="text-sm text-muted-foreground">
-														Sube tu imagen del ticket de estacionamiento
-													</p>
-													<p className="text-xs text-muted-foreground">
-														PNG, JPG o JPEG (máx. 10MB)
-													</p>
-												</div>
-												<Input
-													id="image"
-													type="file"
-													accept="image/png,image/jpeg"
-													className="hidden"
-													onChange={handleImageChange}
-													disabled={isPending}
-													{...field}
-												/>
-												<Button
-													type="button"
-													variant="secondary"
-													onClick={() => document.getElementById('image')?.click()}
-													disabled={isPending}
-												>
-													Seleccionar Imagen
-												</Button>
-											</div>
-										)}
-									</div>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-
-					<Button type="submit" className="w-full" disabled={isPending}>
-						{isPending ? (
-							<>
-								<Loader2 className="h-4 w-4 animate-spin" />
-								Procesando...
-							</>
-						) : (
-							"Enviar Ticket"
-						)}
-					</Button>
-				</form>
-			</Form>
+			{currentStep === 'upload' ? (
+				<ImageUploadStep
+					form={imageForm}
+					imagePreview={imagePreview}
+					onSubmit={processImage}
+					onImageChange={handleImageChange}
+					onRemoveImage={handleRemoveImage}
+					isProcessing={isProcessing}
+				/>
+			) : (
+				<ConfirmationStep
+					form={confirmForm}
+					imagePreview={imagePreview}
+					onSubmit={submitTicket}
+					onBack={moveToUploadStep}
+					isPending={isPending}
+					showImage={showImage}
+					setShowImage={setShowImage}
+					parsedData={parsedData}
+					debugBookingId={debugBookingId}
+				/>
+			)}
 		</div>
 	)
 }

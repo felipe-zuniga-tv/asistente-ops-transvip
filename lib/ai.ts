@@ -1,4 +1,3 @@
-import type { ParkingTicket } from '@/types'
 import { cleanMarkdownCodeBlocks } from '@/lib/utils'
 
 interface ParsedTicketData {

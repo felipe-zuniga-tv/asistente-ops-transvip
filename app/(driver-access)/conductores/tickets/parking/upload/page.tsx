@@ -9,21 +9,21 @@ import { ArrowLeft } from "lucide-react"
 export default async function UploadTicketPage() {
     const session = await getDriverSession()
     if (!session) {
-        redirect('/drivers/login')
+        redirect('/conductores/login')
     }
 
     return (
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-6 bg-white rounded-lg p-6">
             <div className="flex flex-col items-start gap-2">
                 <div className="w-full flex justify-start items-center gap-2">
                     <TransvipLogo size={24} />
-                    <span className="text-xl font-bold">Subir Ticket de Estacionamiento</span>
+                    <span className="text-lg font-bold">Subir Ticket de Estacionamiento</span>
                 </div>
 
                 <Button variant="outline" size="sm" className="gap-1" asChild>
-                    <Link href="/drivers/tickets/parking/dashboard">
+                    <Link href="/conductores/tickets/parking/dashboard">
                         <ArrowLeft className="h-4 w-4" />
-                        Volver
+                        Todos los tickets
                     </Link>
                 </Button>
                 

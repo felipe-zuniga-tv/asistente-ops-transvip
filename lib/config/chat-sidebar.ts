@@ -28,6 +28,7 @@ import {
 	House,
 	ClipboardList,
 	UserRound,
+	ChartBar,
 } from "lucide-react"
 import { toolsList } from "./tools";
 
@@ -104,12 +105,6 @@ const toolsMenu: SidebarItem = {
 	icon: Hammer,
 	isActive: false,
 	items: [
-		// {
-		// 	title: 'Chatbot Operaciones',
-		// 	icon: Bot,
-		// 	url: Routes.CHAT,
-		// 	active: true
-		// },
 		{
 			title: 'Genera tu código QR',
 			icon: QrCodeIcon,
@@ -129,16 +124,25 @@ const toolsMenu: SidebarItem = {
 			active: true
 		},
 		{
-			title: 'Tickets Aeropuerto',
-			icon: Ticket,
-			url: Routes.FINANCE.TICKETS,
-			active: false
-		},
-		{
 			title: 'Ruteo Reservas',
 			icon: MapPin,
 			url: Routes.ROUTING.MAIN,
 			active: false
+		},
+	],
+}
+
+const financeMenu: SidebarItem = {
+	title: "Finanzas",
+	url: "#",
+	icon: ChartBar,
+	isActive: false,
+	items: [
+		{
+			title: 'Tickets Estacionamiento',
+			icon: Ticket,
+			url: Routes.FINANCE.TICKETS,
+			active: true
 		},
 	],
 }
@@ -286,6 +290,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 		publicSidebar,
 		chatbotMenu,
 		toolsMenu,
+		financeMenu,
 		branchesFormsMenu,
 		formsMenu,
 		controlFlotaMenu,

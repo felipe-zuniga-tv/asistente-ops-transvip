@@ -16,7 +16,7 @@ export const ConfigCardContainer = ({ children, title, onAdd, headerContent, cla
         <Card className={cn("max-w-4xl mx-2 lg:mx-auto", className)}>
             <CardHeader>
                 <CardTitle className="flex flex-row items-center justify-between">
-                    <div className="flex items-center justify-between w-full">
+                    <div className="flex flex-col md:flex-row gap-4 items-center justify-between w-full">
                         <CardTitleContent title={title} />
                         <div className="flex items-center gap-4">
                             {headerContent}

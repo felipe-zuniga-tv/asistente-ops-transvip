@@ -18,7 +18,7 @@ interface PageProps {
 export default async function TicketDetailPage({ params }: PageProps) {
 	const session = await getDriverSession()
 	if (!session) {
-		redirect('/drivers/login')
+		redirect('/conductores/login')
 	}
 	const ticket = await getTicketById(params.id)
 
@@ -40,7 +40,7 @@ export default async function TicketDetailPage({ params }: PageProps) {
 		<div className="space-y-6">
 			<div className="flex items-center gap-4">
 				<Button variant="ghost" size="icon" asChild>
-					<Link href="/drivers/tickets/parking/history">
+					<Link href="/conductores/tickets/parking/history">
 						<ArrowLeft className="h-4 w-4" />
 					</Link>
 				</Button>

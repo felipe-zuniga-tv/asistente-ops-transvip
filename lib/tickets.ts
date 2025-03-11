@@ -1,7 +1,6 @@
 'use server'
 
 import type { ParkingTicket } from '@/types'
-import { uploadTicketImage } from './storage'
 import { createClient } from '@/utils/supabase/server'
 import { cookies } from 'next/headers'
 
@@ -34,7 +33,7 @@ async function uploadImage(imageBase64: string): Promise<string> {
 }
 
 export async function getDriverTickets(driverId: string): Promise<ParkingTicket[]> {
-  const supabase = createClient(cookies())
+  const supabase = await createClient()
   
   const { data, error } = await supabase
     .from(TABLE_NAME)
@@ -50,7 +49,7 @@ export async function getDriverTickets(driverId: string): Promise<ParkingTicket[
 }
 
 export async function getRecentDriverTickets(driverId: string, limit: number = 5): Promise<ParkingTicket[]> {
-  const supabase = createClient(cookies())
+  const supabase = await createClient()
   
   const { data, error } = await supabase
     .from(TABLE_NAME)
@@ -67,7 +66,7 @@ export async function getRecentDriverTickets(driverId: string, limit: number = 5
 }
 
 export async function getTicketById(ticketId: string): Promise<ParkingTicket | null> {
-  const supabase = createClient(cookies())
+  const supabase = await createClient()
   
   const { data, error } = await supabase
     .from(TABLE_NAME)
@@ -86,13 +85,11 @@ export async function getTicketById(ticketId: string): Promise<ParkingTicket | n
 export async function createTicket(
   driverId: string,
   bookingId: string,
-  imageBase64: string,
+  imageUrl: string,
   parsedData: ParkingTicket['parsed_data']
 ): Promise<ParkingTicket> {
-  // Upload image to storage
-  const imageUrl = await uploadTicketImage(driverId, bookingId, imageBase64)
-
-  const supabase = createClient(cookies())
+  // No need to upload image as we now receive the URL directly
+  const supabase = await createClient()
   
   const ticket: Omit<ParkingTicket, 'id'> = {
     booking_id: bookingId,

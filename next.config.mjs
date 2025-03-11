@@ -2,7 +2,8 @@
 const nextConfig = {
   experimental: {
     serverActions: {
-      allowedOrigins: ['*.brs.devtunnels.ms']
+      allowedOrigins: ['*.brs.devtunnels.ms'],
+      bodySizeLimit: '5mb'
     }
   },
   images: {

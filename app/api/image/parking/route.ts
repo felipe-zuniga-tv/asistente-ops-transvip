@@ -1,10 +1,8 @@
 import { NextRequest } from "next/server";
 import { generateText } from 'ai';
-// import { openai } from "@ai-sdk/openai";
 import { google } from "@ai-sdk/google";
 import { TICKET_OCR_SYSTEM_MESSAGE } from "@/lib/config/finance";
 
-// const MODEL_NAME = 'gpt-4o'
 const GOOGLE_MODEL_NAME = 'gemini-2.0-flash-exp'
 
 export async function POST(request: NextRequest) {
@@ -28,7 +26,6 @@ export async function POST(request: NextRequest) {
 
                 // Call OpenAI API
                 const result = await generateText({
-                    // model: openai(MODEL_NAME),
                     model: google(GOOGLE_MODEL_NAME),
                     system: TICKET_OCR_SYSTEM_MESSAGE,
                     messages: [

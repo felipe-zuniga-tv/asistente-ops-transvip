@@ -36,7 +36,7 @@ export function LoginForm() {
 			}
 
 			await createDriverSession(driver)
-			router.push('/drivers/tickets/parking/dashboard')
+			router.push('/conductores/tickets/parking/dashboard')
 		} catch (err) {
 			setError(err instanceof Error ? err.message : 'An error occurred')
 			setIsLoading(false)

@@ -14,9 +14,9 @@ export async function validateDriverWithTransvip(email: string, password: string
   }
 
   return {
-    id: "mock-id",
+    id: "driver-id",
     email,
-    full_name: "Mock Driver",
+    full_name: "Driver Name",
     active: true,
     created_at: new Date().toISOString()
   }
@@ -44,7 +44,7 @@ export async function getDriverSession(): Promise<DriverSession | null> {
   const sessionCookie = cookies().get('driver_session')
   
   if (!sessionCookie) {
-    redirect('/drivers/login')
+    redirect('/conductores/login')
   }
 
   try {
@@ -52,13 +52,13 @@ export async function getDriverSession(): Promise<DriverSession | null> {
     
     if (new Date(session.expires) < new Date()) {
       cookies().delete('driver_session')
-      redirect('/drivers/login')
+      redirect('/conductores/login')
     }
 
     return session
   } catch {
     cookies().delete('driver_session')
-    redirect('/drivers/login')
+    redirect('/conductores/login')
   }
 }
 
