@@ -17,13 +17,13 @@ import type {
     CreateTranslationInput,
     UpdateTranslationInput,
 } from '@/lib/types/admin'
-import { getSupabaseClient } from "@/lib/database/actions"
+import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { Routes } from '@/utils/routes'
 
 // Payment Methods
 export async function getPaymentMethods() {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     const { data, error } = await supabase
         .from('payment_methods')
         .select('*')
@@ -34,7 +34,7 @@ export async function getPaymentMethods() {
 }
 
 export async function createPaymentMethod(input: CreatePaymentMethodInput) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
 
     const { data, error } = await supabase
         .from('payment_methods')
@@ -48,7 +48,7 @@ export async function createPaymentMethod(input: CreatePaymentMethodInput) {
 }
 
 export async function updatePaymentMethod(id: string, input: UpdatePaymentMethodInput) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
 
     const { data, error } = await supabase
         .from('payment_methods')
@@ -63,7 +63,7 @@ export async function updatePaymentMethod(id: string, input: UpdatePaymentMethod
 }
 
 export async function deletePaymentMethod(id: string) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     const { error } = await supabase
         .from('payment_methods')
         .delete()
@@ -75,7 +75,7 @@ export async function deletePaymentMethod(id: string) {
 
 // Vehicle Types
 export async function getVehicleTypes() {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     const { data, error } = await supabase
         .from('vehicle_types')
         .select('*')
@@ -86,7 +86,7 @@ export async function getVehicleTypes() {
 }
 
 export async function createVehicleType(input: CreateVehicleTypeInput) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     const { data, error } = await supabase
         .from('vehicle_types')
         .insert(input)
@@ -98,7 +98,7 @@ export async function createVehicleType(input: CreateVehicleTypeInput) {
 }
 
 export async function updateVehicleType(id: string, input: UpdateVehicleTypeInput) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     const { data, error } = await supabase
         .from('vehicle_types')
         .update(input)
@@ -111,7 +111,7 @@ export async function updateVehicleType(id: string, input: UpdateVehicleTypeInpu
 }
 
 export async function deleteVehicleType(id: string) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     const { error } = await supabase
         .from('vehicle_types')
         .delete()
@@ -122,7 +122,7 @@ export async function deleteVehicleType(id: string) {
 
 // Branches
 export async function getBranches() {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     
     try {
         const { data, error, status } = await supabase
@@ -148,7 +148,7 @@ export async function getBranches() {
 }
 
 export async function createBranch(input: CreateBranchInput) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     const { data, error } = await supabase
         .from('branches')
         .insert(input)
@@ -161,7 +161,7 @@ export async function createBranch(input: CreateBranchInput) {
 }
 
 export async function updateBranch(id: string, input: UpdateBranchInput) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     const { data, error } = await supabase
         .from('branches')
         .update(input)
@@ -175,7 +175,7 @@ export async function updateBranch(id: string, input: UpdateBranchInput) {
 }
 
 export async function deleteBranch(id: string) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     const { error } = await supabase
         .from('branches')
         .delete()
@@ -187,7 +187,7 @@ export async function deleteBranch(id: string) {
 
 // Languages
 export async function getLanguages() {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     const { data, error } = await supabase
         .from('languages')
         .select('*')
@@ -198,7 +198,7 @@ export async function getLanguages() {
 }
 
 export async function createLanguage(input: CreateLanguageInput) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     const { data, error } = await supabase
         .from('languages')
         .insert(input)
@@ -210,7 +210,7 @@ export async function createLanguage(input: CreateLanguageInput) {
 }
 
 export async function updateLanguage(id: string, input: UpdateLanguageInput) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     const { data, error } = await supabase
         .from('languages')
         .update(input)
@@ -223,7 +223,7 @@ export async function updateLanguage(id: string, input: UpdateLanguageInput) {
 }
 
 export async function deleteLanguage(id: string) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     const { error } = await supabase
         .from('languages')
         .delete()
@@ -234,7 +234,7 @@ export async function deleteLanguage(id: string) {
 
 // Translations
 export async function getTranslations(languageId: string) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     const { data, error } = await supabase
         .from('translations')
         .select('*')
@@ -246,7 +246,7 @@ export async function getTranslations(languageId: string) {
 }
 
 export async function createTranslation(input: CreateTranslationInput) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     const { data, error } = await supabase
         .from('translations')
         .insert(input)
@@ -258,7 +258,7 @@ export async function createTranslation(input: CreateTranslationInput) {
 }
 
 export async function updateTranslation(id: string, input: UpdateTranslationInput) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     const { data, error } = await supabase
         .from('translations')
         .update(input)
@@ -271,7 +271,7 @@ export async function updateTranslation(id: string, input: UpdateTranslationInpu
 }
 
 export async function deleteTranslation(id: string) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     const { error } = await supabase
         .from('translations')
         .delete()

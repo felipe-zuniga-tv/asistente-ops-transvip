@@ -2,13 +2,13 @@
 import { revalidatePath } from 'next/cache'
 import { Routes } from '@/utils/routes'
 import { CreateSalesResponse, SalesResponse } from '@/lib/types/sales'
-import { getSupabaseClient } from "@/lib/database/actions";
+import { createClient } from '@/utils/supabase/server'
 import { getSession } from '@/lib/auth';
 
 const SALES_RESPONSES_TABLE = 'sales_responses'
 
 export async function createSalesResponse(data: CreateSalesResponse): Promise<SalesResponse> {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { data: response, error } = await supabase
 		.from(SALES_RESPONSES_TABLE)
@@ -29,7 +29,7 @@ export async function createSalesResponse(data: CreateSalesResponse): Promise<Sa
 }
 
 export async function getSalesResponsesByBranch(branchCode: string) {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 	const { data, error } = await supabase
 		.from(SALES_RESPONSES_TABLE)
 		.select()
@@ -44,7 +44,7 @@ export async function getSalesResponsesByBranch(branchCode: string) {
 }
 
 export async function getSalesResponse(id: string) {
-	const supabase = await getSupabaseClient();
+	const supabase = await createClient();
 	const { data, error } = await supabase
 		.from(SALES_RESPONSES_TABLE)
 		.select()
@@ -59,7 +59,7 @@ export async function getSalesResponse(id: string) {
 }
 
 export async function getSalesResponsesStats() {
-	const supabase = await getSupabaseClient();
+	const supabase = await createClient();
 	const { data, error } = await supabase
 		.from(SALES_RESPONSES_TABLE)
 		.select('branch_code, branch_name, created_at')
@@ -74,7 +74,7 @@ export async function getSalesResponsesStats() {
 }
 
 export async function updateSalesResponseStatus(id: string, status: SalesResponse['status']) {
-	const supabase = await getSupabaseClient();
+	const supabase = await createClient();
 	const { data, error } = await supabase
 		.from(SALES_RESPONSES_TABLE)
 		.update({ status })
@@ -96,7 +96,7 @@ export async function updateSalesResponseWhatsappConfirmation(
 ) {
 	const session = await getSession()
 	const currentUser = session?.user as any
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { data, error } = await supabase
 		.from(SALES_RESPONSES_TABLE)
@@ -118,7 +118,7 @@ export async function updateSalesResponseWhatsappConfirmation(
 }
 
 export async function updateSalesResponseNotes(id: string, notes: string) {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { data, error } = await supabase
 		.from(SALES_RESPONSES_TABLE)
@@ -137,7 +137,7 @@ export async function updateSalesResponseNotes(id: string, notes: string) {
 
 
 export async function getSalesResponsesByBranchAction(branchCode: string) {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { data, error } = await supabase
 		.from(SALES_RESPONSES_TABLE)
@@ -153,7 +153,7 @@ export async function getSalesResponsesByBranchAction(branchCode: string) {
 }
 
 export async function updateSalesResponseStatusAction(id: string, status: SalesResponse['status']) {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { data, error } = await supabase
 		.from(SALES_RESPONSES_TABLE)
@@ -177,7 +177,7 @@ export async function updateSalesResponseWhatsappConfirmationAction(
 	const session = await getSession()
 	const currentUser = session?.user as any
 
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { data, error } = await supabase
 		.from(SALES_RESPONSES_TABLE)
@@ -199,7 +199,7 @@ export async function updateSalesResponseWhatsappConfirmationAction(
 }
 
 export async function updateSalesResponseNotesAction(id: string, notes: string) {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { data, error } = await supabase
 		.from(SALES_RESPONSES_TABLE)
@@ -217,7 +217,7 @@ export async function updateSalesResponseNotesAction(id: string, notes: string) 
 }
 
 export async function getSalesResponses() {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { data, error } = await supabase
 		.from(SALES_RESPONSES_TABLE)

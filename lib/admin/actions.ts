@@ -1,11 +1,11 @@
 'use server'
 
-import { getSupabaseClient } from '@/lib/database/actions'
+import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { Routes } from '@/utils/routes'
 
 export async function getSystemConfig(key: string) {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { data, error } = await supabase
 		.from('system_configs')
@@ -30,7 +30,7 @@ export async function updateSystemConfig({
 	value: string
 	description?: string
 }) {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { error } = await supabase
 		.from('system_configs')

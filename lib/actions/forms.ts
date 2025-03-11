@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { Routes } from '@/utils/routes'
-import { getSupabaseClient } from '../database/actions'
+import { createClient } from '@/utils/supabase/server'
 
 interface ReorderSectionsInput {
     sections: {
@@ -12,7 +12,7 @@ interface ReorderSectionsInput {
 }
 
 export async function reorderSections(formId: string, input: ReorderSectionsInput) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
 
     try {
         // Update all sections in a transaction
@@ -43,7 +43,7 @@ interface ReorderQuestionsInput {
 export async function reorderQuestions(sectionId: string, input: ReorderQuestionsInput) {
     try {
         const { questions } = input;
-        const supabase = await getSupabaseClient();
+        const supabase = await createClient();
 
         // Update each question's order
         const promises = questions.map(({ id, order }) =>

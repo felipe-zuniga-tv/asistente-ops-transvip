@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache"
 import { parse } from "date-fns"
 import { z } from "zod"
 import { Routes } from "@/utils/routes"
-import { getSupabaseClient } from "../database/actions"
+import { createClient } from "@/utils/supabase/server"
 
 const vehicleShiftSchema = z.object({
     vehicle_number: z.coerce.number().positive("El número debe ser positivo"),
@@ -19,7 +19,7 @@ const vehicleShiftSchema = z.object({
 })
 
 export async function createVehicleShift(formData: z.infer<typeof vehicleShiftSchema>) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
 
     try {
         const result = vehicleShiftSchema.safeParse(formData)
@@ -58,7 +58,7 @@ export async function createVehicleShift(formData: z.infer<typeof vehicleShiftSc
 }
 
 export async function uploadVehicleShifts(csvContent: string, shifts: { id: string, name: string }[]) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     
     const errors: { row: number; message: string }[] = []
     
@@ -158,7 +158,7 @@ export async function updateVehicleShift(
     id: string,
     formData: z.infer<typeof vehicleShiftSchema>
 ) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     
     try {
         const result = vehicleShiftSchema.safeParse(formData)
@@ -215,7 +215,7 @@ export async function updateVehicleShift(
 }
 
 export async function deleteVehicleShift(id: string) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     
     try {
         const { error } = await supabase
@@ -234,7 +234,7 @@ export async function deleteVehicleShift(id: string) {
 }
 
 export async function bulkDeleteVehicleShifts(ids: string[]) {
-    const supabase = await getSupabaseClient()
+    const supabase = await createClient()
     
     try {
         const { error } = await supabase

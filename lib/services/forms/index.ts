@@ -15,13 +15,13 @@ import type {
     UpdateOperationsFormSectionInput,
     CreateOperationsFormResponseInput,
 } from "@/lib/types/vehicle/forms";
-import { getSupabaseClient } from "@/lib/database/actions";
+import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { Routes } from "@/utils/routes";
 
 // Forms Management
 export async function getForms() {
-    const supabase = await getSupabaseClient();
+    const supabase = await createClient();
 
     const { data, error } = await supabase
         .from("operations_forms")
@@ -34,7 +34,7 @@ export async function getForms() {
 }
 
 export async function getFormById(id: string) {
-    const supabase = await getSupabaseClient();
+    const supabase = await createClient();
 
     const { data, error } = await supabase
         .from("operations_forms")
@@ -59,7 +59,7 @@ export async function getFormById(id: string) {
 }
 
 export async function createOperationsForm(input: CreateOperationsFormInput) {
-    const supabase = await getSupabaseClient();
+    const supabase = await createClient();
 
     const { data, error } = await supabase
         .from("operations_forms")
@@ -73,7 +73,7 @@ export async function createOperationsForm(input: CreateOperationsFormInput) {
 }
 
 export async function updateOperationsForm(id: string, input: UpdateOperationsFormInput) {
-    const supabase = await getSupabaseClient();
+    const supabase = await createClient();
 
     const { data, error } = await supabase
         .from("operations_forms")
@@ -89,7 +89,7 @@ export async function updateOperationsForm(id: string, input: UpdateOperationsFo
 }
 
 export async function getFormSections(formId: string) {
-    const supabase = await getSupabaseClient();
+    const supabase = await createClient();
 
     const { data, error } = await supabase
         .from("operations_forms_sections")
@@ -102,7 +102,7 @@ export async function getFormSections(formId: string) {
 }
 
 export async function createSection(input: CreateOperationsFormSectionInput) {
-    const supabase = await getSupabaseClient();
+    const supabase = await createClient();
 
     const { data, error } = await supabase
         .from("operations_forms_sections")
@@ -115,7 +115,7 @@ export async function createSection(input: CreateOperationsFormSectionInput) {
 }
 
 export async function updateSection(id: string, input: UpdateOperationsFormSectionInput) {
-    const supabase = await getSupabaseClient();
+    const supabase = await createClient();
 
     const { data, error } = await supabase
         .from("operations_forms_sections")
@@ -129,7 +129,7 @@ export async function updateSection(id: string, input: UpdateOperationsFormSecti
 }
 
 export async function deleteSection(id: string) {
-    const supabase = await getSupabaseClient();
+    const supabase = await createClient();
 
     const { error } = await supabase
         .from("operations_forms_sections")
@@ -140,7 +140,7 @@ export async function deleteSection(id: string) {
 }
 
 export async function createQuestion(input: CreateOperationsFormQuestionInput) {
-    const supabase = await getSupabaseClient();
+    const supabase = await createClient();
     const { options, ...questionData } = input;
 
     const { data: question, error: questionError } = await supabase
@@ -172,7 +172,7 @@ export async function createQuestion(input: CreateOperationsFormQuestionInput) {
 }
 
 export async function updateQuestion(id: string, input: UpdateOperationsFormQuestionInput) {
-    const supabase = await getSupabaseClient();
+    const supabase = await createClient();
     const { options, ...questionData } = input;
 
     const { data: question, error: questionError } = await supabase
@@ -216,7 +216,7 @@ export async function updateQuestion(id: string, input: UpdateOperationsFormQues
 }
 
 export async function deleteQuestion(id: string) {
-    const supabase = await getSupabaseClient();
+    const supabase = await createClient();
 
     const { error } = await supabase
         .from("operations_forms_questions")
@@ -229,7 +229,7 @@ export async function deleteQuestion(id: string) {
 }
 
 export async function getSectionQuestions(sectionId: string) {
-    const supabase = await getSupabaseClient();
+    const supabase = await createClient();
 
     const { data, error } = await supabase
         .from("operations_forms_questions")
@@ -246,7 +246,7 @@ export async function getSectionQuestions(sectionId: string) {
 
 // Response Management
 export async function createFormResponse(input: CreateOperationsFormResponseInput) {
-    const supabase = await getSupabaseClient();
+    const supabase = await createClient();
 
     const { data, error } = await supabase
         .from("operations_forms_responses")
@@ -263,7 +263,7 @@ export async function createFormResponse(input: CreateOperationsFormResponseInpu
 }
 
 export async function updateFormResponse(id: string, input: { status: 'draft' | 'completed', completed_at?: string }) {
-    const supabase = await getSupabaseClient();
+    const supabase = await createClient();
 
     const { data, error } = await supabase
         .from("operations_forms_responses")
@@ -278,7 +278,7 @@ export async function updateFormResponse(id: string, input: { status: 'draft' | 
 
 // Answer Management
 export async function saveOperationsFormAnswer(input: CreateOperationsFormAnswerInput) {
-    const supabase = await getSupabaseClient();
+    const supabase = await createClient();
 
     const { data, error } = await supabase
         .from("operations_forms_answers")
@@ -291,7 +291,7 @@ export async function saveOperationsFormAnswer(input: CreateOperationsFormAnswer
 }
 
 export async function updateOperationsFormAnswer(id: string, answer: string) {
-    const supabase = await getSupabaseClient();
+    const supabase = await createClient();
 
     const { data, error } = await supabase
         .from("operations_forms_answers")
@@ -305,7 +305,7 @@ export async function updateOperationsFormAnswer(id: string, answer: string) {
 }
 
 export async function updateInspectionStatus(id: string, status: string) {
-    const supabase = await getSupabaseClient();
+    const supabase = await createClient();
 
     const { data, error } = await supabase
         .from("operations_forms_inspections")
