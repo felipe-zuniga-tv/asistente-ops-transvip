@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { VehicleList } from "@/components/vehicles-list/vehicle-list"
+import { VehicleList } from "@/components/vehicle-list/vehicle-list"
 import { getVehicleList } from "@/lib/chat/functions"
 import SuspenseLoading from '@/components/ui/suspense';
 
