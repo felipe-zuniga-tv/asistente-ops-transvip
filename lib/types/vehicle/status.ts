@@ -17,6 +17,8 @@ export interface VehicleStatus {
     comments: string | null;
     created_at: string;
     created_by: string | null;
+    updated_by?: string | null;
+    is_active?: boolean;
     branch_id?: string;
     branch_name?: string;
 }
@@ -28,4 +30,6 @@ export interface CreateVehicleStatusInput {
     end_date: string;
     comments?: string;
     created_by?: string;
+    updated_by?: string;
+    is_active?: boolean;
 } 

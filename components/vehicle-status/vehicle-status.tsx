@@ -10,12 +10,20 @@ import { toast } from "sonner";
 import { deleteVehicleStatus } from "@/lib/database/actions";
 import type { VehicleStatus } from "@/lib/types";
 import { ConfigCardContainer } from "../tables/config-card-container";
+import { getSession } from "@/lib/auth";
+
+interface StatusConfig {
+    id: string;
+    label: string;
+    color: string;
+}
 
 interface VehicleStatusProps {
     statuses?: VehicleStatus[];
+    statusConfigs?: StatusConfig[];
 }
 
-export function VehicleStatus({ statuses = [] }: VehicleStatusProps) {
+export function VehicleStatus({ statuses = [], statusConfigs = [] }: VehicleStatusProps) {
     const router = useRouter();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [statusToDelete, setStatusToDelete] = useState<VehicleStatus | null>(null);
@@ -36,7 +44,14 @@ export function VehicleStatus({ statuses = [] }: VehicleStatusProps) {
 
     const handleDeleteStatus = async (status: VehicleStatus) => {
         try {
-            await deleteVehicleStatus(status.id);
+            // Get current user session and extract email
+            const session = await getSession();
+            // TypeScript doesn't know the structure so we use type assertion
+            const userEmail = session ? (session as any).user?.email : null;
+            
+            // We need to modify the deleteVehicleStatus function to include the updated_by field
+            await deleteVehicleStatus(status.id, userEmail);
+            
             router.refresh();
             toast.success("Estado eliminado exitosamente");
         } catch (error) {
@@ -46,7 +61,11 @@ export function VehicleStatus({ statuses = [] }: VehicleStatusProps) {
     };
 
     const handleEdit = (status: VehicleStatus) => {
-        setStatusToEdit(status);
+        // Ensure status_id is a string when setting the state
+        setStatusToEdit({
+            ...status,
+            status_id: String(status.status_id)
+        });
         setIsDialogOpen(true);
     };
 
@@ -70,6 +89,7 @@ export function VehicleStatus({ statuses = [] }: VehicleStatusProps) {
                 open={isDialogOpen}
                 onOpenChange={handleDialogClose}
                 statusToEdit={statusToEdit}
+                statusConfigs={statusConfigs}
             />
 
             <AlertDialogDeleteStatus

@@ -63,11 +63,11 @@ export const columns: ColumnDef<VehicleStatus>[] = [
     },
     {
         accessorKey: "comments",
-        header: () => <div className="text-center">Comentarios</div>,
+        header: () => <div className="text-center w-[140px]">Comentarios</div>,
         cell: ({ row }) => {
             const comments = row.original.comments;
             return (
-                <div className="text-center">
+                <div className="text-center w-[140px] truncate">
                     {comments || <span className="text-muted-foreground text-sm">Sin comentarios</span>}
                 </div>
             );

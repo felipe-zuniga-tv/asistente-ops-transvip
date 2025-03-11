@@ -230,6 +230,7 @@ export async function getVehicleStatuses() {
 				color
 			)
 		`)
+		.eq('is_active', true)
 		.order('created_at', { ascending: false })
 
 	if (error) {
@@ -247,6 +248,8 @@ export async function getVehicleStatuses() {
 		comments: status.comments,
 		created_at: status.created_at,
 		created_by: status.created_by,
+		updated_by: status.updated_by,
+		is_active: status.is_active,
 	})) as VehicleStatus[]
 }
 
@@ -262,12 +265,16 @@ export async function createVehicleStatus(data: CreateVehicleStatusInput) {
 	}
 }
 
-export async function deleteVehicleStatus(id: string) {
+export async function deleteVehicleStatus(id: string, updated_by?: string | null) {
 	const supabase = await getSupabaseClient()
-
+	
+	// Update is_active to false instead of deleting
 	const { error } = await supabase
 		.from('vehicle_status')
-		.delete()
+		.update({ 
+			is_active: false,
+			updated_by: updated_by || null
+		})
 		.eq('id', id)
 
 	if (error) {
@@ -288,6 +295,7 @@ export async function getVehicleStatusesForCalendar(vehicleNumber: string, start
 			)
 		`)
 		.eq('vehicle_number', vehicleNumber)
+		.eq('is_active', true)
 		.or(`start_date.lte.${endDate},end_date.gte.${startDate}`)
 		.order('start_date')
 
@@ -306,6 +314,8 @@ export async function getVehicleStatusesForCalendar(vehicleNumber: string, start
 		comments: status.comments,
 		created_at: status.created_at,
 		created_by: status.created_by,
+		updated_by: status.updated_by,
+		is_active: status.is_active,
 	})) as VehicleStatus[]
 }
 

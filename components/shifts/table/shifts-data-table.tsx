@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import type { ColumnDef } from "@tanstack/react-table"
 import { DataTable } from "@/components/tables/data-table"
 
@@ -23,10 +23,23 @@ export function ShiftsDataTable<TData>({
 		Array.from(new Set((data as any[]).map(item => item.branch_name)))
 			.map(branch => ({ label: branch, value: branch }))
 	), [data])
+	
+	// Filter the data by free_day if selectedDays is provided
+	const filteredData = useMemo(() => {
+		if (!selectedDays || selectedDays.length === 7) {
+			return data; // Show all data if all days are selected
+		}
+		return (data as any[]).filter(item => selectedDays.includes(item.free_day));
+	}, [data, selectedDays]);
+
+	// Apply the free_day filter when selectedDays changes
+	useEffect(() => {
+		// No additional setup needed as we're filtering the data directly
+	}, [selectedDays]);
 
 	return (
 		<DataTable
-			data={data}
+			data={filteredData}
 			columns={columns}
 			onEdit={onEdit}
 			onDelete={onDelete}
@@ -40,10 +53,6 @@ export function ShiftsDataTable<TData>({
 				}
 			]}
 			meta={{
-				freeDaysFilter: (row: any, columnId: string, filterValue: number[]) => {
-					const freeDay = row.getValue(columnId) as number
-					return filterValue.includes(freeDay)
-				},
 				selectedDays,
 			}}
 		/>

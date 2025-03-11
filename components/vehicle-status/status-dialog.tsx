@@ -5,35 +5,30 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { format, parseISO } from "date-fns";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import {
+import { Button,
     SimpleDialog,
     SimpleDialogHeader,
     SimpleDialogFooter,
     SimpleDialogTitle,
-} from "@/components/ui/simple-dialog";
-import {
     Form,
     FormControl,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
+    Input,
+    Textarea,
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
+} from "@/components/ui";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { getVehicleStatusConfigs, createVehicleStatus, updateVehicleStatus } from "@/lib/database/actions";
 import type { VehicleStatus } from "@/lib/types";
+import { getSession } from "@/lib/auth";
 
 interface StatusConfig {
     id: string;
@@ -60,68 +55,71 @@ interface StatusDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     statusToEdit?: VehicleStatus;
+    statusConfigs: StatusConfig[];
+}
+
+const emptyStatus = {
+    vehicle_number: "",
+    status_id: "",
+    start_date: new Date(),
+    end_date: new Date(),
+    comments: "",
 }
 
 export function StatusDialog({
     open,
     onOpenChange,
-    statusToEdit
+    statusToEdit,
+    statusConfigs
 }: StatusDialogProps) {
     const router = useRouter();
-    const [statusConfigs, setStatusConfigs] = useState<StatusConfig[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isFormInitialized, setIsFormInitialized] = useState(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             vehicle_number: "",
             status_id: "",
+            start_date: new Date(),
+            end_date: new Date(),
             comments: "",
         },
     });
 
-    // Reset form when dialog opens/closes or when statusToEdit changes
     useEffect(() => {
         if (open) {
-            if (statusToEdit) {
-                form.reset({
-                    vehicle_number: statusToEdit.vehicle_number.toString(),
-                    status_id: statusToEdit.status_id,
-                    start_date: parseISO(statusToEdit.start_date),
-                    end_date: parseISO(statusToEdit.end_date),
-                    comments: statusToEdit.comments || "",
-                });
+            setIsFormInitialized(false);
+            
+            if (statusToEdit) {                
+                setTimeout(() => {
+                    form.setValue("vehicle_number", statusToEdit.vehicle_number.toString());
+                    form.setValue("status_id", statusToEdit.status_id);
+                    form.setValue("start_date", parseISO(statusToEdit.start_date));
+                    form.setValue("end_date", parseISO(statusToEdit.end_date));
+                    form.setValue("comments", statusToEdit.comments || "");
+                    setIsFormInitialized(true);
+                }, 0);
             } else {
-                form.reset({
-                    vehicle_number: "",
-                    status_id: "",
-                    comments: "",
-                });
+                form.reset(emptyStatus);
+                setIsFormInitialized(true);
             }
         }
     }, [open, statusToEdit, form]);
 
     useEffect(() => {
-        async function loadStatusConfigs() {
-            try {
-                const configs = await getVehicleStatusConfigs();
-                setStatusConfigs(configs);
-            } catch (error) {
-                console.error("Error loading status configs:", error);
-                toast.error("Error al cargar los estados disponibles");
-            }
+        if (open && statusToEdit) {
+            const currentStatus = form.getValues("status_id");
         }
-
-        if (open) {
-            loadStatusConfigs();
-        }
-    }, [open]);
+    }, [open, statusToEdit, form, isFormInitialized]);
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             setIsLoading(true);
             
-            // Fix timezone issue by using the date string directly from the input
+            const session = await getSession();
+            const userEmail = session ? (session as any).user?.email : null;
+            
             const data = {
                 vehicle_number: values.vehicle_number,
                 status_id: values.status_id,
@@ -131,10 +129,17 @@ export function StatusDialog({
             };
 
             if (statusToEdit) {
-                await updateVehicleStatus(statusToEdit.id, data);
+                await updateVehicleStatus(statusToEdit.id, {
+                    ...data,
+                    updated_by: userEmail
+                });
                 toast.success("Estado actualizado exitosamente");
             } else {
-                await createVehicleStatus(data);
+                await createVehicleStatus({
+                    ...data,
+                    created_by: userEmail,
+                    is_active: true
+                });
                 toast.success("Estado registrado exitosamente");
             }
             
@@ -163,7 +168,7 @@ export function StatusDialog({
                             <FormItem>
                                 <FormLabel>Número de Móvil</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Ej: 123" {...field} />
+                                    <Input placeholder="Ejemplo: 4321" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -173,32 +178,40 @@ export function StatusDialog({
                     <FormField
                         control={form.control}
                         name="status_id"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Estado</FormLabel>
-                                <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Seleccione un estado" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        {statusConfigs.map((config) => (
-                                            <SelectItem key={config.id} value={config.id}>
-                                                <div className="flex items-center gap-2">
-                                                    <div
-                                                        className="w-3 h-3 rounded-full"
-                                                        style={{ backgroundColor: config.color }}
-                                                    />
-                                                    <span>{config.label}</span>
-                                                </div>
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                                <FormMessage />
-                            </FormItem>
-                        )}
+                        render={({ field }) => {
+                            return (
+                                <FormItem>
+                                    <FormLabel>Estado</FormLabel>
+                                    <Select 
+                                        onValueChange={(value) => {
+                                            console.log("Status changed to:", value);
+                                            field.onChange(value);
+                                        }}
+                                        value={field.value || ""}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Seleccione un estado" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {statusConfigs.map((config) => (
+                                                <SelectItem key={config.id} value={config.id}>
+                                                    <div className="flex items-center gap-2">
+                                                        <div
+                                                            className="w-3 h-3 rounded-full"
+                                                            style={{ backgroundColor: config.color }}
+                                                        />
+                                                        <span>{config.label}</span>
+                                                    </div>
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            );
+                        }}
                     />
 
                     <div className="grid grid-cols-2 gap-4">
@@ -214,7 +227,7 @@ export function StatusDialog({
                                             {...field}
                                             value={field.value ? format(field.value, 'yyyy-MM-dd') : ''}
                                             onChange={e => {
-                                                const date = new Date(e.target.value);
+                                                const date = new Date(e.target.value + 'T12:00:00');
                                                 field.onChange(date);
                                             }}
                                         />
@@ -236,7 +249,7 @@ export function StatusDialog({
                                             {...field}
                                             value={field.value ? format(field.value, 'yyyy-MM-dd') : ''}
                                             onChange={e => {
-                                                const date = new Date(e.target.value);
+                                                const date = new Date(e.target.value + 'T12:00:00');
                                                 field.onChange(date);
                                             }}
                                         />
@@ -274,4 +287,4 @@ export function StatusDialog({
             </Form>
         </SimpleDialog>
     );
-} 
+}
