@@ -13,13 +13,8 @@ import type {
 	VehicleShiftWithShiftInfo
 } from '@/lib/types'
 
-export async function getSupabaseClient() {
-	const cookieStore = cookies()
-	return createClient(cookieStore)
-}
-
 export async function getShifts() {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { data, error } = await supabase
 		.from('shifts')
@@ -48,7 +43,7 @@ export async function getShifts() {
 }
 
 export async function getVehicleShifts(): Promise<VehicleShiftWithShiftInfo[]> {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { data, error } = await supabase
 		.from('vehicle_shifts')
@@ -89,7 +84,7 @@ export async function getVehicleShifts(): Promise<VehicleShiftWithShiftInfo[]> {
 
 // SHIFTS
 export async function createShift(shiftData: Omit<ShiftData, 'branch_id'> & { branch_name: string }) {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	// Get branch_id from branch_name
 	const { data: branchData, error: branchError } = await supabase
@@ -115,7 +110,7 @@ export async function createShift(shiftData: Omit<ShiftData, 'branch_id'> & { br
 }
 
 export async function updateShift(id: string, shiftData: Partial<ShiftData>) {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { error } = await supabase
 		.from('shifts')
@@ -127,7 +122,7 @@ export async function updateShift(id: string, shiftData: Partial<ShiftData>) {
 }
 
 export async function deleteShift(id: string) {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { error } = await supabase
 		.from('shifts')
@@ -146,7 +141,7 @@ export async function getVehicleShiftsByDateRange(
 	branchId?: string
 ) {
 	try {
-		const supabase = await getSupabaseClient()
+		const supabase = await createClient()
 
 		let query = supabase
 			.from("vehicle_shifts")
@@ -204,7 +199,7 @@ export async function getVehicleShiftsByDateRange(
 
 // VEHICLE STATUS
 export async function getVehicleStatusConfigs() {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { data, error } = await supabase
 		.from('vehicle_status_config')
@@ -219,7 +214,7 @@ export async function getVehicleStatusConfigs() {
 }
 
 export async function getVehicleStatuses() {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { data, error } = await supabase
 		.from('vehicle_status')
@@ -254,7 +249,7 @@ export async function getVehicleStatuses() {
 }
 
 export async function createVehicleStatus(data: CreateVehicleStatusInput) {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { error } = await supabase
 		.from('vehicle_status')
@@ -266,7 +261,7 @@ export async function createVehicleStatus(data: CreateVehicleStatusInput) {
 }
 
 export async function deleteVehicleStatus(id: string, updated_by?: string | null) {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 	
 	// Update is_active to false instead of deleting
 	const { error } = await supabase
@@ -283,7 +278,7 @@ export async function deleteVehicleStatus(id: string, updated_by?: string | null
 }
 
 export async function getVehicleStatusesForCalendar(vehicleNumber: string, startDate: string, endDate: string) {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { data, error } = await supabase
 		.from('vehicle_status')
@@ -320,7 +315,7 @@ export async function getVehicleStatusesForCalendar(vehicleNumber: string, start
 }
 
 export async function updateVehicleStatus(id: string, data: Partial<CreateVehicleStatusInput>) {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { error } = await supabase
 		.from('vehicle_status')
@@ -338,7 +333,7 @@ export async function createVehicleStatusConfig(data: {
 	description?: string;
 	color: string;
 }) {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { error } = await supabase
 		.from('vehicle_status_config')
@@ -354,7 +349,7 @@ export async function updateVehicleStatusConfig(id: string, data: {
 	description?: string;
 	color: string;
 }) {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { error } = await supabase
 		.from('vehicle_status_config')
@@ -367,7 +362,7 @@ export async function updateVehicleStatusConfig(id: string, data: {
 }
 
 export async function deleteVehicleStatusConfig(id: string) {
-	const supabase = await getSupabaseClient()
+	const supabase = await createClient()
 
 	const { error } = await supabase
 		.from('vehicle_status_config')
