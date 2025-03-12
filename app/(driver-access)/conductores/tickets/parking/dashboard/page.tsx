@@ -1,37 +1,23 @@
-import { Button } from "@/components/ui/button"
-import { getDriverSession } from "@/lib/driver/auth"
-import { getDriverTickets, getRecentDriverTickets } from "@/lib/tickets"
-import { columns } from "@/components/finance/tickets/table/columns"
-import Link from "next/link"
-import { EmptyState } from "@/components/ui/empty-state"
 import { redirect } from "next/navigation"
-import { PlusCircle } from "lucide-react"
-import { ParkingTicketsDataTable } from "@/components/finance/tickets/table/parking-tickets-data-table"
+import { getDriverSession } from "@/lib/driver/auth"
+import { getDriverTickets } from "@/lib/tickets"
+import { EmptyState } from "@/components/ui/empty-state"
 import { ConfigCardContainer } from "@/components/tables/config-card-container"
-
-const UploadButton = () => {
-	return (
-		<Button variant="default" size={"default"} className="bg-transvip hover:bg-transvip/70" asChild>
-			<Link href="/conductores/tickets/parking/upload">
-			<PlusCircle className="h-4 w-4" />
-			Subir Ticket
-			</Link>
-		</Button>
-	)
-}
+import { columns } from "@/components/finance/tickets/table/columns"
+import { ParkingTicketsDataTable } from "@/components/finance/tickets/table/parking-tickets-data-table"
+import UploadButton from "@/components/finance/tickets/upload/ticket-upload-button"
 
 export default async function Dashboard() {
 	const session = await getDriverSession()
 	if (!session) {
-		redirect('/conductores/login')
+		redirect('/conductores')
 	}
-	// const recentTickets = await getRecentDriverTickets(session.driver_id, 5)
 	const parkingTickets = await getDriverTickets(session.driver_id)
 
 	return (
 		<ConfigCardContainer 
 			title="Tickets de Estacionamiento"
-			className="w-full mx-0"
+			className="w-full max-w-full mx-0"
 			headerContent={
 				<UploadButton />
 			}

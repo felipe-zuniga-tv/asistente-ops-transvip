@@ -16,12 +16,12 @@ export function TicketImagePreview({
   showRemoveButton = true 
 }: TicketImagePreviewProps) {
   return (
-    <div className={`relative aspect-[4/3] w-full h-[${height}]`}>
+    <div className={`relative aspect-[4/3] w-auto max-h-[${height}] mx-auto`}>
       <Image
         src={imageUrl}
         alt="Ticket preview"
         fill
-        className="rounded-lg object-contain w-auto"
+        className={`rounded-lg object-contain w-auto h-[${height}]`}
       />
       {showRemoveButton && onRemove && (
         <Button

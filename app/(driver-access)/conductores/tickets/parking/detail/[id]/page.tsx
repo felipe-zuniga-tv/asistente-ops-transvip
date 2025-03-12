@@ -18,7 +18,7 @@ interface PageProps {
 export default async function TicketDetailPage({ params }: PageProps) {
 	const session = await getDriverSession()
 	if (!session) {
-		redirect('/conductores/login')
+		redirect('/conductores')
 	}
 	const ticket = await getTicketById(params.id)
 

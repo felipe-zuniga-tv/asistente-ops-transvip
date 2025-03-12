@@ -3,25 +3,19 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { format, parse } from "date-fns"
 import { es } from "date-fns/locale"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { MoreHorizontal, Pencil, Trash, Search } from "lucide-react"
 import {
+    Badge,
+    Button,
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
     DropdownMenuLabel,
     DropdownMenuSeparator
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui"
+import { MoreHorizontal, Pencil, Trash, ArrowUp, ArrowDown } from "lucide-react"
 import type { ParkingTicket } from "@/types"
-import { 
-    SimpleDialog,
-    SimpleDialogHeader,
-    SimpleDialogTitle
-} from "@/components/ui/simple-dialog"
-import { useState } from "react"
-import Image from "next/image"
+import TicketImageViewer from "./ticket-image-viewer"
 
 export const statusMap = {
     pending_review: { label: "Pendiente", variant: "warning", className: "bg-yellow-100 text-black hover:bg-yellow-200 hover:text-black" },
@@ -31,59 +25,21 @@ export const statusMap = {
     admin_rejected: { label: "Rechazado (Admin)", variant: "destructive", className: "bg-red-100 text-red-800 hover:bg-red-200 hover:text-red-800" },
 } as const
 
-// Create a reusable image viewer component
-const TicketImageViewer = ({ imageUrl }: { imageUrl: string }) => {
-    const [isOpen, setIsOpen] = useState(false)
-    
-    const handleOpen = () => setIsOpen(true)
-    const handleClose = () => setIsOpen(false)
-    
-    return (
-        <>
-            <Button 
-                variant="outline" 
-                size="sm" 
-                className="h-8 w-8 p-0"
-                onClick={handleOpen}
-            >
-                <Search className="h-4 w-4" />
-                <span className="sr-only">Ver ticket</span>
-            </Button>
-            
-            <SimpleDialog 
-                isOpen={isOpen} 
-                onClose={handleClose}
-                className="sm:max-w-md flex flex-col items-center justify-center p-4"
-            >
-                <div className="overflow-hidden mt-4">
-                    <Image 
-                        src={imageUrl}
-                        alt="Ticket de estacionamiento" 
-                        className="h-[420px] w-auto object-contain"
-                        width={420}
-                        height={420}
-                    />
-                </div>
-            </SimpleDialog>
-        </>
-    )
-}
-
 export const columns: ColumnDef<ParkingTicket>[] = [
-    {
-        accessorKey: "driver_id",
-        header: () => <div className="hidden text-center">ID Conductor</div>,
-        cell: ({ row }) => (
-            <div className="hidden text-center text-sm">
-                {row.original.driver_id}
-            </div>
-        ),
-    },
+    // {
+    //     accessorKey: "driver_id",
+    //     header: () => <div className="w-0 hidden text-center">ID Conductor</div>,
+    //     cell: ({ row }) => (
+    //         <div className="hidden text-center text-xs">
+    //             {row.original.driver_id}
+    //         </div>
+    //     ),
+    // },
     {
         accessorKey: "booking_id",
         header: () => <div className="text-center"># Reserva</div>,
         cell: ({ row }) => (
-            <div className="text-center text-sm">
+            <div className="text-center text-xs">
                 {row.original.booking_id}
             </div>
         ),
@@ -92,7 +48,7 @@ export const columns: ColumnDef<ParkingTicket>[] = [
         accessorKey: "parsed_data.nro_boleta",
         header: () => <div className="text-center">N° Boleta</div>,
         cell: ({ row }) => (
-            <div className="text-center text-sm">
+            <div className="text-center text-xs">
                 {row.original.parsed_data.nro_boleta}
             </div>
         ),
@@ -112,13 +68,13 @@ export const columns: ColumnDef<ParkingTicket>[] = [
                     const dateTime = parse(dateTimeStr, 'dd/MM/yyyy HH:mm', new Date())
                     
                     return (
-                        <div className="text-center text-sm">
+                        <div className="text-center text-xs">
                             {format(dateTime, "dd/MM/yyyy HH:mm", { locale: es })}
                         </div>
                     )
                 } catch (error) {
                     return (
-                        <div className="text-center text-sm text-muted-foreground">
+                        <div className="text-center text-xs text-muted-foreground">
                             {entryDate} {entryTime}
                         </div>
                     )
@@ -126,7 +82,7 @@ export const columns: ColumnDef<ParkingTicket>[] = [
             }
             
             return (
-                <div className="text-center text-sm text-muted-foreground">
+                <div className="text-center text-xs text-muted-foreground">
                     No disponible
                 </div>
             )
@@ -147,13 +103,13 @@ export const columns: ColumnDef<ParkingTicket>[] = [
                     const dateTime = parse(dateTimeStr, 'dd/MM/yyyy HH:mm', new Date())
                     
                     return (
-                        <div className="text-center text-sm">
+                        <div className="text-center text-xs">
                             {format(dateTime, "dd/MM/yyyy HH:mm", { locale: es })}
                         </div>
                     )
                 } catch (error) {
                     return (
-                        <div className="text-center text-sm text-muted-foreground">
+                        <div className="text-center text-xs text-muted-foreground">
                             {exitDate} {exitTime}
                         </div>
                     )
@@ -161,7 +117,7 @@ export const columns: ColumnDef<ParkingTicket>[] = [
             }
             
             return (
-                <div className="text-center text-sm text-muted-foreground">
+                <div className="text-center text-xs text-muted-foreground">
                     No disponible
                 </div>
             )
@@ -171,7 +127,7 @@ export const columns: ColumnDef<ParkingTicket>[] = [
         accessorKey: "parsed_data.location",
         header: () => <div className="text-center">Ubicación</div>,
         cell: ({ row }) => (
-            <div className="text-center text-sm">
+            <div className="text-center text-xs">
                 {row.original.parsed_data.location || "No disponible"}
             </div>
         ),
@@ -186,7 +142,7 @@ export const columns: ColumnDef<ParkingTicket>[] = [
                 currency: "CLP",
             }).format(amount)
             return (
-                <div className="text-center text-sm">
+                <div className="text-center text-xs">
                     {formatted}
                 </div>
             )
@@ -199,10 +155,53 @@ export const columns: ColumnDef<ParkingTicket>[] = [
             const status = row.getValue("status") as keyof typeof statusMap
             const config = statusMap[status]
             return (
-                <div className="text-center text-sm">
+                <div className="text-center text-xs">
                     <Badge className={config.className}>
                         {config.label}
                     </Badge>
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: "submission_date",
+        header: ({ column }) => {
+            return (
+                <div className="text-center">
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Fecha de Envío
+                        {column.getIsSorted() ? (column.getIsSorted() === "asc" ? <ArrowUp className="ml-2 h-4 w-4" /> : <ArrowDown className="ml-2 h-4 w-4" />) : null}
+                    </Button>
+                </div>
+            )
+        },
+        cell: ({ row }) => {
+            const submissionDate = row.original.submission_date
+            
+            if (submissionDate) {
+                try {
+                    const date = new Date(submissionDate)
+                    
+                    return (
+                        <div className="text-center text-xs">
+                            {format(date, "dd/MM/yyyy HH:mm", { locale: es })}
+                        </div>
+                    )
+                } catch (error) {
+                    return (
+                        <div className="text-center text-xs text-muted-foreground">
+                            Formato inválido
+                        </div>
+                    )
+                }
+            }
+            
+            return (
+                <div className="text-center text-xs text-muted-foreground">
+                    No disponible
                 </div>
             )
         },
@@ -216,54 +215,15 @@ export const columns: ColumnDef<ParkingTicket>[] = [
             
             if (!imageUrl) {
                 return (
-                    <div className="text-center text-sm text-muted-foreground">
+                    <div className="text-center text-xs text-muted-foreground">
                         No disponible
                     </div>
                 )
             }
             
             return (
-                <div className="text-center">
+                <div className="text-center text-xs">
                     <TicketImageViewer imageUrl={imageUrl} />
-                </div>
-            )
-        },
-    },
-    {
-        id: "actions",
-        header: () => <div className="hidden text-center">Acciones</div>,
-        cell: ({ row, table }) => {
-            const ticket = row.original
-
-            return (
-                <div className="hidden text-center">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                <MoreHorizontal className="h-4 w-4" />
-                                <span className="sr-only">Open menu</span>
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Opciones</DropdownMenuLabel>
-                            {table.options.meta?.onEdit && (
-                                <DropdownMenuItem onClick={() => table.options.meta?.onEdit?.(ticket)}>
-                                    <Pencil className="mr-2 h-4 w-4" />
-                                    Editar
-                                </DropdownMenuItem>
-                            )}
-                            <DropdownMenuSeparator />
-                            {table.options.meta?.onDelete && (
-                                <DropdownMenuItem
-                                    onClick={() => table.options.meta?.onDelete?.(ticket)}
-                                    className="text-destructive"
-                                >
-                                    <Trash className="mr-2 h-4 w-4" />
-                                    Eliminar
-                                </DropdownMenuItem>
-                            )}
-                        </DropdownMenuContent>
-                    </DropdownMenu>
                 </div>
             )
         },

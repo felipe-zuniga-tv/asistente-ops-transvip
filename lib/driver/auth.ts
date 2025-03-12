@@ -44,7 +44,7 @@ export async function getDriverSession(): Promise<DriverSession | null> {
   const sessionCookie = cookies().get('driver_session')
   
   if (!sessionCookie) {
-    redirect('/conductores/login')
+    redirect('/conductores')
   }
 
   try {
@@ -52,13 +52,13 @@ export async function getDriverSession(): Promise<DriverSession | null> {
     
     if (new Date(session.expires) < new Date()) {
       cookies().delete('driver_session')
-      redirect('/conductores/login')
+      redirect('/conductores')
     }
 
     return session
   } catch {
     cookies().delete('driver_session')
-    redirect('/conductores/login')
+    redirect('/conductores')
   }
 }
 

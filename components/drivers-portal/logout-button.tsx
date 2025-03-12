@@ -10,7 +10,7 @@ export function LogoutButton() {
 
 	const handleSignOut = async () => {
 		await clearDriverSession()
-		router.push('/conductores/login')
+		router.push('/conductores')
 	}
 
 	return (
@@ -21,7 +21,7 @@ export function LogoutButton() {
 			className="flex items-center gap-1 text-gray-600 hover:text-gray-900"
 		>
 			<LogOut size={16} />
-			<span>Cerrar sesión</span>
+			<span>Salir</span>
 		</Button>
 	)
 } 

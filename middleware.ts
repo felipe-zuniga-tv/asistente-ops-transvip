@@ -3,14 +3,9 @@ import type { NextRequest } from 'next/server'
 import type { DriverSession } from '@/types'
 
 const SESSION_DURATION = 30 * 60 * 1000 // 30 minutes
-const PUBLIC_PATHS = ['/conductores/login', '/auth']
+const PUBLIC_PATHS = ['/conductores', '/auth']
 
 export async function middleware(request: NextRequest) {
-  // Check if the path is /conductores exactly and redirect to /conductores/login
-  if (request.nextUrl.pathname === '/conductores') {
-    return NextResponse.redirect(new URL('/conductores/login', request.url))
-  }
-
   // Skip middleware for public paths
   if (PUBLIC_PATHS.some(path => request.nextUrl.pathname.startsWith(path))) {
     return NextResponse.next()
@@ -21,7 +16,7 @@ export async function middleware(request: NextRequest) {
     const session = request.cookies.get('driver_session')
 
     if (!session) {
-      return NextResponse.redirect(new URL('/conductores/login', request.url))
+      return NextResponse.redirect(new URL('/conductores', request.url))
     }
 
     try {
@@ -29,7 +24,7 @@ export async function middleware(request: NextRequest) {
       
       // Check if session is expired
       if (new Date(parsedSession.expires) < new Date()) {
-        const response = NextResponse.redirect(new URL('/conductores/login', request.url))
+        const response = NextResponse.redirect(new URL('/conductores', request.url))
         response.cookies.delete('driver_session')
         return response
       }
@@ -53,7 +48,7 @@ export async function middleware(request: NextRequest) {
       return response
     } catch {
       // Invalid session format
-      return NextResponse.redirect(new URL('/conductores/login', request.url))
+      return NextResponse.redirect(new URL('/conductores', request.url))
     }
   }
 
