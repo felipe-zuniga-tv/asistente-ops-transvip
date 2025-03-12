@@ -21,6 +21,7 @@ import {
     SimpleDialogTitle
 } from "@/components/ui/simple-dialog"
 import { useState } from "react"
+import Image from "next/image"
 
 export const statusMap = {
     pending_review: { label: "Pendiente", variant: "warning", className: "bg-yellow-100 text-black hover:bg-yellow-200 hover:text-black" },
@@ -55,10 +56,12 @@ const TicketImageViewer = ({ imageUrl }: { imageUrl: string }) => {
                 className="sm:max-w-md flex flex-col items-center justify-center p-4"
             >
                 <div className="overflow-hidden mt-4">
-                    <img 
-                        src={imageUrl} 
+                    <Image 
+                        src={imageUrl}
                         alt="Ticket de estacionamiento" 
                         className="h-[420px] w-auto object-contain"
+                        width={420}
+                        height={420}
                     />
                 </div>
             </SimpleDialog>
