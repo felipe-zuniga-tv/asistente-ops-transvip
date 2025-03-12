@@ -13,7 +13,7 @@ export default async function UploadTicketPage() {
     }
 
     return (
-        <div className="flex flex-col gap-6 bg-white rounded-lg p-6 w-full max-w-4xl">
+        <div className="flex flex-col gap-6 bg-white rounded-lg p-6 w-full max-w-4xl shadow-md">
             <div className="flex flex-col items-start gap-2">
                 <div className="w-full flex justify-start items-center gap-2">
                     <TransvipLogo size={24} />
