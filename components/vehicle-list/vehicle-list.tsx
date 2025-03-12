@@ -70,7 +70,7 @@ export function VehicleList({ branch: initialBranch, initialVehicles = [], onSea
 
 	useEffect(() => {
 		fetchVehicles();
-	}, [branch, page]);
+	}, [branch, page, fetchVehicles]);
 
 	const filteredVehicles = vehicles.filter((vehicle) => {
 		const searchLower = filters.search.toLowerCase()

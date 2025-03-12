@@ -2,7 +2,6 @@
 
 import type { ParkingTicket } from '@/types'
 import { createClient } from '@/utils/supabase/server'
-import { cookies } from 'next/headers'
 
 // Database table name
 const TABLE_NAME = 'parking_tickets'
@@ -13,14 +12,16 @@ const mockTickets: ParkingTicket[] = [
     id: '1',
     booking_id: 'B001',
     driver_id: 'mock-id',
-    submission_date: new Date().toISOString(),
+    submission_date: new Date(),
     status: 'pending_review',
     parsed_data: {
       nro_boleta: '123456',
-      entry_timestamp: new Date().toISOString(),
-      exit_timestamp: new Date().toISOString(),
+      entry_date: new Date().toISOString(),
+      entry_time: new Date().toLocaleString('es-CL', { hour: '2-digit', minute: '2-digit', hour12: false }),
+      exit_date: new Date().toISOString(),
+      exit_time: new Date().toLocaleString('es-CL', { hour: '2-digit', minute: '2-digit', hour12: false }),
       amount: 5000,
-      location: 'SCL Airport Parking',
+      location: 'Aeropuerto de SCL',
       image_url: 'https://via.placeholder.com/150'
     }
   }
@@ -90,11 +91,16 @@ export async function createTicket(
 ): Promise<ParkingTicket> {
   // No need to upload image as we now receive the URL directly
   const supabase = await createClient()
+
+  console.log('imageUrl', imageUrl)
+  console.log('parsedData', parsedData)
+  console.log('driverId', driverId)
+  console.log('bookingId', bookingId)
   
   const ticket: Omit<ParkingTicket, 'id'> = {
     booking_id: bookingId,
     driver_id: driverId,
-    submission_date: new Date().toISOString(),
+    submission_date: new Date(),
     status: 'pending_review',
     parsed_data: {
       ...parsedData,
@@ -104,7 +110,7 @@ export async function createTicket(
 
   const { data, error } = await supabase
     .from(TABLE_NAME)
-    .insert(ticket)
+    .insert([ticket])
     .select()
     .single()
 

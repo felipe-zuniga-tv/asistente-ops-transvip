@@ -2,8 +2,10 @@ import { cleanMarkdownCodeBlocks } from '@/lib/utils'
 
 interface ParsedTicketData {
   nro_boleta: string
-  entry_timestamp: string
-  exit_timestamp: string
+  entry_date: string
+  entry_time: string
+  exit_date: string
+  exit_time: string
   amount: number
   location: string
 }
@@ -45,9 +47,11 @@ export async function parseTicketImage(imageBase64: string): Promise<ParsedTicke
 
   return {
     nro_boleta: parsedResult.nro_boleta,
-    entry_timestamp: parsedResult.entry_date + 'T' + parsedResult.entry_time + ':00',
-    exit_timestamp: parsedResult.exit_date + 'T' + parsedResult.exit_time + ':00',
+    entry_date: parsedResult.entry_date,
+    entry_time: parsedResult.entry_time,
+    exit_date: parsedResult.exit_date,
+    exit_time: parsedResult.exit_time,
     amount: parsedResult.valor,
-    location: 'Estacionamiento Aeropuerto de Santiago'
+    location: 'Aeropuerto SCL'
   }
 } 

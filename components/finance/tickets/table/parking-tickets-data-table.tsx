@@ -3,6 +3,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import type { ParkingTicket } from "@/types";
 import { DataTable } from "@/components/tables/data-table";
+import { statusMap } from "./columns";
 
 interface DataTableProps {
     columns: ColumnDef<ParkingTicket>[];
@@ -19,10 +20,10 @@ export function ParkingTicketsDataTable({
     onDelete,
     initialPageSize,
 }: DataTableProps) {
-    // Create unique status options from data
-    const statusOptions = Array.from(new Set(data.map(item => item.status))).map(status => ({
-        label: status,
-        value: status,
+    // Create status options from statusMap
+    const statusOptions = Object.entries(statusMap).map(([value, config]) => ({
+        label: config.label,
+        value,
     }));
 
     return (

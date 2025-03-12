@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { getDriverSession } from "@/lib/driver/auth"
-import { getRecentDriverTickets } from "@/lib/tickets"
+import { getDriverTickets, getRecentDriverTickets } from "@/lib/tickets"
 import { columns } from "@/components/finance/tickets/table/columns"
 import Link from "next/link"
 import { EmptyState } from "@/components/ui/empty-state"
@@ -25,26 +25,20 @@ export default async function Dashboard() {
 	if (!session) {
 		redirect('/conductores/login')
 	}
-	const recentTickets = await getRecentDriverTickets(session.driver_id, 5)
+	// const recentTickets = await getRecentDriverTickets(session.driver_id, 5)
+	const parkingTickets = await getDriverTickets(session.driver_id)
 
 	return (
 		<ConfigCardContainer 
 			title="Tickets de Estacionamiento"
-			className="max-w-full"
+			className="w-full mx-0"
 			headerContent={
 				<UploadButton />
 			}
-		>
-			<div>
-				<h3 className="text-lg font-medium mb-1">Últimos Envíos</h3>
-				<p className="text-sm text-muted-foreground mb-4">
-					Tus 5 últimos envíos de tickets de estacionamiento
-				</p>
-			</div>
-			
-			{recentTickets.length > 0 ? (
+		>			
+			{parkingTickets.length > 0 ? (
 				<ParkingTicketsDataTable
-					data={recentTickets}
+					data={parkingTickets}
 					columns={columns}
 					initialPageSize={5}
 				/>

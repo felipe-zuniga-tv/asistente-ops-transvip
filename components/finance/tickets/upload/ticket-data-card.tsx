@@ -28,7 +28,7 @@ export function TicketDataCard({
 		<Card>
 			<CardHeader>
 				<CardTitle>Datos del Ticket</CardTitle>
-				<CardDescription>Información extraída del ticket. Puedes editar los campos si es necesario.</CardDescription>
+				<CardDescription className="text-xs">Información extraída del ticket. Puedes editar los campos si es necesario.</CardDescription>
 			</CardHeader>
 			<CardContent className="flex flex-col gap-4">
 				{/* Create a 2-column grid layout */}
@@ -54,17 +54,17 @@ export function TicketDataCard({
 						)}
 					/>
 
-					{/* Entry Timestamp */}
+					{/* Entry Date and Time */}
 					<FormField
 						control={form.control}
-						name="entry_timestamp"
+						name="entry_date"
 						render={({ field }) => (
 							<FormItem className="space-y-0 grid grid-cols-[1fr_3fr] items-center gap-4">
-								<FormLabel className="mb-0">Entrada</FormLabel>
+								<FormLabel className="mb-0">Fecha Entrada</FormLabel>
 								<div>
 									<FormControl>
 										<Input
-											placeholder="Fecha y hora de entrada"
+											placeholder="Fecha de entrada (DD/MM/YYYY)"
 											disabled={isPending}
 											{...field}
 										/>
@@ -75,17 +75,57 @@ export function TicketDataCard({
 						)}
 					/>
 
-					{/* Exit Timestamp */}
 					<FormField
 						control={form.control}
-						name="exit_timestamp"
+						name="entry_time"
 						render={({ field }) => (
 							<FormItem className="space-y-0 grid grid-cols-[1fr_3fr] items-center gap-4">
-								<FormLabel className="mb-0">Salida</FormLabel>
+								<FormLabel className="mb-0">Hora Entrada</FormLabel>
 								<div>
 									<FormControl>
 										<Input
-											placeholder="Fecha y hora de salida"
+											placeholder="Hora de entrada (HH:MM)"
+											disabled={isPending}
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage />
+								</div>
+							</FormItem>
+						)}
+					/>
+
+					{/* Exit Date and Time */}
+					<FormField
+						control={form.control}
+						name="exit_date"
+						render={({ field }) => (
+							<FormItem className="space-y-0 grid grid-cols-[1fr_3fr] items-center gap-4">
+								<FormLabel className="mb-0">Fecha Salida</FormLabel>
+								<div>
+									<FormControl>
+										<Input
+											placeholder="Fecha de salida (DD/MM/YYYY)"
+											disabled={isPending}
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage />
+								</div>
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name="exit_time"
+						render={({ field }) => (
+							<FormItem className="space-y-0 grid grid-cols-[1fr_3fr] items-center gap-4">
+								<FormLabel className="mb-0">Hora Salida</FormLabel>
+								<div>
+									<FormControl>
+										<Input
+											placeholder="Hora de salida (HH:MM)"
 											disabled={isPending}
 											{...field}
 										/>

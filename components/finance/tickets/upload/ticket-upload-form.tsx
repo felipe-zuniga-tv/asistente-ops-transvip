@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { validateBookingForDriver, validateTicketTiming } from "@/lib/booking"
 import { parseTicketImage } from "@/lib/ai"
 import { createTicket } from "@/lib/tickets"
 import { uploadTicketImageServer } from "@/lib/storage"
@@ -50,8 +49,10 @@ export function TicketUploadForm({ driverId }: TicketUploadFormProps) {
 		defaultValues: {
 			booking_id: "",
 			nro_boleta: "",
-			entry_timestamp: "",
-			exit_timestamp: "",
+			entry_date: "",
+			entry_time: "",
+			exit_date: "",
+			exit_time: "",
 			amount: "",
 			location: "",
 			confirm: false
@@ -72,8 +73,10 @@ export function TicketUploadForm({ driverId }: TicketUploadFormProps) {
 			confirmForm.reset({
 				booking_id: "",
 				nro_boleta: parsedData.nro_boleta,
-				entry_timestamp: parsedData.entry_timestamp,
-				exit_timestamp: parsedData.exit_timestamp,
+				entry_date: parsedData.entry_date,
+				entry_time: parsedData.entry_time,
+				exit_date: parsedData.exit_date,
+				exit_time: parsedData.exit_time,
 				amount: parsedData.amount.toString(),
 				location: parsedData.location,
 				confirm: false
@@ -115,8 +118,10 @@ export function TicketUploadForm({ driverId }: TicketUploadFormProps) {
 			confirmForm.reset({
 				booking_id: "",
 				nro_boleta: extractedData.nro_boleta,
-				entry_timestamp: extractedData.entry_timestamp,
-				exit_timestamp: extractedData.exit_timestamp,
+				entry_date: extractedData.entry_date,
+				entry_time: extractedData.entry_time,
+				exit_date: extractedData.exit_date,
+				exit_time: extractedData.exit_time,
 				amount: extractedData.amount.toString(),
 				location: extractedData.location,
 				confirm: false
@@ -163,8 +168,10 @@ export function TicketUploadForm({ driverId }: TicketUploadFormProps) {
 				// Create ticket with form data and image URL
 				await createTicket(driverId, booking_id, uploadedImageUrl, {
 					nro_boleta: values.nro_boleta,
-					entry_timestamp: values.entry_timestamp,
-					exit_timestamp: values.exit_timestamp,
+					entry_date: values.entry_date,
+					entry_time: values.entry_time,
+					exit_date: values.exit_date,
+					exit_time: values.exit_time,
 					amount: parseFloat(values.amount),
 					location: values.location,
 					image_url: uploadedImageUrl
@@ -179,7 +186,7 @@ export function TicketUploadForm({ driverId }: TicketUploadFormProps) {
 				setCurrentStep('upload')
 
 				// Redirect to history page
-				router.push('/conductores/tickets/parking/history')
+				router.push('/conductores/tickets/parking/dashboard')
 			} catch (err) {
 				console.error(err)
 				setError(err instanceof Error ? err.message : 'Ha ocurrido un error')
@@ -192,8 +199,10 @@ export function TicketUploadForm({ driverId }: TicketUploadFormProps) {
 		confirmForm.reset({
 			booking_id: '',
 			nro_boleta: '',
-			entry_timestamp: '',
-			exit_timestamp: '',
+			entry_date: '',
+			entry_time: '',
+			exit_date: '',
+			exit_time: '',
 			amount: '',
 			location: '',
 			confirm: false

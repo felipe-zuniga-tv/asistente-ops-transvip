@@ -28,8 +28,10 @@ export const confirmationSchema = z.object({
 		z.instanceof(File).transform(file => `[File: ${file.name}]`)
 	]).transform(val => ensureString(val)),
 	nro_boleta: z.string().min(1, "El número de boleta es requerido"),
-	entry_timestamp: z.string().min(1, "La fecha de entrada es requerida"),
-	exit_timestamp: z.string().min(1, "La fecha de salida es requerida"),
+	entry_date: z.string().min(1, "La fecha de entrada es requerida"),
+	entry_time: z.string().min(1, "La hora de entrada es requerida"),
+	exit_date: z.string().min(1, "La fecha de salida es requerida"),
+	exit_time: z.string().min(1, "La hora de salida es requerida"),
 	amount: z.string().min(1, "El monto es requerido"),
 	location: z.string().min(1, "La ubicación es requerida"),
 	confirm: z.boolean().refine(val => val === true, "Debes confirmar para continuar")
@@ -40,8 +42,10 @@ export type ConfirmationValues = z.infer<typeof confirmationSchema>
 
 export type ParsedTicketData = {
 	nro_boleta: string
-	entry_timestamp: string
-	exit_timestamp: string
+	entry_date: string
+	entry_time: string
+	exit_date: string
+	exit_time: string
 	amount: number
 	location: string
 } 

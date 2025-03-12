@@ -43,7 +43,7 @@ export function ConfirmationStep({
 							<FormLabel>Número de Reserva</FormLabel>
 							<FormControl>
 								<Input
-									placeholder="Ingresa tu # de Reserva"
+									placeholder="Ingresa el número de Reserva"
 									disabled={isPending}
 									value={field.value}
 									onChange={(e) => {

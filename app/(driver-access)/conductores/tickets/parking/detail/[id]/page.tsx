@@ -40,7 +40,7 @@ export default async function TicketDetailPage({ params }: PageProps) {
 		<div className="space-y-6">
 			<div className="flex items-center gap-4">
 				<Button variant="ghost" size="icon" asChild>
-					<Link href="/conductores/tickets/parking/history">
+					<Link href="/conductores/tickets/parking/dashboard">
 						<ArrowLeft className="h-4 w-4" />
 					</Link>
 				</Button>
@@ -80,13 +80,13 @@ export default async function TicketDetailPage({ params }: PageProps) {
 							<div>
 								<p className="text-sm text-muted-foreground">Hora de Entrada</p>
 								<p className="mt-1 font-medium">
-									{format(new Date(ticket.parsed_data.entry_timestamp), 'PPp')}
+									{format(new Date(ticket.parsed_data.entry_date), 'PPp')} {ticket.parsed_data.entry_time}
 								</p>
 							</div>
 							<div>
 								<p className="text-sm text-muted-foreground">Hora de Salida</p>
 								<p className="mt-1 font-medium">
-									{format(new Date(ticket.parsed_data.exit_timestamp), 'PPp')}
+									{format(new Date(ticket.parsed_data.exit_date), 'PPp')} {ticket.parsed_data.exit_time}
 								</p>
 							</div>
 							<div>
