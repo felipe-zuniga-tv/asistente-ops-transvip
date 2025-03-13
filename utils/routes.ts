@@ -51,6 +51,7 @@ export const Routes = Object.freeze({
 		VENTA_SUCURSALES: '/sucursales/venta',
 		TURNOS: '/turnos',
 		FORMULARIOS: '/formularios',
+		TICKETS: '/conductores',
 	},
 	QR_GEN: '/qr-code',
 	ROUTING: {

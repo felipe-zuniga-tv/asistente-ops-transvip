@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { CarIcon, PhoneIcon, UserCircleIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { AssistantMessageContent, UserMessage } from '../message';
-import { IVehicleDetailDrivers, IVehicleDetail } from '@/lib/types/chat';
+import { IVehicleDetailDrivers, IVehicleDetail } from '@/lib/core/types/chat';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import ToolsButton from '../tools/tools-button';

@@ -10,7 +10,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import type { VehicleStatusConfig } from "@/lib/types/vehicle/status";
+import type { VehicleStatusConfig } from "@/lib/core/types/vehicle/status";
 
 interface AlertDialogDeleteStatusConfigProps {
     config: VehicleStatusConfig | null;

@@ -26,9 +26,9 @@ import { Button,
 } from "@/components/ui";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { getVehicleStatusConfigs, createVehicleStatus, updateVehicleStatus } from "@/lib/database/actions";
-import type { VehicleStatus } from "@/lib/types";
-import { getSession } from "@/lib/auth";
+import { getVehicleStatusConfigs, createVehicleStatus, updateVehicleStatus } from "@/lib/services/database/actions";
+import type { VehicleStatus } from "@/lib/core/types";
+import { getSession } from "@/lib/core/auth";
 
 interface StatusConfig {
     id: string;

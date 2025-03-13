@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { type PaymentMethod } from '@/lib/types/admin'
+import { type PaymentMethod } from '@/lib/core/types/admin'
 import {
     AlertDialog,
     AlertDialogAction,

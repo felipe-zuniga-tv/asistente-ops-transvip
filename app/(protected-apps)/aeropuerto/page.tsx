@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { airportTools } from '@/lib/config/airport'
+import { airportTools } from '@/lib/core/config/airport'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { TransvipLogo } from '@/components/transvip/transvip-logo';

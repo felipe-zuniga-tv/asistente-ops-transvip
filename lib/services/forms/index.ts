@@ -14,7 +14,7 @@ import type {
     CreateOperationsFormSectionInput,
     UpdateOperationsFormSectionInput,
     CreateOperationsFormResponseInput,
-} from "@/lib/types/vehicle/forms";
+} from "@/lib/core/types/vehicle/forms";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { Routes } from "@/utils/routes";
@@ -316,4 +316,6 @@ export async function updateInspectionStatus(id: string, status: string) {
 
     if (error) throw error;
     return data;
-} 
+}
+
+export * from './forms'; 

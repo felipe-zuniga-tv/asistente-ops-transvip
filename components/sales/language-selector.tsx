@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import type { Language } from '@/lib/translations'
+import type { Language } from '@/lib/core/i18n'
 
 interface LanguageOption {
 	value: Language

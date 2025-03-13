@@ -3,7 +3,7 @@ import { ClipboardList } from "lucide-react";
 import Link from "next/link";
 import { TransvipLogo } from "../transvip/transvip-logo";
 import { Button } from "../ui/button";
-import { OperationsForm } from "@/lib/types/vehicle/forms";
+import { OperationsForm } from "@/lib/core/types/vehicle/forms";
 
 export async function FormulariosContent({ activeForms, baseUrl }: { 
 	activeForms: OperationsForm[]

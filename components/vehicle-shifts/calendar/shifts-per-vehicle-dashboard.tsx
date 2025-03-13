@@ -1,13 +1,13 @@
 'use client'
 import { useState, useCallback, useEffect } from "react"
 import { startOfToday, addDays, format } from "date-fns"
-import { getVehicleShiftsByDateRange, getVehicleStatusesForCalendar } from "@/lib/database/actions"
+import { getVehicleShiftsByDateRange, getVehicleStatusesForCalendar } from "@/lib/services/database/actions"
 import { useDebounce } from "@/hooks/use-debounce"
 import { useToast } from "@/hooks/use-toast"
 import { Card } from "@/components/ui/card"
 import { ShiftsPerVehicleHeader } from "./shifts-per-vehicle-header"
 import { ShiftsPerVehicleCalendar } from "./shifts-per-vehicle-calendar"
-import type { VehicleShiftWithShiftInfo, VehicleStatus } from "@/lib/types"
+import type { VehicleShiftWithShiftInfo, VehicleStatus } from "@/lib/core/types"
 import { cn } from "@/lib/utils"
 
 interface ShiftsPerVehicleDashboardProps {

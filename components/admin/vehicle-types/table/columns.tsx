@@ -10,7 +10,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
-import type { VehicleType } from "@/lib/types/admin";
+import type { VehicleType } from "@/lib/core/types/admin";
 import { cn } from "@/lib/utils";
 
 export const columns: ColumnDef<VehicleType>[] = [

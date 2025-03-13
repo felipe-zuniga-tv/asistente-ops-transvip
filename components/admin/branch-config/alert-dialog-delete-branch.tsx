@@ -12,7 +12,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import type { Branch } from '@/lib/types/admin'
+import type { Branch } from '@/lib/core/types/admin'
 
 interface AlertDialogDeleteBranchProps {
     branch: Branch | null

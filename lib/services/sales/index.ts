@@ -1,9 +1,9 @@
 'use server'
 import { revalidatePath } from 'next/cache'
 import { Routes } from '@/utils/routes'
-import { CreateSalesResponse, SalesResponse } from '@/lib/types/sales'
+import { CreateSalesResponse, SalesResponse } from '@/lib/core/types/sales'
 import { createClient } from '@/utils/supabase/server'
-import { getSession } from '@/lib/auth';
+import { getSession } from '@/lib/core/auth';
 
 const SALES_RESPONSES_TABLE = 'sales_responses'
 

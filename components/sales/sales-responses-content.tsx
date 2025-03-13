@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { SalesResponse } from '@/lib/types/sales'
+import { SalesResponse } from '@/lib/core/types/sales'
 import { SalesResponsesTable } from './sales-responses-table'
 import { SalesResponseNotesDialog } from './sales-response-notes-dialog'
 import { useToast } from '@/hooks/use-toast'

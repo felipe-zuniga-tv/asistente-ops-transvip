@@ -1,7 +1,7 @@
 'use server';
 
 import { Message } from 'ai';
-import { getSession } from '@/lib/auth';
+import { getSession } from '@/lib/core/auth';
 import { streamChat } from '@/lib/ai-service';
 
 // Fixed model that will be used for all chat requests

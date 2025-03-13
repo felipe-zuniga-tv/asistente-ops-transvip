@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react'
 import { CheckCircle2 } from 'lucide-react'
 import { format } from 'date-fns'
-import { type Language } from '@/lib/translations'
+import { type Language } from '@/lib/core/i18n'
 import { es } from 'date-fns/locale'
 
 interface ConfirmationStepProps {

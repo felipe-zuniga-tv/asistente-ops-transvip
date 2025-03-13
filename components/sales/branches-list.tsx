@@ -2,8 +2,8 @@
 
 import Link from 'next/link'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
-import type { Branch } from '@/lib/types/admin'
-import type { Language } from '@/lib/translations'
+import type { Branch } from '@/lib/core/types/admin'
+import type { Language } from '@/lib/core/i18n'
 import { Routes } from '@/utils/routes'
 
 interface BranchesListProps {

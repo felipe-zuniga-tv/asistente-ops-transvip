@@ -1,4 +1,4 @@
-import { Language } from '@/lib/translations'
+import { Language } from '@/lib/core/i18n'
 
 export interface SalesResponse {
   id: string

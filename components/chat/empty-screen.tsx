@@ -1,5 +1,5 @@
 import { TransvipLogo } from "../transvip/transvip-logo";
-import { toolsList } from "@/lib/config/tools";
+import { toolsList } from "@/lib/core/config/tools";
 import {
     Select,
     SelectContent,

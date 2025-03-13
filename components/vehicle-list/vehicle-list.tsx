@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
-import { branches, vehicleTypes } from '@/lib/config/transvip-general'
-import { IVehicleDetail } from '@/lib/types/chat'
+import { branches, vehicleTypes } from '@/lib/core/config/transvip-general'
+import { IVehicleDetail } from '@/lib/core/types/chat'
 import { getVehicles } from '@/lib/general/actions'
 import {
 	Select,

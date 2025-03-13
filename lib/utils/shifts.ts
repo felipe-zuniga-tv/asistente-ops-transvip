@@ -1,7 +1,7 @@
 import { format } from "date-fns"
 import { adjustDayIndex } from "./date"
-import { VehicleStatus } from "@/lib/types"
-import { VehicleShiftWithShiftInfo, VehicleShiftWithFreeDay } from "@/lib/types/calendar"
+import { VehicleStatus } from "@/lib/core/types"
+import { VehicleShiftWithShiftInfo, VehicleShiftWithFreeDay } from "@/lib/core/types/calendar"
 
 export function getHighestPriorityShiftForDate(
     shifts: VehicleShiftWithShiftInfo[],

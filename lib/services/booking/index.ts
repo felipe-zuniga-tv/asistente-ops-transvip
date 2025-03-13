@@ -1,10 +1,10 @@
 'use server'
 import { addHours } from "date-fns"
-import { getSession } from "../../auth"
-import { branches, paymentMethods } from "@/lib/config/transvip-general"
+import { getSession } from "@/lib/core/auth"
+import { branches, paymentMethods } from "@/lib/core/config/transvip-general"
 import { BOOKING_DETAIL_URL, BOOKING_ID_API_URL, BOOKING_INFO_FULL_URL } from "@/lib/services/config/urls"
 import { getResponseFromURL } from "@/lib/services/utils/helpers"
-import { IBookingInfo, IBookingInfoOutput } from "@/lib/types"
+import { IBookingInfo, IBookingInfoOutput } from "@/lib/core/types/chat"
 import { getVehicleDetail } from "../vehicle"
 
 const NULL_DATE = '0000-00-00 00:00:00'

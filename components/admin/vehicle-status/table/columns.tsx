@@ -11,7 +11,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { VehicleStatusConfig } from "@/lib/types/vehicle/status";
+import type { VehicleStatusConfig } from "@/lib/core/types/vehicle/status";
 
 export const columns: ColumnDef<VehicleStatusConfig>[] = [
     {

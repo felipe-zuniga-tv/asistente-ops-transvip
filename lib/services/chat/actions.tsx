@@ -12,28 +12,28 @@ import QRCode from "react-qr-code";
 // import { openai } from "@ai-sdk/openai";
 import { google } from "@ai-sdk/google";
 
-import { getSession } from "../auth";
+import { getSession } from "@/lib/core/auth";
 
 import { BotCard, AssistantMessage, LoadingMessage, UserMessage } from "@/components/chat/message";
 import { VehicleStatusSearch } from "@/components/chat/search/vehicle-status-search";
 import { BookingCard, BookingIdSearch } from "@/components/chat/search/booking-search";
-import { IVehicleDetail, IDriverProfile } from "../types";
+import { IVehicleDetail, IDriverProfile } from "@/lib/core/types/chat";
 import { VehicleDetail } from "@/components/chat/search/vehicle-detail-search";
 import { DriverProfile } from "@/components/chat/search/driver-profile-search";
 import AirportStatus from "@/components/chat/airport/airport-status";
 import { VehicleInfoCard } from "@/components/mtt/vehicle-info-card";
 
 import { VEHICLE_STATUS, nanoid } from "@/lib/utils";
-import { CREATE_DRIVER_RATINGS_SUMMARY, CREATE_TEXT_PROMPT, EMAIL_TEXT_OPS_EXAMPLE, SYSTEM_MESSAGE } from "@/lib/config/chat"
+import { CREATE_DRIVER_RATINGS_SUMMARY, CREATE_TEXT_PROMPT, EMAIL_TEXT_OPS_EXAMPLE, SYSTEM_MESSAGE } from "@/lib/core/config/chat"
 import { getVehicleStatus, getVehicleDetail } from "@/lib/services/vehicle";
 import { getDriverProfile, searchDriver, getDriverRatings, getDriverRatingSummary } from "@/lib/services/driver";
 import { getBookingInfo, getBookings } from "@/lib/services/booking";
 import { getZonaIluminadaServices } from "@/lib/services/zone";
 
-import { airportZones } from "../config/airport";
+import { airportZones } from "@/lib/core/config/airport";
 
 import { getMTTVehiclesInfo } from "@/lib/services/mtt/actions";
-import { getSystemConfigs } from "../services/system";
+import { getSystemConfigs } from "@/lib/services/system";
 
 const GOOGLE_MODEL_NAME_DEFAULT = 'gemini-2.0-flash-exp'
 

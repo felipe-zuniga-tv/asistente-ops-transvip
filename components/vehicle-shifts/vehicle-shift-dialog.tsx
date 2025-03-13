@@ -31,7 +31,7 @@ import {
 import { createVehicleShift, updateVehicleShift } from "@/lib/shifts/actions"
 import { VehicleShift } from "./vehicle-shifts"
 import { getBranches } from "@/lib/services/admin/index"
-import { Branch } from "@/lib/types/admin"
+import { Branch } from "@/lib/core/types/admin"
 
 const formSchema = z.object({
 	branch_id: z.string().uuid("Seleccione una sucursal válida"),

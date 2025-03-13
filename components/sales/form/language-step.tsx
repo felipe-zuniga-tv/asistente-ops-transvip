@@ -3,7 +3,7 @@
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { type Language } from '@/lib/translations'
+import { type Language } from '@/lib/core/i18n'
 import { ArrowRightIcon } from 'lucide-react'
 import { languages } from '../language-selector'
 

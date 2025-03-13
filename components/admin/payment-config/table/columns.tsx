@@ -1,6 +1,6 @@
 'use client'
 
-import { type PaymentMethod } from '@/lib/types/admin'
+import { type PaymentMethod } from '@/lib/core/types/admin'
 import { type ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'

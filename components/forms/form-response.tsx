@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { OperationsFormQuestion, OperationsFormSection } from "@/lib/types/vehicle/forms";
+import { OperationsFormQuestion, OperationsFormSection } from "@/lib/core/types/vehicle/forms";
 import { QuestionInput } from "@/components/forms/question-input";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";

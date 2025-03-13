@@ -1,8 +1,8 @@
 import { Suspense } from 'react'
 import SuspenseLoading from '@/components/ui/suspense'
 import AirportStatusClient from '@/components/airport/zi/airport-status-client'
-import { getZonaIluminadaServices } from '@/lib/chat/functions'
-import { AirportZone, airportZones } from '@/lib/config/airport'
+import { getZonaIluminadaServices } from '@/lib/services/chat/functions'
+import { AirportZone, airportZones } from '@/lib/core/config/airport'
 
 export default async function AirportPage({ params }: { params: { airport: string } }) {
   const airport = params.airport

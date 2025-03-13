@@ -3,8 +3,8 @@
 import { useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Routes } from '@/utils/routes'
-import { Language } from '@/lib/translations'
-import { Branch } from '@/lib/types/admin'
+import { Language } from '@/lib/core/i18n'
+import { Branch } from '@/lib/core/types/admin'
 import { SalesForm } from './form/sales-form'
 
 export default function SalesPageContent({ branches }: { branches: Branch[] }) {

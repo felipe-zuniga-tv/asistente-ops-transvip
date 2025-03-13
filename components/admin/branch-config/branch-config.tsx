@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useMemo, useCallback } from 'react'
-import { type Branch } from '@/lib/types/admin'
+import { type Branch } from '@/lib/core/types/admin'
 import { BranchConfigDataTable } from './table/branch-config-data-table'
 import { BranchDialog } from './branch-dialog'
 import { AlertDialogDeleteBranch } from './alert-dialog-delete-branch'

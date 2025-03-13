@@ -1,4 +1,4 @@
-import { getBookingInfo } from '@/lib/chat/functions';
+import { getBookingInfo } from '@/lib/services/chat/functions';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {

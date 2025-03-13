@@ -19,7 +19,7 @@ import {
 	SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
-import { Tool } from "@/lib/types"
+import { Tool } from "@/lib/core/types"
 import { Input } from "../ui/input";
 
 export function NavMain({ items, handleClick, showHints }: {

@@ -8,7 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ShiftDialog } from "./shift-dialog";
-import { deleteShift } from "@/lib/database/actions";
+import { deleteShift } from "@/lib/services/database/actions";
 import { UploadShiftsDialog } from "./upload-shifts-dialog";
 import { ShiftsDataTable } from "./table/shifts-data-table";
 import { columns } from "./table/columns";

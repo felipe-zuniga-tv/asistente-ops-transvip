@@ -1,9 +1,9 @@
 import { AppSidebar } from "@/components/chat/panel/app-sidebar";
 import Header from "@/components/ui/header";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { getSession } from "@/lib/auth";
-import { AI } from "@/lib/chat/actions";
-import { Session } from "@/lib/types";
+import { getSession } from "@/lib/core/auth";
+import { AI } from "@/lib/services/chat/actions";
+import { Session } from "@/lib/core/types";
 import { nanoid } from "@/lib/utils";
 import { Routes } from "@/utils/routes";
 import { redirect } from "next/navigation";

@@ -1,9 +1,9 @@
 import { format } from "date-fns"
-import { getSession } from "../../auth"
-import { branches } from "../../config/transvip-general"
+import { getSession } from "@/lib/core/auth"
+import { branches } from "@/lib/core/config"
 import { DRIVER_SEARCH_API_URL, DRIVER_PROFILE_API_URL, DRIVER_RATINGS_API_URL } from "@/lib/services/config/urls"
 import { getResponseFromURL, getAssignedVehicles } from "@/lib/services/utils/helpers"
-import { IDriverProfile } from "@/lib/types"
+import { IDriverProfile } from "@/lib/core/types/chat"
 import { getAccessToken, buildUrlParams } from "@/lib/utils/helpers"
 
 export async function searchDriver(driver_email: string) {

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { SimpleDialog, SimpleDialogHeader, SimpleDialogTitle } from "@/components/ui/simple-dialog";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { createShift } from "@/lib/database/actions";
+import { createShift } from "@/lib/services/database/actions";
 import { Shift } from "./shifts-definition";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";

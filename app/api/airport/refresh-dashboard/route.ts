@@ -1,4 +1,4 @@
-import { getZonaIluminadaServices } from '@/lib/chat/functions'
+import { getZonaIluminadaServices } from '@/lib/services/chat/functions'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {

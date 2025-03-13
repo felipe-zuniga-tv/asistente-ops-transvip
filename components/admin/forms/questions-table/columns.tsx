@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Edit2, Trash2 } from "lucide-react";
-import type { OperationsFormQuestion } from "@/lib/types/vehicle/forms";
+import type { OperationsFormQuestion } from "@/lib/core/types/vehicle/forms";
 
 interface ColumnsProps {
     onEdit: (question: OperationsFormQuestion) => void;

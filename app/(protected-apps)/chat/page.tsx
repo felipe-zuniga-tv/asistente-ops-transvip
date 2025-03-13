@@ -1,4 +1,4 @@
-import { getSession } from '@/lib/auth';
+import { getSession } from '@/lib/core/auth';
 import { nanoid } from 'nanoid';
 import { Chat } from '@/components/chat/chat';
 

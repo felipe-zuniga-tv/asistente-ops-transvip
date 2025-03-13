@@ -13,11 +13,11 @@ import {
 	DropdownMenuTrigger,
 	DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
-import type { SalesResponse } from "@/lib/types/sales";
+import type { SalesResponse } from "@/lib/core/types/sales";
 import { WhatsappIcon } from "@/components/ui/icons-list";
 import React from "react";
 import { languages } from "../language-selector";
-import type { Language } from "@/lib/translations";
+import type { Language } from "@/lib/core/i18n";
 
 const statusColors: Record<SalesResponse['status'], string> = {
 	pending: "bg-yellow-100 text-black hover:bg-yellow-200 hover:text-black",

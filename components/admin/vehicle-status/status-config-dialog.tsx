@@ -24,8 +24,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { createVehicleStatusConfig, updateVehicleStatusConfig } from "@/lib/database/actions";
-import type { VehicleStatusConfig } from "@/lib/types/vehicle/status";
+import { createVehicleStatusConfig, updateVehicleStatusConfig } from "@/lib/services/database/actions";
+import type { VehicleStatusConfig } from "@/lib/core/types/vehicle/status";
 
 interface StatusConfigDialogProps {
     config?: VehicleStatusConfig | null;

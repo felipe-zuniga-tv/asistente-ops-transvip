@@ -11,7 +11,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { VehicleStatus } from "@/lib/types";
+import { VehicleStatus } from "@/lib/core/types";
 
 const FORMAT_DATE = "dd/MM/yyyy HH:mm"
 

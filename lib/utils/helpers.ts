@@ -1,4 +1,4 @@
-import { getSession } from "../auth"
+import { getSession } from "@/lib/core/auth"
 
 // Utility function to get access token
 export async function getAccessToken() {

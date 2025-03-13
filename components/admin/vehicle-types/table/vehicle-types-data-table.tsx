@@ -1,7 +1,7 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import type { VehicleType } from "@/lib/types/admin";
+import type { VehicleType } from "@/lib/core/types/admin";
 import { DataTable } from "@/components/tables/data-table";
 
 interface DataTableProps {

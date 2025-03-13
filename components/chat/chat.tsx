@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 import { MessagesList } from './messages-list'
 import { EmptyScreen } from './empty-screen'
 import { ChatPanel } from './chat-panel'
-import type { ChatProps } from '@/lib/types'
+import type { ChatProps } from '@/lib/core/types'
 
 export function Chat({ id, initialMessages, className, session }: ChatProps) {
     const router = useRouter()

@@ -7,11 +7,11 @@ import { useRef } from "react"
 import { toPng } from "html-to-image"
 import { useToast } from "@/hooks/use-toast"
 import React from "react"
-import { VehicleStatus } from "@/lib/types"
+import { VehicleStatus } from "@/lib/core/types"
 import { CalendarGrid } from "@/components/ui/calendar-grid"
 import { generateNextXDays, generateCalendarMonths } from "@/lib/utils/date"
 import { getHighestPriorityShiftForDate } from "@/lib/utils/shifts"
-import type { VehicleShiftWithShiftInfo } from "@/lib/types/calendar"
+import type { VehicleShiftWithShiftInfo } from "@/lib/core/types/calendar"
 
 interface ShiftsPerVehicleCalendarProps {
     shifts: VehicleShiftWithShiftInfo[]

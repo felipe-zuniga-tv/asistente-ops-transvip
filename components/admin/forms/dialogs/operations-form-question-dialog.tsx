@@ -12,7 +12,7 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { OperationsFormQuestion, QuestionType, QUESTION_TYPE_CONFIG } from "@/lib/types/vehicle/forms";
+import { OperationsFormQuestion, QuestionType, QUESTION_TYPE_CONFIG } from "@/lib/core/types/vehicle/forms";
 import { createQuestion, updateQuestion } from "@/lib/services/forms";
 import { Plus, Trash2 } from "lucide-react";
 

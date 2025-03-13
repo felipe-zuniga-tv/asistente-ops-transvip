@@ -1,6 +1,6 @@
 import { ShiftsDefinition } from "@/components/shifts/shifts-definition";
 import SuspenseLoading from "@/components/ui/suspense";
-import { getShifts } from "@/lib/database/actions";
+import { getShifts } from "@/lib/services/database/actions";
 import { Suspense } from "react";
 
 export const revalidate = 0;

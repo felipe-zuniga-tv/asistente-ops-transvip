@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/simple-dialog"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import type { SalesResponse } from "@/lib/types/sales"
+import type { SalesResponse } from "@/lib/core/types/sales"
 
 interface SalesResponseNotesDialogProps {
     open: boolean

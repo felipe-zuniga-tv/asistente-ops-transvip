@@ -7,10 +7,10 @@ import { columns } from "./table/columns";
 import { useRouter } from "next/navigation";
 import { AlertDialogDeleteStatus } from "./delete-status-alert-dialog";
 import { toast } from "sonner";
-import { deleteVehicleStatus } from "@/lib/database/actions";
-import type { VehicleStatus } from "@/lib/types";
+import { deleteVehicleStatus } from "@/lib/services/database/actions";
+import type { VehicleStatus } from "@/lib/core/types";
 import { ConfigCardContainer } from "../tables/config-card-container";
-import { getSession } from "@/lib/auth";
+import { getSession } from "@/lib/core/auth";
 
 interface StatusConfig {
     id: string;

@@ -1,4 +1,4 @@
-import { getSession } from '@/lib/auth'
+import { getSession } from '@/lib/core/auth'
 import { Routes } from "@/utils/routes"
 import { redirect } from 'next/navigation'
 import { LoginFormClient } from './login-client'

@@ -1,32 +1,18 @@
 import { redirect } from "next/navigation"
-import { getSession } from "@/lib/auth"
+import { getSession } from "@/lib/core/auth"
 import { createClient } from "@/utils/supabase/server"
 import { EmptyState } from "@/components/ui/empty-state"
 import { ConfigCardContainer } from "@/components/tables/config-card-container"
 import { ParkingTicketsDataTable } from "@/components/finance/tickets/table/parking-tickets-data-table"
 import { ParkingTicket } from "@/types"
 import { adminColumns } from "./columns"
-
-// Function to get all parking tickets for the admin panel
-async function getAllParkingTickets(): Promise<ParkingTicket[]> {
-	const supabase = await createClient()
-	
-	const { data, error } = await supabase
-		.from('parking_tickets')
-		.select('*')
-		.order('submission_date', { ascending: false })
-
-	if (error) {
-		throw new Error(`Failed to fetch tickets: ${error.message}`)
-	}
-
-	return data || []
-}
+import { Routes } from "@/utils/routes"
+import { getAllParkingTickets } from "@/lib/tickets"
 
 export default async function ParkingTicketsAdmin() {
 	const session = await getSession()
 	if (!session || !session.user) {
-		redirect('/login')
+		redirect(Routes.LOGIN)
 	}
 	
 	const parkingTickets = await getAllParkingTickets()

@@ -25,7 +25,7 @@ import {
 	PopoverTrigger,
 } from '@/components/ui/popover'
 import { es } from 'date-fns/locale'
-import { countryCodes } from '@/lib/config/country-codes'
+import { countryCodes } from '@/lib/core/config/country-codes'
 import {
 	Command,
 	CommandEmpty,

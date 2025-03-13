@@ -1,4 +1,4 @@
-import { Tool } from "@/lib/types/chat";
+import { Tool } from "@/lib/core/types/chat";
 import { Routes } from "@/utils/routes";
 import {
 	Hammer,
@@ -65,6 +65,12 @@ export const publicSidebar: SidebarItem = {
 			title: "Forms Operaciones",
 			url: Routes.PUBLIC.FORMULARIOS,
 			icon: ListChecks,
+			active: true,
+		},
+		{
+			title: "Tickets Estacionamiento",
+			url: Routes.PUBLIC.TICKETS,
+			icon: Ticket,
 			active: true,
 		},
 	],

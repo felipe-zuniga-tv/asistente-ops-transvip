@@ -6,11 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
-import { createShift, updateShift } from "@/lib/database/actions";
+import { createShift, updateShift } from "@/lib/services/database/actions";
 import { useTransition, useCallback, useMemo } from "react";
 import { WEEKDAYS, Shift } from "./shifts-definition";
 import { useState, useEffect } from "react";
-import { Branch } from "@/lib/types/admin";
+import { Branch } from "@/lib/core/types/admin";
 import { getBranches } from "@/lib/services/admin/index"
 
 interface ShiftDialogProps {

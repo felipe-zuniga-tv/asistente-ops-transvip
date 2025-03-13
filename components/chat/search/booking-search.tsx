@@ -1,5 +1,5 @@
 'use client'
-import { IBookingInfoOutput } from '@/lib/types/chat';
+import { IBookingInfoOutput } from '@/lib/core/types/chat';
 import { Badge } from '@/components/ui/badge';
 import { CheckIcon, Clock, GoalIcon, MailIcon, MapIcon, MapPin, Pencil, PhoneIcon, SearchIcon, UserCircleIcon, X } from 'lucide-react';
 import { WhatsappIcon } from '@/components/ui/icons-list';

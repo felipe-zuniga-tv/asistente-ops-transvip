@@ -18,7 +18,7 @@ import { nanoid } from "@/lib/utils"
 import { UserMessage } from "../message"
 import { Routes } from "@/utils/routes"
 import { usePathname, useRouter } from "next/navigation"
-import { sidebarData, chatbotMenu, publicSidebar } from "@/lib/config/chat-sidebar"
+import { sidebarData, chatbotMenu, publicSidebar } from "@/lib/core/config/chat-sidebar"
 import { BotMessageSquare } from "lucide-react"
 
 // Hints for chatbot functionalities

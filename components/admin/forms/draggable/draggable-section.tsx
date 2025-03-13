@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Draggable, Droppable, DroppableProvided, DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd";
 import { GripVertical, PlusCircle, Pencil, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { OperationsFormSection, OperationsFormQuestion } from "@/lib/types/vehicle/forms";
+import { OperationsFormSection, OperationsFormQuestion } from "@/lib/core/types/vehicle/forms";
 import { DraggableQuestion } from "./draggable-question";
 import { Separator } from "@/components/ui/separator";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";

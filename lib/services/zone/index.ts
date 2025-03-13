@@ -1,5 +1,5 @@
-import { getSession } from "../../auth"
-import { branches } from "../../config/transvip-general"
+import { getSession } from "@/lib/core/auth"
+import { branches } from "@/lib/core/config"
 import { ZONA_ILUMINADA_CITY, ZONA_ILUMINADA_SERVICES, AIRPORT_ZONE_API_URL } from "@/lib/services/config/urls"
 import { getResponseFromURL } from "@/lib/services/utils/helpers"
 

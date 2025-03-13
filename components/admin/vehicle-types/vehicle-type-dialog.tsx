@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
-import type { VehicleType, CreateVehicleTypeInput } from '@/lib/types/admin'
+import type { VehicleType, CreateVehicleTypeInput } from '@/lib/core/types/admin'
 
 interface VehicleTypeDialogProps {
     vehicleType?: VehicleType | null

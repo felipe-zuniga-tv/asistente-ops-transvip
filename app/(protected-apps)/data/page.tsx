@@ -1,5 +1,5 @@
 import { nanoid } from "@/lib/utils";
-import { getSession } from "@/lib/auth";
+import { getSession } from "@/lib/core/auth";
 
 export default async function DataAnalysisTools() {
 	const session = await getSession()

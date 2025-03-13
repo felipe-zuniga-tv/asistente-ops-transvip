@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { generateText } from 'ai';
 import { google } from "@ai-sdk/google";
-import { TICKET_OCR_SYSTEM_MESSAGE } from "@/lib/config/finance";
+import { TICKET_OCR_SYSTEM_MESSAGE } from "@/lib/core/config/finance";
 
 const GOOGLE_MODEL_NAME = 'gemini-2.0-flash-exp'
 

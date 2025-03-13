@@ -1,6 +1,6 @@
 'use client'
 
-import { logout } from "@/lib/auth"
+import { logout } from "@/lib/core/auth"
 import { Routes } from "@/utils/routes"
 import { redirect } from "next/navigation"
 import { Button } from "../ui/button"

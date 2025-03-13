@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getSession } from "@/lib/auth";
+import { getSession } from "@/lib/core/auth";
 import { JWTPayload } from "jose";
 
 export function useSession() {

@@ -1,4 +1,4 @@
-import { airportZones } from '@/lib/config/airport'
+import { airportZones } from '@/lib/core/config/airport'
 import { Routes } from '@/utils/routes';
 import Link from 'next/link';
 

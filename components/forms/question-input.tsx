@@ -2,7 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { OperationsFormQuestion } from "@/lib/types/vehicle/forms";
+import { OperationsFormQuestion } from "@/lib/core/types/vehicle/forms";
 import { ImageInput } from "@/components/forms/image-input";
 
 interface QuestionInputProps {

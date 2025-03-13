@@ -1,6 +1,6 @@
 'use client'
 
-import { type Branch } from '@/lib/types/admin'
+import { type Branch } from '@/lib/core/types/admin'
 import { type ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'

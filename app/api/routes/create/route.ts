@@ -1,4 +1,4 @@
-import { getBookingInfo, getVehicleDetail, getVehicleDetailList, getVehicleStatus } from '@/lib/chat/functions';
+import { getBookingInfo, getVehicleDetail, getVehicleDetailList, getVehicleStatus } from '@/lib/services/chat/functions';
 import { NextResponse } from 'next/server';
 
 const ROUTE_CREATION_ENDPOINT = 'https://southamerica-west1-ops-chat-app.cloudfunctions.net/route-optimization-functions'

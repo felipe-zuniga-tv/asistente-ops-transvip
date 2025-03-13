@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { getSession } from '@/lib/auth'
+import { getSession } from '@/lib/core/auth'
 
 export function useAuth() {
   const [session, setSession] = useState<any>(null)

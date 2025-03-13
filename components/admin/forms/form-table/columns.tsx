@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Edit2, Trash2, MoreHorizontal, Eye, Power, Pencil } from "lucide-react";
-import type { OperationsFormQuestion, OperationsForm } from "@/lib/types/vehicle/forms";
+import type { OperationsFormQuestion, OperationsForm } from "@/lib/core/types/vehicle/forms";
 import { formatDate } from "@/utils/dates";
 import {
     DropdownMenu,

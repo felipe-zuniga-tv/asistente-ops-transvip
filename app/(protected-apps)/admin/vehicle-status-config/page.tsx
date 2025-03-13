@@ -1,5 +1,5 @@
 import { VehicleStatusConfig } from "@/components/admin/vehicle-status/vehicle-status-config";
-import { getVehicleStatusConfigs } from "@/lib/database/actions";
+import { getVehicleStatusConfigs } from "@/lib/services/database/actions";
 import { Suspense } from "react";
 import SuspenseLoading from "@/components/ui/suspense";
 

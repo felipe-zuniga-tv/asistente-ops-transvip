@@ -16,7 +16,7 @@ import type {
     Translation,
     CreateTranslationInput,
     UpdateTranslationInput,
-} from '@/lib/types/admin'
+} from '@/lib/core/types/admin'
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { Routes } from '@/utils/routes'

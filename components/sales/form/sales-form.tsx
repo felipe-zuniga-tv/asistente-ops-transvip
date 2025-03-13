@@ -6,7 +6,7 @@ import { Routes } from '@/utils/routes'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { useToast } from '@/hooks/use-toast'
-import { getTranslation, type Language } from '@/lib/translations/'
+import { getTranslation, type Language } from '@/lib/core/i18n/'
 import { createSalesResponse } from '@/lib/services/sales'
 import { createCustomerAccount } from '@/lib/services/customer'
 
