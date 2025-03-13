@@ -2,7 +2,7 @@
 
 import { generateText } from "ai"
 import { google } from "@ai-sdk/google"
-import { CREATE_TEXT_PROMPT, EMAIL_TEXT_OPS_EXAMPLE, SYSTEM_MESSAGE } from "../config/chat"
+import { CREATE_TEXT_PROMPT, EMAIL_TEXT_OPS_EXAMPLE, SYSTEM_MESSAGE } from "@/lib/core/config"
 import { getVehicleList } from "@/lib/services/vehicle"
 
 const modelInstance = google('gemini-2.0-flash-exp')
