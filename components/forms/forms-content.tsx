@@ -5,7 +5,7 @@ import { TransvipLogo } from "../transvip/transvip-logo";
 import { Button } from "../ui/button";
 import { OperationsForm } from "@/lib/core/types/vehicle/forms";
 
-export async function FormulariosContent({ activeForms, baseUrl }: { 
+export async function FormulariosContent({ activeForms, baseUrl }: {
 	activeForms: OperationsForm[]
 	baseUrl: string
 }) {
@@ -26,18 +26,18 @@ export async function FormulariosContent({ activeForms, baseUrl }: {
 				{activeForms.map((form) => (
 					<Link key={form.id} href={`${baseUrl}/${form.id}`} className="block hover:opacity-90">
 						<Card className="h-full">
-							<CardHeader>
-								<CardTitle className="flex items-center gap-2 text-lg">
-									<ClipboardList className="h-4 w-4 text-transvip" />
-									{form.title}
-								</CardTitle>
-								<CardDescription className="text-xs">{form.description}</CardDescription>
-							</CardHeader>
-							<CardContent>
-								<Button className="w-full bg-transvip hover:bg-transvip/80">
+							<CardHeader className="flex flex-col md:flex-row items-center justify-between gap-4 space-y-0">
+								<div className="w-full flex flex-col items-center md:items-start gap-0">
+									<CardTitle className="flex items-center gap-2 text-lg">
+										<ClipboardList className="h-4 w-4 text-transvip" />
+										{form.title}
+									</CardTitle>
+									<CardDescription className="text-xs">{form.description}</CardDescription>
+								</div>
+								<Button className="w-fit px-6 bg-transvip hover:bg-transvip/80">
 									Responder Formulario
 								</Button>
-							</CardContent>
+							</CardHeader>
 						</Card>
 					</Link>
 				))}
@@ -48,6 +48,6 @@ export async function FormulariosContent({ activeForms, baseUrl }: {
 					</div>
 				)}
 			</CardContent>
-		</Card>
+		</Card >
 	);
 }

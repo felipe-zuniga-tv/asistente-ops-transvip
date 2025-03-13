@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui"
 import { CheckCircle, XCircle } from "lucide-react"
-import type { ParkingTicket } from "@/types"
+import type { ParkingTicket } from "@/types/domain/tickets"
 import { approveTicket, rejectTicket } from "./actions"
 import { toast } from "sonner"
 

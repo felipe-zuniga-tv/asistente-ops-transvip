@@ -1,7 +1,7 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import type { ParkingTicket } from "@/types";
+import type { ParkingTicket } from "@/types/domain/tickets";
 import { DataTable } from "@/components/tables/data-table";
 import { statusMap } from "./status-map";
 

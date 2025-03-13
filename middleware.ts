@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import type { DriverSession } from '@/types'
+import type { DriverSession } from '@/types/domain/driver'
 
 const SESSION_DURATION = 30 * 60 * 1000 // 30 minutes
 const PUBLIC_PATHS = ['/conductores', '/auth']

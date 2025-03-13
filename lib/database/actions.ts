@@ -1,17 +1,18 @@
 'use server'
 
-import { cookies } from 'next/headers'
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { Routes } from '@/utils/routes'
 import type { 
-	ShiftData, 
-	VehicleStatus, 
-	VehicleStatusConfig, 
-	CreateVehicleStatusInput,
+	ShiftData,
 	VehicleShift,
 	VehicleShiftWithShiftInfo
-} from '@/lib/core/types'
+} from '@/lib/core/types/vehicle/shift'
+import type {
+	VehicleStatus,
+	VehicleStatusConfig,
+	CreateVehicleStatusInput
+} from '@/lib/core/types/vehicle/status'
 
 export async function getShifts() {
 	const supabase = await createClient()

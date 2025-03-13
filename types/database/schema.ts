@@ -1,11 +1,3 @@
-// Re-export all vehicle types
-export * from './types/vehicle/status';
-export * from './types/vehicle/shift';
-
-// Re-export all other types
-export * from './types';
-
-// Database type
 export interface Database {
   public: {
     Tables: {
@@ -38,4 +30,4 @@ export interface Database {
       }
     }
   }
-} 
+}

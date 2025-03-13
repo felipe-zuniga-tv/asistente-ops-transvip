@@ -1,22 +1,39 @@
 import { createSession, setCookie } from "@/lib/core/auth";
 
-function getLoginUrl() {
+/**
+ * Returns the full URL for the admin login endpoint by combining environment variables
+ */
+function getLoginUrl(): string {
     return `${process.env.NEXT_PUBLIC_API_BASE_URL}/${process.env.NEXT_PUBLIC_API_ADMIN_LOGIN_ROUTE}`;
 }
 
-function getAdminIdUrl() {
+/**
+ * Returns the full URL for the admin identity endpoint by combining environment variables
+ */
+function getAdminIdUrl(): string {
     return `${process.env.NEXT_PUBLIC_API_BASE_URL}/${process.env.NEXT_PUBLIC_API_ADMIN_IDENTITY}`;
 }
 
-function isApiConfigured() {
-    return process.env.NEXT_PUBLIC_API_BASE_URL && process.env.NEXT_PUBLIC_API_ADMIN_LOGIN_ROUTE;
+/**
+ * Checks if the API configuration environment variables are properly set
+ */
+function isApiConfigured(): boolean {
+    return !!process.env.NEXT_PUBLIC_API_BASE_URL && !!process.env.NEXT_PUBLIC_API_ADMIN_LOGIN_ROUTE;
 }
 
-function isValidCredentials(email: string, password: string) {
-    return email && password;
+/**
+ * Validates that both email and password fields have values
+ * @param email - User's email address
+ * @param password - User's password
+ */
+function isValidCredentials(email: string, password: string): boolean {
+    return !!email && !!password;
 }
 
-function getApiHeaders() {
+/**
+ * Returns standardized headers for API requests
+ */
+function getApiHeaders(): Record<string, string> {
     return {
         "Accept": "application/json",
         "Content-Language": "es",
@@ -24,7 +41,14 @@ function getApiHeaders() {
     };
 }
 
-async function fetchLoginData(url: string, email: string, password: string) {
+/**
+ * Makes a POST request to the login API endpoint
+ * @param url - Complete login API URL
+ * @param email - User's email address
+ * @param password - User's password
+ * @throws Error if the login request fails
+ */
+async function fetchLoginData(url: string, email: string, password: string): Promise<any> {
     const response = await fetch(url, {
         method: "POST",
         body: JSON.stringify({ email, password }),
@@ -34,7 +58,12 @@ async function fetchLoginData(url: string, email: string, password: string) {
     return await response.json();
 }
 
-export async function fetchUserData(adminId: string) {
+/**
+ * Fetches user data from the admin identity API endpoint
+ * @param adminId - The admin ID to fetch details for
+ * @throws Error if the user data fetch fails
+ */
+export async function fetchUserData(adminId: string): Promise<any> {
     const ADMIN_ID_URL = getAdminIdUrl();
     const response = await fetch(`${ADMIN_ID_URL}?admin_id=${adminId}&limit=0&offset=0`, {
         method: "GET",
@@ -44,7 +73,18 @@ export async function fetchUserData(adminId: string) {
     return await response.json();
 }
 
-export const login = async (email: string, password: string) => {
+interface LoginResponse {
+    status: number;
+    user: any | null;
+    message: string;
+}
+
+/**
+ * Main login function that authenticates a user and creates a session
+ * @param email - User's email address
+ * @param password - User's password
+ */
+export const login = async (email: string, password: string): Promise<LoginResponse | null> => {
     const LOGIN_URL = getLoginUrl();
 
     if (!isApiConfigured() || !isValidCredentials(email, password)) {
@@ -58,7 +98,7 @@ export const login = async (email: string, password: string) => {
         switch (loginResponse.status) {
             case 200:
                 const userResponse = await fetchUserData(loginResponse.data.id);
-                if (!userResponse) return
+                if (!userResponse) return null;
 
                 const { user, session } = await createSession(email, loginResponse.data.access_token, userResponse.data.result[0].fullName);
                 await setCookie(session);

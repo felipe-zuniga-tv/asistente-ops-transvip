@@ -1,6 +1,6 @@
 'use server'
 
-import type { ParkingTicket } from '@/types'
+import type { ParkingTicket } from '@/types/domain/tickets'
 import { createClient } from '@/utils/supabase/server'
 
 // Database table name

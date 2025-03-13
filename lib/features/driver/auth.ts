@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import type { DriverSession, DriverDetails } from '@/types'
+import type { DriverSession, DriverDetails } from '@/types/domain/driver'
 
 const SESSION_DURATION = 30 * 60 * 1000 // 30 minutes
 

@@ -317,5 +317,3 @@ export async function updateInspectionStatus(id: string, status: string) {
     if (error) throw error;
     return data;
 }
-
-export * from './forms'; 
