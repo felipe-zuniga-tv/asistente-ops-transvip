@@ -1,193 +1,53 @@
-'use client'
+import { redirect } from "next/navigation"
+import { getSession } from "@/lib/auth"
+import { createClient } from "@/utils/supabase/server"
+import { EmptyState } from "@/components/ui/empty-state"
+import { ConfigCardContainer } from "@/components/tables/config-card-container"
+import { ParkingTicketsDataTable } from "@/components/finance/tickets/table/parking-tickets-data-table"
+import { ParkingTicket } from "@/types"
+import { adminColumns } from "./columns"
 
-import { useState, useEffect, useRef } from "react";
-import { Input } from "@/components/ui/input";
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+// Function to get all parking tickets for the admin panel
+async function getAllParkingTickets(): Promise<ParkingTicket[]> {
+	const supabase = await createClient()
+	
+	const { data, error } = await supabase
+		.from('parking_tickets')
+		.select('*')
+		.order('submission_date', { ascending: false })
 
-import { TransvipLogo } from "@/components/transvip/transvip-logo"
-import TicketCards from "@/components/finance/tickets/ticket-cards"
-import TicketResults from "@/components/finance/tickets/ticket-results"
+	if (error) {
+		throw new Error(`Failed to fetch tickets: ${error.message}`)
+	}
 
-export interface FileWithPreview extends File {
-    preview: string;
+	return data || []
 }
 
-export interface TicketResultType {
-    booking_id: number
-    nro_boleta: string
-    date_issued: string
-    time_issued: string
-    entry_date: string
-    entry_time: string
-    exit_date: string
-    exit_time: string
-    valor: number
-}
+export default async function ParkingTicketsAdmin() {
+	const session = await getSession()
+	if (!session || !session.user) {
+		redirect('/login')
+	}
+	
+	const parkingTickets = await getAllParkingTickets()
 
-export default function ParkingTickets() {
-    const [files, setFiles] = useState<FileWithPreview[]>([]); // State to hold selected files
-    const [results, setResults] = useState<TicketResultType[]>([]); // State to hold processing results
-    const fileInputRef = useRef<HTMLInputElement>(null);
-    const [isUploading, setIsUploading] = useState(false);
-
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files) {
-            const newFiles = Array.from(event.target.files).map(file => {
-                const fileWithPreview = file as FileWithPreview;
-                fileWithPreview.preview = URL.createObjectURL(file);
-                return fileWithPreview;
-            });
-            setFiles((prevFiles) => [...prevFiles, ...newFiles]); // Append new files to existing files
-        }
-    };
-
-    // Clean up object URLs on unmount
-    useEffect(() => {
-        return () => {
-            files.forEach(file => {
-                if (file.preview) URL.revokeObjectURL(file.preview);
-            });
-        };
-    }, [files]);
-
-    const handleRemoveFile = (indexToRemove: number) => {
-        setFiles(prevFiles => {
-            const fileToRemove = prevFiles[indexToRemove];
-            if (fileToRemove.preview) {
-                URL.revokeObjectURL(fileToRemove.preview);
-            }
-            return prevFiles.filter((_, index) => index !== indexToRemove);
-        });
-
-        if (files.length === 0) setResults([])
-    };
-
-    const handleUpload = async () => {
-        if (files.length === 0) return;
-
-        setIsUploading(true);
-        setResults([])
-        try {
-            const formData = new FormData();
-            // Append all files with the same field name
-            files.forEach(file => {
-                formData.append('files', file);
-            });
-
-            const response = await fetch("/api/image/parking", {
-                method: "POST",
-                body: formData,
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error. Status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            const parsedResults = data.results.map((r: string) => JSON.parse(r));
-            console.log(parsedResults)
-
-            setResults(parsedResults);
-
-        } catch (error) {
-            console.error('Upload failed:', error);
-            setResults([])
-        } finally {
-            setIsUploading(false);
-        }
-    };
-
-    const handleFileInputClick = () => {
-        fileInputRef.current?.click();
-    };
-
-    const handleClearFiles = () => {
-        setFiles([])
-    };
-
-    const handleClearResults = () => {
-        setResults([]);
-    };
-
-    // Function to convert JSON data to CSV format
-    const convertToCSV = (data: TicketResultType[]) => {
-        if (data.length === 0 || !data[0]) return ''; // Handle empty data
-
-        const header = Object.keys(data[0]).join(",");
-        const rows = data.map(obj =>
-            Object.values(obj)
-                .map(value => (typeof value === 'string' ? `"${value}"` : value)) // Handle strings with commas
-                .join(",")
-        );
-        return `${header}\n${rows.join("\n")}`;
-    };
-
-    // Function to trigger CSV download
-    const downloadCSV = () => {
-        if (results.length === 0) return;
-
-        const csvData = convertToCSV(results);
-        const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
-
-        // Generate a timestamp for the filename
-        const timestamp = new Date().toISOString().replace(/[:.]/g, "-"); // Create ISO formatted timestamp
-        const fileName = `parking_tickets_${timestamp}.csv`;
-
-        // Create a download link and trigger the download
-        const link = document.createElement("a");
-        if (link.download !== undefined) {
-            const url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", fileName);
-            link.style.visibility = "hidden";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        } else {
-            // Fallback for browsers that do not support the download attribute
-            window.open(encodeURI(`data:text/csv;charset=utf-8,${csvData}`));
-        }
-    };
-
-    return (
-        <Card className="w-full max-w-4xl mx-auto">
-            <CardHeader>
-                <CardTitle className="flex flex-col md:flex-row gap-2 justify-between items-center">
-                    <div className="flex flex-row items-center gap-2">
-                        <TransvipLogo colored={true} size={20} />
-                        <span className="text-lg font-bold">Tickets Estacionamiento</span>
-                    </div>
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
-                <div className="grid grid-cols-1 gap-4">
-                    <TicketCards
-                        files={files}
-                        handleClearFiles={handleClearFiles}
-                        handleRemoveFile={handleRemoveFile}
-                        handleUpload={handleUpload}
-                        onFileInputClick={handleFileInputClick}
-                        isUploading={isUploading}
-                    />
-
-                    {isUploading && <div className="w-full text-center">Cargando...</div>}
-                    {!isUploading && <TicketResults results={results} handleClearResults={handleClearResults} handleDownloadFile={downloadCSV} />}
-                </div>
-            </CardContent>
-            <Input
-                ref={fileInputRef}
-                id="file-input"
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handleFileChange}
-                className="hidden"
-            />
-        </Card>
-    );
+	return (
+		<ConfigCardContainer
+			title="Tickets de Estacionamiento"
+			className="w-full max-w-full mx-0"
+		>
+			{parkingTickets.length > 0 ? (
+				<ParkingTicketsDataTable
+					data={parkingTickets}
+					columns={adminColumns}
+					initialPageSize={10}
+				/>
+			) : (
+				<EmptyState
+					title="No hay tickets aún"
+					description="No hay tickets de estacionamiento pendientes de revisión"
+				/>
+			)}
+		</ConfigCardContainer>
+	)
 }
