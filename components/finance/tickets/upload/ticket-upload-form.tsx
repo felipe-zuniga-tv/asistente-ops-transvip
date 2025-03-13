@@ -21,9 +21,10 @@ import {
 
 interface TicketUploadFormProps {
 	driverId: string
+	vehicleNumber: string
 }
 
-export function TicketUploadForm({ driverId }: TicketUploadFormProps) {
+export function TicketUploadForm({ driverId, vehicleNumber }: TicketUploadFormProps) {
 	const [isPending, startTransition] = useTransition()
 	const [isProcessing, setIsProcessing] = useState(false)
 	const router = useRouter()
@@ -31,9 +32,6 @@ export function TicketUploadForm({ driverId }: TicketUploadFormProps) {
 	// Track the current step in the flow
 	const [currentStep, setCurrentStep] = useState<'upload' | 'confirm'>('upload')
 	
-	// State for image toggle visibility
-	const [showImage, setShowImage] = useState(false)
-
 	// Store parsed data from the image
 	const [parsedData, setParsedData] = useState<ParsedTicketData | null>(null)
 
@@ -48,6 +46,7 @@ export function TicketUploadForm({ driverId }: TicketUploadFormProps) {
 		resolver: zodResolver(confirmationSchema),
 		defaultValues: {
 			booking_id: "",
+			vehicle_number: vehicleNumber,
 			nro_boleta: "",
 			entry_date: "",
 			entry_time: "",
@@ -72,6 +71,7 @@ export function TicketUploadForm({ driverId }: TicketUploadFormProps) {
 		if (parsedData) {
 			confirmForm.reset({
 				booking_id: "",
+				vehicle_number: vehicleNumber,
 				nro_boleta: parsedData.nro_boleta,
 				entry_date: parsedData.entry_date,
 				entry_time: parsedData.entry_time,
@@ -117,6 +117,7 @@ export function TicketUploadForm({ driverId }: TicketUploadFormProps) {
 			// Reset confirmation form with the extracted data directly
 			confirmForm.reset({
 				booking_id: "",
+				vehicle_number: vehicleNumber,
 				nro_boleta: extractedData.nro_boleta,
 				entry_date: extractedData.entry_date,
 				entry_time: extractedData.entry_time,
@@ -166,7 +167,7 @@ export function TicketUploadForm({ driverId }: TicketUploadFormProps) {
 				// // }
 
 				// Create ticket with form data and image URL
-				await createTicket(driverId, booking_id, uploadedImageUrl, {
+				await createTicket(driverId, vehicleNumber, booking_id, uploadedImageUrl, {
 					nro_boleta: values.nro_boleta,
 					entry_date: values.entry_date,
 					entry_time: values.entry_time,
@@ -198,6 +199,7 @@ export function TicketUploadForm({ driverId }: TicketUploadFormProps) {
 	const resetConfirmationForm = () => {
 		confirmForm.reset({
 			booking_id: '',
+			vehicle_number: '',
 			nro_boleta: '',
 			entry_date: '',
 			entry_time: '',
@@ -231,7 +233,7 @@ export function TicketUploadForm({ driverId }: TicketUploadFormProps) {
 	}
 
 	return (
-		<div className="space-y-6">
+		<div className="space-y-3">
 			{error && (
 				<Alert variant="destructive">
 					<AlertDescription>{error}</AlertDescription>
@@ -254,8 +256,6 @@ export function TicketUploadForm({ driverId }: TicketUploadFormProps) {
 					onSubmit={submitTicket}
 					onBack={moveToUploadStep}
 					isPending={isPending}
-					showImage={showImage}
-					setShowImage={setShowImage}
 					parsedData={parsedData}
 					debugBookingId={debugBookingId}
 				/>

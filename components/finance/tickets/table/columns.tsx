@@ -6,14 +6,8 @@ import { es } from "date-fns/locale"
 import {
     Badge,
     Button,
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-    DropdownMenuLabel,
-    DropdownMenuSeparator
 } from "@/components/ui"
-import { MoreHorizontal, Pencil, Trash, ArrowUp, ArrowDown } from "lucide-react"
+import { ArrowUp, ArrowDown } from "lucide-react"
 import type { ParkingTicket } from "@/types"
 import TicketImageViewer from "./ticket-image-viewer"
 
@@ -41,6 +35,15 @@ export const columns: ColumnDef<ParkingTicket>[] = [
         cell: ({ row }) => (
             <div className="text-center text-xs">
                 {row.original.booking_id}
+            </div>
+        ),
+    },
+    {
+        accessorKey: "vehicle_number",
+        header: () => <div className="text-center"># Móvil</div>,
+        cell: ({ row }) => (
+            <div className="text-center text-xs">
+                {row.original.vehicle_number}
             </div>
         ),
     },

@@ -12,16 +12,16 @@ export default async function Dashboard() {
 	if (!session) {
 		redirect('/conductores')
 	}
-	const parkingTickets = await getDriverTickets(session.driver_id)
+	const parkingTickets = await getDriverTickets(session.driver_id, session.vehicle_number)
 
 	return (
-		<ConfigCardContainer 
+		<ConfigCardContainer
 			title="Tickets de Estacionamiento"
 			className="w-full max-w-full mx-0"
 			headerContent={
 				<UploadButton />
 			}
-		>			
+		>
 			{parkingTickets.length > 0 ? (
 				<ParkingTicketsDataTable
 					data={parkingTickets}

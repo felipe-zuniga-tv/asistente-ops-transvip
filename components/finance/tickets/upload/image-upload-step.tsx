@@ -33,14 +33,16 @@ export function ImageUploadStep({
 						<FormItem>
 							<FormLabel>Imagen del Ticket</FormLabel>
 							<FormControl>
-								<div className="space-y-2">
+								<div className="border border-dashed rounded-lg p-8">
 									{imagePreview ? (
-										<TicketImagePreview
-											imageUrl={imagePreview}
-											onRemove={onRemoveImage}
-										/>
+										<div className="flex justify-center items-center">
+											<TicketImagePreview
+												imageUrl={imagePreview}
+												onRemove={onRemoveImage}
+											/>
+										</div>
 									) : (
-										<div className="flex flex-col items-center gap-4 rounded-lg border border-dashed p-8">
+										<div className="flex flex-col items-center gap-4">
 											<div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
 												<ImageIcon className="h-6 w-6" />
 											</div>
@@ -63,7 +65,7 @@ export function ImageUploadStep({
 											/>
 											<Button
 												type="button"
-												variant="secondary"
+												className="bg-transvip hover:bg-transvip/80 text-white"
 												onClick={() => document.getElementById('image')?.click()}
 												disabled={isProcessing}
 											>
@@ -78,7 +80,7 @@ export function ImageUploadStep({
 					)}
 				/>
 
-				<Button type="submit" className="w-full" disabled={isProcessing || !imagePreview}>
+				<Button type="submit" className="w-1/2 mx-auto" disabled={isProcessing || !imagePreview}>
 					{isProcessing ? (
 						<>
 							<Loader2 className="h-4 w-4 animate-spin" />

@@ -12,6 +12,7 @@ const mockTickets: ParkingTicket[] = [
     id: '1',
     booking_id: 'B001',
     driver_id: 'mock-id',
+    vehicle_number: '4212',
     submission_date: new Date(),
     status: 'pending_review',
     parsed_data: {
@@ -33,13 +34,14 @@ async function uploadImage(imageBase64: string): Promise<string> {
   return imageBase64
 }
 
-export async function getDriverTickets(driverId: string): Promise<ParkingTicket[]> {
+export async function getDriverTickets(driverId: string, vehicleNumber: string): Promise<ParkingTicket[]> {
   const supabase = await createClient()
   
   const { data, error } = await supabase
     .from(TABLE_NAME)
     .select('*')
     .eq('driver_id', driverId)
+    .eq('vehicle_number', vehicleNumber)
     .order('submission_date', { ascending: false })
 
   if (error) {
@@ -85,6 +87,7 @@ export async function getTicketById(ticketId: string): Promise<ParkingTicket | n
 
 export async function createTicket(
   driverId: string,
+  vehicleNumber: string,
   bookingId: string,
   imageUrl: string,
   parsedData: ParkingTicket['parsed_data']
@@ -100,6 +103,7 @@ export async function createTicket(
   const ticket: Omit<ParkingTicket, 'id'> = {
     booking_id: bookingId,
     driver_id: driverId,
+    vehicle_number: vehicleNumber,
     submission_date: new Date(),
     status: 'pending_review',
     parsed_data: {

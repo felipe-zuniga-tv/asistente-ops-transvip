@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export default function LoginPage() {
 	return (
-		<div className="pt-36">
+		<div className="pt-24 md:pt-36">
 			<Card className="w-full max-w-md">
 				<CardHeader className="flex flex-col items-center gap-1">
 					<CardTitle className="w-full flex flex-row items-center justify-start gap-2">

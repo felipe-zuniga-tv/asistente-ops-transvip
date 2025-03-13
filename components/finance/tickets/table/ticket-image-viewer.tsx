@@ -1,6 +1,6 @@
+import Image from "next/image"
 import { Button, SimpleDialog } from "@/components/ui"
 import { Search } from "lucide-react"
-import Image from "next/image"
 import { useState } from "react"
 
 // Create a reusable image viewer component

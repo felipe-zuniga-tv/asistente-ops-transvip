@@ -24,9 +24,10 @@ export const imageUploadSchema = z.object({
 // Schema for the confirmation step
 export const confirmationSchema = z.object({
 	booking_id: z.union([
-		z.string().min(1, "El ID de reserva es requerido"),
+		z.string().min(1, "El # de reserva es requerido"),
 		z.instanceof(File).transform(file => `[File: ${file.name}]`)
 	]).transform(val => ensureString(val)),
+	vehicle_number: z.string().optional(),
 	nro_boleta: z.string().min(1, "El número de boleta es requerido"),
 	entry_date: z.string().min(1, "La fecha de entrada es requerida"),
 	entry_time: z.string().min(1, "La hora de entrada es requerida"),
@@ -48,4 +49,5 @@ export type ParsedTicketData = {
 	exit_time: string
 	amount: number
 	location: string
+	vehicle_number?: string
 } 

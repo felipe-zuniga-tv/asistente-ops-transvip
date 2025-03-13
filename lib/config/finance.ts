@@ -14,6 +14,7 @@ The expected elements to parse are:
 - Entry Date (format: DD/MM/YYYY) + Entry Time (format: HH:MM) [Entrada]
 - Exit Date (format: DD/MM/YYYY) + Exit Time (format: HH:MM) [Salida]
 - Valor Estacionamiento
+- Vehicle Number (optional, may not be available in the ticket image)
 
 # Output Format
 Provide the output as a JSON object with consistent fields. If any fields cannot be found, use null.
@@ -30,6 +31,7 @@ The JSON structure should be as follows:
   "exit_date": "[Salida]",
   "exit_time": "[Salida => Hora]",
   "valor": [Valor Estacionamiento],
+  "vehicle_number": "[Número de Vehículo]" // Optional field
 }
 
 # Example
@@ -47,6 +49,7 @@ Output:
   "exit_date": "17/10/2024",
   "exit_time": "17:45",
   "valor": 500,
+  "vehicle_number": "ABC123" // May be null if not found in the ticket
 }
 
 # Notes

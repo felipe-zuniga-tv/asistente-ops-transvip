@@ -2,6 +2,7 @@ export interface DriverSession {
   driver_id: string
   email: string
   full_name: string
+  vehicle_number: string
   expires: Date
 }
 
@@ -9,6 +10,7 @@ export interface ParkingTicket {
   id: string
   booking_id: string
   driver_id: string
+  vehicle_number: string | null
   submission_date: Date
   status: 'pending_review' | 'auto_approved' | 'auto_rejected' | 'admin_approved' | 'admin_rejected'
   parsed_data: {
@@ -30,4 +32,5 @@ export interface DriverDetails {
   active: boolean
   created_at: string
   last_login?: string
+  vehicle_number?: string
 } 

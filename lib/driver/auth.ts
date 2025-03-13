@@ -8,7 +8,6 @@ const SESSION_DURATION = 30 * 60 * 1000 // 30 minutes
 
 export async function validateDriverWithTransvip(email: string, password: string): Promise<DriverDetails> {
   // TODO: Replace with actual Transvip API call
-  // This is a mock implementation
   if (!password || password.length < 6) {
     throw new Error('Invalid password')
   }
@@ -18,6 +17,7 @@ export async function validateDriverWithTransvip(email: string, password: string
     email,
     full_name: "Driver Name",
     active: true,
+    vehicle_number: "4212",
     created_at: new Date().toISOString()
   }
 }
@@ -27,6 +27,7 @@ export async function createDriverSession(driver: DriverDetails): Promise<Driver
     driver_id: driver.id,
     email: driver.email,
     full_name: driver.full_name,
+    vehicle_number: driver.vehicle_number || "",
     expires: new Date(Date.now() + SESSION_DURATION)
   }
 
