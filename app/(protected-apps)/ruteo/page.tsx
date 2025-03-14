@@ -65,7 +65,7 @@ const RoutingComponent: React.FC = () => {
         const data = await response.json()
 
         // Handle response as needed
-        console.log(data);
+        console.log(`Ruteo: ${data}`);
     };
 
     return (

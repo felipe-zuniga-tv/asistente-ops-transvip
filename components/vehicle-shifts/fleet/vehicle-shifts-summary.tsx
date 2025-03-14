@@ -118,8 +118,6 @@ export function VehicleShiftsSummary({ branches }: { branches: Branch[] }) {
                 }
             })
 
-            console.log(shiftsMap)
-
             // Create summaries
             const newSummaries: ShiftSummary[] = Array
                 .from(shiftsMap.entries())

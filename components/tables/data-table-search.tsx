@@ -18,7 +18,6 @@ export function DataTableSearch<TData>({
     const handleSearch = (value: string) => {
         if (Array.isArray(searchColumnId)) {
             searchColumnId.forEach(columnId => {
-                console.log(table.getColumn(columnId))
                 table.getColumn(columnId)?.setFilterValue(value);
             });
         } else {

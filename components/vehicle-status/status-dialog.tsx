@@ -184,7 +184,6 @@ export function StatusDialog({
                                     <FormLabel>Estado</FormLabel>
                                     <Select 
                                         onValueChange={(value) => {
-                                            console.log("Status changed to:", value);
                                             field.onChange(value);
                                         }}
                                         value={field.value || ""}

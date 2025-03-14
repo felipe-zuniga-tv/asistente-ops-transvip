@@ -291,7 +291,7 @@ export interface User {
     accessToken?: string;
 }
 
-export interface Session {
+export interface ChatSession {
     user: User;
 }
 

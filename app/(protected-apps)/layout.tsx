@@ -3,13 +3,13 @@ import Header from "@/components/ui/header";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { getSession } from "@/lib/core/auth";
 import { AI } from "@/lib/services/chat/actions";
-import { Session } from "@/lib/core/types";
+import { ChatSession } from '@/lib/core/types/chat'
 import { nanoid } from "@/lib/utils";
 import { Routes } from "@/utils/routes";
 import { redirect } from "next/navigation";
 
 export default async function ChatAppLayout({ children }: { children: React.ReactNode }) {
-	const session = await getSession() as Session | null;
+	const session = await getSession() as ChatSession | null;
 
 	if (!session) {
 		return redirect(Routes.LOGIN);
