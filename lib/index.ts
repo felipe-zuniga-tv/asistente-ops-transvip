@@ -6,10 +6,7 @@ export * from './core/config';
 export * from './core/i18n';
 
 // Feature exports
-export * from './features';
+export * from './features'
 
 // Service exports
 export * from './services';
-export * from './database';
-export * from './api';
-export * from './utils'; 
