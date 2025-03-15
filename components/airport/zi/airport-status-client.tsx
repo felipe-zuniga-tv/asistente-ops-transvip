@@ -10,7 +10,7 @@ import { ArrowLeft, Clock, Users } from 'lucide-react'
 import { AirportZone, airportZones } from '@/lib/core/config/airport'
 import { Routes } from '@/utils/routes'
 import { QRCodeGeneratorDialog } from '@/components/qr/qr-code-generator-dialog'
-import type { AirportVehicleType, AirportVehicleDetail } from '@/lib/core/types'
+import type { AirportVehicleType, AirportVehicleDetail } from '@/lib/core/types/airport'
 
 const secondsToUpdate = 60 // Refresh data
 const maxWaitTime = 15 // Minutes
