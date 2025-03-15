@@ -13,7 +13,6 @@ import { Button } from '@/components/ui/button';
 import ToolsButton from '../tools/tools-button';
 import DriverAvatar from '@/components/driver/driver-avatar';
 import { CityBadge } from '../badges/chat-badges';
-// import * as Whatsapp from '../../../public/images/whatsapp-logo.svg'
 
 export interface VehicleStatusSearchResults {
     map(arg0: (result: IVehicleStatusSearchResult) => import("react").JSX.Element): import("react").ReactNode;

@@ -1,19 +1,38 @@
 'use client'
-import { IBookingInfoOutput } from '@/lib/core/types/chat';
-import { Badge } from '@/components/ui/badge';
-import { CheckIcon, Clock, GoalIcon, MailIcon, MapIcon, MapPin, Pencil, PhoneIcon, SearchIcon, UserCircleIcon, X } from 'lucide-react';
-import { WhatsappIcon } from '@/components/ui/icons-list';
-import { buildGoogleMapsURL, buildWhatsappLink } from '@/lib/services/utils/helpers'
-import { BookingStatusBadge, CityBadge, CustomerVipBadge, PaymentRouteType, PaymentStatusBadge, ServiceNameBadge } from '../badges/chat-badges';
-import { BookingIdBadge } from '../badges/booking-badge';
-import DriverAvatar from '@/components/driver/driver-avatar';
-import Zoom from 'react-medium-image-zoom'
-import Image from 'next/image';
-import EmailLink from '@/components/ui/email-link';
-import GoogleMapsButton from './google-maps-url-button';
+
 import { addMinutes, differenceInDays, differenceInMinutes } from 'date-fns';
-import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 import Link from 'next/link';
+import Zoom from 'react-medium-image-zoom';
+import { 
+  CheckIcon, 
+  Clock, 
+  GoalIcon, 
+  MailIcon, 
+  MapIcon, 
+  MapPin, 
+  Pencil, 
+  PhoneIcon, 
+  SearchIcon, 
+  UserCircleIcon, 
+  X 
+} from 'lucide-react';
+
+import { Badge, Button, EmailLink, WhatsappIcon } from '@/components/ui';
+import DriverAvatar from '@/components/driver/driver-avatar';
+import { 
+  BookingStatusBadge, 
+  CityBadge, 
+  CustomerVipBadge, 
+  PaymentRouteType, 
+  PaymentStatusBadge, 
+  ServiceNameBadge 
+} from '../badges/chat-badges';
+import { BookingIdBadge } from '../badges/booking-badge';
+import GoogleMapsButton from './google-maps-url-button';
+
+import { IBookingInfoOutput } from '@/lib/core/types/chat';
+import { buildGoogleMapsURL, buildWhatsappLink } from '@/lib/services/utils/helpers';
 
 let chileanPeso = new Intl.NumberFormat('es-CL', {
     style: 'currency',

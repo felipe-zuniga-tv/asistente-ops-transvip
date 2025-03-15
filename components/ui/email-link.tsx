@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function EmailLink({ address } : {
+export function EmailLink({ address } : {
     address: string
 }) {
     return (
