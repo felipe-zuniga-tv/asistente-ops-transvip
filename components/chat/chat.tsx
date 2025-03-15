@@ -1,6 +1,6 @@
 'use client'
 
-import { useLocalStorage } from '@/hooks/use-local-storage'
+// import { useLocalStorage } from '@/hooks/use-local-storage'
 import { useScrollAnchor } from '@/hooks/use-scroll-anchor'
 import { cn } from '@/lib/utils'
 import { useAIState, useUIState } from 'ai/rsc'
@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 import { MessagesList } from './messages-list'
 import { EmptyScreen } from './empty-screen'
 import { ChatPanel } from './chat-panel'
-import type { ChatProps } from '@/lib/core/types'
+import type { ChatProps } from '@/lib/core/types/chat'
 
 export function Chat({ id, initialMessages, className, session }: ChatProps) {
     const router = useRouter()
