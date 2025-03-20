@@ -41,7 +41,15 @@ export async function fetchUserData(adminId: string) {
         headers: getApiHeaders(),
     });
     if (!response.ok) throw new Error('User data fetch failed');
-    return await response.json();
+
+    const { data: { result } } = await response.json();
+    const user = result[0];
+    return {
+        id: user.admin_id,
+        email: user.email,
+        fullName: user.fullName,
+        // roles: user.role
+    };
 }
 
 export const login = async (email: string, password: string) => {
@@ -60,7 +68,7 @@ export const login = async (email: string, password: string) => {
                 const userResponse = await fetchUserData(loginResponse.data.id);
                 if (!userResponse) return
 
-                const { user, session } = await createSession(email, loginResponse.data.access_token, userResponse.data.result[0].fullName);
+                const { user, session } = await createSession(email, loginResponse.data.access_token, userResponse);
                 await setCookie(session);
 
                 return {

@@ -39,6 +39,7 @@ export interface SidebarItem {
 	isActive?: boolean;
 	items?: Tool[]; // Recursive type for nested items
 	highlight?: boolean;
+	external?: boolean;
 }
 
 // Sidebar content
@@ -252,7 +253,7 @@ const bookingsMenu: SidebarItem = {
 	],
 }
 
-const adminMenu: SidebarItem = {
+const configMenu: SidebarItem = {
 	title: "Configuración",
 	url: Routes.ADMIN.HOME,
 	icon: Settings,
@@ -303,7 +304,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 		bookingsMenu,
 		// driversMenu,
 		// vehiclesMenu,
-		adminMenu,
+		// configMenu,
 		// {
 		// 	title: "Reportes",
 		// 	url: "#",
@@ -326,9 +327,16 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 	],
 	navSecondary: [
 		{
+			title: "Configuración",
+			url: Routes.ADMIN.HOME,
+			icon: Settings,
+			external: false,
+		},
+		{
 			title: "Feedback",
 			url: Routes.FEEDBACK.GOOGLE_FORMS,
 			icon: Send,
+			external: true,
 		},
 	]
 }

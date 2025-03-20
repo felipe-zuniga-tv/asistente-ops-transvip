@@ -54,7 +54,7 @@ export function EmptyScreen({ session }: { session: any }) {
             <div className="chat-message assistant">
                 <div className="flex flex-col gap-2">
                     <div className="flex flex-row gap-1">
-                        <span className="font-semibold">¡Hola, {session.user.full_name}!</span>
+                        <span className="font-semibold">¡Hola, {session.user.fullName}!</span>
                         <span className="font-normal">Soy Jarvip, tu asistente.</span>
                     </div>
                     <span className="font-bold">¿Con qué puedo ayudarte hoy?</span>
