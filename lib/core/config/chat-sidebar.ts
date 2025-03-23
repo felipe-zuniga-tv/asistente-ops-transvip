@@ -84,7 +84,13 @@ const formsMenu: SidebarItem = {
 	isActive: false,
 	items: [
 		{
-			title: "Forms Activos",
+			title: "Respuestas Sucursales",
+			url: Routes.SALES.RESPONSES,
+			icon: ListChecks,
+			active: true,
+		},
+		{
+			title: "Forms Operaciones Activos",
 			url: Routes.OPERATIONS_FORMS.HOME,
 			icon: ClipboardList,
 			active: true,
@@ -107,7 +113,7 @@ export const chatbotMenu: SidebarItem = {
 }
 
 const toolsMenu: SidebarItem = {
-	title: "Herramientas",
+	title: "Herramientas varias",
 	url: "#",
 	icon: Hammer,
 	isActive: false,
@@ -130,12 +136,6 @@ const toolsMenu: SidebarItem = {
 			url: Routes.TEXT.WRITE,
 			active: true
 		},
-		{
-			title: 'Ruteo Reservas',
-			icon: MapPin,
-			url: Routes.ROUTING.MAIN,
-			active: false
-		},
 	],
 }
 
@@ -150,21 +150,6 @@ const financeMenu: SidebarItem = {
 			icon: Ticket,
 			url: Routes.FINANCE.TICKETS,
 			active: true
-		},
-	],
-}
-
-export const branchesFormsMenu: SidebarItem = {
-	title: "Formularios Sucursales",
-	url: "#",
-	icon: House,
-	isActive: false,
-	items: [
-		{
-			title: "Respuestas",
-			url: Routes.SALES.RESPONSES,
-			icon: ListChecks,
-			active: true,
 		},
 	],
 }
@@ -250,6 +235,12 @@ const bookingsMenu: SidebarItem = {
 			url: Routes.BOOKINGS.SHARED,
 			active: true
 		},
+		{
+			title: 'Ruteo Reservas',
+			icon: MapPin,
+			url: Routes.ROUTING.MAIN,
+			active: false
+		},
 	],
 }
 
@@ -298,7 +289,6 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 		chatbotMenu,
 		toolsMenu,
 		financeMenu,
-		branchesFormsMenu,
 		formsMenu,
 		controlFlotaMenu,
 		bookingsMenu,

@@ -22,7 +22,8 @@ import Link from "next/link"
 import { Tool } from "@/lib/core/types/chat"
 import { Input } from "../ui/input";
 
-export function NavMain({ items, handleClick, showHints }: {
+export function NavMain({ title, items, handleClick, showHints, showSearch = true }: {
+	title?: string
 	items: {
 		title: string
 		url?: string
@@ -34,6 +35,7 @@ export function NavMain({ items, handleClick, showHints }: {
 	}[]
 	handleClick: any
 	showHints: boolean
+	showSearch?: boolean
 }) {
 	const [searchQuery, setSearchQuery] = useState("");
 
@@ -52,7 +54,7 @@ export function NavMain({ items, handleClick, showHints }: {
 
 	return (
 		<SidebarGroup>
-			<div className="relative bg-white rounded-lg flex items-center m-2 mx-0">
+			{ showSearch && <div className="relative bg-white rounded-lg flex items-center m-2 mx-0">
 				<Search className="text-gray-500 size-4 absolute left-2 top-1/2 transform -translate-y-1/2" />
 				<Input type="text"
 					name="sidebar_search"
@@ -61,9 +63,9 @@ export function NavMain({ items, handleClick, showHints }: {
 					className="p-3 pl-8 border border-blue-200 group-data-[state=open]/collapsible"
 					onChange={(e: any) => setSearchQuery(e.target.value)}
 				/>
-			</div>
+			</div> }
 
-			<SidebarGroupLabel>Operaciones Transvip</SidebarGroupLabel>
+			{ title && <SidebarGroupLabel>{title}</SidebarGroupLabel> }
 			<SidebarMenu>
 				{filteredItems.map((item) => (
 					<Collapsible

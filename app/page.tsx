@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function Home(): JSX.Element {
 	return (
-		<div className="flex min-h-screen flex-col items-center justify-center p-4 bg-main rounded-lg">
+		<div className="flex min-h-screen flex-col items-center justify-center p-4 bg-main">
 			<div className="w-full max-w-lg bg-white rounded-lg">
 				<div className="flex flex-col gap-1 items-center p-6 pb-0 text-center">
 					<TransvipLogo colored={true} size={28} />
