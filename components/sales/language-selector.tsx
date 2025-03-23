@@ -34,7 +34,7 @@ export function LanguageSelector({ language }: LanguageSelectorProps) {
                 router.push(url.pathname + url.search)
             }}
         >
-            <SelectTrigger className="w-[180px] bg-slate-700 text-white">
+            <SelectTrigger className="w-[180px] bg-gray-100">
                 <SelectValue>
                     {languages.find(lang => lang.value === language)?.flag} {languages.find(lang => lang.value === language)?.label}
                 </SelectValue>

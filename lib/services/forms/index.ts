@@ -20,7 +20,7 @@ import { revalidatePath } from "next/cache";
 import { Routes } from "@/utils/routes";
 
 // Forms Management
-export async function getForms() {
+export async function getOperationsForms() {
     const supabase = await createClient();
 
     const { data, error } = await supabase
@@ -33,7 +33,7 @@ export async function getForms() {
     return data as OperationsForm[];
 }
 
-export async function getFormById(id: string) {
+export async function getOperationsFormById(id: string) {
     const supabase = await createClient();
 
     const { data, error } = await supabase

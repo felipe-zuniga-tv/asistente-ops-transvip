@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import SuspenseLoading from "@/components/ui/suspense";
 import FormContainer from "@/components/forms/form-container";
-import { getFormById } from "@/lib/services/forms";
+import { getOperationsFormById } from "@/lib/services/forms";
 
 interface FormPageProps {
     params: {
@@ -11,7 +11,7 @@ interface FormPageProps {
 }
 
 export async function generateMetadata({ params }: FormPageProps) {
-    const form = await getFormById(params.formId);
+    const form = await getOperationsFormById(params.formId);
     if (!form) return notFound();
 
     return {

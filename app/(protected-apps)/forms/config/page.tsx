@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { OperationsFormsConfiguration } from "@/components/admin/forms/operations-forms-config";
-import { getForms } from "@/lib/services/forms";
+import { getOperationsForms } from "@/lib/services/forms";
 import SuspenseLoading from "@/components/ui/suspense";
 
 export const metadata = {
@@ -17,6 +17,6 @@ export default async function FormsConfigPage() {
 }
 
 async function FormsConfigDashboard() {
-    const forms = await getForms();
+    const forms = await getOperationsForms();
     return <OperationsFormsConfiguration data={forms} />;
 } 

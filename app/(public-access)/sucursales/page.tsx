@@ -5,21 +5,19 @@ import { BranchesList } from '@/components/sales/branches-list'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
 import { TransvipLogo } from '@/components/transvip/transvip-logo'
 import { getTranslation, type Language } from '@/lib/core/i18n'
+import SuspenseLoading from '@/components/ui/suspense'
 
-export default async function BranchesPage({
-	searchParams,
-}: {
-	searchParams: { lang?: string }
-}) {
+export default async function BranchesPage({ searchParams }: { searchParams: { lang?: string } }) {
 	const language = (searchParams.lang || 'es-CL') as Language
 	const t = getTranslation(language)
 	const branches = await getBranches()
+	const branchesWithSalesForm = branches.filter(branch => branch.sales_form_active)
 
 	return (
 		<Card>
 			<CardHeader className="flex flex-col sm:flex-row gap-2 items-center justify-between border-b pb-6">
 				<div className="flex items-center gap-4">
-					<TransvipLogo size={25} />
+					<TransvipLogo size={24} />
 					<CardTitle className="text-2xl font-bold">Transvip</CardTitle>
 				</div>
 				<Suspense>
@@ -28,15 +26,15 @@ export default async function BranchesPage({
 			</CardHeader>
 			<CardContent className="p-8 flex flex-col gap-8 items-center justify-center w-full">
 				<div className="flex flex-col gap-2 items-center justify-center">
-					<h1 className="text-2xl font-bold">{t.branches.title}</h1>
+					<span className="text-2xl font-bold">{t.branches.title}</span>
 					<div className="text-muted-foreground text-center">
 						{t.branches.description}
 					</div>
 				</div>
 
 				<div className="w-full flex flex-col gap-6">
-					<Suspense>
-						<BranchesList branches={branches.filter(branch => branch.sales_form_active)} language={language} />
+					<Suspense fallback={<SuspenseLoading />}>
+						<BranchesList branches={branchesWithSalesForm} language={language} />
 					</Suspense>
 				</div>
 			</CardContent>

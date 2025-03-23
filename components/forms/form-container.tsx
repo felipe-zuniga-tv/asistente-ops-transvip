@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { createFormResponse, getFormById } from "@/lib/services/forms";
+import { createFormResponse, getOperationsFormById } from "@/lib/services/forms";
 import { notFound } from "next/navigation";
 import { Card, CardContent, CardFooter } from "../ui";
 import Link from "next/link";
@@ -8,7 +8,7 @@ import { TransvipLogo } from "../transvip/transvip-logo";
 import { FormResponse } from "./form-response";
 
 export default async function FormContainer({ formId }: { formId: string }) {
-    const form = await getFormById(formId);
+    const form = await getOperationsFormById(formId);
     if (!form) return notFound();
 
     // Generate a unique response ID and create the form response

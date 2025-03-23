@@ -64,6 +64,7 @@ export function LoginFormClient() {
                         name="email"
                         type="email"
                         placeholder="usuario@email.com"
+                        autoComplete="email"
                         required
                         disabled={isLoading}
                     />
@@ -75,6 +76,7 @@ export function LoginFormClient() {
                         name="password"
                         type="password"
                         placeholder="••••••••"
+                        autoComplete="current-password"
                         required
                         disabled={isLoading}
                     />

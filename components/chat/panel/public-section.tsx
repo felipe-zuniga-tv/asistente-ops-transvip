@@ -26,25 +26,29 @@ export function PublicSection({ section, items, handleClick }: PublicSectionProp
 				<SidebarMenu>
 					{items.map((item) => (
 						<SidebarMenuItem key={item.title}>
-							<SidebarMenuButton 
-								asChild 
-								isActive={item.active} 
-								className={section.highlight ? "bg-transvip/20 hover:bg-transvip/30" : ""}
-							>
-								{item.url ? (
+							{item.url ? (
+								<SidebarMenuButton 
+									asChild 
+									isActive={item.active}
+									tooltip={item.title}
+									className={section.highlight ? "bg-transvip/20 hover:bg-transvip/30" : ""}
+								>
 									<Link href={item.url}>
-										<div className="flex items-center">
-											{item.icon && <item.icon className="mr-2 size-4" />}
-											<span>{item.title}</span>
-										</div>
-									</Link>
-								) : (
-									<div onClick={() => handleClick(item)} className="cursor-pointer flex items-center">
-										{item.icon && <item.icon className="mr-2 size-4" />}
+										{item.icon && <item.icon />}
 										<span>{item.title}</span>
-									</div>
-								)}
-							</SidebarMenuButton>
+									</Link>
+								</SidebarMenuButton>
+							) : (
+								<SidebarMenuButton 
+									tooltip={item.title}
+									isActive={item.active}
+									className={section.highlight ? "bg-transvip/20 hover:bg-transvip/30" : ""}
+									onClick={() => handleClick(item)}
+								>
+									{item.icon && <item.icon />}
+									<span>{item.title}</span>
+								</SidebarMenuButton>
+							)}
 						</SidebarMenuItem>
 					))}
 				</SidebarMenu>

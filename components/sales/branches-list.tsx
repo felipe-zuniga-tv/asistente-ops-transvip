@@ -12,15 +12,22 @@ interface BranchesListProps {
 }
 
 export function BranchesList({ branches, language }: BranchesListProps) {
+    if (branches.length === 0) {
+        return (
+            <div className="text-center text-muted-foreground">
+                No hay sucursales disponibles
+            </div>
+        )
+    }
+
     return (
         <>
-            {branches.map((branch) => (
-                <Link
-                    key={branch.branch_id}
+            { branches.map((branch) => (
+                <Link key={branch.branch_id}
                     href={`${Routes.PUBLIC.VENTA_SUCURSALES}?branch=${branch.code.toLowerCase()}&lang=${language}`}
                     className="block transition-transform hover:scale-[1.02]"
                 >
-                    <Card className="h-full hover:bg-transvip/30 transition-colors">
+                    <Card className="h-full hover:bg-transvip/80 hover:text-white transition-colors">
                         <CardHeader className="text-center">
                             <CardTitle className="text-2xl font-bold">{branch.name}</CardTitle>
                         </CardHeader>

@@ -49,11 +49,11 @@ function SalesPageSkeleton() {
 }
 
 export default async function SalesPage() {
-	const branches = await getBranches()
+	const branchesWithSalesForm = await getBranches(true)
 
 	return (
 		<Suspense fallback={<SalesPageSkeleton />}>
-			<SalesPageContent branches={branches.filter(branch => branch.sales_form_active)} />
+			<SalesPageContent branches={branchesWithSalesForm} />
 		</Suspense>
 	)
 } 

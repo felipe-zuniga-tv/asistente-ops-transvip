@@ -71,20 +71,20 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 		
 		try {
 			isSubmitting.current = true;
-
-			// First create the customer account
+			
+			// First create customer account, then create sales response sequentially
 			const customerResult = await createCustomerAccount({
 				firstName: formData.firstName,
 				lastName: formData.lastName,
 				email: formData.email,
 				language: formData.language,
-			})
-
+			});
+			
+			// Only proceed with sales response if customer account was created successfully
 			if (!customerResult || 'error' in customerResult) {
-				throw new Error('Failed to create customer account')
+				throw new Error('Failed to create customer account');
 			}
-
-			// Then create the sales response
+			
 			const salesResult = await createSalesResponse({
 				branch_code: branchCode,
 				branch_name: branchName,
@@ -96,12 +96,12 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 				return_date: formData.returnDate ? new Date(formData.returnDate).toISOString() : null,
 				return_time: formData.returnTime || null,
 				accommodation: formData.accommodation,
-			})
-
+			});
+			
 			if (!salesResult) {
-				throw new Error('Failed to create sales response')
+				throw new Error('Failed to create sales response');
 			}
-
+			
 			// Show success message
 			toast({
 				title: t.success.title,
@@ -211,4 +211,7 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 			</CardFooter>
 		</Card>
 	)
-} 
+}
+
+export const runtime = 'edge';
+export const revalidate = 3600; // Cache the page for 1 hour 

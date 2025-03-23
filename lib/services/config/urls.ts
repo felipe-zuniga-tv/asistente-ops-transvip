@@ -11,4 +11,4 @@ export const BOOKING_ID_API_URL      = buildAPIUrl(process.env.GET_BOOKING_BY_ID
 export const ZONA_ILUMINADA_CITY     = buildAPIUrl(process.env.GET_ZONA_ILUMINADA_CITY)
 export const ZONA_ILUMINADA_SERVICES = buildAPIUrl(process.env.GET_ZONA_ILUMINADA_SERVICES)
 export const AIRPORT_ZONE_API_URL    = buildAPIUrl(process.env.GET_STATUS_AIRPORT_CITY)
-export const CUSTOMER_SIGNUP_API_URL = buildAPIUrl(process.env.CUSTOMER_SIGNUP) 
+export const CUSTOMER_SIGNUP_API_URL = buildAPIUrl(process.env.NEXT_PUBLIC_CUSTOMER_SIGNUP)

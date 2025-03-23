@@ -1,5 +1,5 @@
 import { PromptForm } from './prompt-form'
-// import { ButtonScrollToBottom } from '../button-scroll-to-bottom'
+import { ButtonScrollToBottom } from '../button-scroll-to-bottom'
 
 export interface ChatPanelProps {
     id?: string
@@ -22,7 +22,7 @@ export function ChatPanel({
 }: ChatPanelProps) {
     return (
         <>
-            {/* <ButtonScrollToBottom isAtBottom={isAtBottom} scrollToBottom={scrollToBottom} /> */}
+            <ButtonScrollToBottom isAtBottom={isAtBottom} scrollToBottom={scrollToBottom} />
             <div className="relative inset-x-0 bottom-0 overflow-hidden rounded-lg border border-slate-500 md:border-slate-400 bg-transparent z-20">
                 <PromptForm session={session} input={input} setInput={setInput} />
             </div>

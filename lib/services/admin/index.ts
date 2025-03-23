@@ -121,14 +121,20 @@ export async function deleteVehicleType(id: string) {
 }
 
 // Branches
-export async function getBranches() {
+export async function getBranches(salesFormActive?: boolean) {
     const supabase = await createClient()
     
     try {
-        const { data, error, status } = await supabase
+        let query = supabase
             .from('branches')
             .select('*')
             .order('name')
+        
+        if (salesFormActive !== undefined) {
+            query = query.eq('sales_form_active', salesFormActive)
+        }
+        
+        const { data, error, status } = await query
         
         if (error) {
             console.error('Error fetching branches:', error)
@@ -146,6 +152,19 @@ export async function getBranches() {
         throw error
     }
 }
+
+export async function getBranchByCode(code: string) {
+    const supabase = await createClient()
+    
+    const { data, error } = await supabase
+        .from('branches')
+        .select('*')
+        .eq('code', code)
+        .single()
+    
+    if (error) throw error
+    return data as Branch
+} 
 
 export async function createBranch(input: CreateBranchInput) {
     const supabase = await createClient()

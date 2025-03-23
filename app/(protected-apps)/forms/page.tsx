@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getForms } from "@/lib/services/forms";
+import { getOperationsForms } from "@/lib/services/forms";
 import { Routes } from "@/utils/routes";
 import { FormulariosContent } from "@/components/forms/forms-content";
 import SuspenseLoading from "@/components/ui/suspense";
@@ -10,7 +10,7 @@ export const metadata = {
 }
 
 export default async function FormulariosPage() {
-	const forms = await getForms();
+	const forms = await getOperationsForms();
 	const activeForms = forms.filter(form => form.is_active);
 
 	return (

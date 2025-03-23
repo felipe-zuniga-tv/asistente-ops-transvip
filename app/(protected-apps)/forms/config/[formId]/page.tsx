@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import { getFormById } from "@/lib/services/forms";
+import { getOperationsFormById } from "@/lib/services/forms";
 import { OperationsFormEditor } from "@/components/admin/forms/operations-form-editor";
 import SuspenseLoading from "@/components/ui/suspense";
 
@@ -11,7 +11,7 @@ interface InspectionFormPageProps {
 }
 
 export async function generateMetadata({ params }: InspectionFormPageProps) {
-    const form = await getFormById(params.formId);
+    const form = await getOperationsFormById(params.formId);
     if (!form) return notFound();
 
     return {
@@ -29,7 +29,7 @@ export default async function OperationsFormPage({ params }: InspectionFormPageP
 }
 
 async function OperationsFormEditorContainer({ formId }: { formId: string }) {
-    const form = await getFormById(formId);
+    const form = await getOperationsFormById(formId);
     if (!form) return notFound();
 
     return <OperationsFormEditor form={form} />;

@@ -12,6 +12,7 @@ import {
 	SidebarContent,
 	SidebarFooter,
 	SidebarRail,
+	useSidebar
 } from "@/components/ui/sidebar"
 import { Routes } from "@/utils/routes"
 import { sidebarData, chatbotMenu, publicSidebar } from "@/lib/core/config/chat-sidebar"
@@ -19,6 +20,7 @@ import { SidebarSearch } from "./sidebar-search"
 import { PublicSection } from "./public-section"
 import { useSidebarActions } from "@/components/chat/panel/use-sidebar-actions"
 import { SidebarItem, Tool } from "@/components/chat/panel/types"
+import { TransvipLogo } from "@/components/transvip/transvip-logo"
 
 // Main sidebar component
 export function AppSidebar({ 
@@ -31,6 +33,8 @@ export function AppSidebar({
 	const isChatRoute = path === Routes.CHAT
 	const [searchQuery, setSearchQuery] = React.useState("")
 	const { handleItemClick } = useSidebarActions()
+	const { state } = useSidebar()
+	const isCollapsed = state === "collapsed"
 
 	// Chatbot configuration
 	const showHints = false
@@ -97,14 +101,14 @@ export function AppSidebar({
 	}, [remainingSections, searchQuery])
 
 	// Type correct handleClick for NavMain
-	const handleItemClickForTool = async (tool: Tool) => {
+	const handleItemClickForTool = async (tool: SidebarItem) => {
 		// Convert Tool to SidebarItem if needed
 		const sidebarItem: SidebarItem = {
 			title: tool.title,
-			url: tool.url || tool.href,
+			url: tool.url || tool.url,
 			icon: tool.icon as unknown as React.ComponentType<{ className?: string }>,
-			active: tool.isActive,
-			search: tool.title // Use title as search if no specific search property
+			active: tool.active,
+			search: tool.search // Use title as search if no specific search property
 		}
 		return handleItemClick(sidebarItem)
 	}
@@ -112,11 +116,17 @@ export function AppSidebar({
 	return (
 		<Sidebar collapsible="icon" {...props}>
 			<SidebarContent>
-				{/* Search input */}
-				<SidebarSearch 
-					searchQuery={searchQuery} 
-					setSearchQuery={setSearchQuery} 
-				/>
+				{/* Conditionally render TransvipLogo or SidebarSearch based on sidebar state */}
+				{isCollapsed ? (
+					<div className="flex justify-center items-center p-2 mt-2">
+						<TransvipLogo size={28} />
+					</div>
+				) : (
+					<SidebarSearch 
+						searchQuery={searchQuery} 
+						setSearchQuery={setSearchQuery} 
+					/>
+				)}
 
 				{/* Public section */}
 				{filteredPublicItems.length > 0 && (
@@ -133,7 +143,6 @@ export function AppSidebar({
 					items={filteredRemainingSections as unknown as Tool[]} 
 					handleClick={handleItemClickForTool} 
 					showHints={showHints} 
-					showSearch={false}
 				/>
 			</SidebarContent>
 			<SidebarFooter>

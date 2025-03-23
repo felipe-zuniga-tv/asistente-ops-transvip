@@ -14,8 +14,6 @@ export function MessagesList({ messages, session, isShared }: ChatList) {
                 messages.map(message => (
                     <div className='message-item' key={message.id + nanoid()}>
                         {message.display}
-                        {/* {message.spinner} */}
-                        {/* {message.attachments} */}
                     </div>
                 ))
             }

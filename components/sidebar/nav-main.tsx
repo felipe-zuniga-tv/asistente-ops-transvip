@@ -1,14 +1,10 @@
 "use client"
 
-import { ChevronRight, Search, type LucideIcon } from "lucide-react"
-import { useState } from "react";
-
+import { ChevronRight, type LucideIcon } from "lucide-react"
 import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
-} from "@/components/ui/collapsible"
-import {
 	SidebarGroup,
 	SidebarGroupLabel,
 	SidebarMenu,
@@ -17,12 +13,11 @@ import {
 	SidebarMenuSub,
 	SidebarMenuSubButton,
 	SidebarMenuSubItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui"
 import Link from "next/link"
 import { Tool } from "@/lib/core/types/chat"
-import { Input } from "../ui/input";
 
-export function NavMain({ title, items, handleClick, showHints, showSearch = true }: {
+export function NavMain({ title, items, handleClick, showHints }: {
 	title?: string
 	items: {
 		title: string
@@ -35,39 +30,12 @@ export function NavMain({ title, items, handleClick, showHints, showSearch = tru
 	}[]
 	handleClick: any
 	showHints: boolean
-	showSearch?: boolean
 }) {
-	const [searchQuery, setSearchQuery] = useState("");
-
-	const filteredItems = items.filter(item => {
-		// If search is empty, show all items
-		if (!searchQuery) return true;
-
-		const isItemMatch = item.title.toLowerCase().includes(searchQuery.toLowerCase());
-		const hasMatchingSubItems = item.items?.some(subItem => 
-			subItem.title.toLowerCase().includes(searchQuery.toLowerCase())
-		);
-
-		// Show the item if either the item title matches or it has matching sub-items
-		return isItemMatch || hasMatchingSubItems;
-	});
-
 	return (
 		<SidebarGroup>
-			{ showSearch && <div className="relative bg-white rounded-lg flex items-center m-2 mx-0">
-				<Search className="text-gray-500 size-4 absolute left-2 top-1/2 transform -translate-y-1/2" />
-				<Input type="text"
-					name="sidebar_search"
-					placeholder="Busca tu herramienta..."
-					value={searchQuery}
-					className="p-3 pl-8 border border-blue-200 group-data-[state=open]/collapsible"
-					onChange={(e: any) => setSearchQuery(e.target.value)}
-				/>
-			</div> }
-
 			{ title && <SidebarGroupLabel>{title}</SidebarGroupLabel> }
 			<SidebarMenu>
-				{filteredItems.map((item) => (
+				{items.map((item) => (
 					<Collapsible
 						key={item.title}
 						asChild
@@ -84,9 +52,7 @@ export function NavMain({ title, items, handleClick, showHints, showSearch = tru
 							</CollapsibleTrigger>
 							<CollapsibleContent>
 								<SidebarMenuSub>
-									{item.items?.filter(subItem => 
-										subItem.title.toLowerCase().includes(searchQuery.toLowerCase())
-									).map((subItem) => (
+									{item.items?.map((subItem) => (
 										<SidebarMenuSubItem key={subItem.title}>
 											<SidebarMenuSubButton asChild className="h-fit min-h-6">
 												{subItem.url ? (

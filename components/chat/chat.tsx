@@ -10,16 +10,18 @@ import { MessagesList } from './messages-list'
 import { EmptyScreen } from './empty-screen'
 import { ChatPanel } from './chat-panel'
 import type { ChatProps } from '@/lib/core/types/chat'
+import { NewChatButton } from './new-chat-button'
+import { Routes } from '@/utils/routes'
 
 export function Chat({ id, initialMessages, className, session }: ChatProps) {
     const router = useRouter()
     const path = usePathname()
     const [input, setInput] = useState('')
-    const [messages] = useUIState()
+    const [messages, setMessages] = useUIState()
     const [aiState] = useAIState()
 
     // const [_, setNewChatId] = useLocalStorage('newChatId', id)
-// 
+ 
     // useEffect(() => {
     //     if (session?.user) {
     //         if (path.includes('chat') && messages.length === 0) {
@@ -42,22 +44,34 @@ export function Chat({ id, initialMessages, className, session }: ChatProps) {
 
     const { messagesRef, scrollRef, visibilityRef, isAtBottom, scrollToBottom } = useScrollAnchor()
 
+    const handleNewChat = () => {
+        setMessages([]);
+        router.push(Routes.CHAT);
+        router.refresh();
+    }
+
     return (
-        <div ref={scrollRef} className="flex flex-col size-full mx-auto overflow-auto justify-between">
-            <div className={cn('flex-1 pb-[30px] overflow-auto max-h-[76vh]', className as string)} ref={messagesRef}>
-                {messages.length ? 
-                    (<MessagesList messages={messages} isShared={false} session={session} />) :
-                    (<EmptyScreen session={session} />)
-                }
-                <div className="h-px w-full" ref={visibilityRef} />
+        <div className="flex flex-col size-full mx-auto justify-between">
+            <div className="flex sticky top-0 pb-3 items-center px-0 gap-2 bg-transparent z-10">
+                <NewChatButton onClick={handleNewChat} />
             </div>
-            <ChatPanel id={id}
-                input={input}
-                session={session}
-                setInput={setInput}
-                isAtBottom={isAtBottom}
-                scrollToBottom={scrollToBottom}
-            />
+
+            <div ref={scrollRef} className="flex flex-col flex-1 overflow-auto">
+                <div className={cn('flex-1 pb-[30px] overflow-auto max-h-[76vh]', className as string)} ref={messagesRef}>
+                    {messages.length ? 
+                        (<MessagesList messages={messages} isShared={false} session={session} />) :
+                        (<EmptyScreen session={session} />)
+                    }
+                    <div className="h-px w-full" ref={visibilityRef} />
+                </div>
+                <ChatPanel id={id}
+                    input={input}
+                    session={session}
+                    setInput={setInput}
+                    isAtBottom={isAtBottom}
+                    scrollToBottom={scrollToBottom}
+                />
+            </div>
         </div>
     )
 }

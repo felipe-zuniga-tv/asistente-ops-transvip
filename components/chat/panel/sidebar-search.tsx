@@ -11,7 +11,7 @@ interface SidebarSearchProps {
 
 export function SidebarSearch({ searchQuery, setSearchQuery }: SidebarSearchProps) {
 	return (
-		<div className="relative bg-white rounded-lg flex items-center m-2">
+		<div className="relative bg-white rounded-lg flex items-center m-2 mt-3">
 			<Search className="text-gray-500 size-4 absolute left-2 top-1/2 transform -translate-y-1/2" />
 			<Input 
 				type="text"

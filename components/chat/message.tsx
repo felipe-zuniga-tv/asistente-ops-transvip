@@ -23,10 +23,10 @@ export function BotCard({ children, className = "" }: { children: React.ReactNod
 export function UserMessage({ session, content }: { session?: any, content: string }) {
 	return (
 		<div className="chat-message user flex items-start">
-			<div className="flex flex-col gap-2 w-full">
+			<div className="flex flex-col gap-1 w-full">
 				{ content }
 				<div className="flex flex-row gap-0 justify-end items-center text-xs">
-					{ session && <span>{ session.user.full_name }</span>}
+					{ session && <span>{ session.user.fullName }</span>}
 				</div>
 			</div>
 		</div>
@@ -40,7 +40,7 @@ export function AssistantMessage({ content, className, showAvatar = true }: {
 }) {
 	return (
 		<div className={cn('chat-message assistant flex items-start', className as string)}>
-			<div className="flex flex-col gap-3 w-full">
+			<div className="flex flex-col gap-1 w-full">
 				<AssistantMessageContent content={content} />
 				
 				{ showAvatar && (
@@ -63,7 +63,7 @@ export function AssistantMessageContent({ content }: {
 			remarkPlugins={[remarkGfm, remarkMath]}
 			components={{
 				p({ children }) {
-					return <p className="first-of-type:mt-0 only:my-0 mt-2 mb-2 ">{children}</p>
+					return <p className="first-of-type:mt-0 only:my-0">{children}</p>
 				},
 				ul({ children }) {
 					return <ul className="list-none flex flex-col gap-2">{children}</ul>
