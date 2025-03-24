@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation"
 import Image from "next/image"
 import { format } from "date-fns"
-import { getTicketById } from "@/lib/tickets"
+import { getTicketById } from "@/lib/features/tickets"
 import { getDriverSession } from "@/lib/driver/auth"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"

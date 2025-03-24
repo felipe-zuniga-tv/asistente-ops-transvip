@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import { getDriverSession } from "@/lib/driver/auth"
-import { getDriverTickets } from "@/lib/tickets"
+import { getDriverTickets } from "@/lib/features/tickets"
 import { EmptyState } from "@/components/ui/empty-state"
 import { ConfigCardContainer } from "@/components/tables/config-card-container"
 import { columns } from "@/components/finance/tickets/table/columns"
