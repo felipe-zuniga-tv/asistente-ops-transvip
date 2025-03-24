@@ -3,15 +3,19 @@ import { getVehicleStatusConfigs, getVehicleStatuses } from '@/lib/services/data
 import { Suspense } from "react";
 import SuspenseLoading from "@/components/ui/suspense";
 
-export const revalidate = 0;
+export const revalidate = 60;
 
-export default async function VehicleStatusPage() {
+async function VehicleStatusPageContent() {
     const statuses = await getVehicleStatuses()
     const statusConfigs = await getVehicleStatusConfigs()
 
+    return <VehicleStatus statuses={statuses} statusConfigs={statusConfigs} />
+}
+
+export default async function VehicleStatusPage() {
     return (
         <Suspense fallback={<SuspenseLoading />}>
-            <VehicleStatus statuses={statuses} statusConfigs={statusConfigs} />
+            <VehicleStatusPageContent />
         </Suspense>
     );
 }

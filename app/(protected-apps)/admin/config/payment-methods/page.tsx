@@ -8,15 +8,15 @@ export const metadata = {
     description: "Administra los estados disponibles para los vehículos",
 };
 
+async function PaymentMethodDashboard() {
+    const paymentMethods = await getPaymentMethods()
+    return <PaymentMethodConfig data={paymentMethods} />
+}
+
 export default async function PaymentMethodPage() {
     return (
         <Suspense fallback={<SuspenseLoading />}>
             <PaymentMethodDashboard />
         </Suspense>
     )
-}
-
-async function PaymentMethodDashboard() {
-    const paymentMethods = await getPaymentMethods()
-    return <PaymentMethodConfig data={paymentMethods} />
 }

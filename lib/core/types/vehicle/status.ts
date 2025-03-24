@@ -8,7 +8,7 @@ export interface VehicleStatusConfig {
 
 export interface VehicleStatus {
     id: string;
-    vehicle_number: number;
+    vehicle_number: string;
     status_id: string;
     status_label: string;
     status_color: string;

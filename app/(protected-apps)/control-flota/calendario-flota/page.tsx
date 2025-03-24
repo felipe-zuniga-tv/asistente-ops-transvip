@@ -3,12 +3,15 @@ import { VehicleShiftsSummary } from "@/components/vehicle-shifts/fleet/vehicle-
 import SuspenseLoading from "@/components/ui/suspense"
 import { getBranches } from "@/lib/services/admin"
 
-export default async function FleetShiftsPage() {
+async function FleetShiftsPageContent() {
     const branches = await getBranches()
-    
+    return <VehicleShiftsSummary branches={branches} />
+}
+
+export default async function FleetShiftsPage() {
     return (
         <Suspense fallback={<SuspenseLoading />}>
-            <VehicleShiftsSummary branches={branches} />
+            <FleetShiftsPageContent />
         </Suspense>
     )
 }

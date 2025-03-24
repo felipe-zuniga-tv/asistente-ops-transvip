@@ -1,16 +1,17 @@
-import { ShiftsDefinition } from "@/components/shifts/shifts-definition";
-import SuspenseLoading from "@/components/ui/suspense";
-import { getShifts } from "@/lib/services/database/actions";
 import { Suspense } from "react";
+import SuspenseLoading from "@/components/ui/suspense";
+import { ShiftsDefinition } from "@/components/shifts/shifts-definition";
+import { getShifts } from "@/lib/services/database/actions";
 
-export const revalidate = 0;
+async function ShiftsDefinitionPageContent() {
+	const shifts = await getShifts()
+	return <ShiftsDefinition shifts={shifts} />
+}
 
 export default async function ShiftsDefinitionPage() {
-  const shifts = await getShifts()
-  
-  return (
-    <Suspense fallback={<SuspenseLoading />}>
-      <ShiftsDefinition shifts={shifts} />
-    </Suspense>
-  );
+	return (
+		<Suspense fallback={<SuspenseLoading />}>
+			<ShiftsDefinitionPageContent />
+		</Suspense>
+	)
 }

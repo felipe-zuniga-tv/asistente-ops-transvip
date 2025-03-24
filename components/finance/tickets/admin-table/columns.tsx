@@ -90,8 +90,8 @@ export const adminColumns: ColumnDef<ParkingTicket>[] = [
     entryDateTimeColumn,
     exitDateTimeColumn,
     amountColumn,
-    statusColumn,
     submissionDateColumn,
     imageColumn,
+    statusColumn,
     actionColumn, // Add the admin-specific actions column
 ]; 

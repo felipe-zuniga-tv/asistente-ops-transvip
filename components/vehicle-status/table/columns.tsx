@@ -4,13 +4,13 @@ import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { MoreHorizontal, Trash, Edit } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
+    Button,
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui";
 import { VehicleStatus } from "@/lib/core/types";
 
 const FORMAT_DATE = "dd/MM/yyyy HH:mm"
@@ -20,6 +20,10 @@ export const columns: ColumnDef<VehicleStatus>[] = [
         accessorKey: "vehicle_number",
         header: () => <div className="text-center">Móvil</div>,
         cell: ({ row }) => <div className="text-center">{row.original.vehicle_number}</div>,
+        filterFn: (row, columnId, filterValue) => {
+            const rowValue = String(row.getValue(columnId));
+            return rowValue.toLowerCase().includes(String(filterValue).toLowerCase());
+        }
     },
     {
         accessorKey: "status_label",
