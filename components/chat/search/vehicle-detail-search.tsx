@@ -45,42 +45,31 @@ export function VehicleDetail({ session, vehicleInformation, content }: {
     const [_, setMessages] = useUIState()
     const { submitUserMessage } = useActions()
 
-    const handleDriverClick = async(driver : IVehicleDetailDrivers) => {
-        const userMessageContent = `Búscame el perfil del conductor de teléfono ${driver.country_code.replace('+', '').trim()}${driver.phone.trim()}.`
-    
+    const submitMessage = async (content: string) => {
         setMessages((currentMessages: any) => [
             ...currentMessages,
             {
                 id: nanoid(),
-                display: <UserMessage content={userMessageContent} session={session} />
+                display: <UserMessage content={content} session={session} />
             }
         ])
-    
-        const response = await submitUserMessage(userMessageContent)
+
+        const response = await submitUserMessage(content)
         setMessages((currentMessages: any) => [
             ...currentMessages,
             response
         ])
     }
 
-    const handleVehicleStatusClick = async (vehicle_number : number) => {
-        const userMessageContent = `Me gustaría saber si el móvil ${vehicle_number} está online.`
+    const handleDriverClick = (driver: IVehicleDetailDrivers) => 
+        submitMessage(`Búscame el perfil del conductor de teléfono ${driver.country_code.replace('+', '').trim()}${driver.phone.trim()}.`)
 
-        setMessages((currentMessages: any) => [
-            ...currentMessages,
-            {
-                id: nanoid(),
-                display: <UserMessage content={userMessageContent} session={session} />
-            }
-        ])
+    const handleVehicleStatusClick = (vehicle_number: number) => 
+        submitMessage(`Me gustaría saber si el móvil ${vehicle_number} está online.`)
 
-        const response = await submitUserMessage(userMessageContent)
-        setMessages((currentMessages: any) => [
-            ...currentMessages,
-            response
-        ])
-    }
-
+    const handleLicensePlateClick = (license_plate: string) => 
+        submitMessage(`Búscame el móvil con la PPU ${license_plate} en MTT.`)
+    
     return (
         <div key={'results'} className="flex flex-col gap-2">
             <div className='flex flex-row gap-2 items-center justify-start'>
@@ -94,6 +83,7 @@ export function VehicleDetail({ session, vehicleInformation, content }: {
                         result={result}
                         handleDriverClick={handleDriverClick}
                         handleVehicleStatusClick={() => handleVehicleStatusClick(result.vehicle_number)}
+                        handleLicensePlateClick={() => handleLicensePlateClick(result.license_plate)}
                     />
                 ))}
             </div>
@@ -104,16 +94,17 @@ export function VehicleDetail({ session, vehicleInformation, content }: {
     )
 }
 
-function VehicleDetailCard({ result, handleDriverClick, handleVehicleStatusClick } : {
+function VehicleDetailCard({ result, handleDriverClick, handleVehicleStatusClick, handleLicensePlateClick } : {
     result: IVehicleDetail,
-    handleDriverClick?: any
-    handleVehicleStatusClick?: any
+    handleDriverClick?: any,
+    handleVehicleStatusClick?: any,
+    handleLicensePlateClick?: any
 }) {
     return (
         <div className='vehicle-detail-information w-full p-3 px-2 bg-gray-200 rounded-md text-slate-900'>
             <div className={"flex flex-col gap-2 md:gap-3"}>
                 <VehicleBadges result={result} handleStatusClick={handleVehicleStatusClick} />
-                <VehicleMainDetails result={result} />
+                <VehicleMainDetails result={result} handleLicensePlateClick={handleLicensePlateClick} />
                 <VehicleDocuments result={result} />
                 <VehicleDrivers result={result} handleClick={handleDriverClick}/>
             </div>
@@ -121,7 +112,10 @@ function VehicleDetailCard({ result, handleDriverClick, handleVehicleStatusClick
     )
 }
 
-function VehicleMainDetails({ result } : { result : IVehicleDetail }) {    
+function VehicleMainDetails({ result, handleLicensePlateClick } : { 
+    result : IVehicleDetail,
+    handleLicensePlateClick: any
+}) {    
     const vehicleColorItem = vehicleColor.filter(bs => bs.code === result.color.code)[0]
 
     return (
@@ -139,10 +133,8 @@ function VehicleMainDetails({ result } : { result : IVehicleDetail }) {
                             <span>·</span>
                             <span className='font-semibold'>Número de Móvil:</span>
                             <span>{ result.vehicle_number }</span>
-                            <Button variant={'outline'} className='ml-auto h-6 bg-slate-600 text-white text-xs'>
-                                <Link href="https://apps.mtt.cl/consultaweb/" target='_blank'>
-                                    Buscar en MTT
-                                </Link>
+                            <Button variant={'outline'} onClick={handleLicensePlateClick} className='ml-auto h-6 bg-slate-600 text-white text-xs'>
+                                Buscar en MTT
                             </Button>
                         </div>
                         <div className='flex flex-row gap-1 items-center justify-start w-full'>

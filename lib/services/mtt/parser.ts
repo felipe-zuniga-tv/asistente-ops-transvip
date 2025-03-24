@@ -59,7 +59,7 @@ export function parseMTTResponse(html: string): ParsedMTTResponse {
 
   const serviceType = $("#MainContent_tipo_servicio").text().trim();
   const regulation = serviceType === "PÚBLICO - AEROPUERTO MINIBUS RECORRIDO VARIABLE" ? "DS211" : 
-                    serviceType.includes("PRIVADO") ? "D80" : null;
+                    serviceType.includes("PRIVADO") ? "DS80" : null;
 
   const details = {
     displayLabels: {
