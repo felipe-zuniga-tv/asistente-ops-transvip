@@ -8,6 +8,7 @@ export async function DriverNavbar() {
 	
 	try {
 		driverSession = await getDriverSession()
+		console.log(driverSession)
 	} catch (error) {
 		// Session doesn't exist or is invalid
 	}
@@ -19,7 +20,15 @@ export async function DriverNavbar() {
 					<TransvipLogo colored={true} size={24} />
 					<span className="font-semibold text-lg">Portal Conductores</span>
 				</div>
-				{driverSession && <LogoutButton />}
+				{driverSession && (
+					<div className="flex items-center gap-2">
+						<span className="text-sm text-gray-600">
+							{driverSession.full_name}
+						</span>
+						<span>·</span>
+						<LogoutButton />
+					</div>
+				)}
 			</div>
 		</nav>
 	)

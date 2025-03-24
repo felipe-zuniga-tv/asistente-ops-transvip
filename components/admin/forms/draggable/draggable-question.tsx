@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Draggable, DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd";
 import { GripVertical, Settings2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils/ui';
 import { OperationsFormQuestion, QUESTION_TYPE_CONFIG } from "@/lib/core/types/vehicle/forms";
 
 interface DraggableQuestionProps {

@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils/ui'
 
 export default function SuspenseLoading({ text, className = "" } : {
     text? : string

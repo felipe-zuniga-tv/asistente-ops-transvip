@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import type { VehicleType } from "@/lib/core/types/admin";
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils/ui';
 
 export const columns: ColumnDef<VehicleType>[] = [
     {

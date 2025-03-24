@@ -55,7 +55,7 @@ import {
 } from 'lucide-react';
 import Image from "next/image"
 import * as whatsappLogo from '../../public/images/whatsapp-logo.png'
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils/ui';
 
 export const icons = [
   { label: 'AlertTriangle', value: 'AlertTriangle', icon: AlertTriangle },

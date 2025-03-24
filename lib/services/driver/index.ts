@@ -1,15 +1,25 @@
+'use server'
+
 import { format } from "date-fns"
-import { getSession } from "@/lib/core/auth"
 import { branches } from "@/lib/core/config"
 import { DRIVER_SEARCH_API_URL, DRIVER_PROFILE_API_URL, DRIVER_RATINGS_API_URL } from "@/lib/services/config/urls"
 import { getResponseFromURL, getAssignedVehicles } from "@/lib/services/utils/helpers"
 import { IDriverProfile } from "@/lib/core/types/chat"
 import { getAccessToken, buildUrlParams } from "@/lib/utils/helpers"
 
-export async function searchDriver(driver_email: string) {
-    const session = await getSession()
-    const currentUser = session?.user as any
-    const accessToken = currentUser?.accessToken as string
+export async function searchDriver(driverEmail: string, accessToken: string | null = null) {
+    if (!accessToken) {
+        try {
+            accessToken = await getAccessToken()
+        } catch {
+            const envToken = process.env.TOKEN_FINANCE_PARKING_TICKETS
+            accessToken = envToken || null
+        }
+    }
+
+    if (!accessToken) {
+        throw new Error('No se pudo obtener el token de acceso')
+    }
 
     const LIMIT_RESULTS = 1
     const OFFSET_RESULTS = 0
@@ -21,17 +31,17 @@ export async function searchDriver(driver_email: string) {
         `driver_type=0`,
         `driver_status=1`,
         `search_filter=1`,
-        `search_value=${driver_email}`
+        `search_value=${driverEmail}`
     ].join("&")
 
     const { status, data } = await getResponseFromURL(`${DRIVER_SEARCH_API_URL}?${params}`)
-
+    
     if (status !== 200) return null
-
+    
     const { result } = data
 
     if (result.length > 0) {
-        return result[0].fleet_id
+        return result[0]
     }
 
     return null
@@ -60,8 +70,19 @@ export async function searchDrivers({ limit = 10, offset = 0 }: { limit?: number
     return result.length > 0 ? result : null
 }
 
-export async function getDriverProfile(fleet_id: number) {
-    const accessToken = await getAccessToken()
+export async function getDriverProfile(fleet_id: number, accessToken: string | null = null) {
+    if (!accessToken) {
+        try {
+            accessToken = await getAccessToken()
+        } catch {
+            const envToken = process.env.TOKEN_FINANCE_PARKING_TICKETS
+            accessToken = envToken || null
+        }
+    }
+
+    if (!accessToken) {
+        throw new Error('No se pudo obtener el token de acceso')
+    }
 
     const params = [
         `access_token=${accessToken}`,
@@ -94,6 +115,8 @@ export async function getDriverProfile(fleet_id: number) {
         car_details,
         assigned_cars,
     } = driver_detail
+
+    console.log(assigned_cars)
 
     const output_item: IDriverProfile = {
         id: driver_id,
@@ -157,10 +180,19 @@ export async function getDriverProfile(fleet_id: number) {
     return output_item
 }
 
-export async function getDriverRatings(fleet_id: number) {
-    const session = await getSession()
-    const currentUser = session?.user as any
-    const accessToken = currentUser?.accessToken as string
+export async function getDriverRatings(fleet_id: number, accessToken: string | null = null) {
+    if (!accessToken) {
+        try {
+            accessToken = await getAccessToken()
+        } catch {
+            const envToken = process.env.TOKEN_FINANCE_PARKING_TICKETS
+            accessToken = envToken || null
+        }
+    }
+
+    if (!accessToken) {
+        throw new Error('No se pudo obtener el token de acceso')
+    }
 
     const OFFSET_DAYS = 90
     const DATE_FORMAT = "yyyy-MM-dd"

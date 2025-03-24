@@ -1,4 +1,4 @@
-import { cleanMarkdownCodeBlocks } from '@/lib/core/utils'
+import { cleanMarkdownCodeBlocks } from '@/lib/utils/string'
 
 interface ParsedTicketData {
   nro_boleta: string

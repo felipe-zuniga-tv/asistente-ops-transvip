@@ -18,7 +18,7 @@ import {
 } from "@/components/ui"
 import { TicketImagePreview } from "./ticket-image-preview"
 import { ConfirmationValues } from "./schemas"
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils/ui'
 import { Image as ImageIcon } from "lucide-react"
 
 interface TicketDataCardProps {

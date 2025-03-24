@@ -1,15 +1,12 @@
 'use client'
-import {
-    useActions,
-    useUIState
-} from 'ai/rsc'
-import { nanoid } from 'nanoid';
+import { useMessageSubmission } from '@/hooks/use-message-submission';
 import Image from 'next/image';
-import { CheckCircle, SparklesIcon, UserIcon } from 'lucide-react';
-import { AssistantMessageContent, UserMessage } from '../message';
+import { CheckCircle, SparklesIcon } from 'lucide-react';
+import { AssistantMessageContent } from '../message';
 import { IVehicleStatusSearchResult } from '@/lib/core/types/chat';
-import { VEHICLE_STATUS, cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils/ui';
+import { VEHICLE_STATUS } from '@/lib/utils/constants';
+import { Button } from '@/components/ui';
 import ToolsButton from '../tools/tools-button';
 import DriverAvatar from '@/components/driver/driver-avatar';
 import { CityBadge } from '../badges/chat-badges';
@@ -24,8 +21,7 @@ export function VehicleStatusSearch({ session, searchResults, content }: {
     searchResults: VehicleStatusSearchResults, 
     content: string 
 }) {
-    const [_, setMessages] = useUIState()
-    const { submitUserMessage } = useActions()
+    const { submitMessage } = useMessageSubmission()
 
     const handleClick = async (result : IVehicleStatusSearchResult, request: string) => {
         let userMessageContent = ""
@@ -37,19 +33,7 @@ export function VehicleStatusSearch({ session, searchResults, content }: {
             userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${result.license_plate}.`
         }
 
-        setMessages((currentMessages: any) => [
-            ...currentMessages,
-            {
-                id: nanoid(),
-                display: <UserMessage content={userMessageContent} session={session} />
-            }
-        ])
-
-        const response = await submitUserMessage(userMessageContent)
-        setMessages((currentMessages: any) => [
-            ...currentMessages,
-            response
-        ])
+        await submitMessage(userMessageContent, session);
     }
 
     return (

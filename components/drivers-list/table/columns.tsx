@@ -5,7 +5,7 @@ import type { ColumnDef } from "@tanstack/react-table"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import type { Driver } from "../types"
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils/ui'
 
 export const columns: ColumnDef<Driver>[] = [
 	{

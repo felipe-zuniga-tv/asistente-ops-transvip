@@ -1,5 +1,5 @@
 // 'use client'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/ui'
 import { Button } from './button'
 import { Spinner } from './loading'
 

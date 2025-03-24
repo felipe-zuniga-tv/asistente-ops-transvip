@@ -56,14 +56,16 @@ export function AppSidebar({
 	// Get the public section
 	const publicSection = isChatRoute ? publicSidebar : publicSidebar
 	
-	// Get the remaining sections (chatbot and others)
-	const remainingSections = isChatRoute
-		? [chatbotMenu, ...sidebarData.navMain.filter(
-			item => item.title !== publicSidebar.title && item.title !== chatbotMenu.title
-		)]
-		: [chatbotElement, ...sidebarData.navMain.filter(
-			item => item.title !== publicSidebar.title && item.title !== chatbotMenu.title
-		)]
+	// Get the remaining sections (chatbot and others) with useMemo
+	const remainingSections = React.useMemo(() => {
+		return isChatRoute
+			? [chatbotMenu, ...sidebarData.navMain.filter(
+				item => item.title !== publicSidebar.title && item.title !== chatbotMenu.title
+			)]
+			: [chatbotElement, ...sidebarData.navMain.filter(
+				item => item.title !== publicSidebar.title && item.title !== chatbotMenu.title
+			)]
+	}, [isChatRoute, chatbotElement])
 
 	// Filter items based on search query
 	const filteredPublicItems = React.useMemo(() => {

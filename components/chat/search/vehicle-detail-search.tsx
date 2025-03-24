@@ -1,21 +1,16 @@
 'use client'
-import {
-    useActions,
-    useUIState
-} from 'ai/rsc'
-import { nanoid } from 'nanoid';
 import Link from 'next/link';
 import { CarIcon, PhoneIcon, UserCircleIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { AssistantMessageContent, UserMessage } from '../message';
+import { cn } from '@/lib/utils/ui';
+import { AssistantMessageContent } from '../message';
 import { IVehicleDetailDrivers, IVehicleDetail } from '@/lib/core/types/chat';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Badge, Button } from '@/components/ui';
 import ToolsButton from '../tools/tools-button';
 import { CityBadge, VehicleStatusBadge } from '../badges/chat-badges';
 import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
 import Image from 'next/image'
+import { useMessageSubmission } from '@/hooks/use-message-submission';
 
 const vehicleColor = [
     { name: 'BLANCO', code: '#ffffff', color: 'bg-white hover:bg-gray-100 text-black' },
@@ -42,33 +37,16 @@ export function VehicleDetail({ session, vehicleInformation, content }: {
     vehicleInformation: IVehicleDetail[]
     content: string 
 }) {
-    const [_, setMessages] = useUIState()
-    const { submitUserMessage } = useActions()
-
-    const submitMessage = async (content: string) => {
-        setMessages((currentMessages: any) => [
-            ...currentMessages,
-            {
-                id: nanoid(),
-                display: <UserMessage content={content} session={session} />
-            }
-        ])
-
-        const response = await submitUserMessage(content)
-        setMessages((currentMessages: any) => [
-            ...currentMessages,
-            response
-        ])
-    }
+    const { submitMessage } = useMessageSubmission()
 
     const handleDriverClick = (driver: IVehicleDetailDrivers) => 
-        submitMessage(`Búscame el perfil del conductor de teléfono ${driver.country_code.replace('+', '').trim()}${driver.phone.trim()}.`)
+        submitMessage(`Búscame el perfil del conductor de teléfono ${driver.country_code.replace('+', '').trim()}${driver.phone.trim()}`, session)
 
     const handleVehicleStatusClick = (vehicle_number: number) => 
-        submitMessage(`Me gustaría saber si el móvil ${vehicle_number} está online.`)
+        submitMessage(`Me gustaría saber si el móvil ${vehicle_number} está online.`, session)
 
     const handleLicensePlateClick = (license_plate: string) => 
-        submitMessage(`Búscame el móvil con la PPU ${license_plate} en MTT.`)
+        submitMessage(`Búscame el móvil con la PPU ${license_plate} en MTT.`, session)
     
     return (
         <div key={'results'} className="flex flex-col gap-2">

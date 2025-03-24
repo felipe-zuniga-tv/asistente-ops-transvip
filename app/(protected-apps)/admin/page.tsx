@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Routes } from "@/utils/routes";
 import { Settings, CreditCard, Car, Building2, Cog } from "lucide-react";
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils/ui';
 import { ConfigCardContainer } from "@/components/tables/config-card-container";
 
 export const metadata = {

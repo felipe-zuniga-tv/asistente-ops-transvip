@@ -1,0 +1,31 @@
+'use client'
+
+import * as React from 'react'
+import { useActions, useUIState } from 'ai/rsc'
+import { nanoid } from '@/lib/utils/id'
+import { UserMessage } from '@/components/chat/message'
+
+export function useMessageSubmission() {
+  const [_, setMessages] = useUIState()
+  const { submitUserMessage } = useActions()
+
+  const submitMessage = async (content: string, session: any = null) => {
+    setMessages((currentMessages: any[]) => [
+      ...currentMessages,
+      {
+        id: nanoid(),
+        display: <UserMessage content={content} session={session} />
+      }
+    ])
+
+    const response = await submitUserMessage(content)
+    setMessages((currentMessages: any[]) => [
+      ...currentMessages,
+      response
+    ])
+
+    return response
+  }
+
+  return { submitMessage }
+} 

@@ -8,7 +8,7 @@ import { TransvipLogo } from '@/components/transvip/transvip-logo';
 import { MemoizedReactMarkdown } from '@/components/markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils/ui';
 
 export interface MessageProps {
   index: number;

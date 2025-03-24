@@ -7,7 +7,7 @@ import { CalendarIcon, X, Download } from "lucide-react"
 import { toPng } from "html-to-image"
 import { useToast } from "@/hooks/use-toast"
 import { getVehicleShiftsByDateRange, getVehicleStatuses } from "@/lib/services/database/actions"
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils/ui'
 import { TransvipLogo } from "@/components/transvip/transvip-logo"
 import { generateNextXDays, generateCalendarMonths } from "@/lib/utils/date"
 import type { ShiftSummary } from "@/lib/core/types/calendar"

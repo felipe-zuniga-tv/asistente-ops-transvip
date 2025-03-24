@@ -1,14 +1,9 @@
 'use client'
-import {
-    useActions,
-    useUIState
-} from 'ai/rsc'
-import { nanoid } from 'nanoid';
+import { useMessageSubmission } from '@/hooks/use-message-submission';
 import { UserCircle } from 'lucide-react';
 import { IDriverAssignedVehicles, IDriverProfile, IDriverVehicles } from '@/lib/core/types/chat';
-import { AssistantMessageContent, UserMessage } from '../message';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { AssistantMessageContent } from '../message';
+import { Badge, Button } from '@/components/ui';
 import DriverAvatar from '@/components/driver/driver-avatar';
 import { CityBadge, DriverStatusBadge, LicenseExpirationBadge } from '../badges/chat-badges';
 import Image from 'next/image';
@@ -20,25 +15,11 @@ export function DriverProfile({ session, driverProfile, content }: {
     driverProfile: any
     content: string 
 }) {
-    const [_, setMessages] = useUIState()
-    const { submitUserMessage } = useActions()
+    const { submitMessage } = useMessageSubmission()
 
     const handleDriverClick = async (result : IDriverProfile) => {
-        let userMessageContent = `Me gustaría construir un resumen de las evaluaciones del conductor ${result.personal.email}.`
-
-        setMessages((currentMessages: any) => [
-            ...currentMessages,
-            {
-                id: nanoid(),
-                display: <UserMessage content={userMessageContent} session={session} />
-            }
-        ])
-
-        const response = await submitUserMessage(userMessageContent)
-        setMessages((currentMessages: any) => [
-            ...currentMessages,
-            response
-        ])
+        const userMessageContent = `Me gustaría construir un resumen de las evaluaciones del conductor ${result.personal.email}.`
+        await submitMessage(userMessageContent, session);
     }
 
     const handleVehicleClick = async (result: IDriverVehicles | IDriverAssignedVehicles, request: string) => {
@@ -56,19 +37,7 @@ export function DriverProfile({ session, driverProfile, content }: {
                 userMessageContent = `Me gustaría saber más información sobre el vehículo con patente ${result.license_plate}.`
             }
         }
-        setMessages((currentMessages: any) => [
-            ...currentMessages,
-            {
-                id: nanoid(),
-                display: <UserMessage content={userMessageContent} session={session} />
-            }
-        ])
-
-        const response = await submitUserMessage(userMessageContent)
-        setMessages((currentMessages: any) => [
-            ...currentMessages,
-            response
-        ])
+        await submitMessage(userMessageContent, session);
     }
 
     return (

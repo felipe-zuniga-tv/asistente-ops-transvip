@@ -1,5 +1,5 @@
 // Core exports
-export * from './core/utils';
+export * from './utils';
 export * from './core/types';
 export * from './core/auth';
 export * from './core/config';

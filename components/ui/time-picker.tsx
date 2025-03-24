@@ -19,7 +19,7 @@ import {
 	PopoverTrigger
 } from "@/components/ui"
 import { Check, ChevronsUpDown } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils/ui'
 import { Control } from "react-hook-form"
 
 interface TimePickerInputProps {

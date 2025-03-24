@@ -1,9 +1,9 @@
 'use client'
 
-import { addMinutes, differenceInDays, differenceInMinutes } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
 import Zoom from 'react-medium-image-zoom';
+import { addMinutes, differenceInDays, differenceInMinutes } from 'date-fns';
 import { 
   CheckIcon, 
   Clock, 
@@ -17,9 +17,7 @@ import {
   UserCircleIcon, 
   X 
 } from 'lucide-react';
-import { useActions, useUIState } from 'ai/rsc';
-import { nanoid } from 'nanoid';
-
+import { useMessageSubmission } from '@/hooks/use-message-submission';
 import { Badge, Button, EmailLink, WhatsappIcon } from '@/components/ui';
 import DriverAvatar from '@/components/driver/driver-avatar';
 import { 
@@ -71,28 +69,13 @@ export function BookingIdSearch({ session, searchResults, content }: {
     searchResults: IBookingInfoOutput[],
     content?: string
 }) {
-    const [_, setMessages] = useUIState();
-    const { submitUserMessage } = useActions();
+    const { submitMessage } = useMessageSubmission()
 
     const handleClick = async (result: IBookingInfoOutput, request: BookingSearchRequest) => {
         const userMessageContent = MESSAGE_TEMPLATES[request]?.(result) ??
             `Me gustaría saber más información sobre el vehículo con patente ${result.vehicle.license_plate}.`;
         
-        // Add user message to UI
-        setMessages((currentMessages: any) => [
-            ...currentMessages,
-            {
-                id: nanoid(),
-                display: <UserMessage content={userMessageContent} session={session} />
-            }
-        ]);
-
-        // Submit and get response message
-        const response = await submitUserMessage(userMessageContent);
-        setMessages((currentMessages: any) => [
-            ...currentMessages,
-            response
-        ]);
+        await submitMessage(userMessageContent, session);
     }
 
     return (

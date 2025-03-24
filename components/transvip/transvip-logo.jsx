@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils/ui';
 import Image from "next/image";
 
 export function TransvipLogo({ logoOnly = true, colored = true, size = 40, className = "" }) {

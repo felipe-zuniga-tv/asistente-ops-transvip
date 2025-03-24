@@ -17,7 +17,7 @@ import { Input } from '@/components/ui/input'
 import { CalendarIcon } from '@radix-ui/react-icons'
 import { Check, ChevronsUpDown, Loader2, ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
 import { format } from 'date-fns'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/ui'
 import { Calendar } from '@/components/ui/calendar'
 import {
 	Popover,

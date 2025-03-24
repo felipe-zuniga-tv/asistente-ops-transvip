@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils/ui';
 import { AddButton } from "../ui/buttons"
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import { CardTitleContent } from "../ui/card-title-content"

@@ -2,6 +2,7 @@ export const config = {
     COOKIES: {
         TOKEN_JWT_SECRET: "secret_key_transvip",
         COOKIE_KEY: "TRANSVIP_ACCESS_TOKEN",
+        DRIVER_COOKIE_KEY: "DRIVER_SESSION",
     },
     API: {
         NEXT_PUBLIC_API_BASE_URL: "https://liveapi.transvip.cl",

@@ -2,7 +2,7 @@
 
 // import { useLocalStorage } from '@/hooks/use-local-storage'
 import { useScrollAnchor } from '@/hooks/use-scroll-anchor'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/ui'
 import { useAIState, useUIState } from 'ai/rsc'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'

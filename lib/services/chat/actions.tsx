@@ -313,7 +313,7 @@ async function submitUserMessage(content: string) {
 						className="text-sm"
 					/>
 
-					const fleetId = await searchDriver(driverQueryClean)
+					const { fleet_id: fleetId } = await searchDriver(driverQueryClean)
 					const driverProfile = await getDriverProfile(fleetId)
 
 					// console.log(driverProfile)
@@ -358,7 +358,7 @@ async function submitUserMessage(content: string) {
 					/>
 
 					// Search driver by email
-					const fleetId = await searchDriver(driverQueryClean)
+					const { fleet_id: fleetId } = await searchDriver(driverQueryClean)
 
 					if (!fleetId) 
 						return (
