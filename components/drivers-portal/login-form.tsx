@@ -10,6 +10,7 @@ import { createDriverSession } from "@/lib/driver/auth"
 import { searchDriver } from "@/lib/services/driver"
 import { IDriverVehicles } from "@/types"
 
+const ALLOWED_CAR_NAMES: readonly string[] = ['Sedan', 'Minibus']
 const envToken = process.env.NEXT_PUBLIC_TOKEN_FINANCE_PARKING_TICKETS
 
 export function LoginForm() {
@@ -45,17 +46,34 @@ export function LoginForm() {
 				throw new Error('Este conductor no tiene acceso.')
 			}
 
-			// Validate vehicle belongs or is associated with the driver
-			const hasVehicleInCarDetails = driverData.car_details.some((v: IDriverVehicles) => 
-				v.working_status === 1 && v.unique_car_id.toString() === vehicleNumber.toString()
+			console.log(email)
+			console.log(driverData)
+			console.log(driverData.car_details.filter((v: IDriverVehicles) => v.working_status === 1))
+			console.log(driverData.assigned_cars)
+
+			// First validate if the vehicle exists and get its type
+			const vehicleInCarDetails = driverData.car_details.find((v: IDriverVehicles) => 
+				v.unique_car_id.toString() === vehicleNumber.toString()
 			)
 
-			const hasVehicleInAssignedCars = driverData.assigned_cars?.some((v: IDriverVehicles) =>
+			const vehicleInAssignedCars = driverData.assigned_cars?.find((v: IDriverVehicles) =>
 				v.unique_car_id.toString() === vehicleNumber.toString()
-			) || false
+			)
 
-			if (!hasVehicleInCarDetails && !hasVehicleInAssignedCars) {
-				throw new Error('El vehículo ingresado no está asignado a este conductor o no está activo')
+			const vehicle = vehicleInCarDetails || vehicleInAssignedCars
+
+			if (!vehicle) {
+				throw new Error('El vehículo ingresado no está asignado a este conductor')
+			}
+
+			// Then validate the vehicle type
+			if (!ALLOWED_CAR_NAMES.includes(vehicle.car_name)) {
+				throw new Error(`Tipo de vehículo no permitido. Solo se permiten vehículos tipo: ${ALLOWED_CAR_NAMES.join(', ')}`)
+			}
+
+			// Finally validate if the vehicle is active (only for car_details)
+			if (vehicleInCarDetails && vehicleInCarDetails.working_status !== 1) {
+				throw new Error('El vehículo no está activo')
 			}
 
 			// Create driver session

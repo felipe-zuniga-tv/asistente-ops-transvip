@@ -15,28 +15,30 @@ export default async function Dashboard() {
 	const parkingTickets = await getDriverTickets(session.driver_id, session.vehicle_number)
 
 	return (
-		<ConfigCardContainer
-			title="Tickets de Estacionamiento"
-			className="w-full max-w-full mx-0"
-			headerContent={
-				<UploadButton />
-			}
-		>
-			{parkingTickets.length > 0 ? (
-				<ParkingTicketsDataTable
-					data={parkingTickets}
-					columns={columns}
-					initialPageSize={5}
-				/>
-			) : (
-				<EmptyState
-					title="No hay tickets aún"
-					description="Envía tu primer ticket de estacionamiento para empezar"
-					action={
-						<UploadButton />
-					}
-				/>
-			)}
-		</ConfigCardContainer>
+		<div className="flex-1 flex flex-col items-center justify-start p-4">
+			<ConfigCardContainer
+				title="Tickets de Estacionamiento"
+				className="w-full max-w-full mx-0"
+				headerContent={
+					<UploadButton />
+				}
+			>
+				{parkingTickets.length > 0 ? (
+					<ParkingTicketsDataTable
+						data={parkingTickets}
+						columns={columns}
+						initialPageSize={5}
+					/>
+				) : (
+					<EmptyState
+						title="No hay tickets aún"
+						description="Envía tu primer ticket de estacionamiento para empezar"
+						action={
+							<UploadButton />
+						}
+					/>
+				)}
+			</ConfigCardContainer>
+		</div>
 	)
 } 

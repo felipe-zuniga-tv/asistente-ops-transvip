@@ -8,7 +8,6 @@ export async function DriverNavbar() {
 	
 	try {
 		driverSession = await getDriverSession()
-		console.log(driverSession)
 	} catch (error) {
 		// Session doesn't exist or is invalid
 	}

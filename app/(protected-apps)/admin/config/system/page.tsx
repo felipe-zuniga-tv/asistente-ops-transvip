@@ -11,14 +11,6 @@ export const metadata = {
     description: 'Administra la configuración general del sistema',
 }
 
-export default async function SystemConfigPage() {
-    return (
-        <Suspense fallback={<SuspenseLoading />}>
-            <SystemConfigDashboard />
-        </Suspense>
-    )
-}
-
 async function SystemConfigDashboard() {
     const configs = await getSystemConfigs()
     
@@ -35,4 +27,12 @@ async function SystemConfigDashboard() {
             }}
         />
     )
-} 
+}
+
+export default async function SystemConfigPage() {
+    return (
+        <Suspense fallback={<SuspenseLoading />}>
+            <SystemConfigDashboard />
+        </Suspense>
+    )
+}
