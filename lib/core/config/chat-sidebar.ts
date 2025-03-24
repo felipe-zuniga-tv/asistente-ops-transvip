@@ -259,19 +259,19 @@ const configMenu: SidebarItem = {
 		{
 			title: 'Métodos de Pago',
 			icon: CreditCard,
-			url: Routes.ADMIN.PAYMENT_CONFIG,
+			url: Routes.ADMIN.PAYMENT_METHODS_CONFIG,
 			active: true
 		},
 		{
 			title: 'Tipos de Vehículo',
 			icon: CarFront,
-			url: Routes.ADMIN.VEHICLE_TYPES,
+			url: Routes.ADMIN.VEHICLE_TYPES_CONFIG,
 			active: true
 		},
 		{
 			title: 'Sucursales',
 			icon: Building2,
-			url: Routes.ADMIN.BRANCH_CONFIG,
+			url: Routes.ADMIN.BRANCHES_CONFIG,
 			active: true
 		},
 		{

@@ -1,13 +1,11 @@
 import { redirect } from "next/navigation"
 import { getSession } from "@/lib/core/auth"
-import { createClient } from "@/utils/supabase/server"
+import { Routes } from "@/utils/routes"
 import { EmptyState } from "@/components/ui/empty-state"
 import { ConfigCardContainer } from "@/components/tables/config-card-container"
 import { ParkingTicketsDataTable } from "@/components/finance/tickets/table/parking-tickets-data-table"
-import { ParkingTicket } from "@/types/domain/tickets"
-import { adminColumns } from "./columns"
-import { Routes } from "@/utils/routes"
-import { getAllParkingTickets } from "@/lib/tickets"
+import { adminColumns } from "@/components/finance/tickets/admin-table/columns"
+import { getAllParkingTickets } from "@/lib/features/tickets"
 
 export default async function ParkingTicketsAdmin() {
 	const session = await getSession()

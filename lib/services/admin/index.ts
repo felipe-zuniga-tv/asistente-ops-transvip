@@ -43,7 +43,7 @@ export async function createPaymentMethod(input: CreatePaymentMethodInput) {
         .single()
     
     if (error) throw error
-    revalidatePath(Routes.ADMIN.PAYMENT_CONFIG)
+    revalidatePath(Routes.ADMIN.PAYMENT_METHODS_CONFIG)
     return data as PaymentMethod
 }
 
@@ -58,7 +58,7 @@ export async function updatePaymentMethod(id: string, input: UpdatePaymentMethod
         .single()
     
     if (error) throw error
-    revalidatePath(Routes.ADMIN.PAYMENT_CONFIG)
+    revalidatePath(Routes.ADMIN.PAYMENT_METHODS_CONFIG)
     return data as PaymentMethod
 }
 
@@ -70,7 +70,7 @@ export async function deletePaymentMethod(id: string) {
         .eq('id', id)
     
     if (error) throw error
-    revalidatePath(Routes.ADMIN.PAYMENT_CONFIG)
+    revalidatePath(Routes.ADMIN.PAYMENT_METHODS_CONFIG)
 }
 
 // Vehicle Types
@@ -145,7 +145,7 @@ export async function getBranches(salesFormActive?: boolean) {
             throw new Error('No branches data received')
         }
         revalidatePath(Routes.PUBLIC.SUCURSALES)
-        revalidatePath(Routes.ADMIN.BRANCH_CONFIG)
+        revalidatePath(Routes.ADMIN.BRANCHES_CONFIG)
         return data as Branch[]
     } catch (error) {
         console.error('Error in getBranches:', error)
@@ -175,7 +175,7 @@ export async function createBranch(input: CreateBranchInput) {
         .single()
     
     if (error) throw error
-    revalidatePath(Routes.ADMIN.BRANCH_CONFIG)
+    revalidatePath(Routes.ADMIN.BRANCHES_CONFIG)
     return data as Branch
 }
 
@@ -189,7 +189,7 @@ export async function updateBranch(id: string, input: UpdateBranchInput) {
         .single()
     
     if (error) throw error
-    revalidatePath(Routes.ADMIN.BRANCH_CONFIG)
+    revalidatePath(Routes.ADMIN.BRANCHES_CONFIG)
     return data as Branch
 }
 
@@ -201,7 +201,7 @@ export async function deleteBranch(id: string) {
         .eq('id', id)
     
     if (error) throw error
-    revalidatePath(Routes.ADMIN.BRANCH_CONFIG)
+    revalidatePath(Routes.ADMIN.BRANCHES_CONFIG)
 }
 
 // Languages

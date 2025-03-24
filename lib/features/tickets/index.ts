@@ -1,7 +1,9 @@
 'use server'
 
 import type { ParkingTicket } from '@/types/domain/tickets'
+import { Routes } from '@/utils/routes'
 import { createClient } from '@/utils/supabase/server'
+import { revalidatePath } from 'next/cache'
 
 // Database table name
 const TABLE_NAME = 'parking_tickets'
@@ -161,4 +163,47 @@ export async function getAllParkingTickets(): Promise<ParkingTicket[]> {
   }
 
   return data || []
+}
+
+// Admin Functionality - Check tickets from the admin side
+// Update ticket status to admin_approved
+export async function approveTicket(ticketId: string) {
+  const supabase = await createClient()
+  
+  const { error } = await supabase
+      .from(TABLE_NAME)
+      .update({ 
+          status: 'admin_approved'
+      })
+      .eq('id', ticketId)
+  
+  if (error) {
+      throw new Error(`Failed to approve ticket: ${error.message}`)
+  }
+  
+  // Revalidate the tickets page to reflect changes
+  revalidatePath(Routes.FINANCE.TICKETS)
+  
+  return { success: true }
+}
+
+// Update ticket status to admin_rejected
+export async function rejectTicket(ticketId: string) {
+  const supabase = await createClient()
+  
+  const { error } = await supabase
+      .from(TABLE_NAME)
+      .update({ 
+          status: 'admin_rejected'
+      })
+      .eq('id', ticketId)
+  
+  if (error) {
+      throw new Error(`Failed to reject ticket: ${error.message}`)
+  }
+  
+  // Revalidate the tickets page to reflect changes
+  revalidatePath(Routes.FINANCE.TICKETS)
+  
+  return { success: true }
 } 

@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui"
 import { CheckCircle, XCircle } from "lucide-react"
 import type { ParkingTicket } from "@/types/domain/tickets"
-import { approveTicket, rejectTicket } from "./actions"
+import { approveTicket, rejectTicket } from "@/lib/features/tickets"
 import { toast } from "sonner"
 
 // Import columns from the core columns file

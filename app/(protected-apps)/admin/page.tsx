@@ -11,10 +11,10 @@ export const metadata = {
 };
 
 const adminTools = [
-    { name: 'Sucursales', href: Routes.ADMIN.BRANCH_CONFIG, icon: Building2 },
-    { name: 'Métodos de Pago', href: Routes.ADMIN.PAYMENT_CONFIG, icon: CreditCard },
+    { name: 'Sucursales', href: Routes.ADMIN.BRANCHES_CONFIG, icon: Building2 },
+    { name: 'Métodos de Pago', href: Routes.ADMIN.PAYMENT_METHODS_CONFIG, icon: CreditCard },
     { name: 'Estados de Vehículos', href: Routes.ADMIN.VEHICLE_STATUS_CONFIG, icon: Settings },
-    { name: 'Tipos de Vehículos', href: Routes.ADMIN.VEHICLE_TYPES, icon: Car },
+    { name: 'Tipos de Vehículos', href: Routes.ADMIN.VEHICLE_TYPES_CONFIG, icon: Car },
     { name: 'Configuración Sistema', href: Routes.ADMIN.SYSTEM_CONFIG, icon: Cog },
 ];
 

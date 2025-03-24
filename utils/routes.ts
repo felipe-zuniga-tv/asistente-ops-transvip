@@ -4,11 +4,11 @@ export const Routes = Object.freeze({
 	START: '/chat',
 	ADMIN: {
 		HOME: '/admin',
-		BRANCH_CONFIG: '/admin/branch-config',
-		VEHICLE_STATUS_CONFIG: '/admin/vehicle-status-config',
-		VEHICLE_TYPES: '/admin/vehicle-types',
-		PAYMENT_CONFIG: '/admin/payment-config',
-		SYSTEM_CONFIG: '/admin/system-config',
+		BRANCHES_CONFIG: '/admin/config/branches',
+		VEHICLE_STATUS_CONFIG: '/admin/config/vehicle-status',
+		VEHICLE_TYPES_CONFIG: '/admin/config/vehicle-types',
+		PAYMENT_METHODS_CONFIG: '/admin/config/payment-methods',
+		SYSTEM_CONFIG: '/admin/config/system',
 	},
 	AIRPORT: {
 		HOME: '/aeropuerto',
