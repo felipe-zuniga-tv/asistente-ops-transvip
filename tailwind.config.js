@@ -116,8 +116,9 @@ module.exports = {
   			buildings: 'url("/images/bg_buildings.jpeg")',
   			santiago: 'url("/images/bg_santiago.jpg")',
   			desert: 'url("/images/bg_desert.jpg")',
+  			atacama: 'url("/images/bg-atacama.jpg")',
   			airport: 'url("/images/bg_airport.png")',
-  			main: 'url("/images/bg_desert.jpg")',
+  			main: 'url("/images/bg-atacama.jpg")',
   		}
   	}
   },
