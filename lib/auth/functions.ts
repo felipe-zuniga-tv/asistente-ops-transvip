@@ -94,13 +94,13 @@ export const login = async (email: string, password: string): Promise<LoginRespo
     try {
         const loginResponse = await fetchLoginData(LOGIN_URL, email, password);
         if (!loginResponse) return null
-
+        
         switch (loginResponse.status) {
             case 200:
-                const userResponse = await fetchUserData(loginResponse.data.id);
+                const { data: userResponse } = await fetchUserData(loginResponse.data.id);
                 if (!userResponse) return null;
 
-                const { user, session } = await createSession(email, loginResponse.data.access_token, userResponse.data.result[0].fullName);
+                const { user, session } = await createSession(loginResponse.data.access_token, userResponse.result[0]);
                 await setCookie(session);
 
                 return {

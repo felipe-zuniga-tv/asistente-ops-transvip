@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Routes } from '@/utils/routes'
-import { login } from '@/lib/core/auth/functions'
+import { login } from '@/lib/auth/functions'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
