@@ -20,11 +20,11 @@ import {
 	ensureString
 } from "./schemas"
 
-// export interface Vehicle {
-// 	vehicle_number: string
-// 	license_plate: string
-// 	type: string
-// }
+export interface Vehicle {
+	vehicle_number: string
+	license_plate: string
+	type: string
+}
 
 interface TicketUploadFormProps {
 	session: DriverSession
