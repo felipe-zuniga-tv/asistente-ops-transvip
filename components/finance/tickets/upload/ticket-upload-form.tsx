@@ -10,6 +10,7 @@ import { createTicket } from "@/lib/features/tickets"
 import { uploadTicketImageServer } from "@/lib/storage"
 import { ImageUploadStep } from "./image-upload-step"
 import { ConfirmationStep } from "./confirmation-step"
+import { type DriverSession } from "@/types/domain/driver/models"
 import { 
 	imageUploadSchema, 
 	confirmationSchema, 
@@ -19,12 +20,31 @@ import {
 	ensureString
 } from "./schemas"
 
+// export interface Vehicle {
+// 	vehicle_number: string
+// 	license_plate: string
+// 	type: string
+// }
+
 interface TicketUploadFormProps {
-	driverId: string
-	vehicleNumber: string
+	session: DriverSession
+	// vehicles: Vehicle[]
 }
 
-export function TicketUploadForm({ driverId, vehicleNumber }: TicketUploadFormProps) {
+const defaultConfirmFormValues: ConfirmationValues = {
+	booking_id: "",
+	vehicle_number: "",
+	nro_boleta: "",
+	entry_date: "",
+	entry_time: "",
+	exit_date: "",
+	exit_time: "",
+	amount: "",
+	location: "",
+	confirm: false
+}
+
+export function TicketUploadForm({ session }: TicketUploadFormProps) {
 	const [isPending, startTransition] = useTransition()
 	const [isProcessing, setIsProcessing] = useState(false)
 	const router = useRouter()
@@ -44,18 +64,7 @@ export function TicketUploadForm({ driverId, vehicleNumber }: TicketUploadFormPr
 	// Confirmation form
 	const confirmForm = useForm<ConfirmationValues>({
 		resolver: zodResolver(confirmationSchema),
-		defaultValues: {
-			booking_id: "",
-			vehicle_number: vehicleNumber,
-			nro_boleta: "",
-			entry_date: "",
-			entry_time: "",
-			exit_date: "",
-			exit_time: "",
-			amount: "",
-			location: "",
-			confirm: false
-		}
+		defaultValues: defaultConfirmFormValues
 	})
 
 	// Debug state to track booking_id value
@@ -71,7 +80,7 @@ export function TicketUploadForm({ driverId, vehicleNumber }: TicketUploadFormPr
 		if (parsedData) {
 			confirmForm.reset({
 				booking_id: "",
-				vehicle_number: vehicleNumber,
+				vehicle_number: "",
 				nro_boleta: parsedData.nro_boleta,
 				entry_date: parsedData.entry_date,
 				entry_time: parsedData.entry_time,
@@ -89,7 +98,7 @@ export function TicketUploadForm({ driverId, vehicleNumber }: TicketUploadFormPr
 
 	// Process the image after upload
 	async function processImage(values: ImageUploadValues) {
-		if (!values.image) {
+		if (!values.image || !session) {
 			setError('Por favor, selecciona una imagen')
 			return
 		}
@@ -111,13 +120,13 @@ export function TicketUploadForm({ driverId, vehicleNumber }: TicketUploadFormPr
 			setParsedData(extractedData)
 
 			// Upload image to storage to get URL using server function
-			const imageUrl = await uploadTicketImageServer(driverId, "temp", imageBase64)
+			const imageUrl = await uploadTicketImageServer(session.driver_id, "temp", imageBase64)
 			setUploadedImageUrl(imageUrl)
 
-			// Reset confirmation form with the extracted data directly
+			// Reset the form with all extracted data at once
 			confirmForm.reset({
-				booking_id: "",
-				vehicle_number: vehicleNumber,
+				booking_id: '',  // Left empty for user input
+				vehicle_number: '',  // Left empty for user input
 				nro_boleta: extractedData.nro_boleta,
 				entry_date: extractedData.entry_date,
 				entry_time: extractedData.entry_time,
@@ -126,10 +135,10 @@ export function TicketUploadForm({ driverId, vehicleNumber }: TicketUploadFormPr
 				amount: extractedData.amount.toString(),
 				location: extractedData.location,
 				confirm: false
-			});
+			})
 
 			// Move to the confirmation step
-			setCurrentStep('confirm');
+			setCurrentStep('confirm')
 		} catch (err) {
 			console.error(err)
 			setError(err instanceof Error ? err.message : 'Error al procesar la imagen')
@@ -140,8 +149,13 @@ export function TicketUploadForm({ driverId, vehicleNumber }: TicketUploadFormPr
 
 	// Final submission after confirmation
 	async function submitTicket(values: ConfirmationValues) {
-		if (!uploadedImageUrl) {
+		if (!uploadedImageUrl || !session) {
 			setError('Información del ticket incompleta. Por favor, intenta de nuevo.')
+			return
+		}
+
+		if (!values.vehicle_number) {
+			setError('Por favor selecciona un vehículo')
 			return
 		}
 
@@ -154,20 +168,10 @@ export function TicketUploadForm({ driverId, vehicleNumber }: TicketUploadFormPr
 				// Ensure booking_id is a string
 				const booking_id = ensureString(values.booking_id)
 
-				// // Validate booking belongs to driver
-				// const bookingValidation = await validateBookingForDriver(booking_id, driverId)
-				// // if (!bookingValidation.isValid) {
-				// // 	throw new Error(bookingValidation.error || 'ID de reserva inválido')
-				// // }
- 
-				// // Validate ticket timing
-				// const timingValidation = await validateTicketTiming(values.exit_timestamp, booking_id)
-				// // if (!timingValidation.isValid) {
-				// // 	throw new Error(timingValidation.error || 'Tiempo de ticket inválido')
-				// // }
+				console.log('session', session)
 
 				// Create ticket with form data and image URL
-				await createTicket(driverId, vehicleNumber, booking_id, uploadedImageUrl, {
+				await createTicket(session.driver_id, values.vehicle_number, booking_id, uploadedImageUrl, {
 					nro_boleta: values.nro_boleta,
 					entry_date: values.entry_date,
 					entry_time: values.entry_time,
@@ -197,18 +201,7 @@ export function TicketUploadForm({ driverId, vehicleNumber }: TicketUploadFormPr
 
 	// Reset confirmation form and initialize with empty values
 	const resetConfirmationForm = () => {
-		confirmForm.reset({
-			booking_id: '',
-			vehicle_number: '',
-			nro_boleta: '',
-			entry_date: '',
-			entry_time: '',
-			exit_date: '',
-			exit_time: '',
-			amount: '',
-			location: '',
-			confirm: false
-		});
+		confirmForm.reset(defaultConfirmFormValues)
 	};
 
 	// Use this function when moving between steps
@@ -258,6 +251,7 @@ export function TicketUploadForm({ driverId, vehicleNumber }: TicketUploadFormPr
 					isPending={isPending}
 					parsedData={parsedData}
 					debugBookingId={debugBookingId}
+					// vehicles={vehicles}
 				/>
 			)}
 		</div>

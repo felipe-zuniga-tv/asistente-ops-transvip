@@ -34,6 +34,7 @@ export const Routes = Object.freeze({
 	},
 	DRIVERS: {
 		HOME: '/conductores',
+		TICKETS_DASHBOARD: '/conductores/tickets/parking/dashboard',
 		PROFILE: '/conductores/perfil',
 	},
 	FEEDBACK: {

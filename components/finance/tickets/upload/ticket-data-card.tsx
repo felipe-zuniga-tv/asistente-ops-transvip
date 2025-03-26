@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from "react"
 import { UseFormReturn } from "react-hook-form"
 import {
@@ -17,24 +19,27 @@ import {
 	Checkbox
 } from "@/components/ui"
 import { TicketImagePreview } from "./ticket-image-preview"
+import { VehicleSelector } from "./vehicle-selector"
 import { ConfirmationValues } from "./schemas"
 import { cn } from '@/lib/utils/ui'
 import { Image as ImageIcon } from "lucide-react"
+// import { Vehicle } from "./ticket-upload-form"
 
 interface TicketDataCardProps {
 	form: UseFormReturn<ConfirmationValues>
 	imagePreview?: string
 	isPending: boolean
 	debugBookingId?: string
+	// vehicles: Vehicle[]
 }
 
 export function TicketDataCard({
 	form,
 	imagePreview,
 	isPending,
-	debugBookingId
+	debugBookingId,
+	// vehicles
 }: TicketDataCardProps) {
-	// Add state for the image dialog
 	const [isImageDialogOpen, setIsImageDialogOpen] = useState(false)
 
 	return (
@@ -64,48 +69,53 @@ export function TicketDataCard({
 			<CardContent className="flex flex-col gap-4 px-5">
 				{/* Create a 2-column grid layout */}
 				<div className="flex flex-col gap-1.5">
-					{/* Booking ID */}
-					<FormField
-						control={form.control}
-						name="booking_id"
-						render={({ field }) => (
-							<FormItem className="space-y-0 grid grid-cols-[2fr_3fr] sm:grid-cols-[2fr_3fr] items-center">
-								<FormLabel className="mb-0"># de Reserva</FormLabel>
-								<div>
-									<FormControl>
-										<Input
-											placeholder="Ingresa la reserva"
-											type="number"
-											disabled={isPending}
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</div>
-							</FormItem>
-						)}
-					/>
+					<div className="flex flex-col gap-1.5 p-2 -ml-2 bg-gray-50 rounded-md border border-dashed border-gray-300">
+						{/* Booking ID */}
+						<FormField
+							control={form.control}
+							name="booking_id"
+							render={({ field }) => (
+								<FormItem className="space-y-0 grid grid-cols-[2fr_3fr] sm:grid-cols-[2fr_3fr] items-center">
+									<FormLabel className="mb-0"># de Reserva</FormLabel>
+									<div>
+										<FormControl>
+											<Input
+												placeholder="Ingresa la reserva"
+												type="number"
+												disabled={isPending}
+												className="bg-white"
+												{...field}
+											/>
+										</FormControl>
+										<FormMessage />
+									</div>
+								</FormItem>
+							)}
+						/>
 
-					{/* Vehicle Number */}
-					<FormField
-						control={form.control}
-						name="vehicle_number"
-						render={({ field }) => (
-							<FormItem className="space-y-0 grid grid-cols-[2fr_3fr] sm:grid-cols-[2fr_3fr] items-center">
-								<FormLabel className="mb-0"># de Móvil</FormLabel>
-								<div>
-									<FormControl>
-										<Input
-											placeholder="Ingresa el número de móvil"
-											disabled={isPending}
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</div>
-							</FormItem>
-						)}
-					/>
+						{/* Vehicle Number */}
+						<FormField
+							control={form.control}
+							name="vehicle_number"
+							render={({ field }) => (
+								<FormItem className="space-y-0 grid grid-cols-[2fr_3fr] sm:grid-cols-[2fr_3fr] items-center">
+									<FormLabel className="mb-0"># de Móvil</FormLabel>
+									<div>
+										<FormControl>
+											<Input
+												placeholder="Ingresa el número de móvil"
+												type="number"
+												disabled={isPending}
+												className="bg-white"
+												{...field}
+											/>
+										</FormControl>
+										<FormMessage />
+									</div>
+								</FormItem>
+							)}
+						/>
+					</div>
 
 					{/* Boleta Number */}
 					<FormField
@@ -269,8 +279,8 @@ export function TicketDataCard({
 					>
 						<TicketImagePreview
 							imageUrl={imagePreview}
-							height="400px"
 							showRemoveButton={false}
+							height="400px"
 						/>
 					</SimpleDialog>
 				)}

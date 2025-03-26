@@ -8,42 +8,13 @@ import { revalidatePath } from 'next/cache'
 // Database table name
 const TABLE_NAME = 'parking_tickets'
 
-// TODO: Replace with actual database calls
-const mockTickets: ParkingTicket[] = [
-  {
-    id: '1',
-    booking_id: 'B001',
-    driver_id: 'mock-id',
-    vehicle_number: '4212',
-    submission_date: new Date(),
-    status: 'pending_review',
-    parsed_data: {
-      nro_boleta: '123456',
-      entry_date: new Date().toISOString(),
-      entry_time: new Date().toLocaleString('es-CL', { hour: '2-digit', minute: '2-digit', hour12: false }),
-      exit_date: new Date().toISOString(),
-      exit_time: new Date().toLocaleString('es-CL', { hour: '2-digit', minute: '2-digit', hour12: false }),
-      amount: 5000,
-      location: 'Aeropuerto de SCL',
-      image_url: 'https://via.placeholder.com/150'
-    }
-  }
-]
-
-async function uploadImage(imageBase64: string): Promise<string> {
-  // TODO: Replace with actual storage service
-  // This is a mock implementation that just returns the base64 string
-  return imageBase64
-}
-
-export async function getDriverTickets(driverId: string, vehicleNumber: string): Promise<ParkingTicket[]> {
+export async function getDriverTickets(driverId: string): Promise<ParkingTicket[]> {
   const supabase = await createClient()
   
   const { data, error } = await supabase
     .from(TABLE_NAME)
     .select('*')
     .eq('driver_id', driverId)
-    .eq('vehicle_number', vehicleNumber)
     .order('submission_date', { ascending: false })
 
   if (error) {
@@ -96,11 +67,6 @@ export async function createTicket(
 ): Promise<ParkingTicket> {
   // No need to upload image as we now receive the URL directly
   const supabase = await createClient()
-
-  console.log('imageUrl', imageUrl)
-  console.log('parsedData', parsedData)
-  console.log('driverId', driverId)
-  console.log('bookingId', bookingId)
   
   const ticket: Omit<ParkingTicket, 'id'> = {
     booking_id: bookingId,

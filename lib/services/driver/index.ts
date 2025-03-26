@@ -9,12 +9,7 @@ import { getAccessToken, buildUrlParams } from "@/lib/utils/helpers"
 
 export async function searchDriver(driverEmail: string, accessToken: string | null = null) {
     if (!accessToken) {
-        try {
-            accessToken = await getAccessToken()
-        } catch {
-            const envToken = process.env.TOKEN_FINANCE_PARKING_TICKETS
-            accessToken = envToken || null
-        }
+        accessToken = await getAccessToken()
     }
 
     if (!accessToken) {

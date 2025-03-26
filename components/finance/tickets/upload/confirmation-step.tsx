@@ -1,8 +1,11 @@
+'use client'
+
 import { UseFormReturn } from "react-hook-form"
 import { Loader2, Check, ArrowLeft } from "lucide-react"
 import { Form, Button } from "@/components/ui"
 import { TicketDataCard } from "./ticket-data-card"
 import { ConfirmationValues } from "./schemas"
+// import { Vehicle } from "./ticket-upload-form"
 
 interface ConfirmationStepProps {
 	form: UseFormReturn<ConfirmationValues>
@@ -12,6 +15,7 @@ interface ConfirmationStepProps {
 	isPending: boolean
 	parsedData: any | null
 	debugBookingId?: string
+	// vehicles: Vehicle[]
 }
 
 export function ConfirmationStep({
@@ -21,7 +25,8 @@ export function ConfirmationStep({
 	onBack,
 	isPending,
 	parsedData,
-	debugBookingId
+	debugBookingId,
+	// vehicles
 }: ConfirmationStepProps) {
 	return (
 		<Form {...form}>
@@ -33,6 +38,7 @@ export function ConfirmationStep({
 						imagePreview={imagePreview}
 						isPending={isPending}
 						debugBookingId={debugBookingId}
+						// vehicles={vehicles}
 					/>
 				)}
 

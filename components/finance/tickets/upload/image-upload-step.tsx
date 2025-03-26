@@ -80,7 +80,7 @@ export function ImageUploadStep({
 					)}
 				/>
 
-				<Button type="submit" className="w-1/2 mx-auto" disabled={isProcessing || !imagePreview}>
+				<Button type="submit" className="w-3/4 md:w-1/2 mx-auto" disabled={isProcessing || !imagePreview}>
 					{isProcessing ? (
 						<>
 							<Loader2 className="h-4 w-4 animate-spin" />

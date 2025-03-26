@@ -139,7 +139,6 @@ export async function getVehicleDetail(license_plate: string) {
         search_filter: 1,
         search_value: license_plate
     })
-    // console.log(result)
     return result ? mapToVehicleDetail(result[0]) : null
 }
 

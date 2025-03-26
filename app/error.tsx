@@ -18,7 +18,7 @@ export default function Error({
     }, [error])
 
     return (
-        <main className="bg-main min-h-screen flex flex-col items-center justify-center">
+        <main className="bg-main min-h-screen bg-cover bg-top flex flex-col items-center justify-center">
             <div className="p-24 rounded-xl text-lg bg-white/90 text-center gap-4 flex flex-col">
                 <h1 className="text-xl font-semibold">¡Hola!</h1>
                 <p className="text-lg font-normal">

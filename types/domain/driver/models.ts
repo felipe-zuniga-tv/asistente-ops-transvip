@@ -2,14 +2,14 @@ export interface DriverSession {
   driver_id: string
   email: string
   full_name: string
-  vehicle_number: string
   expires: Date
 }
 
 export interface DriverDetails {
-  id: string
+  fleet_id: string
   email: string
-  full_name: string
+  first_name: string
+  last_name: string
   active: boolean
   created_at: string
   last_login?: string
