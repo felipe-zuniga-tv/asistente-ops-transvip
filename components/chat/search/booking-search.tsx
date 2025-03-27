@@ -31,7 +31,6 @@ import {
 } from '../badges/chat-badges';
 import { BookingIdBadge } from '../badges/booking-badge';
 import GoogleMapsButton from './google-maps-url-button';
-import { UserMessage } from '../message';
 
 import { IBookingInfoOutput } from '@/lib/core/types/chat';
 import { buildGoogleMapsURL, buildWhatsappLink } from '@/lib/services/utils/helpers';
