@@ -78,16 +78,17 @@ function PurePreviewMessage({
           </div>
         )}
         
-        <div className="flex items-center justify-end text-xs text-slate-500 mt-1">
+        <div className="flex items-center justify-end gap-2 text-xs text-white mt-1">
           {message.role === 'user' ? (
-            <span>{session?.user?.full_name || 'Usuario'}</span>
+            <span>{session?.user?.fullName || 'Usuario'}</span>
           ) : (
             <div className="flex items-center gap-1">
               <TransvipLogo logoOnly colored={false} size={16} />
               <span>Asistente</span>
             </div>
           )}
-          {message.createdAt && <span className="ml-2">{formattedTimestamp}</span>}
+          <span>·</span>
+          {message.createdAt && <span className="">{formattedTimestamp}</span>}
         </div>
       </div>
     </div>

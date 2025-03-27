@@ -87,6 +87,7 @@ export function NavUser({ user }: {
 								Alertas
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
+						<DropdownMenuSeparator />
 					</DropdownMenuContent>
 				</DropdownMenu>
 			</SidebarMenuItem>

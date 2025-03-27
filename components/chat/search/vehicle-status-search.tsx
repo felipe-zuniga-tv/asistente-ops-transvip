@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils/ui';
 import { VEHICLE_STATUS } from '@/lib/utils/constants';
 import { Button } from '@/components/ui';
 import ToolsButton from '../tools/tools-button';
-import DriverAvatar from '@/components/driver/driver-avatar';
+import DriverAvatar from '@/components/driver-profile/driver-avatar';
 import { CityBadge } from '../badges/chat-badges';
 
 export interface VehicleStatusSearchResults {

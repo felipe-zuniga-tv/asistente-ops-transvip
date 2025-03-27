@@ -4,7 +4,7 @@ import { UserCircle } from 'lucide-react';
 import { IDriverAssignedVehicles, IDriverProfile, IDriverVehicles } from '@/lib/core/types/chat';
 import { AssistantMessageContent } from '../message';
 import { Badge, Button } from '@/components/ui';
-import DriverAvatar from '@/components/driver/driver-avatar';
+import DriverAvatar from '@/components/driver-profile/driver-avatar';
 import { CityBadge, DriverStatusBadge, LicenseExpirationBadge } from '../badges/chat-badges';
 import Image from 'next/image';
 import Zoom from 'react-medium-image-zoom'

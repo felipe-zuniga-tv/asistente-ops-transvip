@@ -7,6 +7,7 @@ import { addMinutes, differenceInDays, differenceInMinutes } from 'date-fns';
 import { 
   CheckIcon, 
   Clock, 
+  ExternalLinkIcon, 
   GoalIcon, 
   MailIcon, 
   MapIcon, 
@@ -19,7 +20,7 @@ import {
 } from 'lucide-react';
 import { useMessageSubmission } from '@/hooks/use-message-submission';
 import { Badge, Button, EmailLink, WhatsappIcon } from '@/components/ui';
-import DriverAvatar from '@/components/driver/driver-avatar';
+import DriverAvatar from '@/components/driver-profile/driver-avatar';
 import { 
   BookingStatusBadge, 
   CityBadge, 
@@ -290,8 +291,8 @@ function BookingDates({ result, simplified = false }: {
                         )}
                         {minutes_to_trip < 0 && Math.abs(minutes_to_trip) <= 180 && (
                             <>
-                                <span className='hidden md:block'>·</span>
-                                <span className='hidden md:block font-semibold text-red-500'>Hace: {-1 * minutes_to_trip} minutos</span>
+                                <span className='hidden sm:block'>·</span>
+                                <span className='hidden sm:block font-semibold text-red-500'>Hace: {-1 * minutes_to_trip} minutos</span>
                             </>
                         )}
                     </div>
@@ -459,15 +460,15 @@ function BookingCustomer({ result }: {
                 <div className="flex flex-row gap-2 w-full">
                     <div className='flex flex-col gap-1'>
                         <div className='card-info-detail'>
-                            <UserCircleIcon className='size-4' />
+                            <UserCircleIcon className='size-4 shrink-0' />
                             <span>{result.customer.full_name}</span>
                         </div>
                         <div className='card-info-detail'>
-                            <MailIcon className='size-4' />
+                            <MailIcon className='size-4 shrink-0' />
                             <EmailLink address={result.customer.email} />
                         </div>
                         <div className='card-info-detail'>
-                            <PhoneIcon className='size-4' />
+                            <PhoneIcon className='size-4 shrink-0' />
                             <Link href={`tel:${result.customer.phone_number}`} className='hover:underline'>
                                 <span>{result.customer.phone_number}</span>
                             </Link>
@@ -508,21 +509,21 @@ function BookingDirections({ result }: {
             <div className='info-section gap-4 md:gap-0.5 flex flex-col md:flex-row items-center'>
                 <div className='w-full md:w-3/4 flex flex-col gap-1'>
                     <div className='card-info-detail'>
-                        <MapPin className='size-4' />
+                        <MapPin className='size-4 shrink-0' />
                         <div className="flex flex-row gap-1 items-center justify-start">
                             <span className='font-semibold'>Origen:</span>
                             <span className='line-clamp-1'>{result.directions.origin.address}</span>
                         </div>
                     </div>
                     <div className='card-info-detail'>
-                        <GoalIcon className='size-4' />
+                        <GoalIcon className='size-4 shrink-0' />
                         <div className="flex flex-row gap-1 items-center justify-start">
                             <span className='font-semibold'>Destino:</span>
                             <span className='line-clamp-1'>{result.directions.destination.address}</span>
                         </div>
                     </div>
                     <div className='card-info-detail'>
-                        <Clock className='size-4' />
+                        <Clock className='size-4 shrink-0' />
                         <div className="flex flex-row gap-1 items-center justify-start">
                             {result.directions.estimated_travel_minutes ? (
                                 <>
@@ -541,8 +542,8 @@ function BookingDirections({ result }: {
                 <div className="w-fit md:w-1/4 flex items-center justify-end text-sm">
                     <Button variant="default" className="px-6 py-0.5 bg-green-600 hover:bg-green-800"
                         onClick={() => window.open(googleMapsUrl, '_blank')}>
+                        <MapIcon className='size-4' />
                         Ver ruta
-                        <MapIcon className='size-4 ml-2' />
                     </Button>
                 </div>
             </div>
@@ -555,14 +556,12 @@ function BookingBadges({ result, handleClick }: {
     handleClick: any
 }) {
     return (
-        <>
-            <div className='hidden md:block booking-detail booking-badges'>
-                <BookingIdBadge result={result} handleClick={handleClick} />
-                <BookingStatusBadge result={result} />
-                <PaymentStatusBadge result={result} />
-                <CityBadge branch={result.branch} isCode={false} className='hidden ml-auto' />
-            </div>
-        </>
+        <div className='hidden md:block booking-detail booking-badges'>
+            <BookingIdBadge result={result} handleClick={handleClick} />
+            <BookingStatusBadge result={result} />
+            <PaymentStatusBadge result={result} />
+            <CityBadge branch={result.branch} isCode={false} className='hidden ml-auto' />
+        </div>
     )
 }
 
@@ -584,18 +583,22 @@ function BookingVehicle({ result, handleClick }: {
                 </div>
                 <div className='flex flex-col gap-2'>
                     <div className='card-info-detail'>
-                        <Badge variant={'default'} className='flex flex-row gap-2 bg-gray-200 hover:bg-gray-300 text-black items-center justify-start md:text-sm'>
+                        <Badge variant={'outline'} className='flex flex-row gap-2 bg-slate-600 hover:bg-slate-700 text-white items-center justify-start text-sm'>
                             <span onClick={() => handleClick(result, BookingSearchRequest.DRIVER)} className='cursor-pointer'>{result.fleet.full_name}</span>
                         </Badge>
                     </div>
                     <div className='card-info-detail items-center gap-2'>
-                        <Badge variant={'default'} className='flex flex-row gap-2 bg-slate-500 hover:bg-slate-600 text-white items-center justify-start md:text-sm'>
-                            <span onClick={() => handleClick(result, BookingSearchRequest.LICENSE)} className='hidden md:block hover:underline cursor-pointer'>PPU: {result.vehicle.license_plate}</span>
-                            <span onClick={() => handleClick(result, BookingSearchRequest.LICENSE)} className='block md:hidden hover:underline cursor-pointer'>{result.vehicle.license_plate}</span>
+                        <Badge variant={"default"} className='shadow bg-gray-200 hover:bg-blue-200 text-black text-sm'>
+                            <span onClick={() => handleClick(result, BookingSearchRequest.LICENSE)} className='hover:underline cursor-pointer flex flex-row gap-2 items-center justify-center'>
+                                PPU: {result.vehicle.license_plate}
+                                <ExternalLinkIcon className='size-3 shrink-0' />
+                            </span>
                         </Badge>
-                        <Badge variant={'default'} className='flex flex-row gap-2 bg-slate-500 hover:bg-slate-600 text-white items-center justify-start md:text-sm'>
-                            <span onClick={() => handleClick(result, BookingSearchRequest.VEHICLE)} className='hidden md:block hover:underline cursor-pointer'>Móvil: {result.vehicle.vehicle_number}</span>
-                            <span onClick={() => handleClick(result, BookingSearchRequest.VEHICLE)} className='block md:hidden hover:underline cursor-pointer'>{result.vehicle.vehicle_number}</span>
+                        <Badge variant={'default'} className='shadow bg-gray-200 hover:bg-blue-200 text-black text-sm'>
+                            <span onClick={() => handleClick(result, BookingSearchRequest.VEHICLE)} className='hover:underline cursor-pointer flex flex-row gap-2 items-center justify-center'>
+                                Móvil: {result.vehicle.vehicle_number}
+                                <ExternalLinkIcon className='size-3 shrink-0' />
+                            </span>
                         </Badge>
                     </div>
                 </div>

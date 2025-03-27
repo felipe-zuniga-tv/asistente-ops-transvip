@@ -56,8 +56,9 @@ export function Chat({ id, initialMessages, className, session }: ChatProps) {
                 <NewChatButton onClick={handleNewChat} />
             </div>
 
-            <div ref={scrollRef} className="flex flex-col flex-1 overflow-auto">
-                <div className={cn('flex-1 pb-[30px] overflow-auto max-h-[76vh]', className as string)} ref={messagesRef}>
+            <div ref={scrollRef} className="flex-1 overflow-auto">
+                <div className="h-full flex flex-col justify-between">
+                    <div className={cn('flex-1 overflow-auto max-h-[76vh]', className as string)} ref={messagesRef}>
                     {messages.length ? 
                         (<MessagesList messages={messages} isShared={false} session={session} />) :
                         (<EmptyScreen session={session} />)
@@ -71,6 +72,7 @@ export function Chat({ id, initialMessages, className, session }: ChatProps) {
                     isAtBottom={isAtBottom}
                     scrollToBottom={scrollToBottom}
                 />
+                </div>
             </div>
         </div>
     )
