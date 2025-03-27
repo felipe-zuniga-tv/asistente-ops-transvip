@@ -14,6 +14,14 @@ export function buildWhatsappLink(phone_number: string, text: string) {
     return encodeURI(`https://wa.me/${phone_number.replace('+', '').trim()}?text=${text.trim()}`)
 }
 
+export function formatChileanPeso(amount: number) {
+    let chileanPeso = new Intl.NumberFormat('es-CL', {
+        style: 'currency',
+        currency: 'CLP',
+    });
+    return chileanPeso.format(amount);
+}
+
 export function buildGoogleMapsURL(originAddress: string, destinationAddress: string, waypoints?: string[]) {
     const BASE_GOOGLE_MAPS_URL = 'https://www.google.com/maps/dir/';
     const params = [

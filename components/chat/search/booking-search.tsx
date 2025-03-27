@@ -33,12 +33,7 @@ import { BookingIdBadge } from '../badges/booking-badge';
 import GoogleMapsButton from './google-maps-url-button';
 
 import { IBookingInfoOutput } from '@/lib/core/types/chat';
-import { buildGoogleMapsURL, buildWhatsappLink } from '@/lib/services/utils/helpers';
-
-let chileanPeso = new Intl.NumberFormat('es-CL', {
-    style: 'currency',
-    currency: 'CLP',
-});
+import { buildGoogleMapsURL, buildWhatsappLink, formatChileanPeso } from '@/lib/services/utils/helpers';
 
 // Vehicle States to Show
 const STATES_TO_SHOW = [2, 4, 12, 0, 1, 15]
@@ -152,7 +147,7 @@ function SharedServiceTotals({ result }: {
         <div className='shared-service-totals card-info-detail flex flex-row gap-3 justify-start bg-green-200 rounded-md shadow-md mb-2'>
             <div className='shared-service-total-payment flex flex-row gap-1 p-2 w-full'>
                 <span className='font-semibold'>Pago Total:</span>
-                <span>{chileanPeso.format(totalPayment)}</span>
+                <span>{ formatChileanPeso(totalPayment) }</span>
             </div>
             {/* <span>·</span>
             <div className='shared-service-total-estimated-distance flex flex-row gap-1'>
@@ -422,13 +417,13 @@ function BookingPayment({ result }: {
                 <div className='flex flex-col gap-1 w-full'>
                     <div className='card-info-detail flex-row gap-1'>
                         <span className='font-semibold'>Monto Estimado:</span>
-                        <span className=''>{chileanPeso.format(result.payment.estimated_payment)}</span>
+                        <span className=''>{formatChileanPeso(result.payment.estimated_payment)}</span>
                         <PaymentRouteType result={result} />
                     </div>
                     { result.payment.actual_payment && (
                         <div className='card-info-detail flex-row gap-1'>
                             <span className='font-semibold'>Monto Real:</span>
-                            <span className=''>{chileanPeso.format(result.payment.actual_payment)}</span>
+                            <span className=''>{formatChileanPeso(result.payment.actual_payment)}</span>
                         </div>
                     )}
                     <div className='card-info-detail flex-row gap-1'>
