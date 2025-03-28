@@ -8,7 +8,6 @@ import { Progress } from '@/components/ui/progress'
 import { useToast } from '@/hooks/use-toast'
 import { getTranslation, type Language } from '@/lib/core/i18n/'
 import { createSalesResponse } from '@/lib/services/sales'
-import { createCustomerAccount } from '@/lib/services/customer'
 
 // Form Steps
 import { LanguageStep } from './language-step'
@@ -18,12 +17,16 @@ import { AccommodationStep } from './accommodation-step'
 import { ConfirmationStep } from './confirmation-step'
 import { TransvipLogo } from '@/components/transvip/transvip-logo'
 
+// Constants
+const BASE_PASSWORD = 'Contraseña123!'
+
 interface SalesFormData {
 	language: Language
 	firstName: string
 	lastName: string
 	email: string
 	phoneNumber: string
+	countryCode?: string
 	returnDate: Date | null
 	returnTime: string
 	accommodation: string
@@ -36,6 +39,9 @@ interface SalesFormProps {
 	onSuccess?: () => void
 }
 
+export const runtime = 'edge';
+export const revalidate = 3600; // Cache the page for 1 hour 
+
 export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }: SalesFormProps) {
 	const [step, setStep] = useState(initialLanguage ? 2 : 1)
 	const isSubmitting = useRef(false)
@@ -45,6 +51,7 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 		lastName: '',
 		email: '',
 		phoneNumber: '',
+		countryCode: '',
 		returnDate: null,
 		returnTime: '',
 		accommodation: ''
@@ -68,23 +75,39 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 
 	const handleSubmit = useCallback(async () => {
 		if (isSubmitting.current) return;
-		
+
 		try {
 			isSubmitting.current = true;
-			
-			// First create customer account, then create sales response sequentially
-			const customerResult = await createCustomerAccount({
-				firstName: formData.firstName,
-				lastName: formData.lastName,
-				email: formData.email,
-				language: formData.language,
+
+			// Create customer account via internal API route
+			const payload = {
+				lang: formData.language === 'en-US' ? 0 : 1,
+				first_name: formData.firstName,
+				last_name: formData.lastName,
+				email: formData.email.toLowerCase(),
+				country_code: formData.countryCode || '',
+				phone_number: formData.phoneNumber,
+				password: BASE_PASSWORD,
+				timezone: new Date().getTimezoneOffset().toString(),
+			}
+
+			console.log(payload)
+
+			const customerResponse = await fetch(Routes.API.CUSTOMER_SIGNUP, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(payload),
 			});
-			
+
+			const customerResult = await customerResponse.json();
+
 			// Only proceed with sales response if customer account was created successfully
-			if (!customerResult || 'error' in customerResult) {
+			if (!customerResult || 'error' in customerResult || customerResult.status !== 200) {
 				throw new Error('Failed to create customer account');
 			}
-			
+
 			const salesResult = await createSalesResponse({
 				branch_code: branchCode,
 				branch_name: branchName,
@@ -97,11 +120,11 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 				return_time: formData.returnTime || null,
 				accommodation: formData.accommodation,
 			});
-			
+
 			if (!salesResult) {
 				throw new Error('Failed to create sales response');
 			}
-			
+
 			// Show success message
 			toast({
 				title: t.success.title,
@@ -118,6 +141,7 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 					lastName: '',
 					email: '',
 					phoneNumber: '',
+					countryCode: '',
 					returnDate: null,
 					returnTime: '',
 					accommodation: ''
@@ -136,6 +160,8 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 		}
 	}, [branchCode, branchName, formData, initialLanguage, onSuccess, t.error.description, t.error.title, t.success.description, t.success.title, toast]);
 
+	console.log(formData)
+
 	return (
 		<Card>
 			<CardContent className="pt-6">
@@ -143,7 +169,7 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 
 				<div className="flex justify-center mb-4">
 					<Link href={Routes.PUBLIC.SUCURSALES}>
-						<TransvipLogo size={30} />
+						<TransvipLogo size={24} />
 					</Link>
 				</div>
 
@@ -175,6 +201,7 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 						<TravelInfoStep
 							data={{
 								phoneNumber: formData.phoneNumber,
+								countryCode: formData.countryCode,
 								returnDate: formData.returnDate,
 								returnTime: formData.returnTime
 							}}
@@ -197,7 +224,11 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 
 					{step === 5 && (
 						<ConfirmationStep
-							formData={formData}
+							formData={{
+								...formData,
+								phoneNumber: formData.phoneNumber,
+								countryCode: formData.countryCode
+							}}
 							translations={t.steps.confirmation}
 							onSubmit={handleSubmit}
 						/>
@@ -212,6 +243,3 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 		</Card>
 	)
 }
-
-export const runtime = 'edge';
-export const revalidate = 3600; // Cache the page for 1 hour 

@@ -2,6 +2,9 @@ export const Routes = Object.freeze({
 	HOME: '/',
 	LOGIN: '/',
 	START: '/chat',
+	API: {
+		CUSTOMER_SIGNUP: '/api/customers/signup',
+	},
 	ADMIN: {
 		HOME: '/admin',
 		BRANCHES_CONFIG: '/admin/config/branches',

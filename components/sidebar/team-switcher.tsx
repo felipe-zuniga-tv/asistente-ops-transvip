@@ -19,7 +19,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { Button } from "../ui/button"
-import { TransvipLogo } from "../transvip/transvip-logo"
+import { TransvipLogo } from "@/components/transvip/transvip-logo"
 
 export function TeamSwitcher({
   teams,

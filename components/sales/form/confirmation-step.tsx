@@ -13,6 +13,7 @@ interface ConfirmationStepProps {
 		lastName: string
 		email: string
 		phoneNumber: string
+		countryCode?: string
 		returnDate: Date | null
 		returnTime: string
 		accommodation: string
@@ -41,8 +42,8 @@ export function ConfirmationStep({ formData, translations, onSubmit }: Confirmat
 	}, [onSubmit]);
 
 	return (
-		<div className="space-y-6 text-center">
-			<div className="flex flex-col items-center space-y-2">
+		<div className="flex flex-col items-center gap-4 w-full">
+			<div className="flex flex-col items-center gap-2">
 				<CheckCircle2 className="h-12 w-12 text-green-500" />
 				<h2 className="text-2xl font-bold">{translations.title}</h2>
 				<p className="text-muted-foreground">
@@ -50,23 +51,23 @@ export function ConfirmationStep({ formData, translations, onSubmit }: Confirmat
 				</p>
 			</div>
 
-			<div className="space-y-4 text-left p-6 bg-muted rounded-lg">
+			<div className="w-full flex flex-col gap-6 text-left p-6 bg-muted rounded-lg shadow-md">
 				<div>
-					<h3 className="font-medium">{translations.personalInfo}</h3>
-					<div className="flex flex-row gap-2">
+					<h3 className="font-bold text-transvip">{translations.personalInfo}</h3>
+					<div className="flex flex-row items-center gap-2">
 						<p className="text-sm">{formData.firstName} {formData.lastName}</p>
-						<span>·</span>
+						<span className="text-center">·</span>
 						<p className="text-sm">{formData.email}</p>
 					</div>
 				</div>
 
 				<div>
-					<h3 className="font-medium">{translations.contactInfo}</h3>
-					<p className="text-sm">{formData.phoneNumber}</p>
+					<h3 className="font-bold text-transvip">{translations.contactInfo}</h3>
+					<p className="text-sm">{formData.countryCode} {formData.phoneNumber}</p>
 				</div>
 
 				<div>
-					<h3 className="font-medium">{translations.returnFlight}</h3>
+					<h3 className="font-bold text-transvip">{translations.returnFlight}</h3>
 					<p className="text-sm">
 						{formData.returnDate
 							? format(formData.returnDate, 'PPP', { locale: es })
@@ -76,7 +77,7 @@ export function ConfirmationStep({ formData, translations, onSubmit }: Confirmat
 				</div>
 
 				<div>
-					<h3 className="font-medium">{translations.accommodation}</h3>
+					<h3 className="font-bold text-transvip">{translations.accommodation}</h3>
 					<p className="text-sm">{formData.accommodation}</p>
 				</div>
 			</div>

@@ -40,6 +40,7 @@ export const translations = {
         returnDate: 'Fecha de Regreso',
         returnTime: 'Hora de Regreso',
         selectDate: 'Selecciona una fecha',
+        selectCountry: 'Selecciona un país',
         continue: 'Continuar',
         back: 'Volver',
         validation: {
@@ -119,6 +120,7 @@ export const translations = {
         returnDate: 'Return Date',
         returnTime: 'Return Time',
         selectDate: 'Pick a date',
+        selectCountry: 'Select a country',
         continue: 'Continue',
         back: 'Back',
         validation: {
@@ -198,6 +200,7 @@ export const translations = {
         returnDate: 'Rückreisedatum',
         returnTime: 'Rückreisezeit',
         selectDate: 'Datum auswählen',
+        selectCountry: 'Ländervorwahl auswählen',
         continue: 'Weiter',
         back: 'Zurück',
         validation: {
@@ -277,6 +280,7 @@ export const translations = {
         returnDate: 'Data de Retorno',
         returnTime: 'Hora de Retorno',
         selectDate: 'Selecione uma data',
+        selectCountry: 'Selecione um país',
         continue: 'Continuar',
         back: 'Voltar',
         validation: {

@@ -86,16 +86,16 @@ export function AccommodationStep({
 						)}
 					/>
 
-					<div className="flex gap-3 pt-4">
+					<div className="flex justify-between gap-3 pt-4">
 						<Button
 							type="button"
 							variant="outline"
 							onClick={onBack}
-							className="w-full bg-transvip hover:bg-transvip-dark h-10 text-white hover:text-white"
+							className="w-1/3 sm:w-1/4 bg-transvip hover:bg-transvip-dark h-10 text-white hover:text-white"
 						>
 							<ArrowLeftIcon className="w-4 h-4" /> {translations.back}
 						</Button>
-						<Button type="submit" className="w-full h-10">
+						<Button type="submit" className="w-1/2 h-10">
 							{translations.continue} <ArrowRightIcon className="w-4 h-4" />
 						</Button>
 					</div>

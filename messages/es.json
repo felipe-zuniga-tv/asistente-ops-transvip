@@ -20,6 +20,7 @@
       "returnTime": "Hora de Regreso",
       "pickDate": "Selecciona una fecha",
       "searchCountry": "Buscar país o código...",
+      "selectCountry": "Selecciona un país",
       "noResults": "Sin resultados",
       "select": "Selecciona..."
     },

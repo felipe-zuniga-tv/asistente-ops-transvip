@@ -1,5 +1,12 @@
-const CUSTOMER_SIGNUP_API_ROUTE = '/api/customers/signup'
+import { CUSTOMER_SIGNUP_API_URL } from "../config/urls";
+
 const BASE_PASSWORD = 'Contraseña123!'
+
+const DEVICE_TYPE_ENUM = {
+    ANDROID: 0,
+    IOS: 1,
+    WEB: 2,
+}
 
 export async function createCustomerAccount(formData: {
     firstName: string;
@@ -10,25 +17,30 @@ export async function createCustomerAccount(formData: {
     const now = new Date();
     const deviceTimezoneOffset = now.getTimezoneOffset();
 
+    // Form Data - Payload
     const payload = {
         first_name: formData.firstName,
         last_name: formData.lastName,
         email: formData.email.toLowerCase(),
         password: BASE_PASSWORD,
-        device_type: 2, // web
+        device_type: DEVICE_TYPE_ENUM.WEB,
         device_token: "-",
-        lang: 1, // 1 - spanish, 0 - english
-        // app_version: "-",
+        lang: formData.language === 'en-US' ? 0 : 1,
         timezone: deviceTimezoneOffset.toString()
     }
 
-    const response = await fetch(CUSTOMER_SIGNUP_API_ROUTE, {
+    const formDataPayload = new URLSearchParams();
+    Object.entries(payload).forEach(([key, value]) => {
+        formDataPayload.append(key, value.toString());
+    });
+
+    const response = await fetch(CUSTOMER_SIGNUP_API_URL, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
             'Content-Language': 'es'
         },
-        body: JSON.stringify(payload)
+        body: formDataPayload.toString()
     });
     
     if (!response.ok) {

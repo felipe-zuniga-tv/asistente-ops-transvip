@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ClipboardList } from "lucide-react";
 import Link from "next/link";
-import { TransvipLogo } from "../transvip/transvip-logo";
+import { TransvipLogo } from "@/components/transvip/transvip-logo";
 import { Button } from "../ui/button";
 import { OperationsForm } from "@/lib/core/types/vehicle/forms";
 

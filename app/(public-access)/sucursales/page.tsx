@@ -10,14 +10,14 @@ import SuspenseLoading from '@/components/ui/suspense'
 export default async function BranchesPage({ searchParams }: { searchParams: { lang?: string } }) {
 	const language = (searchParams.lang || 'es-CL') as Language
 	const t = getTranslation(language)
-	const branches = await getBranches()
-	const branchesWithSalesForm = branches.filter(branch => branch.sales_form_active)
+	const salesFormActiveFilter = true
+	const branchesWithSalesForm = await getBranches(salesFormActiveFilter)
 
 	return (
 		<Card>
 			<CardHeader className="flex flex-col sm:flex-row gap-2 items-center justify-between border-b pb-6">
 				<div className="flex items-center gap-4">
-					<TransvipLogo size={24} />
+					<TransvipLogo size={20} />
 					<CardTitle className="text-2xl font-bold">Transvip</CardTitle>
 				</div>
 				<Suspense>
@@ -33,9 +33,7 @@ export default async function BranchesPage({ searchParams }: { searchParams: { l
 				</div>
 
 				<div className="w-full flex flex-col gap-6">
-					<Suspense fallback={<SuspenseLoading />}>
-						<BranchesList branches={branchesWithSalesForm} language={language} />
-					</Suspense>
+					<BranchesList branches={branchesWithSalesForm} language={language} />
 				</div>
 			</CardContent>
 			<CardFooter className="bg-gray-200 rounded-b-lg p-0">

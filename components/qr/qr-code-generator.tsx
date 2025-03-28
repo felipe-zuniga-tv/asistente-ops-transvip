@@ -4,7 +4,7 @@ import { RotateCw } from 'lucide-react';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { Button } from '../ui/button';
-import { TransvipLogo } from '../transvip/transvip-logo';
+import { TransvipLogo } from '@/components/transvip/transvip-logo';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
 

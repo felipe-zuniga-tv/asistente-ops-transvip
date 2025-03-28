@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Card, CardContent, CardFooter } from "../ui";
 import Link from "next/link";
 import { Routes } from "@/utils/routes";
-import { TransvipLogo } from "../transvip/transvip-logo";
+import { TransvipLogo } from "@/components/transvip/transvip-logo";
 import { FormResponse } from "./form-response";
 
 export default async function FormContainer({ formId }: { formId: string }) {

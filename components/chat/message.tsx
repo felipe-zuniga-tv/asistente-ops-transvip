@@ -5,7 +5,7 @@ import { useStreamableText } from "@/hooks/use-streamable-text"
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
 import { cn } from '@/lib/utils/ui'
-import { TransvipLogo } from "../transvip/transvip-logo"
+import { TransvipLogo } from "@/components/transvip/transvip-logo"
 
 export function BotCard({ children, className = "" }: { children: React.ReactNode, className: string }) {
 	return (

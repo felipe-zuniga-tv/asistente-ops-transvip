@@ -1,4 +1,4 @@
-import { TransvipLogo } from "../transvip/transvip-logo";
+import { TransvipLogo } from "@/components/transvip/transvip-logo";
 
 export function CardTitleContent({ title }: { title: string }) {
     return (

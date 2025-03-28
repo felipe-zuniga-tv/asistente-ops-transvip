@@ -1,51 +1,42 @@
 'use client'
 
-import {useState } from 'react'
+import { useState, useEffect } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import { Button } from '@/components/ui/button'
 import {
+	Button,
 	Form,
 	FormControl,
 	FormField,
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { CalendarIcon } from '@radix-ui/react-icons'
-import { Check, ChevronsUpDown, Loader2, ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
-import { format } from 'date-fns'
-import { cn } from '@/lib/utils/ui'
-import { Calendar } from '@/components/ui/calendar'
-import {
+	Calendar,
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
-} from '@/components/ui/popover'
+	TimePickerInput,
+	PhoneNumberInput
+} from '@/components/ui'
+import { CalendarIcon } from '@radix-ui/react-icons'
+import { Loader2, ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
+import { format } from 'date-fns'
+import { cn } from '@/lib/utils/ui'
 import { es } from 'date-fns/locale'
-import { countryCodes } from '@/lib/core/config/country-codes'
-import {
-	Command,
-	CommandEmpty,
-	CommandGroup,
-	CommandInput,
-	CommandItem,
-	CommandList,
-} from "@/components/ui/command"
-import * as React from "react"
-import { TimePickerInput } from '@/components/ui/time-picker'
-import { PhoneNumberInput } from '@/components/ui/phone-number-input'
+import type { Country } from 'react-phone-number-input'
+import * as RPNInput from "react-phone-number-input"
 
 interface TravelInfoStepProps {
 	data: {
 		phoneNumber: string
+		countryCode?: string
 		returnDate: Date | null
 		returnTime: string
 	}
 	onChange: (data: {
 		phoneNumber: string
+		countryCode?: string
 		returnDate: Date | null
 		returnTime: string
 	}) => void
@@ -55,9 +46,11 @@ interface TravelInfoStepProps {
 		title: string
 		description: string
 		phoneNumber: string
+		countryCode: string
 		returnDate: string
 		returnTime: string
 		selectDate: string
+		selectCountry: string
 		continue: string
 		back: string
 		validation: {
@@ -76,9 +69,14 @@ export function TravelInfoStep({
 	translations
 }: TravelInfoStepProps) {
 	const [isSubmitting, setIsSubmitting] = useState(false)
+	const [selectedCountry, setSelectedCountry] = useState<Country | undefined>()
 
 	const formSchema = z.object({
-		phoneNumber: z.string().min(6, {
+		countryData: z.object({
+			country: z.string().optional(),
+			countryCode: z.string().optional()
+		}).optional(),
+		phoneNumber: z.string().min(1, {
 			message: translations.validation.phoneNumber,
 		}),
 		returnDate: z.date({
@@ -92,16 +90,60 @@ export function TravelInfoStep({
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
+			countryData: data.countryCode ? { countryCode: data.countryCode } : undefined,
 			phoneNumber: data.phoneNumber,
 			returnDate: data.returnDate || undefined,
 			returnTime: data.returnTime,
 		},
+		mode: "onChange"
 	})
+
+	// Extract country from country code when component mounts
+	useEffect(() => {
+		if (data.countryCode) {
+			const countryFromCode = RPNInput.getCountries().find(
+				country => `+${RPNInput.getCountryCallingCode(country)}` === data.countryCode
+			)
+			if (countryFromCode) {
+				setSelectedCountry(countryFromCode)
+			}
+		}
+	}, [data.countryCode])
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		try {
 			setIsSubmitting(true)
-			onChange(values)
+			
+			// Get the country code from the form data
+			const countryCode = values.countryData?.countryCode
+			
+			// Custom validation logic for phone numbers with country codes
+			if (countryCode) {
+				// If country code exists, phone number can be shorter
+				if (values.phoneNumber.length < 1) {
+					form.setError("phoneNumber", { 
+						message: translations.validation.phoneNumber 
+					});
+					setIsSubmitting(false);
+					return;
+				}
+			} else {
+				// Without country code, enforce minimum length of 6
+				if (values.phoneNumber.length < 6) {
+					form.setError("phoneNumber", { 
+						message: translations.validation.phoneNumber 
+					});
+					setIsSubmitting(false);
+					return;
+				}
+			}
+			
+			onChange({
+				phoneNumber: values.phoneNumber,
+				countryCode: values.countryData?.countryCode,
+				returnDate: values.returnDate,
+				returnTime: values.returnTime
+			})
 			onNext()
 		} finally {
 			setIsSubmitting(false)
@@ -120,24 +162,33 @@ export function TravelInfoStep({
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 					<div className="space-y-4">
-						<FormItem className="space-y-1">
-							<FormLabel>{translations.phoneNumber}</FormLabel>
+						<div className="flex flex-row gap-1">
 							<FormField
 								control={form.control}
 								name="phoneNumber"
 								render={({ field }) => (
-									<FormControl>
-										<PhoneNumberInput
-											id={field.name}
-											value={field.value}
-											onChange={field.onChange}
-											placeholder="123456789"
-										/>
-									</FormControl>
+									<FormItem className="w-full">
+										<FormLabel>{translations.countryCode}</FormLabel>
+										<FormControl>
+											<PhoneNumberInput
+												value={{ phoneNumber: field.value, countryCode: data.countryCode }}
+												onChange={(value) => {
+													// Update the phone number field
+													field.onChange(value.phoneNumber)
+
+													// If you need to update the country code in the parent state
+													if (value.countryCode !== data.countryCode) {
+														form.setValue('countryData.countryCode', value.countryCode)
+													}
+												}}
+												placeholder="123456789"
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
 								)}
 							/>
-							<FormMessage />
-						</FormItem>
+						</div>
 					</div>
 
 					<FormField
@@ -189,17 +240,17 @@ export function TravelInfoStep({
 						label={translations.returnTime}
 					/>
 
-					<div className="flex gap-3 pt-4">
+					<div className="flex justify-between gap-3 pt-4">
 						<Button
 							type="button"
 							variant="outline"
 							onClick={onBack}
 							disabled={isSubmitting}
-							className="w-full bg-transvip hover:bg-transvip-dark h-10 text-white hover:text-white"
+							className="w-1/3 sm:w-1/4 bg-transvip hover:bg-transvip-dark h-10 text-white hover:text-white"
 						>
 							<ArrowLeftIcon className="w-4 h-4" /> {translations.back}
 						</Button>
-						<Button type="submit" className="w-full h-10" disabled={isSubmitting}>
+						<Button type="submit" className="w-1/2 h-10" disabled={isSubmitting}>
 							{isSubmitting ? (
 								<>
 									<Loader2 className="mr-2 h-4 w-4 animate-spin" />

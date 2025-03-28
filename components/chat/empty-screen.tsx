@@ -1,4 +1,4 @@
-import { TransvipLogo } from "../transvip/transvip-logo";
+import { TransvipLogo } from "@/components/transvip/transvip-logo";
 import { toolsList } from "@/lib/core/config/tools";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -55,12 +55,12 @@ export function EmptyScreen({ session }: { session: any }) {
                     
                     <div className="w-full max-w-4xl">
                         <Tabs defaultValue="Reservas" className="w-full">
-                            <TabsList className="grid w-full grid-cols-5">
+                            <TabsList className="grid gap-1 w-full grid-cols-5 h-12">
                                 {Object.keys(toolGroups).map((group) => (
                                     <TabsTrigger 
                                         key={group} 
                                         value={group}
-                                        className="text-sm"
+                                        className="text-sm h-10 data-[state=active]:bg-transvip data-[state=active]:text-white"
                                     >
                                         {group}
                                     </TabsTrigger>
@@ -68,10 +68,9 @@ export function EmptyScreen({ session }: { session: any }) {
                             </TabsList>
                             {Object.entries(toolGroups).map(([group, tools]) => (
                                 <TabsContent key={group} value={group} className="mt-4">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {tools.map((tool) => (
-                                            <Card 
-                                                key={tool.title}
+                                            <Card key={tool.title}
                                                 className={cn(
                                                     "cursor-pointer transition-all hover:bg-slate-50",
                                                     "border-2 hover:border-transvip"

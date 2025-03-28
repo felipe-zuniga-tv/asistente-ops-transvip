@@ -18,7 +18,11 @@
       "phoneNumber": "Telefonnummer",
       "returnDate": "Rückreisedatum",
       "returnTime": "Rückreisezeit",
-      "pickDate": "Datum auswählen"
+      "pickDate": "Datum auswählen",
+      "searchCountry": "Land oder Code suchen...",
+      "selectCountry": "Land auswählen",
+      "noResults": "Keine Ergebnisse gefunden",
+      "select": "Wählen..."
     },
     "accommodation": {
       "title": "Unterkunftsdetails",
