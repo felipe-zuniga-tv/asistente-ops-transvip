@@ -27,8 +27,7 @@ interface SalesFormData {
 	email: string
 	phoneNumber: string
 	countryCode?: string
-	returnDate: Date | null
-	returnTime: string
+	returnDateTime: Date | null
 	accommodation: string
 }
 
@@ -40,7 +39,7 @@ interface SalesFormProps {
 }
 
 export const runtime = 'edge';
-export const revalidate = 3600; // Cache the page for 1 hour 
+export const revalidate = 3600; // Cache the page for 1 hour
 
 export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }: SalesFormProps) {
 	const [step, setStep] = useState(initialLanguage ? 2 : 1)
@@ -52,8 +51,7 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 		email: '',
 		phoneNumber: '',
 		countryCode: '',
-		returnDate: null,
-		returnTime: '',
+		returnDateTime: null,
 		accommodation: ''
 	})
 
@@ -91,8 +89,6 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 				timezone: new Date().getTimezoneOffset().toString(),
 			}
 
-			console.log(payload)
-
 			const customerResponse = await fetch(Routes.API.CUSTOMER_SIGNUP, {
 				method: 'POST',
 				headers: {
@@ -105,8 +101,12 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 
 			// Only proceed with sales response if customer account was created successfully
 			if (!customerResult || 'error' in customerResult || customerResult.status !== 200) {
-				throw new Error('Failed to create customer account');
+				throw new Error('No fue posible crear el usuario en el sistema. Consulta en counter para avanzar.');
 			}
+
+			// Format return date and time
+			const returnDate = formData.returnDateTime ? new Date(formData.returnDateTime).toISOString().split('T')[0] : null;
+			const returnTime = formData.returnDateTime ? new Date(formData.returnDateTime).toLocaleTimeString('es-CL', { hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit" }) : null;
 
 			const salesResult = await createSalesResponse({
 				branch_code: branchCode,
@@ -116,13 +116,13 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 				last_name: formData.lastName,
 				email: formData.email,
 				phone_number: formData.phoneNumber,
-				return_date: formData.returnDate ? new Date(formData.returnDate).toISOString() : null,
-				return_time: formData.returnTime || null,
+				return_date: returnDate,
+				return_time: returnTime,
 				accommodation: formData.accommodation,
 			});
 
 			if (!salesResult) {
-				throw new Error('Failed to create sales response');
+				throw new Error('No fue posible guardar la información del formulario. Consulta en counter para avanzar.');
 			}
 
 			// Show success message
@@ -142,8 +142,7 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 					email: '',
 					phoneNumber: '',
 					countryCode: '',
-					returnDate: null,
-					returnTime: '',
+					returnDateTime: null,
 					accommodation: ''
 				})
 				onSuccess?.()
@@ -154,13 +153,13 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 				title: t.error.title,
 				description: error instanceof Error ? error.message : t.error.description,
 				variant: 'destructive',
+				duration: 3000,
 			})
+			onSuccess?.()
 		} finally {
 			isSubmitting.current = false;
 		}
 	}, [branchCode, branchName, formData, initialLanguage, onSuccess, t.error.description, t.error.title, t.success.description, t.success.title, toast]);
-
-	console.log(formData)
 
 	return (
 		<Card>
@@ -173,67 +172,64 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 					</Link>
 				</div>
 
-				<div className="space-y-6">
-					{step === 1 && (
-						<LanguageStep
-							value={formData.language}
-							onChange={(language) => updateFormData({ language })}
-							onNext={nextStep}
-							translations={t.steps.language}
-						/>
-					)}
+				{step === 1 && (
+					<LanguageStep
+						value={formData.language}
+						onChange={(language) => updateFormData({ language })}
+						onNext={nextStep}
+						translations={t.steps.language}
+					/>
+				)}
 
-					{step === 2 && (
-						<PersonalInfoStep
-							data={{
-								firstName: formData.firstName,
-								lastName: formData.lastName,
-								email: formData.email
-							}}
-							onChange={(data) => updateFormData(data)}
-							onNext={nextStep}
-							onBack={prevStep}
-							translations={t.steps.personal}
-						/>
-					)}
+				{step === 2 && (
+					<PersonalInfoStep
+						data={{
+							firstName: formData.firstName,
+							lastName: formData.lastName,
+							email: formData.email
+						}}
+						onChange={(data) => updateFormData(data)}
+						onNext={nextStep}
+						onBack={prevStep}
+						translations={t.steps.personal}
+					/>
+				)}
 
-					{step === 3 && (
-						<TravelInfoStep
-							data={{
-								phoneNumber: formData.phoneNumber,
-								countryCode: formData.countryCode,
-								returnDate: formData.returnDate,
-								returnTime: formData.returnTime
-							}}
-							onChange={(data) => updateFormData(data)}
-							onNext={nextStep}
-							onBack={prevStep}
-							translations={t.steps.travel}
-						/>
-					)}
+				{step === 3 && (
+					<TravelInfoStep
+						data={{
+							phoneNumber: formData.phoneNumber,
+							countryCode: formData.countryCode,
+							returnDateTime: formData.returnDateTime
+						}}
+						onChange={(data) => updateFormData(data)}
+						onNext={nextStep}
+						onBack={prevStep}
+						translations={t.steps.travel}
+					/>
+				)}
 
-					{step === 4 && (
-						<AccommodationStep
-							value={formData.accommodation}
-							onChange={(accommodation) => updateFormData({ accommodation })}
-							onNext={nextStep}
-							onBack={prevStep}
-							translations={t.steps.accommodation}
-						/>
-					)}
+				{step === 4 && (
+					<AccommodationStep
+						value={formData.accommodation}
+						onChange={(accommodation) => updateFormData({ accommodation })}
+						onNext={nextStep}
+						onBack={prevStep}
+						translations={t.steps.accommodation}
+					/>
+				)}
 
-					{step === 5 && (
-						<ConfirmationStep
-							formData={{
-								...formData,
-								phoneNumber: formData.phoneNumber,
-								countryCode: formData.countryCode
-							}}
-							translations={t.steps.confirmation}
-							onSubmit={handleSubmit}
-						/>
-					)}
-				</div>
+				{step === 5 && (
+					<ConfirmationStep
+						formData={{
+							...formData,
+							phoneNumber: formData.phoneNumber,
+							countryCode: formData.countryCode
+						}}
+						translations={t.steps.confirmation}
+						onSubmit={handleSubmit}
+					/>
+				)}
 			</CardContent>
 			<CardFooter className="bg-gray-200 rounded-b-lg p-0">
 				<div className="w-full flex items-center justify-center text-sm text-black p-3">

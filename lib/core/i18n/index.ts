@@ -37,8 +37,7 @@ export const translations = {
         description: 'Por favor ingresa tus datos de contacto y vuelo de regreso',
         countryCode: 'Código de País',
         phoneNumber: 'Número de Teléfono',
-        returnDate: 'Fecha de Regreso',
-        returnTime: 'Hora de Regreso',
+        returnDateTime: 'Fecha y Hora de Regreso',
         selectDate: 'Selecciona una fecha',
         selectCountry: 'Selecciona un país',
         continue: 'Continuar',
@@ -46,8 +45,7 @@ export const translations = {
         validation: {
           countryCode: 'Por favor selecciona un código de país.',
           phoneNumber: 'El número de teléfono debe tener al menos 6 dígitos.',
-          returnDate: 'Por favor selecciona una fecha.',
-          returnTime: 'Por favor selecciona una hora.'
+          returnDateTime: 'Por favor selecciona una fecha y hora.'
         }
       },
       accommodation: {
@@ -117,8 +115,7 @@ export const translations = {
         description: 'Please enter your contact and return flight details',
         countryCode: 'Country Code',
         phoneNumber: 'Phone Number',
-        returnDate: 'Return Date',
-        returnTime: 'Return Time',
+        returnDateTime: 'Return Date & Time',
         selectDate: 'Pick a date',
         selectCountry: 'Select a country',
         continue: 'Continue',
@@ -126,8 +123,7 @@ export const translations = {
         validation: {
           countryCode: 'Please select a country code.',
           phoneNumber: 'Phone number must be at least 6 digits.',
-          returnDate: 'Please select a date.',
-          returnTime: 'Please select a time.'
+          returnDateTime: 'Please select a date and time.'
         }
       },
       accommodation: {
@@ -197,8 +193,7 @@ export const translations = {
         description: 'Bitte geben Sie Ihre Kontaktdaten und Rückflugdetails ein',
         countryCode: 'Ländervorwahl',
         phoneNumber: 'Telefonnummer',
-        returnDate: 'Rückreisedatum',
-        returnTime: 'Rückreisezeit',
+        returnDateTime: 'Rückreisedatum und -zeit',
         selectDate: 'Datum auswählen',
         selectCountry: 'Ländervorwahl auswählen',
         continue: 'Weiter',
@@ -206,8 +201,7 @@ export const translations = {
         validation: {
           countryCode: 'Bitte wählen Sie eine Ländervorwahl aus.',
           phoneNumber: 'Die Telefonnummer muss mindestens 6 Ziffern haben.',
-          returnDate: 'Bitte wählen Sie ein Datum aus.',
-          returnTime: 'Bitte wählen Sie eine Uhrzeit aus.'
+          returnDateTime: 'Bitte wählen Sie ein Datum und eine Uhrzeit aus.'
         }
       },
       accommodation: {
@@ -277,8 +271,7 @@ export const translations = {
         description: 'Por favor, insira seus dados de contato e detalhes do voo de retorno',
         countryCode: 'Código do País',
         phoneNumber: 'Número de Telefone',
-        returnDate: 'Data de Retorno',
-        returnTime: 'Hora de Retorno',
+        returnDateTime: 'Data e Hora de Retorno',
         selectDate: 'Selecione uma data',
         selectCountry: 'Selecione um país',
         continue: 'Continuar',
@@ -286,8 +279,7 @@ export const translations = {
         validation: {
           countryCode: 'Por favor, selecione um código de país.',
           phoneNumber: 'O número de telefone deve ter pelo menos 6 dígitos.',
-          returnDate: 'Por favor, selecione uma data.',
-          returnTime: 'Por favor, selecione um horário.'
+          returnDateTime: 'Por favor, selecione uma data e um horário.'
         }
       },
       accommodation: {

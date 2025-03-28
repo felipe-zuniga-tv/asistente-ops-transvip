@@ -47,9 +47,9 @@ export function TimePickerInput({
 				const [selectedHour, selectedMinute] = field.value ? field.value.split(':') : ['', '']
 				
 				return (
-					<FormItem className="flex flex-col">
+					<FormItem className="space-y-0 flex flex-col gap-2">
 						<FormLabel>{label}</FormLabel>
-						<div className="grid grid-cols-2 gap-2 w-full">
+						<div className="grid grid-cols-2 gap-4 w-full">
 							<Popover open={openHours} onOpenChange={setOpenHours}>
 								<PopoverTrigger asChild>
 									<FormControl>

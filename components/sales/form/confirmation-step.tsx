@@ -14,8 +14,7 @@ interface ConfirmationStepProps {
 		email: string
 		phoneNumber: string
 		countryCode?: string
-		returnDate: Date | null
-		returnTime: string
+		returnDateTime: Date | null
 		accommodation: string
 	}
 	translations: {
@@ -69,10 +68,9 @@ export function ConfirmationStep({ formData, translations, onSubmit }: Confirmat
 				<div>
 					<h3 className="font-bold text-transvip">{translations.returnFlight}</h3>
 					<p className="text-sm">
-						{formData.returnDate
-							? format(formData.returnDate, 'PPP', { locale: es })
-							: translations.notSpecified}{' '}
-						· {formData.returnTime}
+						{formData.returnDateTime
+							? format(formData.returnDateTime, 'PPP', { locale: es })
+							: translations.notSpecified}
 					</p>
 				</div>
 

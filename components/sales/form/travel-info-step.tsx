@@ -12,33 +12,26 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-	Calendar,
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-	TimePickerInput,
-	PhoneNumberInput
+	PhoneNumberInput,
 } from '@/components/ui'
-import { CalendarIcon } from '@radix-ui/react-icons'
 import { Loader2, ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
 import { format } from 'date-fns'
 import { cn } from '@/lib/utils/ui'
 import { es } from 'date-fns/locale'
 import type { Country } from 'react-phone-number-input'
 import * as RPNInput from "react-phone-number-input"
+import { DateTimePicker } from '@/components/ui/date-time-picker'
 
 interface TravelInfoStepProps {
 	data: {
 		phoneNumber: string
 		countryCode?: string
-		returnDate: Date | null
-		returnTime: string
+		returnDateTime: Date | null
 	}
 	onChange: (data: {
 		phoneNumber: string
 		countryCode?: string
-		returnDate: Date | null
-		returnTime: string
+		returnDateTime: Date | null
 	}) => void
 	onNext: () => void
 	onBack: () => void
@@ -47,16 +40,14 @@ interface TravelInfoStepProps {
 		description: string
 		phoneNumber: string
 		countryCode: string
-		returnDate: string
-		returnTime: string
+		returnDateTime: string
 		selectDate: string
 		selectCountry: string
 		continue: string
 		back: string
 		validation: {
 			phoneNumber: string
-			returnDate: string
-			returnTime: string
+			returnDateTime: string
 		}
 	}
 }
@@ -79,11 +70,8 @@ export function TravelInfoStep({
 		phoneNumber: z.string().min(1, {
 			message: translations.validation.phoneNumber,
 		}),
-		returnDate: z.date({
-			required_error: translations.validation.returnDate,
-		}),
-		returnTime: z.string().min(1, {
-			message: translations.validation.returnTime,
+		returnDateTime: z.date({
+			required_error: translations.validation.returnDateTime,
 		}),
 	})
 
@@ -92,8 +80,7 @@ export function TravelInfoStep({
 		defaultValues: {
 			countryData: data.countryCode ? { countryCode: data.countryCode } : undefined,
 			phoneNumber: data.phoneNumber,
-			returnDate: data.returnDate || undefined,
-			returnTime: data.returnTime,
+			returnDateTime: data.returnDateTime || undefined,
 		},
 		mode: "onChange"
 	})
@@ -113,16 +100,16 @@ export function TravelInfoStep({
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		try {
 			setIsSubmitting(true)
-			
+
 			// Get the country code from the form data
 			const countryCode = values.countryData?.countryCode
-			
+
 			// Custom validation logic for phone numbers with country codes
 			if (countryCode) {
 				// If country code exists, phone number can be shorter
 				if (values.phoneNumber.length < 1) {
-					form.setError("phoneNumber", { 
-						message: translations.validation.phoneNumber 
+					form.setError("phoneNumber", {
+						message: translations.validation.phoneNumber
 					});
 					setIsSubmitting(false);
 					return;
@@ -130,19 +117,18 @@ export function TravelInfoStep({
 			} else {
 				// Without country code, enforce minimum length of 6
 				if (values.phoneNumber.length < 6) {
-					form.setError("phoneNumber", { 
-						message: translations.validation.phoneNumber 
+					form.setError("phoneNumber", {
+						message: translations.validation.phoneNumber
 					});
 					setIsSubmitting(false);
 					return;
 				}
 			}
-			
+
 			onChange({
 				phoneNumber: values.phoneNumber,
 				countryCode: values.countryData?.countryCode,
-				returnDate: values.returnDate,
-				returnTime: values.returnTime
+				returnDateTime: values.returnDateTime,
 			})
 			onNext()
 		} finally {
@@ -151,8 +137,8 @@ export function TravelInfoStep({
 	}
 
 	return (
-		<div className="space-y-6">
-			<div className="space-y-2">
+		<div className="flex flex-col gap-6">
+			<div className="flex flex-col gap-2">
 				<h2 className="text-2xl font-bold text-center">{translations.title}</h2>
 				<p className="text-muted-foreground text-center">
 					{translations.description}
@@ -160,84 +146,38 @@ export function TravelInfoStep({
 			</div>
 
 			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-					<div className="space-y-4">
-						<div className="flex flex-row gap-1">
-							<FormField
-								control={form.control}
-								name="phoneNumber"
-								render={({ field }) => (
-									<FormItem className="w-full">
-										<FormLabel>{translations.countryCode}</FormLabel>
-										<FormControl>
-											<PhoneNumberInput
-												value={{ phoneNumber: field.value, countryCode: data.countryCode }}
-												onChange={(value) => {
-													// Update the phone number field
-													field.onChange(value.phoneNumber)
-
-													// If you need to update the country code in the parent state
-													if (value.countryCode !== data.countryCode) {
-														form.setValue('countryData.countryCode', value.countryCode)
-													}
-												}}
-												placeholder="123456789"
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-					</div>
-
+				<form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
 					<FormField
 						control={form.control}
-						name="returnDate"
+						name="phoneNumber"
 						render={({ field }) => (
-							<FormItem className="flex flex-col">
-								<FormLabel>{translations.returnDate}</FormLabel>
-								<Popover>
-									<PopoverTrigger asChild>
-										<FormControl>
-											<Button
-												variant="outline"
-												className={cn(
-													'w-full pl-3 text-left font-normal',
-													!field.value ? 'text-muted-foreground' : ''
-												)}
-											>
-												{field.value ? (
-													format(field.value, 'PPP', { locale: es })
-												) : (
-													<span>{translations.selectDate}</span>
-												)}
-												<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-											</Button>
-										</FormControl>
-									</PopoverTrigger>
-									<PopoverContent className="w-auto p-0" align="start">
-										<Calendar
-											mode="single"
-											selected={field.value}
-											onSelect={field.onChange}
-											disabled={(date) =>
-												date < new Date() || date < new Date('1900-01-01')
+							<FormItem className="space-y-0 flex flex-col gap-2 w-full">
+								<FormLabel>{translations.phoneNumber}</FormLabel>
+								<FormControl>
+									<PhoneNumberInput
+										value={{ phoneNumber: field.value, countryCode: data.countryCode }}
+										onChange={(value) => {
+											// Update the phone number field
+											field.onChange(value.phoneNumber)
+
+											// If you need to update the country code in the parent state
+											if (value.countryCode !== data.countryCode) {
+												form.setValue('countryData.countryCode', value.countryCode)
 											}
-											initialFocus
-											locale={es}
-										/>
-									</PopoverContent>
-								</Popover>
+										}}
+										placeholder="123456789"
+									/>
+								</FormControl>
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
 
-					<TimePickerInput
+					<DateTimePicker
 						control={form.control}
-						name="returnTime"
-						label={translations.returnTime}
+						name="returnDateTime"
+						label={translations.returnDateTime}
+						placeholder={translations.selectDate}
 					/>
 
 					<div className="flex justify-between gap-3 pt-4">

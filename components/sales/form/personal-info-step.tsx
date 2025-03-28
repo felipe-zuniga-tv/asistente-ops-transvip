@@ -83,8 +83,8 @@ export function PersonalInfoStep({
 	}
 
 	return (
-		<div className="space-y-6">
-			<div className="space-y-2">
+		<div className="flex flex-col gap-6">
+			<div className="flex flex-col gap-2">
 				<h2 className="text-2xl font-bold text-center">{translations.title}</h2>
 				<p className="text-muted-foreground text-center">
 					{translations.description}
@@ -92,12 +92,12 @@ export function PersonalInfoStep({
 			</div>
 
 			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+				<form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
 					<FormField
 						control={form.control}
 						name="firstName"
 						render={({ field }) => (
-							<FormItem>
+							<FormItem className="space-y-0 flex flex-col gap-2">
 								<FormLabel>{translations.firstName}</FormLabel>
 								<FormControl>
 									<Input placeholder={translations.placeholders.firstName} {...field} />
@@ -111,7 +111,7 @@ export function PersonalInfoStep({
 						control={form.control}
 						name="lastName"
 						render={({ field }) => (
-							<FormItem>
+							<FormItem className="space-y-0 flex flex-col gap-2">
 								<FormLabel>{translations.lastName}</FormLabel>
 								<FormControl>
 									<Input placeholder={translations.placeholders.lastName} {...field} />
@@ -125,7 +125,7 @@ export function PersonalInfoStep({
 						control={form.control}
 						name="email"
 						render={({ field }) => (
-							<FormItem>
+							<FormItem className="space-y-0 flex flex-col gap-2">
 								<FormLabel>{translations.email}</FormLabel>
 								<FormControl>
 									<Input
