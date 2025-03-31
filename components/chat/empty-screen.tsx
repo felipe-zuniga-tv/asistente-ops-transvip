@@ -2,7 +2,7 @@ import { TransvipLogo } from "@/components/transvip/transvip-logo";
 import { toolsList } from "@/lib/core/config/tools";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/ui";
 
 export function EmptyScreen({ session }: { session: any }) {
     const handleSelect = (value: string) => {

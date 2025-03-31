@@ -7,6 +7,3 @@ export * from './core/i18n';
 
 // Feature exports
 export * from './features'
-
-// Service exports
-export * from './services';

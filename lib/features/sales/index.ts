@@ -216,19 +216,13 @@ export async function updateSalesResponseNotesAction(id: string, notes: string) 
 	return data as SalesResponse
 }
 
-export async function getSalesResponses(branchCode?: string) {
+export async function getSalesResponses() {
 	const supabase = await createClient()
 
-	let query = supabase
+	const { data, error } = await supabase
 		.from(SALES_RESPONSES_TABLE)
 		.select()
 		.order('created_at', { ascending: false })
-	
-	if (branchCode) {
-		query = query.eq('branch_code', branchCode)
-	}
-
-	const { data, error } = await query
 
 	if (error) {
 		throw new Error(`Error fetching sales responses: ${error.message}`)

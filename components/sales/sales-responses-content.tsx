@@ -35,10 +35,12 @@ function sendWhatsAppMessage(phoneNumber: string, message: string) {
 
 interface SalesResponsesContentProps {
 	initialResponses: SalesResponse[]
+	branchName?: string
 }
 
 export function SalesResponsesContent({
 	initialResponses,
+	branchName,
 }: SalesResponsesContentProps) {
 	const router = useRouter()
 	const { toast } = useToast()
@@ -146,7 +148,7 @@ export function SalesResponsesContent({
 	}
 
 	return (
-		<ConfigCardContainer title="Respuestas de Formularios"
+		<ConfigCardContainer title={branchName ? `Respuestas de ${branchName}` : "Respuestas de Formularios"}
 			headerContent={
 				<Button
 					variant="outline"
@@ -160,7 +162,9 @@ export function SalesResponsesContent({
 			className='max-w-full'
 		>
 			<p className="text-muted-foreground text-sm -mt-6">
-				Respuestas a los formularios de ventas utilizados en los counters
+				{branchName 
+					? `Respuestas a los formularios de ventas para la sucursal ${branchName}`
+					: "Respuestas a los formularios de ventas utilizados en los counters"}
 			</p>
 
 			<SalesResponsesTable

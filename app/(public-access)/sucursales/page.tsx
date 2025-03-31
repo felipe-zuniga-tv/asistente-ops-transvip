@@ -5,7 +5,6 @@ import { BranchesList } from '@/components/sales/branches-list'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
 import { TransvipLogo } from '@/components/transvip/transvip-logo'
 import { getTranslation, type Language } from '@/lib/core/i18n'
-import SuspenseLoading from '@/components/ui/suspense'
 
 export default async function BranchesPage({ searchParams }: { searchParams: { lang?: string } }) {
 	const language = (searchParams.lang || 'es-CL') as Language
