@@ -1,12 +1,18 @@
 import { notFound, redirect } from "next/navigation"
+import Link from "next/link"
 import Image from "next/image"
 import { format } from "date-fns"
+
+import { getDriverSession } from "@/lib/features/driver/auth"
 import { getTicketById } from "@/lib/features/tickets"
-import { getDriverSession } from "@/lib/driver/auth"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import { 
+	Badge,
+	Button,
+	Card, 
+	CardContent, 
+	CardHeader, 
+	CardTitle 
+} from "@/components/ui"
 import { ArrowLeft } from "lucide-react"
 
 interface PageProps {

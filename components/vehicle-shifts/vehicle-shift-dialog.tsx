@@ -7,28 +7,25 @@ import { z } from "zod"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
-import { Button, Input } from "@/components/ui"
-import {
+import { 
+	Button, 
+	Input,
 	SimpleDialog,
 	SimpleDialogHeader,
 	SimpleDialogTitle,
-} from "@/components/ui/simple-dialog"
-import {
 	Form,
 	FormControl,
 	FormField,
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form"
-import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/ui/select"
-import { createVehicleShift, updateVehicleShift } from "@/lib/shifts/actions"
+} from "@/components/ui"
+import { createVehicleShift, updateVehicleShift } from "@/lib/features/shifts/actions"
 import { VehicleShift } from "./vehicle-shifts"
 import { getBranches } from "@/lib/services/admin/index"
 import { Branch } from "@/lib/core/types/admin"

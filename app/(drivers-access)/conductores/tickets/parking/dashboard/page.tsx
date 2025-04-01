@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation"
-import { getDriverSession } from "@/lib/driver/auth"
+import { getDriverSession } from "@/lib/features/driver/auth"
 import { getDriverTickets } from "@/lib/features/tickets"
 import { TicketsDashboard } from "@/components/finance/tickets/dashboard"
 import { Routes } from "@/utils/routes"
