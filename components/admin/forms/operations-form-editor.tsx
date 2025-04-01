@@ -14,7 +14,7 @@ import { ConfigCardContainer } from "@/components/tables/config-card-container";
 import { DraggableSection } from "./draggable/draggable-section";
 import Link from "next/link";
 import { Routes } from "@/utils/routes";
-import { reorderSections, reorderQuestions } from "@/lib/forms/actions";
+import { reorderSections, reorderQuestions } from "@/lib/services/forms/forms";
 import { toast } from "sonner";
 
 interface OperationsFormEditorProps {

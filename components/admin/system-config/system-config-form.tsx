@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { updateSystemConfig } from "@/lib/admin/actions"
+import { updateSystemConfig } from "@/lib/features/admin/actions"
 import { ConfigCardContainer } from "@/components/tables/config-card-container"
 import { useTransition } from "react"
 import { useToast } from "@/hooks/use-toast"

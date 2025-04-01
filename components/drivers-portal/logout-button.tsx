@@ -3,14 +3,14 @@
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { LogOut } from 'lucide-react'
-import { clearDriverSession } from '@/lib/driver/auth'
-
+import { clearDriverSession } from '@/lib/features/driver/auth'
+import { Routes } from '@/utils/routes'
 export function LogoutButton() {
 	const router = useRouter()
 
 	const handleSignOut = async () => {
 		await clearDriverSession()
-		router.push('/conductores')
+		router.push(Routes.DRIVERS.HOME)
 	}
 
 	return (
