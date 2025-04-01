@@ -10,7 +10,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { deleteVehicleShift } from "@/lib/shifts/actions"
+import { deleteVehicleShift } from "@/lib/features/shifts/actions"
 import { useRouter } from "next/navigation"
 import { VehicleShift } from "./vehicle-shifts"
 

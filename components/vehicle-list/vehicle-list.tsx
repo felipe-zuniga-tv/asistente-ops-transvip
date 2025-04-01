@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { branches, vehicleTypes } from '@/lib/core/config/transvip-general'
 import { IVehicleDetail } from '@/lib/core/types/chat'
-import { getVehicles } from '@/lib/general/actions'
+import { getVehicleList } from '@/lib/services/vehicle'
 import {
 	Select,
 	SelectContent,
@@ -55,7 +55,7 @@ export function VehicleList({ branch: initialBranch, initialVehicles = [], onSea
 		setIsLoading(true)
 		try {
 			const offset = (page - 1) * limit
-			const data = await getVehicles({ branch, offset, limit })
+			const data = await getVehicleList(branch, offset, limit)
 			if (data) setVehicles(data)
 		} catch (error) {
 			console.error('Error fetching vehicles:', error)
