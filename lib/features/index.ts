@@ -10,10 +10,10 @@ import * as chatModule from './chat';
 import * as formsModule from './forms';
 import * as csvModule from './csv';
 import * as salesModule from './sales';
-import * as databaseModule from './database';
+import * as databaseModule from './database'
 import * as systemModule from './system';
 import * as zoneModule from './zone';
-import * as mttModule from './mtt';
+import * as mttModule from './mtt'
 
 export const tickets = ticketsModule;
 export const booking = bookingModule;
