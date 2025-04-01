@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { createFormResponse, getOperationsFormById } from "@/lib/services/forms";
 import { notFound } from "next/navigation";
-import { Card, CardContent, CardFooter } from "../ui";
+import { Card, CardContent, CardFooter, CardHeader } from "../ui";
 import Link from "next/link";
 import { Routes } from "@/utils/routes";
 import { TransvipLogo } from "@/components/transvip/transvip-logo";
@@ -29,13 +29,14 @@ export default async function FormContainer({ formId }: { formId: string }) {
     return (
         <div className="max-w-lg mx-auto">
             <Card>
-                <CardContent className="pt-6">
-                    <div className="flex justify-center mb-4">
+                <CardHeader>
+                    <div className="flex justify-center">
                         <Link href={Routes.PUBLIC.FORMULARIOS}>
-                            <TransvipLogo size={30} />
+                            <TransvipLogo size={24} />
                         </Link>
                     </div>
-                    
+                </CardHeader>
+                <CardContent>
                     <FormResponse
                         formId={form.id}
                         responseId={responseId}

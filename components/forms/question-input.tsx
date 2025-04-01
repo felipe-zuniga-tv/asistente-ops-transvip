@@ -10,9 +10,10 @@ interface QuestionInputProps {
     value: string;
     onChange: (value: string) => void;
     required?: boolean;
+    error?: string;
 }
 
-export function QuestionInput({ question, value, onChange, required = question.is_required }: QuestionInputProps) {
+export function QuestionInput({ question, value, onChange, required = question.is_required, error }: QuestionInputProps) {
     return (
         <div className="space-y-2">
             <div className="space-y-1">
@@ -33,12 +34,20 @@ export function QuestionInput({ question, value, onChange, required = question.i
                     allowGallery={question.allow_gallery_access}
                 />
             ) : (
-                <Input
-                    type={question.type}
-                    value={value}
-                    onChange={(e) => onChange(e.target.value)}
-                    required={required}
-                />
+                <div className="space-y-1">
+                    <Input
+                        type={question.type}
+                        value={value}
+                        onChange={(e) => onChange(e.target.value)}
+                        required={required}
+                        className={error ? "border-destructive" : ""}
+                    />
+                    {error && (
+                        <p className="text-[0.8rem] text-destructive">
+                            {error}
+                        </p>
+                    )}
+                </div>
             )}
         </div>
     );

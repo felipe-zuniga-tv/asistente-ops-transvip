@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { OperationsFormQuestion, OperationsFormSection } from "@/lib/core/types/vehicle/forms";
@@ -22,6 +22,9 @@ interface FormResponseProps {
 export function FormResponse({ formId, responseId, sections, answers }: FormResponseProps) {
     const [currentSection, setCurrentSection] = useState(0);
     const [localAnswers, setLocalAnswers] = useState<Record<string, { id?: string; value: string }>>(answers);
+    const [pendingSaves, setPendingSaves] = useState<Set<string>>(new Set());
+    const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+    const saveTimeoutsRef = useRef<Record<string, NodeJS.Timeout>>({});
     const { toast } = useToast();
     const router = useRouter();
 
@@ -29,6 +32,50 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
     const isFirstSection = currentSection === 0;
     const isLastSection = currentSection === sections.length - 1;
 
+    // Validate inputs based on their type
+    const validateInput = useCallback((question: OperationsFormQuestion, value: string): string | null => {
+        if (!value && question.is_required) {
+            return "Este campo es obligatorio";
+        }
+        
+        if (!value) {
+            return null; // Empty non-required field is valid
+        }
+        
+        switch (question.type) {
+            case "email":
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(value) ? null : "Formato de email inválido";
+            
+            case "number":
+                return isNaN(Number(value)) ? "Debe ser un número válido" : null;
+                
+            // Add more validations as needed
+                
+            default:
+                return null;
+        }
+    }, []);
+
+    // Validate the current section
+    const validateCurrentSection = useCallback((): boolean => {
+        const newErrors: Record<string, string> = {};
+        let hasErrors = false;
+
+        section.questions.forEach(question => {
+            const value = localAnswers[question.id]?.value || "";
+            const error = validateInput(question, value);
+            
+            if (error) {
+                newErrors[question.id] = error;
+                hasErrors = true;
+            }
+        });
+
+        setValidationErrors(newErrors);
+        return !hasErrors;
+    }, [section.questions, localAnswers, validateInput]);
+    
     // Check if all required questions in the current section are answered
     const areRequiredQuestionsAnswered = useCallback(() => {
         return section.questions.every(question => {
@@ -38,18 +85,10 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
         });
     }, [localAnswers, section.questions]);
 
-    // Auto-advance to next section when all required questions are answered
-    useEffect(() => {
-        if (!isLastSection && areRequiredQuestionsAnswered()) {
-            const timer = setTimeout(() => {
-                setCurrentSection(prev => prev + 1);
-            }, 500); // Small delay for better UX
-            return () => clearTimeout(timer);
-        }
-    }, [localAnswers, isLastSection, areRequiredQuestionsAnswered]);
-
-    async function onAnswerChange(questionId: string, value: string) {
+    // Save answers that have pending changes
+    const saveAnswer = useCallback(async (questionId: string, value: string) => {
         try {
+            setPendingSaves(prev => new Set(prev).add(questionId));
             const currentAnswer = localAnswers[questionId];
             
             if (currentAnswer?.id) {
@@ -64,18 +103,18 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
                     answer: value,
                 });
                 
-                // Store the answer ID for future updates
-                setLocalAnswers((prev) => ({
+                // Update the ID in local state
+                setLocalAnswers(prev => ({
                     ...prev,
-                    [questionId]: { id: answer.id, value },
+                    [questionId]: { ...prev[questionId], id: answer.id },
                 }));
-                return;
             }
-
-            setLocalAnswers((prev) => ({
-                ...prev,
-                [questionId]: { ...prev[questionId], value },
-            }));
+            
+            setPendingSaves(prev => {
+                const newSet = new Set(prev);
+                newSet.delete(questionId);
+                return newSet;
+            });
         } catch (error) {
             console.error(error);
             toast({
@@ -83,10 +122,100 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
                 description: "Ha ocurrido un error al guardar la respuesta.",
                 variant: "destructive",
             });
+            setPendingSaves(prev => {
+                const newSet = new Set(prev);
+                newSet.delete(questionId);
+                return newSet;
+            });
         }
+    }, [formId, responseId, localAnswers, toast]);
+
+    // Cleanup timeouts on unmount
+    useEffect(() => {
+        return () => {
+            Object.values(saveTimeoutsRef.current).forEach(timeout => {
+                clearTimeout(timeout);
+            });
+        };
+    }, []);
+
+    function onAnswerChange(questionId: string, value: string) {
+        // Clear validation error when user types
+        if (validationErrors[questionId]) {
+            setValidationErrors(prev => {
+                const newErrors = { ...prev };
+                delete newErrors[questionId];
+                return newErrors;
+            });
+        }
+
+        // Update local state immediately for UI responsiveness
+        setLocalAnswers(prev => ({
+            ...prev,
+            [questionId]: { ...prev[questionId], value },
+        }));
+        
+        // Clear any existing timeout for this question
+        if (saveTimeoutsRef.current[questionId]) {
+            clearTimeout(saveTimeoutsRef.current[questionId]);
+        }
+        
+        // Set a new timeout to save after user stops typing
+        saveTimeoutsRef.current[questionId] = setTimeout(() => {
+            saveAnswer(questionId, value);
+        }, 1000); // 1 second debounce
     }
 
+    const handlePrevious = () => {
+        // We can move backward without validation
+        setCurrentSection(prev => prev - 1);
+        // Clear validation errors when changing section
+        setValidationErrors({});
+    };
+
+    const handleNext = () => {
+        // Validate current section before advancing
+        if (validateCurrentSection()) {
+            setCurrentSection(prev => prev + 1);
+            // Clear validation errors when changing section
+            setValidationErrors({});
+        } else {
+            toast({
+                title: "Validación fallida",
+                description: "Por favor corrija los errores antes de continuar.",
+                variant: "destructive",
+            });
+        }
+    };
+
     async function onComplete() {
+        // Validate current section before completion
+        if (!validateCurrentSection()) {
+            toast({
+                title: "Validación fallida",
+                description: "Por favor corrija los errores antes de completar el formulario.",
+                variant: "destructive",
+            });
+            return;
+        }
+
+        // Wait for any pending saves to complete
+        const pendingSavesList = Array.from(pendingSaves);
+        if (pendingSavesList.length > 0) {
+            toast({
+                title: "Guardando cambios",
+                description: "Espere mientras se guardan los cambios pendientes...",
+            });
+            
+            // Wait for pending saves
+            for (const questionId of pendingSavesList) {
+                if (saveTimeoutsRef.current[questionId]) {
+                    clearTimeout(saveTimeoutsRef.current[questionId]);
+                    await saveAnswer(questionId, localAnswers[questionId].value);
+                }
+            }
+        }
+
         // Check if all required questions in all sections are answered
         const allRequiredAnswered = sections.every(section =>
             section.questions.every(question => {
@@ -128,7 +257,7 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
     }
 
     return (
-        <div className="space-y-6">
+        <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-2 justify-start items-center">
                 <h2 className="text-2xl font-bold tracking-tight">
                     {section.title}
@@ -151,6 +280,7 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
                             value={localAnswers[question.id]?.value ?? ""}
                             onChange={(value) => onAnswerChange(question.id, value)}
                             required={question.is_required}
+                            error={validationErrors[question.id]}
                         />
                     ))}
                 </CardContent>
@@ -159,10 +289,10 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
             <div className="flex justify-between">
                 <Button
                     variant="outline"
-                    onClick={() => setCurrentSection((prev) => prev - 1)}
+                    onClick={handlePrevious}
                     disabled={isFirstSection}
                 >
-                    <ChevronLeft className="h-4 w-4 mr-2" />
+                    <ChevronLeft className="h-4 w-4" />
                     Anterior
                 </Button>
 
@@ -176,12 +306,12 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
                     </Button>
                 ) : (
                     <Button
-                        onClick={() => setCurrentSection((prev) => prev + 1)}
-                        disabled={isLastSection || !areRequiredQuestionsAnswered()}
+                        onClick={handleNext}
+                        disabled={!areRequiredQuestionsAnswered()}
                         className="bg-transvip hover:bg-transvip/80"
                     >
                         Siguiente
-                        <ChevronRight className="h-4 w-4 ml-2" />
+                        <ChevronRight className="h-4 w-4" />
                     </Button>
                 )}
             </div>

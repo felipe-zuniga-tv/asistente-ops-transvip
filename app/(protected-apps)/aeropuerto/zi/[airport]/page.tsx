@@ -17,7 +17,5 @@ export default async function AirportPage({ params }: { params: { airport: strin
 
 async function AirportStatusDashboard({ zone }: { zone: AirportZone }) {
   const data = await getZonaIluminadaServices(zone.zone_id)
-  // console.log(data);
-
   return <AirportStatusClient vehicleTypesList={data} zone={zone} />
 }
