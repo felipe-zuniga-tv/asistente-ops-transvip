@@ -13,7 +13,7 @@ import {
 	updateSalesResponseWhatsappConfirmationAction,
 	updateSalesResponseNotesAction,
 	getSalesResponses
-} from '@/lib/services/sales'
+} from '@/lib/features/sales'
 import { useRouter } from 'next/navigation'
 
 const WHATSAPP_MESSAGES = {
@@ -144,7 +144,8 @@ export function SalesResponsesContent({
 
 	const handleSendWhatsAppMessage = (response: SalesResponse) => {
 		const message = getWhatsAppMessage(response.first_name, response.language);
-		sendWhatsAppMessage(response.phone_number, message);
+		const phoneNumber = response.country_code ? `${response.country_code}${response.phone_number}` : response.phone_number;
+		sendWhatsAppMessage(phoneNumber, message);
 	}
 
 	return (

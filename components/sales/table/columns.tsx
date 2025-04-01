@@ -2,20 +2,20 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { MoreHorizontal, Check, X, PlusCircle, Pencil } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+// import { MoreHorizontal, Check, PlusCircle, Pencil } from "lucide-react";
+import { X, ChevronDown, ArrowRight } from "lucide-react";
 import {
+	Button,
+	Badge,
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuTrigger,
 	DropdownMenuSeparator
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui"
 import type { SalesResponse } from "@/lib/core/types/sales";
 import { WhatsappIcon } from "@/components/ui/icons-list";
-import React from "react";
 import { languages } from "../language-selector";
 import type { Language } from "@/lib/core/i18n";
 
@@ -36,25 +36,25 @@ export const statusLabels: Record<SalesResponse['status'], string> = {
 declare module '@tanstack/table-core' {
 	interface TableMeta<TData extends unknown> {
 		onConfirmWhatsapp?: (id: string, confirmed: boolean) => void
-		onUpdateStatus?: (id: string) => void | Promise<void>
+		onUpdateStatus?: (id: string, status: string) => void | Promise<void>
 		onUpdateNotes?: (id: string) => void
 		onSendWhatsApp?: (response: TData) => void
 	}
 }
 
 export const columns: ColumnDef<SalesResponse>[] = [
-	{
-		accessorKey: "branch_name",
-		header: () => <div className="text-center">Sucursal</div>,
-		cell: ({ row }) => (
-			<div className="text-center text-sm">
-				{row.getValue("branch_name")}
-			</div>
-		),
-	},
+	// {
+	// 	accessorKey: "branch_name",
+	// 	header: () => <div className="text-center hidden">Sucursal</div>,
+	// 	cell: ({ row }) => (
+	// 		<div className="text-center text-sm hidden">
+	// 			{row.getValue("branch_name")}
+	// 		</div>
+	// 	),
+	// },
 	{
 		accessorKey: "created_at",
-		header: () => <div className="text-center">Fecha</div>,
+		header: () => <div className="text-center">Fecha solicitud</div>,
 		cell: ({ row }) => (
 			<div className="text-center text-sm">
 				{format(new Date(row.getValue("created_at")), 'dd/MM/yyyy HH:mm')}
@@ -67,6 +67,15 @@ export const columns: ColumnDef<SalesResponse>[] = [
 		cell: ({ row }) => (
 			<div className="text-center text-sm">
 				{row.original.first_name} {row.original.last_name}
+			</div>
+		),
+	},
+	{
+		accessorKey: "email",
+		header: () => <div className="text-center">Email</div>,
+		cell: ({ row }) => (
+			<div className="text-center text-sm">
+				{row.original.email}
 			</div>
 		),
 	},
@@ -84,19 +93,20 @@ export const columns: ColumnDef<SalesResponse>[] = [
 		},
 	},
 	{
-		accessorKey: "email",
-		header: () => <div className="text-center">Email</div>,
-		cell: ({ row }) => (
-			<div className="text-center text-sm">
-				{row.original.email}
-			</div>
-		),
-	},
-	{
 		accessorKey: "phone_number",
 		header: () => <div className="text-center hidden">Teléfono</div>,
 		cell: ({ row }) => (
 			<div className="text-center hidden">{row.original.phone_number}</div>
+		),
+	},
+	{
+		accessorKey: "return_datetime",
+		header: () => <div className="text-center">Fecha de retorno</div>,
+		cell: ({ row }) => (
+			<div className="text-center text-sm">
+				{row.original.return_date ? format(new Date(row.original.return_date), 'dd/MM/yyyy') : ''}
+				{row.original.return_time ? ` ${row.original.return_time.slice(0, 5)}` : ''}
+			</div>
 		),
 	},
 	{
@@ -107,99 +117,80 @@ export const columns: ColumnDef<SalesResponse>[] = [
 				<Button
 					variant="ghost"
 					size="sm"
-					className="h-6 px-2 bg-green-600 hover:bg-green-700"
+					className="h-8 px-2 bg-green-600 hover:bg-green-700"
 					onClick={() => table.options.meta?.onSendWhatsApp?.(row.original)}
 				>
-					<WhatsappIcon className="h-4 w-4" />
+					<WhatsappIcon className="hidden h-4 w-4" />
 					<span className="text-white">Enviar mensaje</span>
+					<ArrowRight className="h-4 w-4 text-white" />
 				</Button>
 			</div>
 		),
 	},
+	// {
+	// 	accessorKey: "whatsapp_confirmed",
+	// 	header: () => <div className="text-center">WhatsApp</div>,
+	// 	cell: ({ row }) => (
+	// 		<div className="text-center text-sm">
+	// 			{row.original.whatsapp_confirmed ? (
+	// 				<Badge variant="default" className="gap-1 bg-green-500 hover:bg-green-600">
+	// 					<Check className="h-3 w-3" />
+	// 					Confirmado
+	// 				</Badge>
+	// 			) : (
+	// 				<Badge variant="default" className="gap-1 bg-red-500 hover:bg-red-600">
+	// 					<X className="h-3 w-3" />
+	// 					Pendiente
+	// 				</Badge>
+	// 			)}
+	// 		</div>
+	// 	),
+	// },
 	{
-		accessorKey: "whatsapp_confirmed",
-		header: () => <div className="text-center">WhatsApp</div>,
-		cell: ({ row }) => (
-			<div className="text-center text-sm">
-				{row.original.whatsapp_confirmed ? (
-					<Badge variant="default" className="gap-1 bg-green-500 hover:bg-green-600">
-						<Check className="h-3 w-3" />
-						Confirmado
-					</Badge>
-				) : (
-					<Badge variant="default" className="gap-1 bg-red-500 hover:bg-red-600">
-						<X className="h-3 w-3" />
-						Pendiente
-					</Badge>
-				)}
-			</div>
-		),
-	},
-	{
-		accessorKey: "status",
-		header: () => <div className="text-center">Estado</div>,
-		cell: ({ row }) => {
-			const status = row.getValue("status") as SalesResponse['status'];
-			return (
-				<div className="text-center text-sm">
-					<Badge className={statusColors[status]}>
-						{statusLabels[status]}
-					</Badge>
-				</div>
-			);
-		},
-	},
-	{
-		id: "actions",
-		header: () => <div className="text-center">Acciones</div>,
+		id: "confirm_whatsapp",
+		header: () => <div className="text-center">Confirmar WhatsApp</div>,
 		cell: ({ row, table }) => {
+			const isConfirmed = row.original.whatsapp_confirmed;
+			
 			return (
-				<div className="text-center">
+				<div className="text-center text-sm flex justify-center">
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
-							<Button variant="ghost" className="h-8 w-8 p-0">
-								<MoreHorizontal className="h-4 w-4" />
-							</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end">
-							<DropdownMenuLabel>Notas</DropdownMenuLabel>
-							<DropdownMenuItem
-								onClick={() => (table.options.meta as any).onUpdateNotes(row.original.id)}
+							<Button 
+								variant="ghost" 
+								size="sm"
+								className={`flex items-center gap-2 shadow w-36 ${
+									isConfirmed 
+										? "bg-yellow-100 text-black hover:bg-yellow-200" 
+										: "bg-green-600 hover:bg-green-700 text-white hover:text-white"
+								}`}
 							>
-								{row.original.notes ? (
+								{isConfirmed ? (
 									<>
-										<Pencil className="mr-1 h-4 w-4" />
-										Editar nota
+										<X className="h-4 w-4" />
+										<span>Desconfirmar</span>
 									</>
 								) : (
 									<>
-										<PlusCircle className="mr-1 h-4 w-4" />
-										Agregar nota
+										<WhatsappIcon className="h-4 w-4" />
+										<span>Confirmar</span>
 									</>
 								)}
-							</DropdownMenuItem>
-							<DropdownMenuSeparator />
-							<DropdownMenuLabel>Estado</DropdownMenuLabel>
+								<ChevronDown className="h-4 w-4 ml-auto" />
+							</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align="end" className="flex flex-col gap-1">
 							<DropdownMenuItem
-								onClick={() => (table.options.meta as any).onConfirmWhatsapp(row.original.id, !row.original.whatsapp_confirmed)}
+								onClick={() => (table.options.meta as any).onConfirmWhatsapp(row.original.id, true)}
+								className="bg-green-400 text-white hover:bg-green-500"
 							>
-								<WhatsappIcon className="mr-1 bg-green-500 rounded-full p-0.5" /> {row.original.whatsapp_confirmed ? 'Desconfirmar WhatsApp' : 'Confirmar WhatsApp'}
-							</DropdownMenuItem>
-							<DropdownMenuItem
-								onClick={() => (table.options.meta as any).onUpdateStatus(row.original.id)}
-							>
-								Marcar como contactado
+								<WhatsappIcon className="h-4 w-4" />
+								Confirmar
 							</DropdownMenuItem>
 							<DropdownMenuItem
-								onClick={() => (table.options.meta as any).onUpdateStatus(row.original.id)}
-							>
-								Marcar como confirmado
-							</DropdownMenuItem>
-							<DropdownMenuItem
-								onClick={() => (table.options.meta as any).onUpdateStatus(row.original.id)}
-								className="text-red-600"
-							>
-								Marcar como cancelado
+								onClick={() => (table.options.meta as any).onConfirmWhatsapp(row.original.id, false)}>
+								<X className="h-4 w-4" />
+								Desconfirmar
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
@@ -207,4 +198,85 @@ export const columns: ColumnDef<SalesResponse>[] = [
 			);
 		},
 	},
+	{
+		accessorKey: "status",
+		header: () => <div className="text-center">Estado</div>,
+		cell: ({ row, table }) => {
+			const status = row.getValue("status") as SalesResponse['status'];
+			return (
+				<div className="text-center text-sm">
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button variant="ghost" className={`${statusColors[status]} shadow text-xs h-8 w-32`}>
+								{statusLabels[status]}
+								<ChevronDown className="h-4 w-4 ml-auto" />
+							</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align="end" className="flex flex-col gap-1">
+							<DropdownMenuLabel>Cambiar Estado</DropdownMenuLabel>
+							<DropdownMenuItem
+								onClick={() => table.options.meta?.onUpdateStatus?.(row.original.id, 'pending')}
+								className={`${statusColors.pending} text-sm`}
+							>
+								{statusLabels.pending}
+							</DropdownMenuItem>
+							<DropdownMenuItem
+								onClick={() => table.options.meta?.onUpdateStatus?.(row.original.id, 'contacted')}
+								className={`${statusColors.contacted} text-sm`}
+							>
+								{statusLabels.contacted}
+							</DropdownMenuItem>
+							<DropdownMenuItem
+								onClick={() => table.options.meta?.onUpdateStatus?.(row.original.id, 'confirmed')}
+								className={`${statusColors.confirmed} text-sm`}
+							>
+								{statusLabels.confirmed}
+							</DropdownMenuItem>
+							<DropdownMenuItem
+								onClick={() => table.options.meta?.onUpdateStatus?.(row.original.id, 'cancelled')}
+								className={`${statusColors.cancelled} text-sm`}
+							>
+								{statusLabels.cancelled}
+							</DropdownMenuItem>
+						</DropdownMenuContent>
+					</DropdownMenu>
+				</div>
+			);
+		},
+	},
+	// {
+	// 	id: "actions",
+	// 	header: () => <div className="text-center">Acciones</div>,
+	// 	cell: ({ row, table }) => {
+	// 		return (
+	// 			<div className="text-center">
+	// 				<DropdownMenu>
+	// 					<DropdownMenuTrigger asChild>
+	// 						<Button variant="ghost" className="h-8 w-8 p-0">
+	// 							<MoreHorizontal className="h-4 w-4" />
+	// 						</Button>
+	// 					</DropdownMenuTrigger>
+	// 					<DropdownMenuContent align="end">
+	// 						<DropdownMenuLabel>Notas</DropdownMenuLabel>
+	// 						<DropdownMenuItem
+	// 							onClick={() => (table.options.meta as any).onUpdateNotes(row.original.id)}
+	// 						>
+	// 							{row.original.notes ? (
+	// 								<>
+	// 									<Pencil className="mr-1 h-4 w-4" />
+	// 									Editar nota
+	// 								</>
+	// 							) : (
+	// 								<>
+	// 									<PlusCircle className="mr-1 h-4 w-4" />
+	// 									Agregar nota
+	// 								</>
+	// 							)}
+	// 						</DropdownMenuItem>
+	// 					</DropdownMenuContent>
+	// 				</DropdownMenu>
+	// 			</div>
+	// 		);
+	// 	},
+	// },
 ]; 

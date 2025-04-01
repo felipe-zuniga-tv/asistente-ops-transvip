@@ -194,7 +194,7 @@ export async function updateSalesResponseWhatsappConfirmationAction(
 		throw new Error(`Error updating WhatsApp confirmation: ${error.message}`)
 	}
 
-	revalidatePath(Routes.SALES.RESPONSES)
+	revalidatePath(Routes.SALES.BRANCH_RESPONSES)
 	return data as SalesResponse
 }
 
