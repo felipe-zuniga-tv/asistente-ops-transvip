@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { getDriverSession } from '@/lib/driver/auth'
+import { getDriverSession } from '@/lib/features/driver/auth'
 import { DriverSession } from '@/types'
 
 export function useSession() {

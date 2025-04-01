@@ -13,8 +13,6 @@ export default async function UploadTicketPage() {
         redirect(Routes.DRIVERS.HOME)
     }
 
-    console.log('session', session)
-
     return (
         <div className="w-full p-4 flex flex-row items-center justify-center">
             <div className="flex flex-col gap-6 bg-white rounded-lg p-6 w-full max-w-3xl shadow-md">
