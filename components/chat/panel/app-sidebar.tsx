@@ -21,6 +21,7 @@ import { PublicSection } from "./public-section"
 import { useSidebarActions } from "@/components/chat/panel/use-sidebar-actions"
 import { SidebarItem, Tool } from "@/components/chat/panel/types"
 import { TransvipLogo } from "@/components/transvip/transvip-logo"
+import { getUserSectionAccess } from "@/lib/services/access-control"
 
 // Main sidebar component
 export function AppSidebar({ 
@@ -35,6 +36,18 @@ export function AppSidebar({
 	const { handleItemClick } = useSidebarActions()
 	const { state } = useSidebar()
 	const isCollapsed = state === "collapsed"
+	const [allowedSections, setAllowedSections] = React.useState<string[]>([])
+
+	// Fetch user's allowed sections
+	React.useEffect(() => {
+		async function fetchAllowedSections() {
+			if (session?.user?.email) {
+				const sections = await getUserSectionAccess(session.user.email)
+				setAllowedSections(sections)
+			}
+		}
+		fetchAllowedSections()
+	}, [session?.user?.email])
 
 	// Chatbot configuration
 	const showHints = false
@@ -56,16 +69,26 @@ export function AppSidebar({
 	// Get the public section
 	const publicSection = isChatRoute ? publicSidebar : publicSidebar
 	
-	// Get the remaining sections (chatbot and others) with useMemo
+	// Filter sections based on user's access
 	const remainingSections = React.useMemo(() => {
-		return isChatRoute
+		const sections = isChatRoute
 			? [chatbotMenu, ...sidebarData.navMain.filter(
 				item => item.title !== publicSidebar.title && item.title !== chatbotMenu.title
 			)]
 			: [chatbotElement, ...sidebarData.navMain.filter(
 				item => item.title !== publicSidebar.title && item.title !== chatbotMenu.title
 			)]
-	}, [isChatRoute, chatbotElement])
+
+		// Filter out sections that the user doesn't have access to
+		return sections.filter(section => {
+			// Public sections are always accessible
+			if (section === publicSidebar || section === chatbotElement) return true
+			
+			// Check if user has access to this section
+			const sectionId = section.title.toLowerCase().replace(/\s+/g, '')
+			return allowedSections.includes(sectionId)
+		})
+	}, [isChatRoute, chatbotElement, allowedSections])
 
 	// Filter items based on search query
 	const filteredPublicItems = React.useMemo(() => {

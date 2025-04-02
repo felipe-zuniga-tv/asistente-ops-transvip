@@ -11,7 +11,7 @@ export const metadata = {
     description: 'Administra la configuración general del sistema',
 }
 
-async function SystemConfigDashboard() {
+export default async function SystemConfigPage() {
     const configs = await getSystemConfigs()
     
     const llmConfig = configs?.find((config: SystemConfig) => config.key === 'llm_model_name')
@@ -26,13 +26,5 @@ async function SystemConfigDashboard() {
                 session_timeout: timeoutConfig ? parseInt(timeoutConfig.value) : 60,
             }}
         />
-    )
-}
-
-export default async function SystemConfigPage() {
-    return (
-        <Suspense fallback={<SuspenseLoading />}>
-            <SystemConfigDashboard />
-        </Suspense>
     )
 }

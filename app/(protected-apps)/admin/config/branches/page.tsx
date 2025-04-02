@@ -1,7 +1,5 @@
-import { Suspense } from 'react'
-import { BranchConfig } from '@/components/admin/branch-config/branch-config'
-import SuspenseLoading from '@/components/ui/suspense'
 import { getBranches } from '@/lib/services/admin'
+import { BranchConfig } from '@/components/admin/branch-config/branch-config'
 
 export const metadata = {
     title: 'Configuración de Sucursales | Transvip',
@@ -10,15 +8,9 @@ export const metadata = {
 
 export const revalidate = 60
 
-async function BranchConfigContent() {
-    const branches = await getBranches()
-    return <BranchConfig data={branches} />
-}
-
 export default async function BranchConfigPage() {
+    const branches = await getBranches()
     return (
-        <Suspense fallback={<SuspenseLoading />}>
-            <BranchConfigContent />
-        </Suspense>
+        <BranchConfig data={branches} />
     )
 }

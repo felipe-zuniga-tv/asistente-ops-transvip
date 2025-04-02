@@ -117,7 +117,7 @@ export const columns: ColumnDef<SalesResponse>[] = [
 				<Button
 					variant="ghost"
 					size="sm"
-					className="h-8 px-2 bg-green-600 hover:bg-green-700"
+					className="h-8 px-2 bg-green-600 hover:bg-green-700 shadow"
 					onClick={() => table.options.meta?.onSendWhatsApp?.(row.original)}
 				>
 					<WhatsappIcon className="hidden h-4 w-4" />

@@ -84,12 +84,6 @@ const formsMenu: SidebarItem = {
 	isActive: false,
 	items: [
 		{
-			title: "Respuestas Sucursales",
-			url: Routes.SALES.RESPONSES,
-			icon: ListChecks,
-			active: true,
-		},
-		{
 			title: "Forms Operaciones Activos",
 			url: Routes.OPERATIONS_FORMS.HOME,
 			icon: ClipboardList,
@@ -99,6 +93,21 @@ const formsMenu: SidebarItem = {
 			title: "Configuración",
 			url: Routes.OPERATIONS_FORMS.CONFIG,
 			icon: Settings,
+			active: true,
+		},
+	],
+}
+
+const salesFormsMenu: SidebarItem = {
+	title: "Formularios Ventas",
+	url: '#',
+	icon: ListChecks,
+	isActive: false,
+	items: [
+		{
+			title: "Respuestas Sucursales",
+			url: Routes.SALES.RESPONSES,
+			icon: ListChecks,
 			active: true,
 		},
 	],
@@ -251,6 +260,12 @@ const configMenu: SidebarItem = {
 	isActive: false,
 	items: [
 		{
+			title: 'Control de Acceso',
+			icon: UserRound,
+			url: Routes.ADMIN.ACCESS_CONTROL,
+			active: true
+		},
+		{
 			title: 'Estados del Móvil',
 			icon: Settings2,
 			url: Routes.ADMIN.VEHICLE_STATUS_CONFIG,
@@ -290,6 +305,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 		toolsMenu,
 		financeMenu,
 		formsMenu,
+		salesFormsMenu,
 		controlFlotaMenu,
 		bookingsMenu,
 		// driversMenu,
