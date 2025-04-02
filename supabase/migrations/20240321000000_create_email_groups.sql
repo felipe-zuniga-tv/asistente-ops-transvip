@@ -57,9 +57,8 @@ values (
     'felipe.zuniga@transvip.cl'
 );
 
--- Grant admin group access to configMenu
+-- Grant admin group access to configMenu and public section
 insert into public.sidebar_section_access (section_id, group_id)
-values (
-    'configMenu',
-    'c9c3b5a4-7e6d-4b8a-9f0a-5f7b2d0f0f0f'
-);
+values 
+    ('configMenu', 'c9c3b5a4-7e6d-4b8a-9f0a-5f7b2d0f0f0f'),
+    ('accesopúblico', 'c9c3b5a4-7e6d-4b8a-9f0a-5f7b2d0f0f0f');

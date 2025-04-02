@@ -24,33 +24,47 @@ export function PublicSection({ section, items, handleClick }: PublicSectionProp
 			<SidebarGroupLabel>{section.title}</SidebarGroupLabel>
 			<SidebarGroupContent>
 				<SidebarMenu>
-					{items.map((item) => (
-						<SidebarMenuItem key={item.title}>
-							{item.url ? (
-								<SidebarMenuButton 
-									asChild 
-									isActive={item.active}
-									tooltip={item.title}
-									className={section.highlight ? "bg-transvip/20 hover:bg-transvip/30" : ""}
-								>
-									<Link href={item.url}>
+					{items.map((item, index) => {
+						// Rotate through different subtle background colors
+						const bgColors = [
+							"bg-blue-50/90 hover:bg-blue-100/90",
+							"bg-purple-50/90 hover:bg-purple-100/90",
+							"bg-pink-50/90 hover:bg-pink-100/90",
+							"bg-indigo-50/90 hover:bg-indigo-100/90",
+							"bg-cyan-50/90 hover:bg-cyan-100/90",
+						]
+						const bgColor = bgColors[index % bgColors.length]
+
+						return (
+							<SidebarMenuItem key={item.title} className={`bg-transparent`}>
+								{item.url ? (
+									<SidebarMenuButton 
+										asChild 
+										isActive={item.active}
+										tooltip={item.title}
+										// className={`${section.highlight ? "bg-transvip/20 hover:bg-transvip/30" : ""} ${bgColor} transition-colors`}
+										className={`${bgColor} transition-colors shadow`}
+									>
+										<Link href={item.url}>
+											{item.icon && <item.icon />}
+											<span>{item.title}</span>
+										</Link>
+									</SidebarMenuButton>
+								) : (
+									<SidebarMenuButton 
+										tooltip={item.title}
+										isActive={item.active}
+										// className={`${section.highlight ? "bg-transvip/20 hover:bg-transvip/30" : ""} ${bgColor} transition-colors`}
+										className={`${bgColor} transition-colors shadow`}
+										onClick={() => handleClick(item)}
+									>
 										{item.icon && <item.icon />}
 										<span>{item.title}</span>
-									</Link>
-								</SidebarMenuButton>
-							) : (
-								<SidebarMenuButton 
-									tooltip={item.title}
-									isActive={item.active}
-									className={section.highlight ? "bg-transvip/20 hover:bg-transvip/30" : ""}
-									onClick={() => handleClick(item)}
-								>
-									{item.icon && <item.icon />}
-									<span>{item.title}</span>
-								</SidebarMenuButton>
-							)}
-						</SidebarMenuItem>
-					))}
+									</SidebarMenuButton>
+								)}
+							</SidebarMenuItem>
+						)
+					})}
 				</SidebarMenu>
 			</SidebarGroupContent>
 		</SidebarGroup>

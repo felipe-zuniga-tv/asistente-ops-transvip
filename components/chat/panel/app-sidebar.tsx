@@ -3,6 +3,7 @@
 import * as React from "react"
 import { usePathname } from "next/navigation"
 import { BotMessageSquare } from "lucide-react"
+import { useQuery } from "@tanstack/react-query"
 
 import { NavMain } from "@/components/sidebar/nav-main"
 import { NavUser } from "@/components/sidebar/nav-user"
@@ -12,7 +13,11 @@ import {
 	SidebarContent,
 	SidebarFooter,
 	SidebarRail,
-	useSidebar
+	useSidebar,
+	SidebarMenuSkeleton,
+	SidebarGroup,
+	SidebarGroupLabel,
+	SidebarGroupContent,
 } from "@/components/ui/sidebar"
 import { Routes } from "@/utils/routes"
 import { sidebarData, chatbotMenu, publicSidebar } from "@/lib/core/config/chat-sidebar"
@@ -22,6 +27,7 @@ import { useSidebarActions } from "@/components/chat/panel/use-sidebar-actions"
 import { SidebarItem, Tool } from "@/components/chat/panel/types"
 import { TransvipLogo } from "@/components/transvip/transvip-logo"
 import { getUserSectionAccess } from "@/lib/services/access-control"
+import AppSidebarSkeleton from "./app-sidebar-skeleton"
 
 // Main sidebar component
 export function AppSidebar({ 
@@ -36,18 +42,18 @@ export function AppSidebar({
 	const { handleItemClick } = useSidebarActions()
 	const { state } = useSidebar()
 	const isCollapsed = state === "collapsed"
-	const [allowedSections, setAllowedSections] = React.useState<string[]>([])
 
-	// Fetch user's allowed sections
-	React.useEffect(() => {
-		async function fetchAllowedSections() {
-			if (session?.user?.email) {
-				const sections = await getUserSectionAccess(session.user.email)
-				setAllowedSections(sections)
-			}
-		}
-		fetchAllowedSections()
-	}, [session?.user?.email])
+	// Replace useState and useEffect with useQuery
+	const { data: allowedSections = [], isLoading } = useQuery<string[]>({
+		queryKey: ['userSections', session?.user?.email],
+		queryFn: async () => {
+			if (!session?.user?.email) return []
+			return getUserSectionAccess(session.user.email)
+		},
+		staleTime: 5 * 60 * 1000, // Consider data fresh for 5 minutes
+		gcTime: 30 * 60 * 1000, // Keep in cache for 30 minutes
+		enabled: !!session?.user?.email
+	})
 
 	// Chatbot configuration
 	const showHints = false
@@ -81,8 +87,8 @@ export function AppSidebar({
 
 		// Filter out sections that the user doesn't have access to
 		return sections.filter(section => {
-			// Public sections are always accessible
-			if (section === publicSidebar || section === chatbotElement) return true
+			// Chatbot is always accessible
+			if (section === chatbotElement) return true
 			
 			// Check if user has access to this section
 			const sectionId = section.title.toLowerCase().replace(/\s+/g, '')
@@ -90,14 +96,19 @@ export function AppSidebar({
 		})
 	}, [isChatRoute, chatbotElement, allowedSections])
 
-	// Filter items based on search query
+	// Filter items based on search query and access control
 	const filteredPublicItems = React.useMemo(() => {
-		if (!searchQuery) return publicSection.items || []
+		// First check if user has access to public section
+		const publicSectionId = publicSidebar.title.toLowerCase().replace(/\s+/g, '')
+		if (!allowedSections.includes(publicSectionId)) return []
 		
-		return publicSection.items?.filter(item => 
+		// Then apply search filter if needed
+		if (!searchQuery) return publicSidebar.items || []
+		
+		return publicSidebar.items?.filter(item => 
 			item.title.toLowerCase().includes(searchQuery.toLowerCase())
 		) || []
-	}, [publicSection.items, searchQuery])
+	}, [publicSidebar.items, searchQuery, allowedSections])
 
 	// Filter remaining sections based on search query
 	const filteredRemainingSections = React.useMemo(() => {
@@ -153,22 +164,28 @@ export function AppSidebar({
 					/>
 				)}
 
-				{/* Public section */}
-				{filteredPublicItems.length > 0 && (
-					<PublicSection 
-						section={publicSection} 
-						items={filteredPublicItems} 
-						handleClick={handleItemClick} 
-					/>
+				{isLoading ? (
+					<AppSidebarSkeleton />
+				) : (
+					<>
+						{/* Public section */}
+						{filteredPublicItems.length > 0 && (
+							<PublicSection 
+								section={publicSidebar} 
+								items={filteredPublicItems} 
+								handleClick={handleItemClick} 
+							/>
+						)}
+						
+						{/* Other sections (chatbot and beyond) */}
+						<NavMain 
+							title="Operaciones Transvip"
+							items={filteredRemainingSections as unknown as Tool[]} 
+							handleClick={handleItemClickForTool} 
+							showHints={showHints} 
+						/>
+					</>
 				)}
-				
-				{/* Other sections (chatbot and beyond) */}
-				<NavMain 
-					title="Operaciones Transvip"
-					items={filteredRemainingSections as unknown as Tool[]} 
-					handleClick={handleItemClickForTool} 
-					showHints={showHints} 
-				/>
 			</SidebarContent>
 			<SidebarFooter>
 				<NavSecondary items={sidebarData.navSecondary} className="mt-auto" />
