@@ -1,4 +1,4 @@
-import { getBranches } from '@/lib/services/admin'
+import { getBranches } from '@/lib/features/admin'
 import { BranchSelectionGrid } from '@/components/sales/branch-selection-grid'
 
 export default async function SalesResponsesPage() {

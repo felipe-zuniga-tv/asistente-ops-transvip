@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { VehicleTypeDialog } from "./vehicle-type-dialog";
 import { AlertDialogDeleteVehicleType } from "./alert-dialog-delete-vehicle-type";
 import { toast } from "sonner";
-import { deleteVehicleType } from "@/lib/services/admin/index";
+import { deleteVehicleType } from "@/lib/features/admin";
 import type { VehicleType } from "@/lib/core/types/admin";
 import { ConfigCardContainer } from "@/components/tables/config-card-container";
 

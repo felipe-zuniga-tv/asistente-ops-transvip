@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
-import { createBranch, updateBranch } from '@/lib/services/admin'
+import { createBranch, updateBranch } from '@/lib/features/admin'
 import { SimpleDialog, SimpleDialogHeader, SimpleDialogTitle } from '@/components/ui/simple-dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'

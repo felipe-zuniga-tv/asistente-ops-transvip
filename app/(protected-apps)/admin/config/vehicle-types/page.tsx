@@ -1,4 +1,4 @@
-import { getVehicleTypes } from "@/lib/services/admin/index"
+import { getVehicleTypes } from "@/lib/features/admin"
 import { VehicleTypesConfig } from "@/components/admin/vehicle-types/vehicle-types-config";
 
 export const metadata = {

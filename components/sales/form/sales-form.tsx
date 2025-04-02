@@ -100,7 +100,7 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 			const customerResult = await customerResponse.json();
 
 			// Only proceed with sales response if customer account was created successfully
-			if (!customerResult || 'error' in customerResult || customerResult.status !== 200) {
+			if (!customerResult || 'error' in customerResult) {
 				throw new Error('No fue posible crear el usuario en el sistema. Consulta en counter para avanzar.');
 			}
 

@@ -1,4 +1,4 @@
-import { getPaymentMethods } from '@/lib/services/admin'
+import { getPaymentMethods } from '@/lib/features/admin'
 import { PaymentMethodConfig } from '@/components/admin/payment-config/payment-method-config'
 
 export const metadata = {

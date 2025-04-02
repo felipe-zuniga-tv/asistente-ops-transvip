@@ -1,4 +1,4 @@
-import { getBranches } from '@/lib/services/admin'
+import { getBranches } from '@/lib/features/admin'
 import { BranchConfig } from '@/components/admin/branch-config/branch-config'
 
 export const metadata = {

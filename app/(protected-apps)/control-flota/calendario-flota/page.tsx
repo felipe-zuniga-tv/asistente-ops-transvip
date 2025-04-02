@@ -1,7 +1,7 @@
 import { Suspense } from "react"
 import { VehicleShiftsSummary } from "@/components/vehicle-shifts/fleet/vehicle-shifts-summary"
 import SuspenseLoading from "@/components/ui/suspense"
-import { getBranches } from "@/lib/services/admin"
+import { getBranches } from "@/lib/features/admin"
 
 async function FleetShiftsPageContent() {
     const branches = await getBranches()

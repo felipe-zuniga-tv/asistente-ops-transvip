@@ -27,7 +27,7 @@ import {
 } from "@/components/ui"
 import { createVehicleShift, updateVehicleShift } from "@/lib/features/shifts/actions"
 import { VehicleShift } from "./vehicle-shifts"
-import { getBranches } from "@/lib/services/admin/index"
+import { getBranches } from "@/lib/features/admin"
 import { Branch } from "@/lib/core/types/admin"
 
 const formSchema = z.object({

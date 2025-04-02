@@ -11,7 +11,7 @@ import { useTransition, useCallback, useMemo } from "react";
 import { WEEKDAYS, Shift } from "./shifts-definition";
 import { useState, useEffect } from "react";
 import { Branch } from "@/lib/core/types/admin";
-import { getBranches } from "@/lib/services/admin/index"
+import { getBranches } from "@/lib/features/admin"
 
 interface ShiftDialogProps {
     shift?: Shift | null;

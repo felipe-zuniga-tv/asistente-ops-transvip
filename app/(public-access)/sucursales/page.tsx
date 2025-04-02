@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { getBranches } from '@/lib/services/admin'
+import { getBranches } from '@/lib/features/admin'
 import { LanguageSelector } from '@/components/sales/language-selector'
 import { BranchesList } from '@/components/sales/branches-list'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'

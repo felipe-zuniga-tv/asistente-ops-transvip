@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { getBranchByCode } from '@/lib/services/admin'
+import { getBranchByCode } from '@/lib/features/admin'
 import { getSalesResponsesByBranch } from '@/lib/services/sales'
 import { SalesResponsesContent } from '@/components/sales/sales-responses-content'
 
