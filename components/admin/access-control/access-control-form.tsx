@@ -104,10 +104,23 @@ export function AccessControlForm({ initialGroups }: AccessControlFormProps) {
 
     // Get all available sections from sidebar data
     const availableSections = React.useMemo(() => {
-        return sidebarData.navMain.map(section => ({
+        // Get sections from main navigation
+        const mainSections = sidebarData.navMain.map(section => ({
             id: section.title.toLowerCase().replace(/\s+/g, ''),
             title: section.title,
+            type: 'main'
         }))
+
+        // Get sections from secondary navigation
+        const secondarySections = sidebarData.navSecondary
+            .filter(section => !section.external) // Only include non-external links
+            .map(section => ({
+                id: section.title.toLowerCase().replace(/\s+/g, ''),
+                title: section.title,
+                type: 'secondary'
+            }))
+
+        return [...mainSections, ...secondarySections]
     }, [])
 
     function handleGroupCreated(newGroup: any) {
@@ -183,19 +196,48 @@ export function AccessControlForm({ initialGroups }: AccessControlFormProps) {
                                 <CardTitle>Secciones Habilitadas</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
-                                    {availableSections.map(section => (
-                                        <div key={section.id} className="flex items-center gap-2 p-2 rounded-md bg-muted text-sm shadow">
-                                            <input
-                                                type="checkbox"
-                                                id={section.id}
-                                                checked={sectionAccess.some(a => a.section_id === section.id)}
-                                                onChange={() => handleToggleSectionAccess(section.id)}
-                                                className="h-4 w-4 rounded border-gray-300"
-                                            />
-                                            <label htmlFor={section.id} className="flex-1">{section.title}</label>
+                                <div className="space-y-4">
+                                    {/* Main Navigation Sections */}
+                                    <div>
+                                        <h4 className="text-sm font-medium mb-2">Navegación Principal</h4>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
+                                            {availableSections
+                                                .filter(section => section.type === 'main')
+                                                .map(section => (
+                                                    <div key={section.id} className="flex items-center gap-2 p-2 rounded-md bg-muted text-sm shadow">
+                                                        <input
+                                                            type="checkbox"
+                                                            id={section.id}
+                                                            checked={sectionAccess.some(a => a.section_id === section.id)}
+                                                            onChange={() => handleToggleSectionAccess(section.id)}
+                                                            className="h-4 w-4 rounded border-gray-300"
+                                                        />
+                                                        <label htmlFor={section.id} className="flex-1">{section.title}</label>
+                                                    </div>
+                                                ))}
                                         </div>
-                                    ))}
+                                    </div>
+
+                                    {/* Secondary Navigation Sections */}
+                                    <div>
+                                        <h4 className="text-sm font-medium mb-2">Navegación Secundaria</h4>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
+                                            {availableSections
+                                                .filter(section => section.type === 'secondary')
+                                                .map(section => (
+                                                    <div key={section.id} className="flex items-center gap-2 p-2 rounded-md bg-muted text-sm shadow">
+                                                        <input
+                                                            type="checkbox"
+                                                            id={section.id}
+                                                            checked={sectionAccess.some(a => a.section_id === section.id)}
+                                                            onChange={() => handleToggleSectionAccess(section.id)}
+                                                            className="h-4 w-4 rounded border-gray-300"
+                                                        />
+                                                        <label htmlFor={section.id} className="flex-1">{section.title}</label>
+                                                    </div>
+                                                ))}
+                                        </div>
+                                    </div>
                                 </div>
                             </CardContent>
                         </Card>

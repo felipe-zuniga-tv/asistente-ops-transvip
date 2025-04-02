@@ -136,6 +136,18 @@ export function AppSidebar({
 		}).filter(section => !section.items || section.items.length > 0)
 	}, [remainingSections, searchQuery])
 
+	// Filter secondary navigation based on permissions
+	const filteredSecondaryItems = React.useMemo(() => {
+		return sidebarData.navSecondary.filter(item => {
+			// External items (like Feedback) are always shown
+			if (item.external) return true
+			
+			// For internal items (like Configuration), check permissions
+			const sectionId = item.title.toLowerCase().replace(/\s+/g, '')
+			return allowedSections.includes(sectionId)
+		})
+	}, [allowedSections])
+
 	// Type correct handleClick for NavMain
 	const handleItemClickForTool = async (tool: SidebarItem) => {
 		// Convert Tool to SidebarItem if needed
@@ -188,7 +200,7 @@ export function AppSidebar({
 				)}
 			</SidebarContent>
 			<SidebarFooter>
-				<NavSecondary items={sidebarData.navSecondary} className="mt-auto" />
+				<NavSecondary items={filteredSecondaryItems} className="mt-auto" />
 				<NavUser user={session?.user} />
 			</SidebarFooter>
 			<SidebarRail />
