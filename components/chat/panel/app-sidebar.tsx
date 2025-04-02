@@ -88,13 +88,13 @@ export function AppSidebar({
 		// Filter out sections that the user doesn't have access to
 		return sections.filter(section => {
 			// Chatbot is always accessible
-			if (section === chatbotElement) return true
+			if (section.title === chatbotMenu.title) return true
 			
 			// Check if user has access to this section
 			const sectionId = section.title.toLowerCase().replace(/\s+/g, '')
 			return allowedSections.includes(sectionId)
 		})
-	}, [isChatRoute, chatbotElement, allowedSections])
+	}, [isChatRoute, chatbotElement, allowedSections, chatbotMenu.title])
 
 	// Filter items based on search query and access control
 	const filteredPublicItems = React.useMemo(() => {
@@ -207,5 +207,3 @@ export function AppSidebar({
 		</Sidebar>
 	)
 }
-
-
