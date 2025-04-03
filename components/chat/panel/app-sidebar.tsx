@@ -72,9 +72,6 @@ export function AppSidebar({
 		]
 	}
 
-	// Get the public section
-	const publicSection = isChatRoute ? publicSidebar : publicSidebar
-	
 	// Filter sections based on user's access
 	const remainingSections = React.useMemo(() => {
 		const sections = isChatRoute
