@@ -92,9 +92,9 @@ export function AppSidebar({ session, ...props }: AppSidebarProps) {
 		// Map Tool properties to SidebarItem properties for handleItemClick
 		const sidebarItem: SidebarItem = {
 			title: tool.title,
-			url: tool.url || tool.href, // Use url or href from Tool
+			url: tool.url, // Use url or href from Tool
 			icon: tool.icon, // Directly use tool.icon (now LucideIcon | undefined)
-			active: tool.isActive, // Use isActive from Tool
+			active: tool.active, // Use isActive from Tool
 			search: tool.search ?? tool.title // Use search or fallback to title
 		}
 		return handleItemClick(sidebarItem)

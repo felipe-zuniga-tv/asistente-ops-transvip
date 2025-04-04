@@ -15,19 +15,11 @@ import {
 	SidebarMenuSubItem,
 } from "@/components/ui"
 import Link from "next/link"
-import { Tool } from "@/lib/core/types/chat"
+import { SidebarItem } from "@/components/chat/panel/types"
 
 export function NavMain({ title, items, handleClick, showHints }: {
 	title?: string
-	items: {
-		title: string
-		url?: string
-		href?: string
-		icon?: LucideIcon
-		isActive?: boolean
-		highlight?: boolean
-		items?: Tool[]
-	}[]
+	items: SidebarItem[]
 	handleClick: any
 	showHints: boolean
 }) {
@@ -39,12 +31,12 @@ export function NavMain({ title, items, handleClick, showHints }: {
 					<Collapsible
 						key={item.title}
 						asChild
-						defaultOpen={item.isActive}
+						defaultOpen={item.active}
 						className='group/collapsible'
 					>
 						<SidebarMenuItem>
 							<CollapsibleTrigger asChild>
-								<SidebarMenuButton tooltip={item.title} className={item.highlight ? "bg-transvip/20 hover:bg-transvip/30" : ""}>
+								<SidebarMenuButton tooltip={item.title}>
 									{item.icon && <item.icon />}
 									<span>{item.title}</span>
 									<ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />

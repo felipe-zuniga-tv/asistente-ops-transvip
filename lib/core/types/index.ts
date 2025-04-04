@@ -15,17 +15,6 @@ export interface Session {
   };
 }
 
-// Define Tool interface
-import { LucideIcon } from "lucide-react";
-export interface Tool {
-  title: string;
-  active?: boolean;
-  hint?: string;
-  search?: string;
-  icon?: LucideIcon;
-  url?: string;
-}
-
 // Vehicle Types
 export * from './vehicle/status';
 export * from './vehicle/shift'; 

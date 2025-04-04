@@ -295,16 +295,6 @@ export interface ChatSession {
     user: User;
 }
 
-// Tools
-export interface Tool {
-    title: string;
-    active?: boolean;
-    hint?: string;
-    search?: string;
-    icon?: LucideIcon
-    url?: string; // Optional property for the URL
-}
-
 export interface ChatProps {
     id: string;
     initialMessages?: any[];

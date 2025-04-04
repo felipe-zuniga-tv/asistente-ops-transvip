@@ -8,6 +8,20 @@ export interface SidebarItem {
 	active?: boolean
 	search?: string
 	external?: boolean
+	items?: Tool[]
+	highlight?: boolean
+}
+
+// Tools - Consolidated Interface
+export interface Tool {
+    title: string;
+    url?: string;         // Primary link property
+    icon?: LucideIcon;
+    active?: boolean;     // Standardized active state property
+    highlight?: boolean;  // For UI highlighting
+    hint?: string;        // Hint text
+    items?: Tool[];       // For potential nesting
+    search?: string;      // Search related property
 }
 
 export interface SidebarSection {
@@ -16,14 +30,4 @@ export interface SidebarSection {
 	highlight?: boolean
 }
 
-// Ensure compatibility with Tool type that seems to be expected by NavMain
-export interface Tool {
-	title: string
-	url?: string
-	href?: string
-	icon?: LucideIcon
-	isActive?: boolean
-	highlight?: boolean
-	items?: Tool[]
-	search?: string
-} 
+// Ensure compatibility with Tool type that seems to be expected by NavMain 

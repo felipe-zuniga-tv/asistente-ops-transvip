@@ -3,8 +3,6 @@ import { SidebarItem, SidebarSection, Tool } from "@/components/chat/panel/types
 import { Routes } from "@/utils/routes";
 
 // --- Helper Functions ---
-
-// TODO: Replace title-based ID generation with predefined IDs from configuration
 export function generateSectionId(title: string): string {
 	return title.toLowerCase().replace(/\s+/g, '')
 }
@@ -43,15 +41,15 @@ export function filterRemainingSections(
 ): Tool[] { 
 	const chatbotElement: Tool = { 
 		title: chatbotConfig.title,
-		href: "#", 
+		url: "#", 
 		icon: chatbotConfig.icon ? chatbotConfig.icon as LucideIcon : undefined, 
-		isActive: true,
+		active: true,
 		items: [
 			{
 				title: "Accede a Jarvip",
-				href: Routes.CHAT, 
+				url: Routes.CHAT, 
 				icon: BotMessageSquare,
-				isActive: true
+				active: true
 			}
 		]
 	}
@@ -84,8 +82,8 @@ export function filterRemainingSections(
 			// Cast items - ensure SidebarItem is compatible with Tool's item structure
 			items: (section.items || []) as unknown as Tool[], 
 			// Provide default/derived Tool properties
-			href: "#", // Placeholder - Determine correct href for a section Tool
-			isActive: false // Placeholder - Determine correct isActive
+			url: "#", // Placeholder - Determine correct href for a section Tool
+			active: false // Placeholder - Determine correct isActive
 		})) as unknown as Tool[]; // Final cast might still be needed
 	}
 
@@ -108,8 +106,8 @@ export function filterRemainingSections(
 				// Use the filtered items, casting if necessary
 				items: filteredItems as unknown as Tool[], 
 				// Provide default/derived Tool properties (adjust as needed)
-				href: "#", // Placeholder - Determine correct href for a section Tool
-				isActive: false // Placeholder - Determine correct isActive
+				url: "#", // Placeholder - Determine correct href for a section Tool
+				active: false // Placeholder - Determine correct isActive
 			});
 		}
 	});

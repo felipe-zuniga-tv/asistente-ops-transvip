@@ -1,5 +1,3 @@
-import { LucideIcon } from "lucide-react";
-
 // DATA TYPES
 export interface IBranch {
     branch_id: number;
@@ -298,15 +296,6 @@ export interface User {
 
 export interface ChatSession {
     user: User;
-}
-
-export interface Tool {
-    title: string;
-    active?: boolean;
-    hint?: string;
-    search?: string;
-    icon?: LucideIcon
-    url?: string; // Optional property for the URL
 }
 
 export interface ChatProps {

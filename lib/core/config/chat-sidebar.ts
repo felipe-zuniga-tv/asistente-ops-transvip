@@ -1,4 +1,3 @@
-import { Tool } from "@/lib/core/types/chat";
 import { Routes } from "@/utils/routes";
 import {
 	Hammer,
@@ -31,23 +30,14 @@ import {
 	ChartBar,
 } from "lucide-react"
 import { toolsList } from "./tools";
-
-export interface SidebarItem {
-	title: string;
-	url: string;
-	icon: LucideIcon;
-	isActive?: boolean;
-	items?: Tool[]; // Recursive type for nested items
-	highlight?: boolean;
-	external?: boolean;
-}
+import { SidebarItem } from "@/components/chat/panel/types";
 
 // Sidebar content
 export const publicSidebar: SidebarItem = {
 	title: "Acceso Público",
 	url: "#",
 	icon: Sun,
-	isActive: false,
+	active: false,
 	highlight: true,
 	items: [
 		{
@@ -81,7 +71,7 @@ const formsMenu: SidebarItem = {
 	title: "Formularios Operaciones",
 	url: Routes.OPERATIONS_FORMS.HOME,
 	icon: ListChecks,
-	isActive: false,
+	active: false,
 	items: [
 		{
 			title: "Forms Operaciones Activos",
@@ -102,7 +92,7 @@ const salesFormsMenu: SidebarItem = {
 	title: "Formularios Ventas",
 	url: '#',
 	icon: ListChecks,
-	isActive: false,
+	active: false,
 	items: [
 		{
 			title: "Respuestas Sucursales",
@@ -117,7 +107,7 @@ export const chatbotMenu: SidebarItem = {
 	title: "Chatbot Operaciones",
 	url: "#",
 	icon: Bot,
-	isActive: false,
+	active: false,
 	items: toolsList,
 }
 
@@ -125,7 +115,7 @@ const toolsMenu: SidebarItem = {
 	title: "Herramientas varias",
 	url: "#",
 	icon: Hammer,
-	isActive: false,
+	active: false,
 	items: [
 		{
 			title: 'Genera tu código QR',
@@ -152,7 +142,7 @@ const financeMenu: SidebarItem = {
 	title: "Finanzas",
 	url: "#",
 	icon: ChartBar,
-	isActive: false,
+	active: false,
 	items: [
 		{
 			title: 'Tickets Estacionamiento',
@@ -167,7 +157,7 @@ const controlFlotaMenu: SidebarItem = {
 	title: "Control de Flota",
 	url: "#",
 	icon: TowerControl,
-	isActive: false,
+	active: false,
 	items: [
 		{
 			title: 'Definición de Turnos',
@@ -206,7 +196,7 @@ const vehiclesMenu: SidebarItem = {
 	title: "Vehículos",
 	url: "#",
 	icon: BusFront,
-	isActive: false,
+	active: false,
 	items: [
 		{
 			title: 'Detalle de Móviles',
@@ -221,7 +211,7 @@ const driversMenu: SidebarItem = {
 	title: "Conductores",
 	url: "#",
 	icon: UserRound,
-	isActive: false,
+	active: false,
 	items: [
 		{
 			title: 'Buscar Conductores',
@@ -236,7 +226,7 @@ const bookingsMenu: SidebarItem = {
 	title: "Reservas",
 	url: "#",
 	icon: BookPlusIcon,
-	isActive: false,
+	active: false,
 	items: [
 		{
 			title: 'Compartidas',
@@ -257,7 +247,7 @@ const configMenu: SidebarItem = {
 	title: "Configuración",
 	url: Routes.ADMIN.HOME,
 	icon: Settings,
-	isActive: false,
+	active: false,
 	items: [
 		{
 			title: 'Control de Acceso',

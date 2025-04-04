@@ -5,8 +5,6 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 
 import {
-  Sidebar,
-  SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -15,12 +13,11 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { Input } from "../ui/input"
-import { SidebarItem } from "@/lib/core/config/chat-sidebar"
-import { Tool } from "@/lib/core/types/chat"
+import { SidebarItem, Tool } from "@/components/chat/panel/types"
 
 interface GroupedNavMainProps {
   items: SidebarItem[];
-  handleClick: (tool: any) => void;
+  handleClick: (tool: Tool) => void;
   showSearch?: boolean;
   searchQuery?: string;
 }

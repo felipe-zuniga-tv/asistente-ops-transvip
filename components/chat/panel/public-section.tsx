@@ -44,7 +44,6 @@ export function PublicSection({ section, items, handleClick }: PublicSectionProp
 										asChild 
 										isActive={item.active}
 										tooltip={item.title}
-										// className={`${section.highlight ? "bg-transvip/20 hover:bg-transvip/30" : ""} ${bgColor} transition-colors`}
 										className={`${bgColor} transition-colors shadow`}
 									>
 										<Link href={item.url}>
@@ -56,7 +55,6 @@ export function PublicSection({ section, items, handleClick }: PublicSectionProp
 									<SidebarMenuButton 
 										tooltip={item.title}
 										isActive={item.active}
-										// className={`${section.highlight ? "bg-transvip/20 hover:bg-transvip/30" : ""} ${bgColor} transition-colors`}
 										className={`${bgColor} transition-colors shadow`}
 										onClick={() => handleClick(item)}
 									>
