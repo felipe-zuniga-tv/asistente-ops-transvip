@@ -85,8 +85,7 @@ export function filterRemainingSections(
 			items: (section.items || []) as unknown as Tool[], 
 			// Provide default/derived Tool properties
 			href: "#", // Placeholder - Determine correct href for a section Tool
-			isActive: false, // Placeholder - Determine correct isActive
-			icon: section.icon as LucideIcon | undefined 
+			isActive: false // Placeholder - Determine correct isActive
 		})) as unknown as Tool[]; // Final cast might still be needed
 	}
 
@@ -95,13 +94,13 @@ export function filterRemainingSections(
 	const resultSections: Tool[] = []; // Accumulate results matching Tool[]
 
 	accessibleSections.forEach(section => {
-		// const titleMatch = section.title.toLowerCase().includes(lowerCaseQuery); // No longer needed for inclusion criteria
+		const titleMatch = section.title.toLowerCase().includes(lowerCaseQuery);
 		// Always filter items based on the query if items exist
 		const filteredItems = section.items ? filterItemsBySearch(section.items, query) : [];
 		const hasMatchingItems = filteredItems.length > 0;
 
-		// Include the section ONLY if it has items that match the query
-		if (hasMatchingItems) {
+		// Include the section if its title matches OR it has items that match the query
+		if (titleMatch || hasMatchingItems) {
 			// Map the section and its *filtered* items to the Tool structure
 			resultSections.push({
 				...section, // Spread original section properties first
@@ -110,8 +109,7 @@ export function filterRemainingSections(
 				items: filteredItems as unknown as Tool[], 
 				// Provide default/derived Tool properties (adjust as needed)
 				href: "#", // Placeholder - Determine correct href for a section Tool
-				isActive: false, // Placeholder - Determine correct isActive
-				icon: section.icon as LucideIcon | undefined 
+				isActive: false // Placeholder - Determine correct isActive
 			});
 		}
 	});

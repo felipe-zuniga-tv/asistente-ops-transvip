@@ -18,6 +18,16 @@ interface PublicSectionProps {
 	handleClick: (item: SidebarItem) => Promise<void>
 }
 
+// Rotate through different subtle background colors
+const bgColors = [
+	"bg-green-50/90 hover:bg-green-100/90",
+	"bg-blue-50/90 hover:bg-blue-100/90",
+	"bg-purple-50/90 hover:bg-purple-100/90",
+	"bg-pink-50/90 hover:bg-pink-100/90",
+	"bg-indigo-50/90 hover:bg-indigo-100/90",
+	"bg-cyan-50/90 hover:bg-cyan-100/90",
+]
+
 export function PublicSection({ section, items, handleClick }: PublicSectionProps) {
 	return (
 		<SidebarGroup>
@@ -25,14 +35,6 @@ export function PublicSection({ section, items, handleClick }: PublicSectionProp
 			<SidebarGroupContent>
 				<SidebarMenu>
 					{items.map((item, index) => {
-						// Rotate through different subtle background colors
-						const bgColors = [
-							"bg-blue-50/90 hover:bg-blue-100/90",
-							"bg-purple-50/90 hover:bg-purple-100/90",
-							"bg-pink-50/90 hover:bg-pink-100/90",
-							"bg-indigo-50/90 hover:bg-indigo-100/90",
-							"bg-cyan-50/90 hover:bg-cyan-100/90",
-						]
 						const bgColor = bgColors[index % bgColors.length]
 
 						return (
