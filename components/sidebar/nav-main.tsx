@@ -33,7 +33,7 @@ export function NavMain({ title, items, handleClick, showHints }: {
 }) {
 	return (
 		<SidebarGroup>
-			{ title && <SidebarGroupLabel>{title}</SidebarGroupLabel> }
+			<SidebarGroupLabel>{title || "Operaciones Transvip"}</SidebarGroupLabel>
 			<SidebarMenu>
 				{items.map((item) => (
 					<Collapsible

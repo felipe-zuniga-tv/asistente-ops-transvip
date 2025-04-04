@@ -4,9 +4,10 @@ import { LucideIcon } from "lucide-react"
 export interface SidebarItem {
 	title: string
 	url?: string
-	icon?: React.ComponentType<{ className?: string }>
+	icon?: LucideIcon | undefined
 	active?: boolean
 	search?: string
+	external?: boolean
 }
 
 export interface SidebarSection {
@@ -24,4 +25,5 @@ export interface Tool {
 	isActive?: boolean
 	highlight?: boolean
 	items?: Tool[]
+	search?: string
 } 
