@@ -21,7 +21,7 @@ import {
 import { TicketImagePreview } from "./ticket-image-preview"
 import { VehicleSelector } from "./vehicle-selector"
 import { ConfirmationValues } from "./schemas"
-import { cn } from '@/lib/utils/ui'
+import { cn } from '@/utils/ui'
 import { Image as ImageIcon } from "lucide-react"
 // import { Vehicle } from "./ticket-upload-form"
 

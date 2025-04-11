@@ -3,7 +3,7 @@ import { CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Loader2, Search, X } from "lucide-react"
 import { TransvipLogo } from "@/components/transvip/transvip-logo"
-import { cn } from '@/lib/utils/ui'
+import { cn } from '@/utils/ui'
 import {
     Select,
     SelectContent,

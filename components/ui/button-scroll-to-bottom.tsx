@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils/ui'
+import { cn } from '@/utils/ui'
 import { Button, type ButtonProps } from '@/components/ui/button'
 import { ArrowDown } from 'lucide-react'
 

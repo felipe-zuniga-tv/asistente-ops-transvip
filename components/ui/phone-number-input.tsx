@@ -1,6 +1,6 @@
 "use client"
 
-import { cn } from '@/lib/utils/ui'
+import { cn } from '@/utils/ui'
 import { Input } from "@/components/ui/input"
 import { ChevronDown, Phone } from "lucide-react"
 import type React from "react"

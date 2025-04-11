@@ -8,7 +8,7 @@ import { Card } from "@/components/ui/card"
 import { ShiftsPerVehicleHeader } from "./shifts-per-vehicle-header"
 import { ShiftsPerVehicleCalendar } from "./shifts-per-vehicle-calendar"
 import type { VehicleShiftWithShiftInfo, VehicleStatus } from "@/lib/core/types"
-import { cn } from '@/lib/utils/ui'
+import { cn } from '@/utils/ui'
 
 interface ShiftsPerVehicleDashboardProps {
     shifts: VehicleShiftWithShiftInfo[]

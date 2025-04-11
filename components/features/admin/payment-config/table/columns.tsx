@@ -11,7 +11,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { cn } from '@/lib/utils/ui'
+import { cn } from '@/utils/ui'
 
 export const columns: ColumnDef<PaymentMethod>[] = [
     {

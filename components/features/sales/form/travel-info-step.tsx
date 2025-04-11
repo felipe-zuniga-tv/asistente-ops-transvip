@@ -16,7 +16,7 @@ import {
 } from '@/components/ui'
 import { Loader2, ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
 import { format } from 'date-fns'
-import { cn } from '@/lib/utils/ui'
+import { cn } from '@/utils/ui'
 import { es } from 'date-fns/locale'
 import type { Country } from 'react-phone-number-input'
 import * as RPNInput from "react-phone-number-input"
