@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { useActions, useUIState } from 'ai/rsc'
-import { nanoid } from '@/lib/utils/id'
+import { nanoid } from '@/utils/id'
 import { UserMessage } from '@/components/features/chat/message'
 
 export function useMessageSubmission() {

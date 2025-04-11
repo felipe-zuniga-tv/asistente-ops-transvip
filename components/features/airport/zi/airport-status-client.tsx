@@ -3,14 +3,14 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { format } from 'date-fns'
-import { TransvipLogo } from '@/components/transvip/transvip-logo'
+import { TransvipLogo } from '@/components/features/transvip/transvip-logo'
 import { cn } from '@/utils/ui'
-import { calculateDuration } from '@/lib/utils/time'
-import { LiveClock } from '../../ui/live-clock'
+import { calculateDuration } from '@/utils/time'
+import { LiveClock } from '@/components/ui/live-clock'
 import { ArrowLeft, Clock, Users } from 'lucide-react'
 import { AirportZone, airportZones } from '@/lib/core/config/airport'
 import { Routes } from '@/utils/routes'
-import { QRCodeGeneratorDialog } from '@/components/qr/qr-code-generator-dialog'
+import { QRCodeGeneratorDialog } from '../../qr/qr-code-generator-dialog'
 import type { AirportVehicleType, AirportVehicleDetail } from '@/lib/core/types/airport'
 
 const secondsToUpdate = 60 // Refresh data

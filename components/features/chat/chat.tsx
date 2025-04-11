@@ -3,7 +3,7 @@
 import type { Message } from 'ai';
 import { useChat } from '@ai-sdk/react';
 import { useState } from 'react';
-import { generateUUID } from '@/lib/utils/id';
+import { generateUUID } from '@/utils/id';
 import { ChatHeader } from '@/components/features/chat/chat-header';
 import { Messages } from '@/components/features/chat/messages';
 import { MultimodalInput } from '@/components/features/chat/multimodal-input';

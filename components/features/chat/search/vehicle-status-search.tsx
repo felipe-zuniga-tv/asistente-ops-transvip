@@ -5,7 +5,7 @@ import { CheckCircle, SparklesIcon } from 'lucide-react';
 import { AssistantMessageContent } from '../message';
 import { IVehicleStatusSearchResult } from '@/lib/core/types/chat';
 import { cn } from '@/utils/ui';
-import { VEHICLE_STATUS } from '@/lib/utils/constants';
+import { VEHICLE_STATUS } from '@/utils/constants';
 import { Button } from '@/components/ui';
 import ToolsButton from '../tools/tools-button';
 import DriverAvatar from '@/components/features/drivers/driver-avatar';
