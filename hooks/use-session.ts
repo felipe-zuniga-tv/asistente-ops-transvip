@@ -1,18 +1,30 @@
-import { useEffect, useState } from "react";
-import { getSession } from "@/lib/core/auth";
-import { JWTPayload } from "jose";
+'use client'
+
+import { useEffect, useState } from 'react'
+import { getDriverSession } from '@/lib/features/driver/auth'
+import { DriverSession } from '@/types'
 
 export function useSession() {
-	const [session, setSession] = useState<JWTPayload | null>(null); // Update the type of session
+  const [session, setSession] = useState<DriverSession | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
-	useEffect(() => {
-		const fetchSession = async () => {
-			const sessionData = await getSession();
-			setSession(sessionData);
-		};
+  useEffect(() => {
+    async function loadSession() {
+      try {
+        const session = await getDriverSession()
+        setSession(session)
+      } catch (error) {
+        setSession(null)
+      } finally {
+        setIsLoading(false)
+      }
+    }
 
-		fetchSession();
-	}, []);
+    loadSession()
+  }, [])
 
-	return session;
-}
+  return {
+    session,
+    isLoading
+  }
+} 

@@ -1,5 +1,5 @@
 import { getPaymentMethods } from '@/lib/features/admin'
-import { PaymentMethodConfig } from '@/components/admin/payment-config/payment-method-config'
+import { PaymentMethodConfig } from '@/components/features/admin/payment-config/payment-method-config'
 
 export const metadata = {
     title: "Métodos de Pago | Transvip",

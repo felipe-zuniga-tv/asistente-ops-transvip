@@ -1,6 +1,6 @@
 import { getSession } from '@/lib/core/auth';
 import { nanoid } from 'nanoid';
-import { TransvipPanel } from '@/components/chat-new/panel';
+import { TransvipPanel } from '@/components/features/chat/panel';
 
 export default async function TransvipChat() {
 	const id = nanoid();

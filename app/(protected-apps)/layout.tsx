@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/components/chat/panel/app-sidebar";
+import { AppSidebar } from "@/components/features/chat/panel/app-sidebar";
 import Header from "@/components/ui/header";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { getSession } from "@/lib/core/auth";

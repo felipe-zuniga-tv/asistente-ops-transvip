@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { OperationsFormsConfiguration } from "@/components/admin/forms/operations-forms-config";
+import { OperationsFormsConfiguration } from "@/components/features/admin/forms/operations-forms-config";
 import { getOperationsForms } from "@/lib/services/forms";
 import SuspenseLoading from "@/components/ui/suspense";
 

@@ -14,14 +14,14 @@ import { google } from "@ai-sdk/google";
 
 import { getSession } from "@/lib/core/auth";
 
-import { BotCard, AssistantMessage, LoadingMessage, UserMessage } from "@/components/chat/message";
-import { VehicleStatusSearch } from "@/components/chat/search/vehicle-status-search";
-import { BookingCard, BookingIdSearch } from "@/components/chat/search/booking-search";
+import { BotCard, AssistantMessage, LoadingMessage, UserMessage } from "@/components/features/chat/message";
+import { VehicleStatusSearch } from "@/components/features/chat/search/vehicle-status-search";
+import { BookingCard, BookingIdSearch } from "@/components/features/chat/search/booking-search";
 import { IVehicleDetail, IDriverProfile } from "@/lib/core/types/chat";
-import { VehicleDetail } from "@/components/chat/search/vehicle-detail-search";
-import { DriverProfile } from "@/components/chat/search/driver-profile-search";
-import AirportStatus from "@/components/chat/airport/airport-status";
-import { VehicleInfoCard } from "@/components/mtt/vehicle-info-card";
+import { VehicleDetail } from "@/components/features/chat/search/vehicle-detail-search";
+import { DriverProfile } from "@/components/features/chat/search/driver-profile-search";
+import AirportStatus from "@/components/features/chat/airport/airport-status";
+import { VehicleInfoCard } from "@/components/features/mtt/vehicle-info-card";
 
 import { VEHICLE_STATUS } from "@/lib/utils/constants";
 import { nanoid } from "@/lib/utils/id";

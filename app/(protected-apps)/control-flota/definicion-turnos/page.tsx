@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import SuspenseLoading from "@/components/ui/suspense";
-import { ShiftsDefinition } from "@/components/shifts/shifts-definition";
+import { ShiftsDefinition } from "@/components/features/shifts/shifts-definition";
 import { getShifts } from "@/lib/services/database/actions";
 
 async function ShiftsDefinitionPageContent() {

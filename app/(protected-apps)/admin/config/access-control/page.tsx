@@ -1,5 +1,5 @@
 import { getEmailGroupsWithCounts, getEmailGroupMembers, getSectionAccess } from '@/lib/services/access-control'
-import { AccessControlForm } from '@/components/admin/access-control/access-control-form'
+import { AccessControlForm } from '@/components/features/admin/access-control/access-control-form'
 
 export const metadata = {
     title: 'Control de Acceso | Transvip',

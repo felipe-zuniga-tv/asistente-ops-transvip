@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation"
 import { getDriverSession } from "@/lib/features/driver/auth"
 import { getDriverTickets } from "@/lib/features/tickets"
-import { TicketsDashboard } from "@/components/finance/tickets/dashboard"
+import { TicketsDashboard } from "@/components/features/finance/tickets/dashboard"
 import { Routes } from "@/utils/routes"
 
 export default async function ParkingTicketsDashboardPage() {

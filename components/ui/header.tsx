@@ -1,4 +1,4 @@
-import LogoutButton from "@/components/auth/logout";
+import LogoutButton from "@/components/features/auth/logout";
 import { cn } from '@/lib/utils/ui';
 import UserDetails from "./user-details";
 

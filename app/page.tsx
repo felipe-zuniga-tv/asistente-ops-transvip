@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import LoginFormServer from "@/components/auth/login-server";
-import { TransvipLogo } from "@/components/transvip/transvip-logo";
+import LoginFormServer from "@/components/features/auth/login-server";
+import { TransvipLogo } from "@/components/features/transvip/transvip-logo";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
 
 export const metadata: Metadata = {

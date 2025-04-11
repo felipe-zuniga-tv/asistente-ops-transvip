@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { getBranchByCode } from '@/lib/features/admin'
 import { getSalesResponsesByBranch } from '@/lib/services/sales'
-import { SalesResponsesContent } from '@/components/sales/sales-responses-content'
+import { SalesResponsesContent } from '@/components/features/sales/sales-responses-content'
 
 interface SalesResponsesBranchPageProps {
   params: {

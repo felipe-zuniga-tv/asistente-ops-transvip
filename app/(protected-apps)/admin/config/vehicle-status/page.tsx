@@ -1,5 +1,5 @@
 import { getVehicleStatusConfigs } from "@/lib/services/database/actions";
-import { VehicleStatusConfig } from "@/components/admin/vehicle-status/vehicle-status-config";
+import { VehicleStatusConfig } from "@/components/features/admin/vehicle-status/vehicle-status-config";
 
 export const metadata = {
     title: "Configuración de Estados | Transvip",

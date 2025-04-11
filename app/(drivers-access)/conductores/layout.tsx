@@ -1,4 +1,4 @@
-import { DriverNavbar } from "@/components/drivers-portal/driver-navbar"
+import { DriverNavbar } from "@/components/features/drivers/driver-navbar"
 
 export default async function DriverAccessLayout({ children }: {
 	children: React.ReactNode

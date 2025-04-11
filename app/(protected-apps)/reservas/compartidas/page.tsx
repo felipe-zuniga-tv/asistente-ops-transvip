@@ -11,7 +11,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { IBookingInfoOutput } from "@/lib/core/types/chat";
-import { BookingCard, SharedServiceSummary } from "@/components/chat/search/booking-search";
+import { BookingCard, SharedServiceSummary } from "@/components/features/chat/search/booking-search";
 import { Switch } from "@/components/ui/switch";
 import { ResetButton } from "@/components/ui/buttons";
 import { CardTitleContent } from "@/components/ui/card-title-content";

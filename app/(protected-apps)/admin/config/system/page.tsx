@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { getSystemConfigs } from '@/lib/services/system'
-import { SystemConfigForm } from '@/components/admin/system-config/system-config-form'
+import { SystemConfigForm } from '@/components/features/admin/system-config/system-config-form'
 import SuspenseLoading from '@/components/ui/suspense'
 import type { Database } from '@/lib/core/types'
 

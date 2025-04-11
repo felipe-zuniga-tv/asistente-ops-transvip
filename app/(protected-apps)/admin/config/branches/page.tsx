@@ -1,5 +1,5 @@
 import { getBranches } from '@/lib/features/admin'
-import { BranchConfig } from '@/components/admin/branch-config/branch-config'
+import { BranchConfig } from '@/components/features/admin/branch-config/branch-config'
 
 export const metadata = {
     title: 'Configuración de Sucursales | Transvip',

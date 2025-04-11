@@ -7,7 +7,7 @@ import {
     CardContent,
 } from "@/components/ui/card";
 import { Routes } from '@/utils/routes';
-import { TransvipLogo } from '@/components/transvip/transvip-logo';
+import { TransvipLogo } from '@/components/features/transvip/transvip-logo';
 import { Calendar, CalendarClock, Car, AlertTriangle } from 'lucide-react';
 
 const menuItems = [

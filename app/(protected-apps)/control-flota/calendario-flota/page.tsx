@@ -1,5 +1,5 @@
 import { Suspense } from "react"
-import { VehicleShiftsSummary } from "@/components/vehicle-shifts/fleet/vehicle-shifts-summary"
+import { VehicleShiftsSummary } from "@/components/features/vehicles/fleet/vehicle-shifts-summary"
 import SuspenseLoading from "@/components/ui/suspense"
 import { getBranches } from "@/lib/features/admin"
 

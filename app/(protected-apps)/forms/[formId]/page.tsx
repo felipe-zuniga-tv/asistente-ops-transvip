@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import SuspenseLoading from "@/components/ui/suspense";
-import FormContainer from "@/components/forms/form-container";
+import FormContainer from "@/components/ui/forms/form-container";
 import { getOperationsFormById } from "@/lib/services/forms";
 
 interface FormPageProps {

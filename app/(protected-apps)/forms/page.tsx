@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { getOperationsForms } from "@/lib/services/forms";
 import { Routes } from "@/utils/routes";
-import { FormulariosContent } from "@/components/forms/forms-content";
+import { FormulariosContent } from "@/components/ui/forms/forms-content";
 import SuspenseLoading from "@/components/ui/suspense";
 
 export const metadata = {

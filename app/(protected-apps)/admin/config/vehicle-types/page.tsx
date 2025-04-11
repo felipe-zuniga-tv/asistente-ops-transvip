@@ -1,5 +1,5 @@
 import { getVehicleTypes } from "@/lib/features/admin"
-import { VehicleTypesConfig } from "@/components/admin/vehicle-types/vehicle-types-config";
+import { VehicleTypesConfig } from "@/components/features/admin/vehicle-types/vehicle-types-config";
 
 export const metadata = {
     title: 'Configuración de Tipos de Vehículos | Transvip',

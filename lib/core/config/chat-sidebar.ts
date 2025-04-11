@@ -30,7 +30,7 @@ import {
 	ChartBar,
 } from "lucide-react"
 import { toolsList } from "./tools";
-import { SidebarItem } from "@/components/chat/panel/types";
+import { SidebarItem } from "@/components/features/chat/panel/types";
 
 // Sidebar content
 export const publicSidebar: SidebarItem = {

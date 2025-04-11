@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import SuspenseLoading from "@/components/ui/suspense";
 import { getOperationsForms } from "@/lib/services/forms";
 import { Routes } from "@/utils/routes";
-import { FormulariosContent } from "@/components/forms/forms-content";
+import { FormulariosContent } from "@/components/ui/forms/forms-content";
 
 export default async function PublicFormulariosPage() {
     const forms = await getOperationsForms();

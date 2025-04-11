@@ -1,5 +1,5 @@
-import { TransvipLogo } from "@/components/transvip/transvip-logo"
-import { DriverLoginForm } from "@/components/drivers-portal/driver-login-form"
+import { TransvipLogo } from "@/components/features/transvip/transvip-logo"
+import { DriverLoginForm } from "@/components/features/drivers/driver-login-form"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function LoginPage() {

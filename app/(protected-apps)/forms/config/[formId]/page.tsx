@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { getOperationsFormById } from "@/lib/services/forms";
-import { OperationsFormEditor } from "@/components/admin/forms/operations-form-editor";
+import { OperationsFormEditor } from "@/components/features/admin/forms/operations-form-editor";
 import SuspenseLoading from "@/components/ui/suspense";
 
 interface InspectionFormPageProps {
