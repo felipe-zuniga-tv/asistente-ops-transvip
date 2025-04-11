@@ -2,7 +2,7 @@
 
 import { type Branch } from '@/lib/core/types/admin'
 import { type ColumnDef } from '@tanstack/react-table'
-import { DataTable } from '@/components/tables/data-table'
+import { DataTable } from '@/components/ui/tables/data-table'
 import { columns } from './columns'
 
 interface BranchConfigDataTableProps {

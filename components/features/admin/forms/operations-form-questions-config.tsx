@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { OperationsFormQuestionsDataTable } from "./questions-table/operations-form-questions-data-table";
 import { OperationsFormQuestionDialog } from "./dialogs/operations-form-question-dialog";
 import { AlertDialogDeleteQuestion } from "./alert-dialog-delete-question";
-import { ConfigCardContainer } from "@/components/tables/config-card-container";
+import { ConfigCardContainer } from "@/components/ui/tables/config-card-container";
 import { deleteQuestion } from "@/lib/services/forms";
 import type { OperationsFormQuestion } from "@/lib/core/types/vehicle/forms";
 

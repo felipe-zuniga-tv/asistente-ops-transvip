@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
-import { ConfigCardContainer } from '@/components/tables/config-card-container'
+import { ConfigCardContainer } from '@/components/ui/tables/config-card-container'
 import { Building2 } from 'lucide-react'
 import { cn } from '@/lib/utils/ui'
 import type { Branch } from '@/lib/core/types/admin'

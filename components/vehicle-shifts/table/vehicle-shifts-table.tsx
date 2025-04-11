@@ -5,7 +5,7 @@ import type { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { Download, Trash2 } from "lucide-react"
 import type { VehicleShift } from "../vehicle-shifts"
-import { DataTable } from "@/components/tables/data-table"
+import { DataTable } from "@/components/ui/tables/data-table"
 import {
     SimpleDialog,
     SimpleDialogDescription,

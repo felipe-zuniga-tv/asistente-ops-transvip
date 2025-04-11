@@ -5,7 +5,7 @@ import { SalesResponse } from '@/lib/core/types/sales'
 import { SalesResponsesTable } from './sales-responses-table'
 import { SalesResponseNotesDialog } from './sales-response-notes-dialog'
 import { useToast } from '@/hooks/use-toast'
-import { ConfigCardContainer } from '@/components/tables/config-card-container'
+import { ConfigCardContainer } from '@/components/ui/tables/config-card-container'
 import { Button } from '@/components/ui/button'
 import { RefreshCw } from 'lucide-react'
 import {

@@ -9,7 +9,7 @@ import { AlertDialogDeleteVehicleType } from "./alert-dialog-delete-vehicle-type
 import { toast } from "sonner";
 import { deleteVehicleType } from "@/lib/features/admin";
 import type { VehicleType } from "@/lib/core/types/admin";
-import { ConfigCardContainer } from "@/components/tables/config-card-container";
+import { ConfigCardContainer } from "@/components/ui/tables/config-card-container";
 
 interface VehicleTypesConfigProps {
     data?: VehicleType[];

@@ -2,7 +2,7 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 import type { VehicleStatus } from "@/lib/core/types";
-import { DataTable } from "@/components/tables/data-table";
+import { DataTable } from "@/components/ui/tables/data-table";
 
 interface DataTableProps {
     columns: ColumnDef<VehicleStatus>[];

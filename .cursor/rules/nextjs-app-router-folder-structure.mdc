@@ -1,0 +1,140 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Next.js App Router Folder Structure Recommendation (Mid-Sized App)
+
+This document outlines a recommended folder structure for a mid-sized Next.js application using the App Router, adhering to your specified constraints. The entire recommendation is presented within this single file.
+
+## Constraints Recap
+
+1.  **No `src/` folder**: The `app/` directory resides directly at the project root.
+2.  **Components Folder**: All reusable UI components must be located within a root `components/` folder and its subdirectories.
+3.  **Hooks Folder**: All custom React hooks must be located within a root `hooks/` folder.
+4.  **Types Folder**: For TypeScript projects, a root `types/` folder is required for shared type definitions.
+
+## Root Level Structure
+
+Place core configuration files, static assets, and the main application folders at the project root. This provides a clear overview of the project's main parts.
+
+*** Root Level Structure Start ***
+
+*   `app/`: Core application: routing, pages, layouts, API routes
+*   `components/`: All reusable UI components
+*   `hooks/`: All custom React hooks
+*   `lib/`: Shared utilities, helpers, API clients, constants (optional but recommended)
+*   `public/`: Static assets (images, fonts, etc.)
+*   `styles/`: Global styles, theme configurations (optional)
+*   `types/`: TypeScript type definitions (if using TS)
+*   `.env.local`: Environment variables (local)
+*   `.eslintrc.json`: ESLint configuration
+*   `.gitignore`: Git ignore rules
+*   `next.config.mjs`: Next.js configuration
+*   `package.json`: Project dependencies and scripts
+*   `postcss.config.js`: PostCSS configuration (if needed)
+*   `tailwind.config.ts`: Tailwind CSS configuration (if using TS/Tailwind)
+*   `tsconfig.json`: TypeScript configuration (if using TS)
+
+*** Root Level Structure End ***
+
+## `app/` Directory Structure
+
+Organize the `app` directory based on routes, leveraging Next.js App Router conventions. Use route groups `(folderName)` for organization (like separating marketing pages from logged-in app sections) or applying specific layouts without affecting the URL path.
+
+-   Place global layout (`layout.tsx`), page (`page.tsx`), loading (`loading.tsx`), and error (`error.tsx`) files directly under `app/` for the root application shell.
+-   Create folders for each primary route segment (e.g., `dashboard`, `settings`, `products`).
+-   Nest folders for nested routes (e.g., `app/dashboard/users/`).
+-   Use dynamic route segments (`[folderName]`) for parameterized routes (e.g., `app/products/[productId]/`).
+-   Place API route handlers within `app/api/` following a similar nested structure if needed (e.g., `app/api/users/[userId]/route.ts`).
+-   Utilize special files (`layout.js/tsx`, `page.js/tsx`, `loading.js/tsx`, `error.js/tsx`, `template.js/tsx`, `route.js/ts`) within route segment folders as defined by Next.js conventions.
+
+*** app/ Directory Structure Start ***
+
+*   `(marketing)/`: Route group for marketing pages (e.g., `about/page.tsx`). Includes its own `layout.tsx`.
+*   `(app)/`: Route group for authenticated sections (e.g., `dashboard/page.tsx`, `products/[productId]/page.tsx`). Includes its own `layout.tsx`.
+*   `api/`: Base for API routes (e.g., `auth/route.ts`, `products/[productId]/route.ts`).
+*   `favicon.ico`: Application icon.
+*   `globals.css`: Global stylesheets.
+*   `layout.tsx`: Root layout applying to all routes.
+*   `page.tsx`: Root page (homepage `/`).
+
+*** app/ Directory Structure End ***
+
+## `components/` Directory Structure
+
+Nest all reusable UI components logically within the `components/` folder. Components tightly coupled to a specific route (i.e., the main content of a `page.tsx` or the structure of a specific `layout.tsx`) should generally *not* be placed here but rather defined within their respective `app/` route segment files or co-located if small. This folder is for shared, reusable presentation logic.
+
+-   Create a `ui/` subfolder for generic, highly reusable UI elements (atoms/molecules like Button, Input, Card, Modal). These are often design system components.
+-   Group components by feature or domain (e.g., `auth`, `products`, `checkout`, `user`).
+-   Consider a `layout/` subfolder for shared layout *pieces* (Header, Footer, Sidebar) if they are complex and reused across different `app/` route group layouts.
+-   Clearly distinguish between Server Components (default) and Client Components (using the `'use client'` directive). Client components often reside deeper within feature folders or within `ui/` as they typically handle interactivity.
+
+*** components/ Directory Structure Start ***
+
+*   `auth/`: Components related to authentication (e.g., `LoginForm.tsx`, `SignupForm.tsx`).
+*   `layout/`: Reusable layout pieces (e.g., `Header.tsx`, `Footer.tsx`, `Sidebar.tsx`).
+*   `products/`: Components for the products feature (e.g., `ProductCard.tsx`, `ProductList.tsx`).
+*   `ui/`: Generic UI primitives (e.g., `Button.tsx`, `Input.tsx`, `Card.tsx`, `Modal.tsx`, `Spinner.tsx`).
+
+*** components/ Directory Structure End ***
+
+## `hooks/` Directory Structure
+
+Place all custom React hooks exclusively in this folder. Group them logically for better maintainability. Hooks enable reusable stateful logic and side effects, often used within Client Components.
+
+-   Group hooks related to a specific feature or domain (e.g., `useAuth`, `useCart`).
+-   Group hooks by general purpose (e.g., `data-fetching`, `state-management`, `device-info`).
+-   Ensure all hook filenames start with `use` as per React convention.
+
+*** hooks/ Directory Structure Start ***
+
+*   `useAuth.ts`: Logic for user authentication.
+*   `useCart.ts`: Logic for shopping cart management.
+*   `useClickOutside.ts`: Hook to detect clicks outside an element.
+*   `useDebounce.ts`: Hook to debounce a value.
+*   `useMediaQuery.ts`: Hook to track CSS media query matches.
+*   `useToggle.ts`: Simple boolean state toggle hook.
+
+*** hooks/ Directory Structure End ***
+
+## `types/` Directory Structure (For TypeScript Projects)
+
+If using TypeScript, define shared types, interfaces, and enums in this root folder. This promotes type safety and reusability across the application (client-side, server-side, API routes).
+
+-   Create files based on domain or feature (e.g., `user.ts`, `product.ts`, `order.ts`, `api.ts`).
+-   Consider a `global.d.ts` for augmenting global types or declaring modules if necessary.
+-   An `index.ts` file can be used to re-export types from various files for cleaner imports elsewhere (`import { User, Product } from '@/types';`).
+
+*** types/ Directory Structure Start ***
+
+*   `api.ts`: Types for API request/response structures.
+*   `product.ts`: Types defining product data.
+*   `user.ts`: Types defining user data, session, roles.
+*   `order.ts`: Types related to order data.
+*   `index.ts`: Optional file to re-export all types.
+*   `global.d.ts`: Optional file for global type declarations.
+
+*** types/ Directory Structure End ***
+
+## `lib/` or `utils/` Directory (Recommended)
+
+While not strictly enforced by your constraints, creating a `lib/` (or `utils/`) directory at the root is highly recommended for a mid-sized application. It serves as a central place for shared code that isn't a React Component or Hook.
+
+-   Store utility functions (e.g., date formatting, string manipulation, validation).
+-   Place API client setup/configuration or data-fetching helpers (e.g., functions that wrap `fetch`).
+-   Define application-wide constants or configuration values.
+-   Include database interaction logic, ORM setup, or service layer functions.
+-   House third-party library configurations or wrappers.
+
+*** lib/ Directory Structure Start ***
+
+*   `api/`: Functions for making API calls (e.g., `client.ts`, `products.ts`).
+*   `constants/`: Application-wide constants (e.g., `index.ts`).
+*   `db/`: Database connection, schemas, queries (e.g., `index.ts`, `schema.ts`).
+*   `utils/`: General utility functions (e.g., `dateUtils.ts`, `stringUtils.ts`).
+*   `stripe/`: Example helpers for a specific service (e.g., `index.ts`).
+
+*** lib/ Directory Structure End ***
+
+This structure provides a scalable and organized foundation for your mid-sized Next.js application using the App Router, adhering to your specific constraints while incorporating common best practices. Remember to adapt the specific feature/domain names (`auth`, `products`, `marketing`, `app`, etc.) to match your application's requirements.

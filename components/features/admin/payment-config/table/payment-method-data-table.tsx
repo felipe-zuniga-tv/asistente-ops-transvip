@@ -2,7 +2,7 @@
 
 import type { ColumnDef } from "@tanstack/react-table"
 import type { PaymentMethod } from '@/lib/core/types/admin'
-import { DataTable } from "@/components/tables/data-table"
+import { DataTable } from "@/components/ui/tables/data-table"
 
 interface PaymentMethodDataTableProps {
     columns: ColumnDef<PaymentMethod>[]

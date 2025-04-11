@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import type { SalesResponse } from "@/lib/core/types/sales";
-import { DataTable } from "@/components/tables/data-table";
+import { DataTable } from "@/components/ui/tables/data-table";
 import { columns, statusLabels } from "./table/columns";
 
 interface SalesResponsesTableProps {

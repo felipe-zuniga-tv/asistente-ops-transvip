@@ -5,7 +5,7 @@ import { type Branch } from '@/lib/core/types/admin'
 import { BranchConfigDataTable } from './table/branch-config-data-table'
 import { BranchDialog } from './branch-dialog'
 import { AlertDialogDeleteBranch } from './alert-dialog-delete-branch'
-import { ConfigCardContainer } from '@/components/tables/config-card-container'
+import { ConfigCardContainer } from '@/components/ui/tables/config-card-container'
 
 interface BranchConfigProps {
     data: Branch[]

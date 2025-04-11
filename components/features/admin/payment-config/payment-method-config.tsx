@@ -6,7 +6,7 @@ import { PaymentMethodDataTable } from './table/payment-method-data-table'
 import { columns } from './table/columns'
 import { PaymentMethodDialog } from './payment-method-dialog'
 import { AlertDialogDeletePaymentMethod } from './alert-dialog-delete-payment-method'
-import { ConfigCardContainer } from '@/components/tables/config-card-container'
+import { ConfigCardContainer } from '@/components/ui/tables/config-card-container'
 import { useRouter } from 'next/navigation'
 
 interface PaymentMethodConfigProps {

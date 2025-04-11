@@ -1,8 +1,8 @@
 "use client"
 
 import { useMemo } from "react"
-import { DataTable } from "@/components/tables/data-table"
-import { ConfigCardContainer } from "@/components/tables/config-card-container"
+import { DataTable } from "@/components/ui/tables/data-table"
+import { ConfigCardContainer } from "@/components/ui/tables/config-card-container"
 import { columns } from "./columns"
 import type { Driver } from "../types"
 

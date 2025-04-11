@@ -9,7 +9,7 @@ import { AlertDialogDeleteStatusConfig } from "./delete-status-config-alert-dial
 import { toast } from "sonner";
 import { deleteVehicleStatusConfig } from "@/lib/services/database/actions";
 import type { VehicleStatusConfig as VehicleStatusConfigType } from "@/lib/core/types/vehicle/status";
-import { ConfigCardContainer } from "@/components/tables/config-card-container";
+import { ConfigCardContainer } from "@/components/ui/tables/config-card-container";
 
 interface VehicleStatusConfigProps {
     configs?: VehicleStatusConfigType[];

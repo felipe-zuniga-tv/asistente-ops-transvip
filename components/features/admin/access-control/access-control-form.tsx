@@ -14,7 +14,7 @@ import {
     removeGroupMember,
     removeSectionAccess,
 } from "@/lib/services/access-control"
-import { ConfigCardContainer } from "@/components/tables/config-card-container"
+import { ConfigCardContainer } from "@/components/ui/tables/config-card-container"
 import { CreateGroupDialog } from "./create-group-dialog"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"

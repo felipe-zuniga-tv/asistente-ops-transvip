@@ -10,7 +10,7 @@ import { OperationsFormQuestionDialog } from "./dialogs/operations-form-question
 import { OperationsForm, OperationsFormSection, OperationsFormQuestion } from "@/lib/core/types/vehicle/forms";
 import { ArrowLeft, PlusCircle } from "lucide-react";
 import { DragDropContext, Droppable, DropResult, DroppableProvided } from "@hello-pangea/dnd";
-import { ConfigCardContainer } from "@/components/tables/config-card-container";
+import { ConfigCardContainer } from "@/components/ui/tables/config-card-container";
 import { DraggableSection } from "./draggable/draggable-section";
 import Link from "next/link";
 import { Routes } from "@/utils/routes";
