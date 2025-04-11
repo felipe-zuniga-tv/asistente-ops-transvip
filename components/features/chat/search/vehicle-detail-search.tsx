@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link';
 import { CarIcon, PhoneIcon, UserCircleIcon } from 'lucide-react';
-import { cn } from '@/lib/utils/ui';
+import { cn } from '@/utils/ui';
 import { AssistantMessageContent } from '../message';
 import { IVehicleDetailDrivers, IVehicleDetail } from '@/lib/core/types/chat';
 import { Badge, Button } from '@/components/ui';

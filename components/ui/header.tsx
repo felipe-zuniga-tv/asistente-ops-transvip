@@ -1,5 +1,5 @@
 import LogoutButton from "@/components/features/auth/logout";
-import { cn } from '@/lib/utils/ui';
+import { cn } from '@/utils/ui';
 import UserDetails from "./user-details";
 
 export default async function Header({ className = "", children }: { className?: string, children? : React.ReactNode }) {

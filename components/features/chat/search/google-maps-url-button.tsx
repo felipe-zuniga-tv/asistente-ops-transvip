@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { buildGoogleMapsURL } from "@/lib/services/utils/helpers";
 import { IBookingInfoOutput } from "@/lib/core/types/chat";
-import { cn } from '@/lib/utils/ui';
+import { cn } from '@/utils/ui';
 import { MapIcon } from "lucide-react";
 
 export default function GoogleMapsButton({ result, text, className = "" } : {

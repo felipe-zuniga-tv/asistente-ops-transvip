@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils/ui';
+import { cn } from '@/utils/ui';
 import Image from "next/image";
 
 interface TransvipLogoProps {

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { CheckCircle, SparklesIcon } from 'lucide-react';
 import { AssistantMessageContent } from '../message';
 import { IVehicleStatusSearchResult } from '@/lib/core/types/chat';
-import { cn } from '@/lib/utils/ui';
+import { cn } from '@/utils/ui';
 import { VEHICLE_STATUS } from '@/lib/utils/constants';
 import { Button } from '@/components/ui';
 import ToolsButton from '../tools/tools-button';

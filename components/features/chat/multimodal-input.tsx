@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { SendIcon, PaperclipIcon, StopCircleIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { cn } from '@/lib/utils/ui';
+import { cn } from '@/utils/ui';
 import equal from 'fast-deep-equal';
 
 interface MultimodalInputProps {

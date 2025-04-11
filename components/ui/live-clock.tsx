@@ -1,6 +1,6 @@
 'use client'
 
-import { cn } from '@/lib/utils/ui';
+import { cn } from '@/utils/ui';
 import { Clock } from 'lucide-react';
 import { useEffect, useState } from 'react';
 

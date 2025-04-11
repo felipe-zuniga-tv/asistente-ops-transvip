@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui";
-import { cn } from '@/lib/utils/ui';
+import { cn } from '@/utils/ui';
 
 export default function ToolsButton({ item, handleClick, label, className }: {
     item: any

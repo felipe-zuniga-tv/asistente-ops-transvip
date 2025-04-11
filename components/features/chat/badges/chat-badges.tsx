@@ -1,5 +1,5 @@
 import { IBookingInfoOutput, IBranch, IDriverProfile, IVehicleDetail } from "@/lib/core/types/chat";
-import { cn } from '@/lib/utils/ui';
+import { cn } from '@/utils/ui';
 import PaymentAvatar from "../payment/payment-avatar";
 import { differenceInDays } from "date-fns";
 import { Badge } from "@/components/ui/badge";

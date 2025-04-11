@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { airportTools } from '@/lib/core/config/airport'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { cn } from '@/lib/utils/ui';
+import { cn } from '@/utils/ui';
 import { TransvipLogo } from '@/components/features/transvip/transvip-logo';
 
 export default function AirportStartPage() {
