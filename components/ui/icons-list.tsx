@@ -53,7 +53,7 @@ import {
   ReceiptText
 } from 'lucide-react';
 import Image from "next/image"
-import * as whatsappLogo from '/images/whatsapp-logo.png'
+import * as whatsappLogo from '@/../public/images/whatsapp-logo.png'
 import { cn } from '@/utils/ui';
 
 export const icons = [

@@ -1,5 +1,5 @@
 import { Table } from "@tanstack/react-table"
-import { Button } from "../ui/button"
+import { Button } from "@/components/ui"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 
 interface DataTablePaginationProps<TData> {

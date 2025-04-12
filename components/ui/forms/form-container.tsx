@@ -1,8 +1,8 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { createFormResponse, getOperationsFormById } from "@/lib/services/forms";
-import { notFound } from "next/navigation";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui";
-import Link from "next/link";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui";
 import { Routes } from "@/utils/routes";
 import { TransvipLogo } from "@/components/features/transvip/transvip-logo";
 import { FormResponse } from "./form-response";

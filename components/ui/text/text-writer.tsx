@@ -1,29 +1,27 @@
 'use client'
 
 import { useState } from "react"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
-import {
+import { 
+    Input,
+    Button,
+    Textarea,
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Label } from "@/components/ui/label"
-import { createText } from "@/lib/features/ai/actions"
-import {
+    Checkbox,
+    Label,
     Collapsible,
     CollapsibleContent,
     CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+    Switch,
+    CopyWrapper
+} from "@/components/ui"
+import { createText } from "@/lib/features/ai/actions"
 import { ChevronDownIcon } from "@radix-ui/react-icons"
-import { ResetButton } from "../ui/buttons"
-import { CopyWrapper } from "../ui/copy-wrapper"
-import { ConfigCardContainer } from "../tables/config-card-container"
-import { Switch } from "@/components/ui/switch"
+import { ResetButton } from "@/components/ui/buttons"
+import { ConfigCardContainer } from "@/components/ui/tables/config-card-container"
 
 export interface Option {
     value: string;
