@@ -2,17 +2,17 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import {
+    Button,
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { VehicleShift } from "../vehicle-shifts"
+    Checkbox
+} from "@/components/ui"
+import { VehicleShift } from "@/components/features/vehicles/vehicle-shifts"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
-import { Checkbox } from "@/components/ui/checkbox"
 
 export const columns: ColumnDef<VehicleShift>[] = [
     {

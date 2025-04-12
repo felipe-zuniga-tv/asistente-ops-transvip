@@ -2,15 +2,15 @@
 
 import { type PaymentMethod } from '@/lib/core/types/admin'
 import { type ColumnDef } from '@tanstack/react-table'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { MoreHorizontal, Pencil, Trash, icons } from 'lucide-react'
 import {
+    Badge,
+    Button,
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@/components/ui'
 import { cn } from '@/utils/ui'
 
 export const columns: ColumnDef<PaymentMethod>[] = [
