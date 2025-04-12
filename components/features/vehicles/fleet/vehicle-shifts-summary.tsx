@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast"
 import { getVehicleShiftsByDateRange, getVehicleStatuses } from "@/lib/services/database/actions"
 import { cn } from '@/utils/ui'
 import { TransvipLogo } from "@/components/features/transvip/transvip-logo"
-import { generateNextXDays, generateCalendarMonths } from "@/lib/utils/date"
+import { generateNextXDays, generateCalendarMonths } from "@/utils/date"
 import type { ShiftSummary } from "@/lib/core/types/calendar"
 import type { Branch } from "@/lib/core/types/admin"
 

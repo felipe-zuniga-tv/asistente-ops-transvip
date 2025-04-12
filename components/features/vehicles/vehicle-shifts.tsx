@@ -15,7 +15,7 @@ import { generateVehicleShiftsTemplate } from "@/lib/features/csv/vehicle-shifts
 import { deleteVehicleShift, bulkDeleteVehicleShifts } from "@/lib/features/shifts/actions"
 import { useToast } from "@/hooks/use-toast"
 import { ConfigCardContainer } from "../tables/config-card-container"
-import { downloadFile } from "@/lib/utils/file"
+import { downloadFile } from "@/utils/file"
 
 export interface VehicleShift {
     id: string

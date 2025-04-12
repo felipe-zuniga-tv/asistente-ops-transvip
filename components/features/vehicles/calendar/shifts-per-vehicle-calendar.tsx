@@ -9,8 +9,8 @@ import { useToast } from "@/hooks/use-toast"
 import React from "react"
 import { VehicleStatus } from "@/lib/core/types"
 import { CalendarGrid } from "@/components/ui/calendar-grid"
-import { generateNextXDays, generateCalendarMonths } from "@/lib/utils/date"
-import { getHighestPriorityShiftForDate } from "@/lib/utils/shifts"
+import { generateNextXDays, generateCalendarMonths } from "@/utils/date"
+import { getHighestPriorityShiftForDate } from "@/utils/shifts"
 import type { VehicleShiftWithShiftInfo } from "@/lib/core/types/calendar"
 
 interface ShiftsPerVehicleCalendarProps {

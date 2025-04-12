@@ -1,4 +1,4 @@
-import { nanoid } from "@/lib/utils/id";
+import { nanoid } from "@/utils/id";
 import { getSession } from "@/lib/core/auth";
 
 export default async function DataAnalysisTools() {

@@ -1,6 +1,6 @@
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
-import { weekDays, adjustDayIndex } from "@/lib/utils/date"
+import { weekDays, adjustDayIndex } from "@/utils/date"
 import { CalendarMonth } from "@/lib/core/types/calendar"
 
 interface CalendarGridProps {

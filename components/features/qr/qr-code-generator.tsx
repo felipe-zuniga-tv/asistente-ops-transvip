@@ -3,7 +3,7 @@
 import { RotateCw } from 'lucide-react';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { TransvipLogo } from '@/components/transvip/transvip-logo';
+import { TransvipLogo } from '@/components/features/transvip/transvip-logo';
 import { 
     Button,
     Card,

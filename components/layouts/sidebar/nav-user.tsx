@@ -22,7 +22,7 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/components/ui"
-import { getInitials } from "@/lib/utils/ui"
+import { getInitials } from "@/utils/ui"
 import { ChatSession } from "@/lib/core/types/chat"
 
 export function NavUser({ user }: ChatSession) {

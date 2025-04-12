@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ShiftDialog } from "./shift-dialog";
 import { deleteShift } from "@/lib/services/database/actions";
 import { UploadShiftsDialog } from "./upload-shifts-dialog";
@@ -15,8 +14,8 @@ import { columns } from "./table/columns";
 import { useRouter } from "next/navigation";
 import { AlertDialogDeleteShift } from "./delete-shift-alert-dialog";
 import { toast } from "sonner";
-import { ConfigCardContainer } from "../tables/config-card-container";
-import { downloadFile } from "@/lib/utils/file";
+import { ConfigCardContainer } from "@/components/ui/tables/config-card-container";
+import { downloadFile } from "@/utils/file";
 
 export const WEEKDAYS = [
     { value: "1", label: "Lunes" },

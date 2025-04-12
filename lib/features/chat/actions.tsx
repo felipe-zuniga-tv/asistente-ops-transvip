@@ -23,8 +23,8 @@ import { DriverProfile } from "@/components/features/chat/search/driver-profile-
 import AirportStatus from "@/components/features/chat/airport/airport-status";
 import { VehicleInfoCard } from "@/components/features/mtt/vehicle-info-card";
 
-import { VEHICLE_STATUS } from "@/lib/utils/constants";
-import { nanoid } from "@/lib/utils/id";
+import { VEHICLE_STATUS } from "@/utils/constants";
+import { nanoid } from "@/utils/id";
 import { CREATE_DRIVER_RATINGS_SUMMARY, CREATE_TEXT_PROMPT, EMAIL_TEXT_OPS_EXAMPLE, SYSTEM_MESSAGE } from "@/lib/core/config/chat"
 import { getVehicleStatus, getVehicleDetail } from "@/lib/services/vehicle";
 import { getDriverProfile, searchDriver, getDriverRatings, getDriverRatingSummary } from "@/lib/services/driver";

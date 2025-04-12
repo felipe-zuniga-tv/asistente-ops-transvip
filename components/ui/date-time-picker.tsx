@@ -6,7 +6,7 @@ import { es } from "date-fns/locale"
 import { CalendarIcon, Clock } from "lucide-react"
 import { Control } from "react-hook-form"
 
-import { cn } from "@/lib/utils/ui"
+import { cn } from "@/utils/ui"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
