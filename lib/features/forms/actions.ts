@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { Routes } from '@/utils/routes'
-import { createClient } from '@/utils/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 
 interface ReorderSectionsInput {
     sections: {

@@ -1,7 +1,7 @@
 'use server'
 
 import { Routes } from '@/utils/routes'
-import { createClient } from '@/utils/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 
 export async function getUserSectionAccess(userEmail: string): Promise<string[]> {

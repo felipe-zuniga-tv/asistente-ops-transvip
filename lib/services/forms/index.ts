@@ -15,7 +15,7 @@ import type {
     UpdateOperationsFormSectionInput,
     CreateOperationsFormResponseInput,
 } from "@/lib/core/types/vehicle/forms";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { Routes } from "@/utils/routes";
 

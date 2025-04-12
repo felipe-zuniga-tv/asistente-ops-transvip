@@ -1,14 +1,14 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import Image from "next/image";
 import { Image as ImageIcon, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
+import { 
+    Button,
     Card,
     CardContent,
-} from "@/components/ui/card";
-import Image from "next/image";
-import { Input } from "@/components/ui/input";
+    Input
+} from "@/components/ui";
 
 interface ImageInputProps {
     value?: string;

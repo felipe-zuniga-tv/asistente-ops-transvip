@@ -1,8 +1,14 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ClipboardList } from "lucide-react";
 import Link from "next/link";
+import { 
+	Button,
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle
+ } from "@/components/ui";
+import { ClipboardList } from "lucide-react";
 import { TransvipLogo } from "@/components/features/transvip/transvip-logo";
-import { Button } from "../ui/button";
 import { OperationsForm } from "@/lib/core/types/vehicle/forms";
 
 export async function FormulariosContent({ activeForms, baseUrl }: {

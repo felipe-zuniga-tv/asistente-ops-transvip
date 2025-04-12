@@ -2,7 +2,7 @@
 import { revalidatePath } from 'next/cache'
 import { Routes } from '@/utils/routes'
 import { CreateSalesResponse, SalesResponse } from '@/lib/core/types/sales'
-import { createClient } from '@/utils/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { getSession } from '@/lib/core/auth';
 
 const SALES_RESPONSES_TABLE = 'sales_responses'

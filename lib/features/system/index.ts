@@ -1,5 +1,5 @@
 import { revalidatePath } from "next/cache"
-import { createClient } from "@/utils/supabase/server"
+import { createClient } from "@/lib/supabase/server"
 import { Routes } from "@/utils/routes"
 
 export async function getSystemConfigs(key?: string) {

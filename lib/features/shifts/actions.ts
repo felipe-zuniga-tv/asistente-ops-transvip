@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache"
 import { parse } from "date-fns"
 import { z } from "zod"
 import { Routes } from "@/utils/routes"
-import { createClient } from "@/utils/supabase/server"
+import { createClient } from "@/lib/supabase/server"
 
 import type { 
 	ShiftData,

@@ -1,7 +1,6 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Input, Label } from "@/components/ui";
 import { OperationsFormQuestion } from "@/lib/core/types/vehicle/forms";
 import { ImageInput } from "@/components/ui/forms/image-input";
 

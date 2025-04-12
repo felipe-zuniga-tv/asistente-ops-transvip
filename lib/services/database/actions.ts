@@ -1,7 +1,7 @@
 'use server'
 
 import { cookies } from 'next/headers'
-import { createClient } from '@/utils/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { Routes } from '@/utils/routes'
 import type { 
