@@ -9,7 +9,7 @@ import {
 	SelectValue,
 } from "@/components/ui"
 import { Loader2 } from "lucide-react"
-import { Vehicle } from "@/components/finance/tickets/upload/ticket-upload-form"
+import { Vehicle } from "@/components/features/finance/tickets/upload/ticket-upload-form"
 
 interface VehicleSelectorProps {
 	vehicles: Vehicle[]
