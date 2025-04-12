@@ -1,6 +1,6 @@
 "use client"
 
-import { Search, type LucideIcon } from "lucide-react"
+import { Search } from "lucide-react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
 
@@ -11,8 +11,8 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { Input } from "../ui/input"
+  Input
+} from "@/components/ui"
 import { SidebarItem, Tool } from "@/components/features/chat/panel/types"
 
 interface GroupedNavMainProps {
