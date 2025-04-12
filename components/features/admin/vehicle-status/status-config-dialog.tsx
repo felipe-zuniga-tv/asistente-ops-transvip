@@ -4,24 +4,22 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Button } from "@/components/ui/button";
 import {
+    Button,
+    Input,
+    Textarea,
     SimpleDialog,
     SimpleDialogHeader,
     SimpleDialogFooter,
     SimpleDialogTitle,
     SimpleDialogDescription,
-} from "@/components/ui/simple-dialog";
-import {
     Form,
     FormControl,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+} from "@/components/ui";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { createVehicleStatusConfig, updateVehicleStatusConfig } from "@/lib/services/database/actions";

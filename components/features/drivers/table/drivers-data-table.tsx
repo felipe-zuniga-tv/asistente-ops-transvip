@@ -4,7 +4,7 @@ import { useMemo } from "react"
 import { DataTable } from "@/components/ui/tables/data-table"
 import { ConfigCardContainer } from "@/components/ui/tables/config-card-container"
 import { columns } from "./columns"
-import type { Driver } from "../types"
+import type { Driver } from "@/components/features/drivers/types"
 
 interface DriversDataTableProps {
 	data: Driver[]

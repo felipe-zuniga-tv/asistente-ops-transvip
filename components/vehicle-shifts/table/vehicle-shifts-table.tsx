@@ -2,17 +2,17 @@
 
 import { useState, useMemo, useCallback } from "react"
 import type { ColumnDef } from "@tanstack/react-table"
-import { Button } from "@/components/ui/button"
 import { Download, Trash2 } from "lucide-react"
-import type { VehicleShift } from "../vehicle-shifts"
+import type { VehicleShift } from "@/components/features/vehicles/vehicle-shifts"
 import { DataTable } from "@/components/ui/tables/data-table"
 import {
+    Button,
     SimpleDialog,
     SimpleDialogDescription,
     SimpleDialogFooter,
     SimpleDialogHeader,
     SimpleDialogTitle,
-} from "@/components/ui/simple-dialog"
+} from "@/components/ui"
 
 interface DataTableProps {
     columns: ColumnDef<VehicleShift>[]
