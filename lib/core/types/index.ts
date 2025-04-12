@@ -1,5 +1,4 @@
 // Export all types
-export * from './chat';
 export * from './admin';
 export * from './vehicle/status';
 export * from './vehicle/shift';

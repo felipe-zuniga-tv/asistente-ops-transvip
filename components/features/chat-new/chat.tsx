@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { generateUUID } from '@/utils/id';
 import { ChatHeader } from '@/components/features/chat/chat-header';
 import { Messages } from './messages';
-import { MultimodalInput } from './multimodal-input';
+import { MultimodalInput } from '../chat/multimodal-input';
 import { toast } from 'sonner';
 
 export interface ChatProps {
