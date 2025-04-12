@@ -19,7 +19,8 @@ import {
   X 
 } from 'lucide-react';
 import { useMessageSubmission } from '@/hooks/use-message-submission';
-import { Badge, Button, EmailLink, WhatsappIcon } from '@/components/ui';
+import { Badge, Button, EmailLink } from '@/components/ui';
+import { WhatsappIcon } from '@/components/ui/whatsapp-icon';
 import DriverAvatar from '@/components/features/drivers/driver-avatar';
 import { 
   BookingStatusBadge, 

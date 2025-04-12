@@ -109,10 +109,3 @@ export const icons = [
   { label: 'UserIcon', value: 'UserIcon', icon: UserIcon },
   { label: 'X', value: 'X', icon: X }
 ];
-
-export const WhatsappIcon = ({ className = "" }: { className?: string }) => {
-  return (
-    <Image src={'images/whatsapp-logo.png'} height={100} width={100}
-      className={cn("h-4 w-4 text-white object-cover", className)} alt={"Logo Whatsapp"} />
-  )
-} 

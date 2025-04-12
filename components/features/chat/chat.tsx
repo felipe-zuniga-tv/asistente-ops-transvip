@@ -1,90 +1,79 @@
-'use client';
+'use client'
 
-import type { Message } from 'ai';
-import { useChat } from '@ai-sdk/react';
-import { useState } from 'react';
-import { generateUUID } from '@/utils/id';
-import { ChatHeader } from '@/components/features/chat/chat-header';
-import { Messages } from '@/components/features/chat/messages';
-import { MultimodalInput } from '@/components/features/chat/multimodal-input';
-import { toast } from 'sonner';
+// import { useLocalStorage } from '@/hooks/use-local-storage'
+import { useScrollAnchor } from '@/hooks/use-scroll-anchor'
+import { cn } from '@/utils/ui'
+import { useAIState, useUIState } from 'ai/rsc'
+import { usePathname, useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { MessagesList } from './messages-list'
+import { EmptyScreen } from './empty-screen'
+import { ChatPanel } from './chat-panel'
+import type { ChatProps } from '@/lib/core/types/chat'
+import { NewChatButton } from './new-chat-button'
+import { Routes } from '@/utils/routes'
 
-export interface ChatProps {
-  id: string;
-  initialMessages: Array<Message>;
-  isReadonly?: boolean;
-  session: any;
+export function Chat({ id, initialMessages, className, session }: ChatProps) {
+	const router = useRouter()
+	const path = usePathname()
+	const [input, setInput] = useState('')
+	const [messages, setMessages] = useUIState()
+	const [aiState] = useAIState()
+
+	// const [_, setNewChatId] = useLocalStorage('newChatId', id)
+
+	// useEffect(() => {
+	//     if (session?.user) {
+	//         if (path.includes('chat') && messages.length === 0) {
+	//             window.history.replaceState({}, '', `/chat/${id}`)
+	//             console.log("redirigir")
+	//         }
+	//     }
+	// }, [id, path, session?.user, messages])
+
+	useEffect(() => {
+		const messagesLength = aiState.messages?.length
+		if (messagesLength === 2) {
+			router.refresh()
+		}
+	}, [aiState.messages, router])
+
+	// useEffect(() => {
+	//     setNewChatId(id)
+	// }, [id, setNewChatId])
+
+	const { messagesRef, scrollRef, visibilityRef, isAtBottom, scrollToBottom } = useScrollAnchor()
+
+	const handleNewChat = () => {
+		setMessages([]);
+		router.push(Routes.CHAT);
+		router.refresh();
+	}
+
+	return (
+		<div className="flex flex-col size-full mx-auto justify-between">
+			<div className="flex sticky top-0 pb-3 items-center px-0 gap-2 bg-transparent z-10">
+				<NewChatButton onClick={handleNewChat} />
+			</div>
+
+			<div ref={scrollRef} className="flex-1 overflow-auto">
+				<div className="h-full flex flex-col justify-between">
+					<div className={cn('flex-1 overflow-auto max-h-[76vh]', className as string)} ref={messagesRef}>
+						{messages.length ?
+							(<MessagesList messages={messages} isShared={false} session={session} />) :
+							(<EmptyScreen session={session} />)
+						}
+						<div className="h-px w-full" ref={visibilityRef} />
+					</div>
+					<ChatPanel id={id}
+						input={input}
+						session={session}
+						setInput={setInput}
+						isAtBottom={isAtBottom}
+						scrollToBottom={scrollToBottom}
+					/>
+				</div>
+			</div>
+		</div>
+	)
 }
-
-export function Chat({
-  id,
-  initialMessages,
-  isReadonly = false,
-  session,
-}: ChatProps) {
-  const {
-    messages,
-    setMessages,
-    handleSubmit,
-    input,
-    setInput,
-    append,
-    isLoading,
-    stop,
-    reload,
-  } = useChat({
-    id,
-    body: { id },
-    initialMessages,
-    experimental_throttle: 100,
-    sendExtraMessageFields: true,
-    generateId: generateUUID,
-    onFinish: () => {
-      // If we needed to update history, we would do it here
-    },
-    onError: () => {
-      toast.error('Ocurrió un error, por favor intenta de nuevo!');
-    },
-  });
-
-  const [attachments, setAttachments] = useState<any[]>([]);
-
-  return (
-    <div className="flex flex-col min-w-0 h-full bg-background rounded-md">
-      <ChatHeader
-        chatId={id}
-        isReadonly={isReadonly}
-        session={session}
-      />
-
-      <Messages
-        chatId={id}
-        isLoading={isLoading}
-        messages={messages}
-        setMessages={setMessages}
-        reload={reload}
-        isReadonly={isReadonly}
-        session={session}
-      />
-
-      <form className="flex mx-auto px-4 bg-background pb-4 gap-2 w-full">
-        {!isReadonly && (
-          <MultimodalInput
-            chatId={id}
-            input={input}
-            setInput={setInput}
-            handleSubmit={handleSubmit}
-            isLoading={isLoading}
-            stop={stop}
-            attachments={attachments}
-            setAttachments={setAttachments}
-            messages={messages}
-            setMessages={setMessages}
-            append={append}
-            session={session}
-          />
-        )}
-      </form>
-    </div>
-  );
-} 

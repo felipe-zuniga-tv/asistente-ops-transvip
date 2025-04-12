@@ -5,32 +5,27 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
 import { cn } from '@/utils/ui'
-import {
+import { 
+    Button,
     SimpleDialog,
     SimpleDialogHeader,
     SimpleDialogTitle,
     SimpleDialogDescription,
-} from '@/components/ui/simple-dialog'
-import {
     Form,
     FormControl,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Switch } from '@/components/ui/switch'
-import {
+    Input,
+    Switch,
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
-import { icons } from '@/components/ui/icons-list'
+} from "@/components/ui"
 import { createPaymentMethod, updatePaymentMethod } from '@/lib/features/admin'
 import { type PaymentMethod } from '@/lib/core/types/admin'
 import { Label } from '@/components/ui/label'
@@ -187,31 +182,10 @@ export function PaymentMethodDialog({
                         name="icon_name"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Ícono</FormLabel>
-                                <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Selecciona un ícono" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        {icons.map((icon) => {
-                                            const Icon = icon.icon
-                                            return (
-                                                <SelectItem
-                                                    key={icon.value}
-                                                    value={icon.value}
-                                                    className="flex items-center gap-2"
-                                                >
-                                                    <div className="flex items-center gap-2">
-                                                        <Icon className="h-4 w-4" />
-                                                        <span>{icon.label}</span>
-                                                    </div>
-                                                </SelectItem>
-                                            )
-                                        })}
-                                    </SelectContent>
-                                </Select>
+                                <FormLabel>Nombre del Ícono (Lucide)</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Ej: CreditCard, Coins" {...field} />
+                                </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}

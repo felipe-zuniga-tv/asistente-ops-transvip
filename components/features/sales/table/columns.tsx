@@ -2,20 +2,17 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-// import { MoreHorizontal, Check, PlusCircle, Pencil } from "lucide-react";
 import { X, ChevronDown, ArrowRight } from "lucide-react";
 import {
 	Button,
-	Badge,
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuTrigger,
-	DropdownMenuSeparator
 } from "@/components/ui"
 import type { SalesResponse } from "@/lib/core/types/sales";
-import { WhatsappIcon } from "@/components/ui/icons-list";
+import { WhatsappIcon } from "@/components/ui/whatsapp-icon";
 import { languages } from "../language-selector";
 import type { Language } from "@/lib/core/i18n";
 

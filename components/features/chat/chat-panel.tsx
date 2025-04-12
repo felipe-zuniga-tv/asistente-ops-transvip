@@ -1,5 +1,5 @@
 import { PromptForm } from './prompt-form'
-import { ButtonScrollToBottom } from '../ui/button-scroll-to-bottom'
+import { ButtonScrollToBottom } from '@/components/ui/button-scroll-to-bottom'
 
 export interface ChatPanelProps {
     id?: string
