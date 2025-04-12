@@ -1,7 +1,7 @@
 import { cn } from '@/utils/ui';
-import { AddButton } from "../ui/buttons"
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
-import { CardTitleContent } from "../ui/card-title-content"
+import { AddButton } from '@/components/ui/buttons';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { CardTitleContent } from '@/components/ui/card-title-content';
 
 interface ConfigCardContainerProps {
     children: React.ReactNode;

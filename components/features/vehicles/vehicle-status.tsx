@@ -9,7 +9,7 @@ import { AlertDialogDeleteStatus } from "./delete-status-alert-dialog";
 import { toast } from "sonner";
 import { deleteVehicleStatus } from "@/lib/services/database/actions";
 import type { VehicleStatus } from "@/lib/core/types";
-import { ConfigCardContainer } from "../tables/config-card-container";
+import { ConfigCardContainer } from "@/components/ui/tables/config-card-container";
 import { getSession } from "@/lib/core/auth";
 
 interface StatusConfig {
