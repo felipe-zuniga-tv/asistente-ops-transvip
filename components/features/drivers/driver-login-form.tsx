@@ -10,7 +10,7 @@ import { createDriverSession } from "@/lib/features/driver/auth"
 import { searchDriver } from "@/lib/services/driver"
 import { IDriverVehicles } from "@/types"
 import { Routes } from "@/utils/routes"
-import { ALLOWED_VEHICLE_NAMES_PARKING_TICKETS, type AllowedCarName } from "@/lib/utils/constants"
+import { ALLOWED_VEHICLE_NAMES_PARKING_TICKETS } from "@/utils/constants"
 
 export function DriverLoginForm() {
 	const [isLoading, setIsLoading] = useState(false)

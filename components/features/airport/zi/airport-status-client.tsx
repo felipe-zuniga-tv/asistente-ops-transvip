@@ -10,7 +10,7 @@ import { LiveClock } from '@/components/ui/live-clock'
 import { ArrowLeft, Clock, Users } from 'lucide-react'
 import { AirportZone, airportZones } from '@/lib/core/config/airport'
 import { Routes } from '@/utils/routes'
-import { QRCodeGeneratorDialog } from '../../qr/qr-code-generator-dialog'
+import { QRCodeGeneratorDialog } from '@/components/features/qr/qr-code-generator-dialog'
 import type { AirportVehicleType, AirportVehicleDetail } from '@/lib/core/types/airport'
 
 const secondsToUpdate = 60 // Refresh data

@@ -13,6 +13,7 @@ import {
 	CardTitle 
 } from "@/components/ui"
 import { ArrowLeft } from "lucide-react"
+import { Routes } from "@/utils/routes"
 
 interface PageProps {
 	params: {
@@ -23,7 +24,7 @@ interface PageProps {
 export default async function TicketDetailPage({ params }: PageProps) {
 	const session = await getDriverSession()
 	if (!session) {
-		redirect('/conductores')
+		redirect(Routes.DRIVERS.HOME)
 	}
 	const ticket = await getTicketById(params.id)
 
@@ -45,7 +46,7 @@ export default async function TicketDetailPage({ params }: PageProps) {
 		<div className="space-y-6">
 			<div className="flex items-center gap-4">
 				<Button variant="ghost" size="icon" asChild>
-					<Link href="/conductores/tickets/parking/dashboard">
+					<Link href={Routes.DRIVERS.TICKETS_DASHBOARD}>
 						<ArrowLeft className="h-4 w-4" />
 					</Link>
 				</Button>

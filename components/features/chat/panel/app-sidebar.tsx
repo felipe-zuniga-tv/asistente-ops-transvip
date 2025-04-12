@@ -29,7 +29,7 @@ import {
 	filterPublicItems,
 	filterRemainingSections,
 	filterSecondaryItems
-} from "@/lib/sidebar/helpers"
+} from "@/components/layouts/sidebar/helpers"
 import { LucideIcon } from "lucide-react"
 import { ChatSession } from "@/lib/core/types/chat"
 

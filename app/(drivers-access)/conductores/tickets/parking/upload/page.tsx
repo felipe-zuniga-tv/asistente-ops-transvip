@@ -19,7 +19,7 @@ export default async function UploadTicketPage() {
                 <div className="flex flex-col items-start gap-2">
                     <div className="w-full flex justify-start items-center gap-2">
                         <Button variant="outline" size="icon" asChild>
-                            <Link href="/conductores/tickets/parking/dashboard">
+                            <Link href={Routes.DRIVERS.TICKETS_DASHBOARD}>
                                 <ArrowLeft className="h-4 w-4" />
                             </Link>
                         </Button>

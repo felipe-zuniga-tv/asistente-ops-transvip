@@ -1,7 +1,7 @@
 ---
-description: 
+description: Useful to analyze if files are correctly place within the app structure, or where to put new files
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
 # Next.js App Router Folder Structure Recommendation (Mid-Sized App)
 

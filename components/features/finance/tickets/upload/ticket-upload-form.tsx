@@ -19,6 +19,8 @@ import {
 	ParsedTicketData,
 	ensureString
 } from "./schemas"
+import { Routes } from '@/utils/routes'
+import { toast } from 'sonner'
 
 export interface Vehicle {
 	vehicle_number: string
@@ -191,7 +193,8 @@ export function TicketUploadForm({ session }: TicketUploadFormProps) {
 				setCurrentStep('upload')
 
 				// Redirect to history page
-				router.push('/conductores/tickets/parking/dashboard')
+				toast.success('Ticket subido exitosamente')
+				router.push(Routes.DRIVERS.TICKETS_DASHBOARD)
 			} catch (err) {
 				console.error(err)
 				setError(err instanceof Error ? err.message : 'Ha ocurrido un error')

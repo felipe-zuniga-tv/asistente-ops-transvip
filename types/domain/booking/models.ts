@@ -1,4 +1,4 @@
-import { BaseModel } from '../../database/models';
+import { BaseModel } from '@/types/database/models';
 
 export interface Booking extends BaseModel {
   booking_id: string;

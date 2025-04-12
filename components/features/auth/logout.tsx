@@ -3,7 +3,7 @@
 import { logout } from "@/lib/core/auth"
 import { Routes } from "@/utils/routes"
 import { redirect } from "next/navigation"
-import { Button } from "../ui/button"
+import { Button } from "@/components/ui"
 import { LogOutIcon } from "lucide-react"
 
 interface LogoutButtonProps {

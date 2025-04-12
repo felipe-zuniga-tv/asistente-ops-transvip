@@ -15,7 +15,7 @@ import { PersonalInfoStep } from './personal-info-step'
 import { TravelInfoStep } from './travel-info-step'
 import { AccommodationStep } from './accommodation-step'
 import { ConfirmationStep } from './confirmation-step'
-import { TransvipLogo } from '@/components/transvip/transvip-logo'
+import { TransvipLogo } from '@/components/features/transvip/transvip-logo'
 
 // Constants
 const BASE_PASSWORD = 'Contraseña123!'

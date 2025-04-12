@@ -54,8 +54,11 @@ import {
   ReceiptText
 } from 'lucide-react';
 import Image from "next/image"
-import * as whatsappLogo from '../../public/images/whatsapp-logo.png'
+import githubLogo from '@/../public/images/github-logo.png'
+import googleLogo from '@/../public/images/google-logo.png'
+import * as whatsappLogo from '/images/whatsapp-logo.png'
 import { cn } from '@/utils/ui';
+import { TransvipLogo } from '../features/transvip/transvip-logo'
 
 export const icons = [
   { label: 'AlertTriangle', value: 'AlertTriangle', icon: AlertTriangle },
