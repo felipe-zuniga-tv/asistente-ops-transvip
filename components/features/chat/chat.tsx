@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 import { MessagesList } from './messages-list'
 import { EmptyScreen } from './empty-screen'
 import { ChatPanel } from './chat-panel'
-import type { ChatProps } from '@/lib/core/types/chat'
+import type { ChatProps } from '@/types/domain/chat/models'
 import { NewChatButton } from './new-chat-button'
 import { Routes } from '@/utils/routes'
 

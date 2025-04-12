@@ -23,7 +23,7 @@ import {
 	useSidebar,
 } from "@/components/ui"
 import { getInitials } from "@/utils/ui"
-import { ChatSession } from "@/lib/core/types/chat"
+import { ChatSession } from "@/types/domain/chat/models"
 
 export function NavUser({ user }: ChatSession) {
 	const { isMobile } = useSidebar()

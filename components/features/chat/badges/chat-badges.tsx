@@ -1,4 +1,4 @@
-import { IBookingInfoOutput, IBranch, IDriverProfile, IVehicleDetail } from "@/lib/core/types/chat";
+import { IBookingInfoOutput, IBranch, IDriverProfile, IVehicleDetail } from "@/types/domain/chat/models";
 import { cn } from '@/utils/ui';
 import PaymentAvatar from "../payment/payment-avatar";
 import { differenceInDays } from "date-fns";
@@ -32,7 +32,6 @@ const vehicleStatus = [
     { status: 0, label: 'Inactivo', color: 'bg-red-400 hover:bg-red-400' },
     { status: 1, label: 'Activo', color: 'bg-green-700 hover:bg-green-700' },
 ]
-
 
 // Components
 export function CityBadge({ branch, className, isCode = true }: { branch?: IBranch, className?: string, isCode?: boolean }) {
@@ -92,7 +91,7 @@ export function PaymentStatusBadge({ result } : { result : IBookingInfoOutput })
     )
 }
 
-export function PaymentRouteType({ result, className } : { 
+export function PaymentRouteTypeBadge({ result, className } : { 
     result : IBookingInfoOutput, 
     className?: string 
 }) {

@@ -1,7 +1,7 @@
 'use client'
 import { useMessageSubmission } from '@/hooks/use-message-submission';
 import { UserCircle } from 'lucide-react';
-import { IDriverAssignedVehicles, IDriverProfile, IDriverVehicles } from '@/lib/core/types/chat';
+import { IDriverAssignedVehicles, IDriverProfile, IDriverVehicles } from '@/types/domain/chat/models';
 import { AssistantMessageContent } from '../message';
 import { Badge, Button } from '@/components/ui';
 import DriverAvatar from '@/components/features/drivers/driver-avatar';

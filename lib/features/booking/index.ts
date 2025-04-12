@@ -4,7 +4,7 @@ import { getSession } from "@/lib/core/auth"
 import { branches, paymentMethods } from "@/lib/core/config/transvip-general"
 import { BOOKING_DETAIL_URL, BOOKING_ID_API_URL, BOOKING_INFO_FULL_URL } from "@/lib/services/config/urls"
 import { getResponseFromURL } from "@/lib/services/utils/helpers"
-import { IBookingInfo, IBookingInfoOutput } from "@/lib/core/types/chat"
+import { IBookingInfo, IBookingInfoOutput } from "@/types/domain/chat/models"
 import { getVehicleDetail } from "@/lib/services/vehicle"
 
 const NULL_DATE = '0000-00-00 00:00:00'

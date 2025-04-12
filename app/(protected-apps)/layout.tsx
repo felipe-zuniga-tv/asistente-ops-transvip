@@ -3,7 +3,7 @@ import Header from "@/components/ui/header";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { getSession } from "@/lib/core/auth";
 import { AI } from "@/lib/services/chat/actions";
-import { ChatSession } from '@/lib/core/types/chat';
+import { ChatSession } from '@/types/domain/chat/models';
 import { nanoid } from "@/utils/id";
 import { Routes } from "@/utils/routes";
 import { redirect } from "next/navigation";

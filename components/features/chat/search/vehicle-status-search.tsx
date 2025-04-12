@@ -3,7 +3,7 @@ import { useMessageSubmission } from '@/hooks/use-message-submission';
 import Image from 'next/image';
 import { CheckCircle, SparklesIcon } from 'lucide-react';
 import { AssistantMessageContent } from '../message';
-import { IVehicleStatusSearchResult } from '@/lib/core/types/chat';
+import { IVehicleStatusSearchResult } from '@/types/domain/chat/models';
 import { cn } from '@/utils/ui';
 import { VEHICLE_STATUS } from '@/utils/constants';
 import { Button } from '@/components/ui';

@@ -1,5 +1,5 @@
 import { getSession } from "@/lib/core/auth"
-import { ChatSession } from '@/lib/core/types/chat'
+import { ChatSession } from '@/types/domain/chat/models'
 
 export default async function UserDetails() {
     const session = (await getSession()) as ChatSession | null; // Define the session type
@@ -9,7 +9,7 @@ export default async function UserDetails() {
     return (
         <div className="flex flex-row items-center gap-1 text-black text-sm">
             <span className="font-bold">Usuario:</span>
-            <span>{session.user.fullName}</span>
+            <span>{session.user.full_name}</span>
             <span className="hidden md:block">({session.user.email})</span>
         </div>
     );

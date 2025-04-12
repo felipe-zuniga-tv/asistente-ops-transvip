@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { CarIcon, PhoneIcon, UserCircleIcon } from 'lucide-react';
 import { cn } from '@/utils/ui';
 import { AssistantMessageContent } from '../message';
-import { IVehicleDetailDrivers, IVehicleDetail } from '@/lib/core/types/chat';
+import { IVehicleDetailDrivers, IVehicleDetail } from '@/types/domain/chat/models';
 import { Badge, Button } from '@/components/ui';
 import ToolsButton from '../tools/tools-button';
 import { CityBadge, VehicleStatusBadge } from '../badges/chat-badges';

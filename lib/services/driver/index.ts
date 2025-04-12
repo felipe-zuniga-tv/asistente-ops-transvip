@@ -4,7 +4,7 @@ import { format } from "date-fns"
 import { branches } from "@/lib/core/config"
 import { DRIVER_SEARCH_API_URL, DRIVER_PROFILE_API_URL, DRIVER_RATINGS_API_URL } from "@/lib/services/config/urls"
 import { getResponseFromURL, getAssignedVehicles } from "@/lib/services/utils/helpers"
-import { IDriverProfile } from "@/lib/core/types/chat"
+import { IDriverProfile } from "@/types/domain/chat/models"
 import { getAccessToken, buildUrlParams } from "@/utils/helpers"
 
 export async function searchDriver(driverEmail: string, accessToken: string | null = null) {

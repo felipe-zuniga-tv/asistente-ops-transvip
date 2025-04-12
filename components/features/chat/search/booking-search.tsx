@@ -26,14 +26,14 @@ import {
   BookingStatusBadge, 
   CityBadge, 
   CustomerVipBadge, 
-  PaymentRouteType, 
+  PaymentRouteTypeBadge, 
   PaymentStatusBadge, 
   ServiceNameBadge 
 } from '../badges/chat-badges';
 import { BookingIdBadge } from '../badges/booking-badge';
 import GoogleMapsButton from './google-maps-url-button';
 
-import { IBookingInfoOutput } from '@/lib/core/types/chat';
+import { IBookingInfoOutput } from '@/types/domain/chat/models';
 import { buildGoogleMapsURL, buildWhatsappLink, formatChileanPeso } from '@/lib/services/utils/helpers';
 
 // Vehicle States to Show
@@ -419,7 +419,7 @@ function BookingPayment({ result }: {
                     <div className='card-info-detail flex-row gap-1'>
                         <span className='font-semibold'>Monto Estimado:</span>
                         <span className=''>{formatChileanPeso(result.payment.estimated_payment)}</span>
-                        <PaymentRouteType result={result} />
+                        <PaymentRouteTypeBadge result={result} />
                     </div>
                     { result.payment.actual_payment && (
                         <div className='card-info-detail flex-row gap-1'>
