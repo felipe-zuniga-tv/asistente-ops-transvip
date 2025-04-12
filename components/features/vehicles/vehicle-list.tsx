@@ -22,7 +22,7 @@ import {
 	Label,
 	Switch
 } from '@/components/ui'
-import { ConfigCardContainer } from '../tables/config-card-container'
+import { ConfigCardContainer } from '@/components/ui/tables/config-card-container'
 
 interface VehicleListProps {
 	branch: number

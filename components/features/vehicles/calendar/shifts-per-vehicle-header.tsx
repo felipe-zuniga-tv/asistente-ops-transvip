@@ -1,16 +1,17 @@
-import { Input } from "@/components/ui/input"
-import { CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Loader2, Search, X } from "lucide-react"
-import { TransvipLogo } from "@/components/transvip/transvip-logo"
-import { cn } from '@/utils/ui'
-import {
+import { 
+    Input,
+    CardHeader,
+    CardTitle,
+    Button,
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
+ } from "@/components/ui"
+import { Loader2, Search, X } from "lucide-react"
+import { TransvipLogo } from "@/components/features/transvip/transvip-logo"
+import { cn } from '@/utils/ui'
 
 interface ShiftsPerVehicleHeaderProps {
     vehicleNumber: string

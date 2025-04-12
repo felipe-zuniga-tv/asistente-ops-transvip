@@ -1,6 +1,6 @@
 import { Routes } from "@/utils/routes";
 import Link from 'next/link'
-import { TransvipLogo } from "@/components/transvip/transvip-logo";
+import { TransvipLogo } from "@/components/features/transvip/transvip-logo";
 
 export default function QRCodeGeneratorLink() {
     return (

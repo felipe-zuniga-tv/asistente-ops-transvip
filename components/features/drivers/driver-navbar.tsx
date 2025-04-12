@@ -1,4 +1,4 @@
-import { TransvipLogo } from '@/components/transvip/transvip-logo'
+import { TransvipLogo } from '@/components/features/transvip/transvip-logo'
 import { getDriverSession } from '@/lib/features/driver/auth'
 import { LogoutButton } from './logout-button'
 

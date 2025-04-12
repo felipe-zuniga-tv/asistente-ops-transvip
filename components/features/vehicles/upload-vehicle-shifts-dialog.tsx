@@ -6,8 +6,7 @@ import { Progress } from "@/components/ui/progress"
 import { Button } from "@/components/ui/button"
 import { createVehicleShift } from "@/lib/features/shifts/actions"
 import { VehicleShift } from "./vehicle-shifts"
-import { Input } from "../ui/input"
-import { Label } from "../ui/label"
+import { Input, Label } from "@/components/ui"
 import { useToast } from "@/hooks/use-toast"
 
 interface UploadVehicleShiftsDialogProps {
