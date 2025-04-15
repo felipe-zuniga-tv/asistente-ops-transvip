@@ -43,7 +43,10 @@ export function AppSidebar({ session, ...props }: AppSidebarProps) {
 	const path = usePathname()
 	const isChatRoute = path === Routes.CHAT
 	const [searchQuery, setSearchQuery] = React.useState("")
-	const { handleItemClick } = session ? useSidebarActions(session) : { handleItemClick: async () => { console.warn("Attempted sidebar action without session.") } }
+	const sidebarActions = useSidebarActions(session!)
+	const handleItemClick = session 
+		? sidebarActions.handleItemClick 
+		: async () => { console.warn("Attempted sidebar action without session.") }
 	const { state } = useSidebar()
 	const isCollapsed = state === "collapsed"
 
