@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
 import { cn } from '@/utils/ui'
 import { TransvipLogo } from "@/components/features/transvip/transvip-logo"
+import { ChatSession } from "@/types/domain/chat"
 
 export function BotCard({ children, className = "" }: { children: React.ReactNode, className: string }) {
 	return (
@@ -20,13 +21,13 @@ export function BotCard({ children, className = "" }: { children: React.ReactNod
 	)
 }
 
-export function UserMessage({ session, content }: { session?: any, content: string }) {
+export function UserMessage({ session, content }: { session?: ChatSession, content: string }) {
 	return (
 		<div className="chat-message user flex items-start">
 			<div className="flex flex-col gap-1 w-full">
 				{ content }
 				<div className="flex flex-row gap-0 justify-end items-center text-xs">
-					{ session && <span>{ session.user.fullName }</span>}
+					{ session && <span>{ session.user.full_name }</span>}
 				</div>
 			</div>
 		</div>

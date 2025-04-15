@@ -9,7 +9,7 @@ import { MemoizedReactMarkdown } from '@/components/ui/markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import { cn } from '@/utils/ui';
-
+import { ChatSession } from '@/types/domain/chat';
 export interface MessageProps {
   index: number;
   message: Message;
@@ -18,7 +18,7 @@ export interface MessageProps {
   setMessages: (messages: Message[] | ((messages: Message[]) => Message[])) => void;
   reload: (chatRequestOptions?: ChatRequestOptions) => Promise<string | null | undefined>;
   isReadonly: boolean;
-  session: any;
+  session: ChatSession;
 }
 
 function PurePreviewMessage({
@@ -80,7 +80,7 @@ function PurePreviewMessage({
         
         <div className="flex items-center justify-end gap-2 text-xs text-white mt-1">
           {message.role === 'user' ? (
-            <span>{session?.user?.fullName || 'Usuario'}</span>
+            <span>{session?.user?.full_name || 'Usuario'}</span>
           ) : (
             <div className="flex items-center gap-1">
               <TransvipLogo logoOnly colored={false} size={16} />

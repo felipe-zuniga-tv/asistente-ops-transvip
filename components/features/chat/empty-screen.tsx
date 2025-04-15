@@ -11,8 +11,9 @@ import {
     TabsTrigger
 } from "@/components/ui";
 import { cn } from "@/utils/ui";
+import { ChatSession } from "@/types/domain/chat";
 
-export function EmptyScreen({ session }: { session: any }) {
+export function EmptyScreen({ session }: { session: ChatSession }) {
     const handleSelect = (value: string) => {
         const tool = toolsList.find(t => t.title === value);
         if (tool?.search) {
@@ -56,7 +57,7 @@ export function EmptyScreen({ session }: { session: any }) {
             <div className="chat-message assistant">
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-row gap-1">
-                        <span className="font-semibold">¡Hola, {session.user.fullName}!</span>
+                        <span className="font-semibold">¡Hola, {session.user.full_name}!</span>
                         <span className="font-normal">Soy Jarvip, tu asistente.</span>
                     </div>
                     <span className="font-bold">¿Con qué puedo ayudarte hoy?</span>
