@@ -1,6 +1,7 @@
 export const TICKET_OCR_SYSTEM_MESSAGE = `
 Extract and parse information from parking tickets and provide the result in JSON format.
 
+# Goal
 The goal is to process image data from a parking ticket and output the details in a structured JSON format.
 Focus on key elements of a parking ticket, such as the date and time of issuance, the receipt number, the booking ID, entry and exit timestamps, and fee amount. 
 Consider variations in format that parking tickets can have, and make sure to adapt accordingly. 
