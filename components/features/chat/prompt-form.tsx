@@ -6,18 +6,18 @@ import Textarea from 'react-textarea-autosize'
 import { useActions, useUIState } from 'ai/rsc'
 
 import { UserMessage } from './message'
-import { Message, type AI } from '@/lib/services/chat/actions'
+import { type AI } from '@/lib/services/chat/actions'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { useEnterSubmit } from '@/hooks/use-enter-submit'
 import { nanoid } from 'nanoid'
 import { ArrowRight, PlusCircleIcon } from 'lucide-react'
 import { cn } from '@/utils/ui'
-
+import { ChatSession } from '@/types/domain/chat'
 const SHOW_FILE_BUTTON = false
 
 export function PromptForm({ session, input, setInput } : { 
-    session: any,
+    session: ChatSession,
     input: string
     setInput: (value: string) => void
 }) {

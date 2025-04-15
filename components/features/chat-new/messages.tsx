@@ -4,6 +4,7 @@ import { ChatRequestOptions, Message } from 'ai';
 import { memo, useRef, useEffect } from 'react';
 import { PreviewMessage } from './message';
 import { EmptyScreen } from './empty-screen';
+import { ChatSession } from '@/types/domain/chat';
 import equal from 'fast-deep-equal';
 
 interface MessagesProps {
@@ -13,7 +14,7 @@ interface MessagesProps {
   setMessages: (messages: Message[] | ((messages: Message[]) => Message[])) => void;
   reload: (chatRequestOptions?: ChatRequestOptions) => Promise<string | null | undefined>;
   isReadonly: boolean;
-  session: any;
+  session: ChatSession;
 }
 
 function useScrollToBottom() {

@@ -302,5 +302,5 @@ export interface ChatProps {
     id: string;
     initialMessages?: any[];
     className?: string;
-    session: any;
+    session: ChatSession;
 } 

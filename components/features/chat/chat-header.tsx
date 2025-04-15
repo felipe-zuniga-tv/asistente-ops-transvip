@@ -6,6 +6,7 @@ import { PlusIcon } from 'lucide-react';
 import { memo } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { TransvipLogo } from '@/components/features/transvip/transvip-logo';
+import { ChatSession } from '@/types/domain/chat';
 
 function PureChatHeader({
 	chatId,
@@ -14,7 +15,7 @@ function PureChatHeader({
 }: {
 	chatId: string;
 	isReadonly: boolean;
-	session: any;
+	session: ChatSession;
 }) {
 	const router = useRouter();
 

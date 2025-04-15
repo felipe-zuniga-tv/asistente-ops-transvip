@@ -1,14 +1,15 @@
 import { PromptForm } from './prompt-form'
 import { ButtonScrollToBottom } from '@/components/ui/button-scroll-to-bottom'
+import { ChatSession } from '@/types/domain/chat';
 
 export interface ChatPanelProps {
-    id?: string
-    title?: string
-    input: string
-    session: any
-    setInput: (value: string) => void
-    isAtBottom: boolean
-    scrollToBottom: () => void
+	id?: string;
+	title?: string;
+	input: string;
+	session: ChatSession;
+	setInput: (value: string) => void;
+	isAtBottom: boolean;
+	scrollToBottom: () => void;
 }
 
 export function ChatPanel({

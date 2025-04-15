@@ -8,12 +8,13 @@ import { ChatHeader } from '@/components/features/chat/chat-header';
 import { Messages } from './messages';
 import { MultimodalInput } from '../chat/multimodal-input';
 import { toast } from 'sonner';
+import { ChatSession } from '@/types/domain/chat';
 
 export interface ChatProps {
   id: string;
   initialMessages: Array<Message>;
   isReadonly?: boolean;
-  session: any;
+  session: ChatSession;
 }
 
 export function Chat({

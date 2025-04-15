@@ -11,6 +11,7 @@ import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
 import Image from 'next/image'
 import { useMessageSubmission } from '@/hooks/use-message-submission';
+import { ChatSession } from '@/types/domain/chat';
 
 const vehicleColor = [
     { name: 'BLANCO', code: '#ffffff', color: 'bg-white hover:bg-gray-100 text-black' },
@@ -33,7 +34,7 @@ const vehicleColor = [
 ]
 
 export function VehicleDetail({ session, vehicleInformation, content }: { 
-    session: any,
+    session: ChatSession,
     vehicleInformation: IVehicleDetail[]
     content: string 
 }) {

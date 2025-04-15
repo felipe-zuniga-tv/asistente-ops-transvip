@@ -2,8 +2,9 @@
 
 import { Button } from '@/components/ui/button';
 import { ExternalLinkIcon } from 'lucide-react';
+import { ChatSession } from '@/types/domain/chat';
 
-export function EmptyScreen({ session }: { session: any }) {
+export function EmptyScreen({ session }: { session: ChatSession }) {
 	const exampleMessages = [
 		{
 			heading: 'Consulta sobre turnos',
@@ -42,7 +43,7 @@ export function EmptyScreen({ session }: { session: any }) {
 	return (
 		<div className="w-full rounded-lg p-4 flex flex-col items-start gap-2">
 			<span className="text-lg font-semibold">
-				¡Bienvenido al Asistente de Operaciones Transvip!
+				¡Bienvenido al Asistente de Operaciones Transvip, {session.user.full_name}!
 			</span>
 			<p className="text-sm text-muted-foreground">
 				Este asistente está diseñado para ayudarte con consultas sobre operaciones, turnos, reservas y otras funciones del sistema.

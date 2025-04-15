@@ -32,9 +32,9 @@ import {
 } from '../badges/chat-badges';
 import { BookingIdBadge } from '../badges/booking-badge';
 import GoogleMapsButton from './google-maps-url-button';
-
 import { IBookingInfoOutput } from '@/types/domain/chat/models';
 import { buildGoogleMapsURL, buildWhatsappLink, formatChileanPeso } from '@/lib/services/utils/helpers';
+import { ChatSession } from '@/types/domain/chat';
 
 // Vehicle States to Show
 const STATES_TO_SHOW = [2, 4, 12, 0, 1, 15]
@@ -61,7 +61,7 @@ const MESSAGE_TEMPLATES = {
 } as const;
 
 export function BookingIdSearch({ session, searchResults, content }: {
-    session: any,
+    session: ChatSession,
     searchResults: IBookingInfoOutput[],
     content?: string
 }) {

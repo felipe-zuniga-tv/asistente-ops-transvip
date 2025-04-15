@@ -1,14 +1,14 @@
 'use client';
 
 import type { Attachment, ChatRequestOptions, CreateMessage, Message } from 'ai';
-import { memo, useRef, useEffect, useState, type Dispatch, type SetStateAction, type ChangeEvent } from 'react';
+import { memo, useRef, useEffect, type Dispatch, type SetStateAction } from 'react';
 import { toast } from 'sonner';
-import { SendIcon, PaperclipIcon, StopCircleIcon } from 'lucide-react';
+import { SendIcon, StopCircleIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/utils/ui';
 import equal from 'fast-deep-equal';
-
+import { ChatSession } from '@/types/domain/chat';
 interface MultimodalInputProps {
 	chatId: string;
 	input: string;
@@ -28,7 +28,7 @@ interface MultimodalInputProps {
 		chatRequestOptions?: ChatRequestOptions,
 	) => void;
 	className?: string;
-	session: any;
+	session: ChatSession;
 }
 
 function PureMultimodalInput({

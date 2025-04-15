@@ -6,13 +6,14 @@ import { AssistantMessageContent } from '../message';
 import { Badge, Button } from '@/components/ui';
 import DriverAvatar from '@/components/features/drivers/driver-avatar';
 import { CityBadge, DriverStatusBadge, LicenseExpirationBadge } from '../badges/chat-badges';
+import { ChatSession } from '@/types/domain/chat';
 import Image from 'next/image';
 import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
 
 export function DriverProfile({ session, driverProfile, content }: { 
-    session: any,
-    driverProfile: any
+    session: ChatSession,
+    driverProfile: IDriverProfile
     content: string 
 }) {
     const { submitMessage } = useMessageSubmission()
@@ -47,7 +48,7 @@ export function DriverProfile({ session, driverProfile, content }: {
                 <span className='font-bold'>Datos del Conductor</span>
             </div>
             <div className={'search-results-cards relative w-full flex flex-col gap-2 items-start'}>
-                <DriverProfileCard key={driverProfile.fleet_id} 
+                <DriverProfileCard key={driverProfile.id} 
                     result={driverProfile}
                     handleDriverClick={handleDriverClick}
                     handleVehicleClick={handleVehicleClick}
