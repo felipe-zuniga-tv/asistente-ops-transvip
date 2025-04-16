@@ -91,9 +91,21 @@ export const columns: ColumnDef<SalesResponse>[] = [
 	},
 	{
 		accessorKey: "phone_number",
-		header: () => <div className="text-center hidden">Teléfono</div>,
+		header: () => <div className="text-center">Teléfono</div>,
 		cell: ({ row }) => (
-			<div className="text-center hidden">{row.original.phone_number}</div>
+			<div className="text-center flex items-center gap-1 justify-center">
+				<div className="text-center">{row.original.country_code}</div>
+				<div className="text-center">{row.original.phone_number}</div>
+			</div>
+		),
+	},
+	{
+		accessorKey: "accommodation",
+		header: () => <div className="text-center">Alojamiento</div>,
+		cell: ({ row }) => (
+			<div className="text-center text-sm">
+				{row.original.accommodation || "-"}
+			</div>
 		),
 	},
 	{
