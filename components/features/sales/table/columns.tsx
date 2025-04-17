@@ -51,20 +51,20 @@ export const columns: ColumnDef<SalesResponse>[] = [
 	// },
 	{
 		accessorKey: "created_at",
-		header: () => <div className="text-center">Fecha solicitud</div>,
+		header: () => <div className="text-center w-[150px]">Fecha solicitud</div>,
 		cell: ({ row }) => (
-			<div className="text-center text-sm">
+			<div className="text-center text-sm w-[150px]">
 				{format(new Date(row.getValue("created_at")), 'dd/MM/yyyy HH:mm')}
 			</div>
 		),
 	},
 	{
 		accessorKey: "language",
-		header: () => <div className="text-center">Idioma</div>,
+		header: () => <div className="text-center w-[50px]">Idioma</div>,
 		cell: ({ row }) => {
 			const lang = languages.find(l => l.value === (row.original.language as Language));
 			return (
-				<div className="flex items-center justify-center gap-2 text-sm">
+				<div className="flex items-center justify-center gap-2 text-sm w-[50px]">
 					<span className="text-lg">{lang?.flag.split(" ")[0]}</span>
 					<span className="hidden">{lang?.label}</span>
 				</div>
@@ -115,9 +115,9 @@ export const columns: ColumnDef<SalesResponse>[] = [
 	},
 	{
 		accessorKey: "accommodation",
-		header: () => <div className="text-center">Alojamiento</div>,
+		header: () => <div className="text-center w-[300px]">Alojamiento</div>,
 		cell: ({ row }) => (
-			<div className="text-center text-sm">
+			<div className="text-center text-sm w-[300px] text-wrap">
 				{row.original.accommodation || "-"}
 			</div>
 		),

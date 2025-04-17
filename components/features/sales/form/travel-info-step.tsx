@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import {
 	Button,
 	Label,
 } from '@/components/ui'
 import { Loader2, ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
 import type { Country } from 'react-phone-number-input'
-import { getCountries, getCountryCallingCode, isPossiblePhoneNumber } from 'react-phone-number-input/input'
+import { getCountries, isPossiblePhoneNumber } from 'react-phone-number-input/input'
 // Use the standard PhoneInput component
 import PhoneInput from 'react-phone-number-input/input'
 import 'react-phone-number-input/style.css' // Import stylesheet for standard PhoneInput
