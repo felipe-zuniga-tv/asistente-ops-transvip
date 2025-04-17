@@ -73,18 +73,15 @@ export const columns: ColumnDef<SalesResponse>[] = [
 	},
 	{
 		accessorKey: "client_name_email",
-		header: () => <div className="text-center">Nombre / Teléfono / Email</div>,
+		header: () => <div className="text-center w-[210px]">Nombre / Teléfono / Email</div>,
 		cell: ({ row }) => (
-			<div className="text-center flex flex-col items-center gap-1 justify-center">
-				<div className="flex flex-row items-center gap-1 justify-center">
-					<div className="text-center text-sm">
-						{row.original.first_name} {row.original.last_name}
-					</div>
-					<span>·</span>
-					<div className="text-center flex items-center gap-1 justify-center">
-						<div className="text-center">{row.original.country_code}</div>
-						<div className="text-center">{row.original.phone_number}</div>
-					</div>
+			<div className="text-center flex flex-col items-center gap-0.5 justify-center w-[210px]">
+				<div className="text-center text-sm">
+					{row.original.first_name} {row.original.last_name}
+				</div>
+				<div className="text-center flex items-center gap-1 justify-center">
+					<span className="text-center">{row.original.country_code}</span>
+					<span className="text-center">{row.original.phone_number}</span>
 				</div>
 				<div className="text-center text-xs font-semibold">
 					{row.original.email}
@@ -92,34 +89,6 @@ export const columns: ColumnDef<SalesResponse>[] = [
 			</div>
 		),
 	},
-	// {
-	// 	accessorKey: "client_name",
-	// 	header: () => <div className="text-center">Nombre</div>,
-	// 	cell: ({ row }) => (
-	// 		<div className="text-center text-sm">
-	// 			{row.original.first_name} {row.original.last_name}
-	// 		</div>
-	// 	),
-	// },
-	// {
-	// 	accessorKey: "email",
-	// 	header: () => <div className="text-center">Email</div>,
-	// 	cell: ({ row }) => (
-	// 		<div className="text-center text-sm">
-	// 			{row.original.email}
-	// 		</div>
-	// 	),
-	// },
-	// {
-	// 	accessorKey: "phone_number",
-	// 	header: () => <div className="text-center hidden">Teléfono</div>,
-	// 	cell: ({ row }) => (
-	// 		<div className="text-center flex items-center gap-1 justify-center hidden">
-	// 			<div className="text-center">{row.original.country_code}</div>
-	// 			<div className="text-center">{row.original.phone_number}</div>
-	// 		</div>
-	// 	),
-	// },
 	{
 		accessorKey: "accommodation",
 		header: () => <div className="text-center w-[220px]">Alojamiento</div>,
@@ -190,8 +159,8 @@ export const columns: ColumnDef<SalesResponse>[] = [
 								variant="ghost"
 								size="sm"
 								className={`flex items-center gap-2 shadow w-36 ${isConfirmed
-										? "bg-yellow-100 text-black hover:bg-yellow-200"
-										: "bg-green-600 hover:bg-green-700 text-white hover:text-white"
+									? "bg-yellow-100 text-black hover:bg-yellow-200"
+									: "bg-green-600 hover:bg-green-700 text-white hover:text-white"
 									}`}
 							>
 								{isConfirmed ? (
