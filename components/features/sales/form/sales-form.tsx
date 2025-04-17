@@ -8,6 +8,9 @@ import { Progress } from '@/components/ui/progress'
 import { useToast } from '@/hooks/use-toast'
 import { getTranslation, type Language } from '@/lib/core/i18n/'
 import { createSalesResponse } from '@/lib/services/sales'
+// Import necessary types and functions from react-phone-number-input
+import type { Country } from 'react-phone-number-input';
+import { getCountries, getCountryCallingCode } from 'react-phone-number-input/input';
 
 // Form Steps
 import { LanguageStep } from './language-step'
@@ -27,6 +30,7 @@ interface SalesFormData {
 	email: string
 	phoneNumber: string
 	countryCode?: string
+	country?: Country
 	returnDateTime: Date | null
 	accommodation: string
 }
@@ -59,9 +63,64 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 	const totalSteps = 5
 	const t = getTranslation(formData.language)
 
+	// Helper function to find Country ISO code from calling code
+	const getCountryFromCode = (callingCode: string | undefined): Country | undefined => {
+		if (!callingCode) return undefined;
+		const numericCode = callingCode.replace('+', '');
+		const countries = getCountries();
+		return countries.find(country => getCountryCallingCode(country) === numericCode);
+	};
+
 	const updateFormData = (data: Partial<SalesFormData>) => {
-		setFormData(prev => ({ ...prev, ...data }))
-	}
+		let updatedData = { ...data };
+		let currentCountryCode = formData.countryCode;
+		let currentPhoneNumber = formData.phoneNumber;
+		let currentCountry = formData.country;
+	
+		// Determine the country code and phone number to use for cleaning/formatting
+		const countryCodeToUse = data.countryCode !== undefined ? data.countryCode : currentCountryCode;
+		const phoneNumberToUse = data.phoneNumber !== undefined ? data.phoneNumber : currentPhoneNumber;
+	
+		if (phoneNumberToUse && countryCodeToUse) {
+			// Ensure country code starts with '+' and remove duplicates
+			const cleanCountryCode = `+${(countryCodeToUse || '').replace(/^\+/, '')}`;
+			
+			// Clean the phone number: remove the determined country code prefix if present
+			let cleanPhoneNumber = (phoneNumberToUse || '').replace(/^\+/, ''); // Remove leading + if any
+			if (cleanPhoneNumber.startsWith(cleanCountryCode.replace('+', ''))) {
+				cleanPhoneNumber = cleanPhoneNumber.substring(cleanCountryCode.length - 1);
+			}
+			
+			// Find the corresponding Country ISO code
+			const countryFromCode = getCountryFromCode(cleanCountryCode);
+
+			// Update the data object passed to setFormData
+			updatedData = {
+				...updatedData,
+				countryCode: cleanCountryCode,
+				phoneNumber: cleanPhoneNumber,
+				country: data.country !== undefined ? data.country : countryFromCode, // Prioritize explicitly passed country
+			};
+
+			// If country was explicitly passed, ensure countryCode matches
+			if (data.country && !data.countryCode) {
+				updatedData.countryCode = `+${getCountryCallingCode(data.country)}`;
+			}
+
+		} else if (data.country && !countryCodeToUse) {
+			// Handle case where only country is set (e.g., from CountrySelect)
+			const newCountryCode = `+${getCountryCallingCode(data.country)}`;
+			updatedData = {
+				...updatedData,
+				country: data.country,
+				countryCode: newCountryCode,
+				// Reset phone number if country changes without a new number provided? Optional.
+				// phoneNumber: data.phoneNumber !== undefined ? data.phoneNumber : undefined, 
+			};
+		}
+	
+		setFormData(prev => ({ ...prev, ...updatedData }));
+	};
 
 	const nextStep = () => {
 		setStep(prev => Math.min(prev + 1, totalSteps))
@@ -162,6 +221,9 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 		}
 	}, [branchCode, branchName, formData, initialLanguage, onSuccess, t.error.description, t.error.title, t.success.description, t.success.title, toast]);
 
+	console.log(`step: ${step}`)
+	console.log(formData)
+
 	return (
 		<Card>
 			<CardContent className="pt-6">
@@ -199,6 +261,7 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 				{step === 3 && (
 					<TravelInfoStep
 						data={{
+							country: formData.country,
 							phoneNumber: formData.phoneNumber,
 							countryCode: formData.countryCode,
 							returnDateTime: formData.returnDateTime
@@ -224,8 +287,14 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 					<ConfirmationStep
 						formData={{
 							...formData,
+							language: formData.language,
+							firstName: formData.firstName,
+							lastName: formData.lastName,
+							email: formData.email,
 							phoneNumber: formData.phoneNumber,
-							countryCode: formData.countryCode
+							countryCode: formData.countryCode,
+							returnDateTime: formData.returnDateTime,
+							accommodation: formData.accommodation,
 						}}
 						translations={t.steps.confirmation}
 						onSubmit={handleSubmit}

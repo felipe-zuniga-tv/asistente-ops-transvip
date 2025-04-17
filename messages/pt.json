@@ -14,6 +14,7 @@
     "travel": {
       "title": "Informações de Viagem",
       "description": "Por favor, insira seus dados de contato e detalhes do voo de retorno",
+      "country": "País",
       "countryCode": "Código do País",
       "phoneNumber": "Número de Telefone",
       "returnDate": "Data de Retorno",
@@ -22,6 +23,7 @@
       "searchCountry": "Buscar país ou código...",
       "selectCountry": "Selecione um país",
       "noResults": "Nenhum resultado encontrado",
+      "noCountryFound": "Nenhum resultado encontrado",
       "select": "Selecione..."
     },
     "accommodation": {

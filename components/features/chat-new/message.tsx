@@ -10,6 +10,7 @@ import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import { cn } from '@/utils/ui';
 import { ChatSession } from '@/types/domain/chat';
+
 export interface MessageProps {
   index: number;
   message: Message;

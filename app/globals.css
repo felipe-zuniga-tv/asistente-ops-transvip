@@ -50,6 +50,7 @@
 
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
   .dark {
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
@@ -64,83 +65,107 @@
 
 @layer components {
   .auth-widths {
-		@apply w-[320px] xs:w-[360px] sm:w-[420px];
-	}
+    @apply w-[320px] xs:w-[360px] sm:w-[420px];
+  }
+
   .auth-form {
-		@apply m-0 px-0 border-0 rounded-none text-white flex flex-col gap-5;
-	}
+    @apply m-0 px-0 border-0 rounded-none text-white flex flex-col gap-5;
+  }
+
   .auth-btn {
     @apply bg-transvip-dark hover:bg-transvip text-white px-6 py-2.5 items-center justify-center flex rounded-lg;
   }
+
   .auth-input-field {
-		@apply w-full py-2 pl-4 rounded-lg placeholder:text-gray-500 text-black border border-gray-300;
-	}
+    @apply w-full py-2 pl-4 rounded-lg placeholder:text-gray-500 text-black border border-gray-300;
+  }
+
   .content-header-btn {
     @apply hover:bg-slate-500 bg-slate-700 hover:shadow-md text-white py-2 px-3 rounded-md;
   }
+
   .header-link {
     @apply text-foreground transition-colors hover:text-foreground min-w-fit;
   }
+
   .chat-message {
     @apply whitespace-normal text-sm xl:text-base leading-6 w-full shadow-md rounded-lg;
   }
+
   .chat-message.assistant {
     @apply bg-slate-600 text-white flex flex-col gap-3 p-3 md:p-4;
   }
+
   .chat-message.user {
     @apply bg-gray-200 text-gray-900 p-3 md:p-4 flex gap-3 items-center whitespace-normal;
   }
+
   .chat-message.start.options {
     @apply text-xs flex flex-row sm:flex-col gap-1 sm:gap-0 items-center h-full cursor-pointer rounded-xl transition-colors bg-gray-800 hover:bg-gray-600 text-white p-3 py-2.5 md:p-5 md:py-3 px-4;
   }
+
   .messages-list {
     @apply pt-0 w-full mx-auto grid auto-rows-max gap-4 max-w-[400px] xs:px-0;
   }
+
   .messages-list {
     @apply max-w-full lg:max-w-4xl xl:max-w-5xl;
   }
+
   .message-item {
     @apply w-full;
   }
+
   /* .search-results-card {
     @apply min-w-[320px] md:min-w-[400px];
   } */
   .search-results-card.booking-information {
     @apply bg-slate-100 gap-2 p-3 rounded-md text-slate-900;
   }
+
   .titles-font {
     @apply text-xs md:text-sm;
   }
+
   .detail-info-font {
     @apply text-xs md:text-sm lg:text-sm;
   }
+
   .card-info-detail {
     @apply flex flex-row gap-3 items-center justify-start detail-info-font;
   }
+
   .tools-btn {
     @apply text-slate-900 text-xs;
   }
+
   .info-section {
     @apply bg-white rounded-md text-slate-900 p-3;
   }
+
   .info-section {
     @apply flex flex-col gap-1 sm:gap-0 items-start justify-start w-full;
   }
+
   .booking-detail.main-card {
     @apply w-full p-3 px-2 bg-gray-200 rounded-md text-slate-900;
   }
+
   .booking-detail.main-card {
     @apply flex flex-col gap-2 md:gap-3;
   }
+
   .booking-detail.booking-badges {
     @apply flex flex-row gap-2 items-center justify-start;
   }
+
   .booking-detail.main-details,
   .booking-detail.info-customer,
   .booking-detail.info-directions,
   .booking-detail.info-vehicle {
     @apply flex flex-col gap-1 items-start justify-start w-full;
   }
+
   .date-tag {
     @apply min-w-[110px];
   }
@@ -150,6 +175,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }

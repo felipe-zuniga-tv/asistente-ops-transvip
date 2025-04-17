@@ -14,14 +14,16 @@
     "travel": {
       "title": "Información de Viaje",
       "description": "Por favor, ingresa tus datos de contacto y detalles del vuelo de regreso",
+      "country": "País",
       "countryCode": "Código de País",
-      "phoneNumber": "Número de Teléfono",
+      "phoneNumber": "Número de Teléfono (+56 9 1234 5678)",
       "returnDate": "Fecha de Regreso",
       "returnTime": "Hora de Regreso",
       "pickDate": "Selecciona una fecha",
       "searchCountry": "Buscar país o código...",
       "selectCountry": "Selecciona un país",
       "noResults": "Sin resultados",
+      "noCountryFound": "Sin resultados",
       "select": "Selecciona..."
     },
     "accommodation": {

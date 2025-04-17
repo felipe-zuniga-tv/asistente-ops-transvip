@@ -59,24 +59,6 @@ export const columns: ColumnDef<SalesResponse>[] = [
 		),
 	},
 	{
-		accessorKey: "client_name",
-		header: () => <div className="text-center">Nombre</div>,
-		cell: ({ row }) => (
-			<div className="text-center text-sm">
-				{row.original.first_name} {row.original.last_name}
-			</div>
-		),
-	},
-	{
-		accessorKey: "email",
-		header: () => <div className="text-center">Email</div>,
-		cell: ({ row }) => (
-			<div className="text-center text-sm">
-				{row.original.email}
-			</div>
-		),
-	},
-	{
 		accessorKey: "language",
 		header: () => <div className="text-center">Idioma</div>,
 		cell: ({ row }) => {
@@ -89,6 +71,38 @@ export const columns: ColumnDef<SalesResponse>[] = [
 			);
 		},
 	},
+	{
+		accessorKey: "client_name_email",
+		header: () => <div className="text-center">Nombre / Email</div>,
+		cell: ({ row }) => (
+			<div className="text-center flex flex-col items-center gap-1 justify-center">
+				<div className="text-center text-sm">
+					{row.original.first_name} {row.original.last_name}
+				</div>
+				<div className="text-center text-sm">
+					{row.original.email}
+				</div>
+			</div>
+		),
+	},
+	// {
+	// 	accessorKey: "client_name",
+	// 	header: () => <div className="text-center">Nombre</div>,
+	// 	cell: ({ row }) => (
+	// 		<div className="text-center text-sm">
+	// 			{row.original.first_name} {row.original.last_name}
+	// 		</div>
+	// 	),
+	// },
+	// {
+	// 	accessorKey: "email",
+	// 	header: () => <div className="text-center">Email</div>,
+	// 	cell: ({ row }) => (
+	// 		<div className="text-center text-sm">
+	// 			{row.original.email}
+	// 		</div>
+	// 	),
+	// },
 	{
 		accessorKey: "phone_number",
 		header: () => <div className="text-center">Teléfono</div>,

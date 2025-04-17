@@ -35,17 +35,23 @@ export const translations = {
       travel: {
         title: 'Información de Viaje',
         description: 'Por favor ingresa tus datos de contacto y vuelo de regreso',
+        country: 'País',
         countryCode: 'Código de País',
         phoneNumber: 'Número de Teléfono',
         returnDateTime: 'Fecha y Hora de Regreso',
         selectDate: 'Selecciona una fecha',
         selectCountry: 'Selecciona un país',
+        searchCountry: 'Buscar país...',
+        noCountryFound: 'País no encontrado',
         continue: 'Continuar',
         back: 'Volver',
         validation: {
           countryCode: 'Por favor selecciona un código de país.',
           phoneNumber: 'El número de teléfono debe tener al menos 6 dígitos.',
-          returnDateTime: 'Por favor selecciona una fecha y hora.'
+          returnDateTime: 'Por favor selecciona una fecha y hora.',
+          countryRequired: 'Por favor selecciona un código de país.',
+          phoneNumberRequired: 'El número de teléfono debe tener al menos 6 dígitos.',
+          phoneNumberInvalid: 'Por favor ingresa un número de teléfono válido.'
         }
       },
       accommodation: {
@@ -113,17 +119,23 @@ export const translations = {
       travel: {
         title: 'Travel Information',
         description: 'Please enter your contact and return flight details',
+        country: 'Country',
         countryCode: 'Country Code',
         phoneNumber: 'Phone Number',
         returnDateTime: 'Return Date & Time',
         selectDate: 'Pick a date',
         selectCountry: 'Select a country',
+        searchCountry: 'Search country...',
+        noCountryFound: 'Country not found',
         continue: 'Continue',
         back: 'Back',
         validation: {
           countryCode: 'Please select a country code.',
           phoneNumber: 'Phone number must be at least 6 digits.',
-          returnDateTime: 'Please select a date and time.'
+          returnDateTime: 'Please select a date and time.',
+          countryRequired: 'Please select a country code.',
+          phoneNumberRequired: 'Phone number must be at least 6 digits.',
+          phoneNumberInvalid: 'Please enter a valid phone number.'
         }
       },
       accommodation: {
@@ -191,17 +203,23 @@ export const translations = {
       travel: {
         title: 'Reiseinformationen',
         description: 'Bitte geben Sie Ihre Kontaktdaten und Rückflugdetails ein',
+        country: 'Land',
         countryCode: 'Ländervorwahl',
         phoneNumber: 'Telefonnummer',
         returnDateTime: 'Rückreisedatum und -zeit',
         selectDate: 'Datum auswählen',
         selectCountry: 'Ländervorwahl auswählen',
+        searchCountry: 'Land suchen...',
+        noCountryFound: 'Land nicht gefunden',
         continue: 'Weiter',
         back: 'Zurück',
         validation: {
           countryCode: 'Bitte wählen Sie eine Ländervorwahl aus.',
           phoneNumber: 'Die Telefonnummer muss mindestens 6 Ziffern haben.',
-          returnDateTime: 'Bitte wählen Sie ein Datum und eine Uhrzeit aus.'
+          returnDateTime: 'Bitte wählen Sie ein Datum und eine Uhrzeit aus.',
+          countryRequired: 'Bitte wählen Sie eine Ländervorwahl aus.',
+          phoneNumberRequired: 'Die Telefonnummer muss mindestens 6 Ziffern haben.',
+          phoneNumberInvalid: 'Bitte geben Sie eine gültige Telefonnummer ein.'
         }
       },
       accommodation: {
@@ -269,17 +287,23 @@ export const translations = {
       travel: {
         title: 'Informações de Viagem',
         description: 'Por favor, insira seus dados de contato e detalhes do voo de retorno',
+        country: 'País',
         countryCode: 'Código do País',
         phoneNumber: 'Número de Telefone',
         returnDateTime: 'Data e Hora de Retorno',
         selectDate: 'Selecione uma data',
         selectCountry: 'Selecione um país',
+        searchCountry: 'Buscar país...',
+        noCountryFound: 'País não encontrado',
         continue: 'Continuar',
         back: 'Voltar',
         validation: {
           countryCode: 'Por favor, selecione um código de país.',
           phoneNumber: 'O número de telefone deve ter pelo menos 6 dígitos.',
-          returnDateTime: 'Por favor, selecione uma data e um horário.'
+          returnDateTime: 'Por favor, selecione uma data e um horário.',
+          countryRequired: 'Por favor, selecione um código de país.',
+          phoneNumberRequired: 'O número de telefone deve ter pelo menos 6 dígitos.',
+          phoneNumberInvalid: 'Por favor, insira um número de telefone válido.'
         }
       },
       accommodation: {

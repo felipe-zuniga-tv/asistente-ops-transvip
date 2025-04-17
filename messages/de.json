@@ -14,6 +14,7 @@
     "travel": {
       "title": "Reiseinformationen",
       "description": "Bitte geben Sie Ihre Kontaktdaten und Rückflugdetails ein",
+      "country": "Land",
       "countryCode": "Ländervorwahl",
       "phoneNumber": "Telefonnummer",
       "returnDate": "Rückreisedatum",
@@ -22,6 +23,7 @@
       "searchCountry": "Land oder Code suchen...",
       "selectCountry": "Land auswählen",
       "noResults": "Keine Ergebnisse gefunden",
+      "noCountryFound": "Keine Ergebnisse gefunden",
       "select": "Wählen..."
     },
     "accommodation": {

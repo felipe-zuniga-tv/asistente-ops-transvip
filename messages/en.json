@@ -14,6 +14,7 @@
     "travel": {
       "title": "Travel Information",
       "description": "Please enter your contact and return flight details",
+      "country": "Country",
       "countryCode": "Country Code",
       "phoneNumber": "Phone Number",
       "returnDate": "Return Date",
@@ -22,6 +23,7 @@
       "searchCountry": "Search country or code...",
       "selectCountry": "Select country",
       "noResults": "No results found",
+      "noCountryFound": "No results found",
       "select": "Select..."
     },
     "accommodation": {
