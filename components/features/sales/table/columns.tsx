@@ -51,9 +51,9 @@ export const columns: ColumnDef<SalesResponse>[] = [
 	// },
 	{
 		accessorKey: "created_at",
-		header: () => <div className="text-center w-[150px]">Fecha solicitud</div>,
+		header: () => <div className="text-center w-[130px]">Fecha solicitud</div>,
 		cell: ({ row }) => (
-			<div className="text-center text-sm w-[150px]">
+			<div className="text-center text-sm w-[130px]">
 				{format(new Date(row.getValue("created_at")), 'dd/MM/yyyy HH:mm')}
 			</div>
 		),
@@ -73,13 +73,20 @@ export const columns: ColumnDef<SalesResponse>[] = [
 	},
 	{
 		accessorKey: "client_name_email",
-		header: () => <div className="text-center">Nombre / Email</div>,
+		header: () => <div className="text-center">Nombre / Teléfono / Email</div>,
 		cell: ({ row }) => (
 			<div className="text-center flex flex-col items-center gap-1 justify-center">
-				<div className="text-center text-sm">
-					{row.original.first_name} {row.original.last_name}
+				<div className="flex flex-row items-center gap-1 justify-center">
+					<div className="text-center text-sm">
+						{row.original.first_name} {row.original.last_name}
+					</div>
+					<span>·</span>
+					<div className="text-center flex items-center gap-1 justify-center">
+						<div className="text-center">{row.original.country_code}</div>
+						<div className="text-center">{row.original.phone_number}</div>
+					</div>
 				</div>
-				<div className="text-center text-sm">
+				<div className="text-center text-xs font-semibold">
 					{row.original.email}
 				</div>
 			</div>
@@ -103,30 +110,30 @@ export const columns: ColumnDef<SalesResponse>[] = [
 	// 		</div>
 	// 	),
 	// },
-	{
-		accessorKey: "phone_number",
-		header: () => <div className="text-center">Teléfono</div>,
-		cell: ({ row }) => (
-			<div className="text-center flex items-center gap-1 justify-center">
-				<div className="text-center">{row.original.country_code}</div>
-				<div className="text-center">{row.original.phone_number}</div>
-			</div>
-		),
-	},
+	// {
+	// 	accessorKey: "phone_number",
+	// 	header: () => <div className="text-center hidden">Teléfono</div>,
+	// 	cell: ({ row }) => (
+	// 		<div className="text-center flex items-center gap-1 justify-center hidden">
+	// 			<div className="text-center">{row.original.country_code}</div>
+	// 			<div className="text-center">{row.original.phone_number}</div>
+	// 		</div>
+	// 	),
+	// },
 	{
 		accessorKey: "accommodation",
-		header: () => <div className="text-center w-[300px]">Alojamiento</div>,
+		header: () => <div className="text-center w-[220px]">Alojamiento</div>,
 		cell: ({ row }) => (
-			<div className="text-center text-sm w-[300px] text-wrap">
+			<div className="text-center text-sm w-[220px] text-wrap">
 				{row.original.accommodation || "-"}
 			</div>
 		),
 	},
 	{
 		accessorKey: "return_datetime",
-		header: () => <div className="text-center">Fecha de retorno</div>,
+		header: () => <div className="text-center w-[130px]">Fecha de retorno</div>,
 		cell: ({ row }) => (
-			<div className="text-center text-sm">
+			<div className="text-center text-sm w-[130px]">
 				{row.original.return_date ? format(new Date(row.original.return_date), 'dd/MM/yyyy') : ''}
 				{row.original.return_time ? ` ${row.original.return_time.slice(0, 5)}` : ''}
 			</div>
@@ -174,19 +181,18 @@ export const columns: ColumnDef<SalesResponse>[] = [
 		header: () => <div className="text-center">Confirmar WhatsApp</div>,
 		cell: ({ row, table }) => {
 			const isConfirmed = row.original.whatsapp_confirmed;
-			
+
 			return (
 				<div className="text-center text-sm flex justify-center">
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
-							<Button 
-								variant="ghost" 
+							<Button
+								variant="ghost"
 								size="sm"
-								className={`flex items-center gap-2 shadow w-36 ${
-									isConfirmed 
-										? "bg-yellow-100 text-black hover:bg-yellow-200" 
+								className={`flex items-center gap-2 shadow w-36 ${isConfirmed
+										? "bg-yellow-100 text-black hover:bg-yellow-200"
 										: "bg-green-600 hover:bg-green-700 text-white hover:text-white"
-								}`}
+									}`}
 							>
 								{isConfirmed ? (
 									<>
