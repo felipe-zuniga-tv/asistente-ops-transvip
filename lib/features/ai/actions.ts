@@ -4,7 +4,8 @@ import { generateText } from "ai"
 import { google } from "@ai-sdk/google"
 import { CREATE_TEXT_PROMPT, EMAIL_TEXT_OPS_EXAMPLE, SYSTEM_MESSAGE } from "@/lib/core/config"
 
-const modelInstance = google('gemini-2.0-flash-exp')
+// Model with the lowest latency and cost
+const modelInstance = google('gemini-2.0-flash-lite')
 
 export async function createText({ objective, fleetTypes, vehicleTypes, referenceText, writingStyle, variations }: {
     objective: string

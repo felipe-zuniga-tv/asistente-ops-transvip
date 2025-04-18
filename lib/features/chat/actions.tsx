@@ -36,7 +36,8 @@ import { airportZones } from "@/lib/core/config/airport";
 import { getMTTVehiclesInfo } from "@/lib/services/mtt/actions";
 import { getSystemConfigs } from "@/lib/services/system";
 
-const GOOGLE_MODEL_NAME_DEFAULT = 'gemini-2.0-flash-exp'
+// const GOOGLE_MODEL_NAME_DEFAULT = 'gemini-2.0-flash-exp';
+const GOOGLE_MODEL_NAME_DEFAULT = 'gemini-2.5-flash-preview-04-17';
 
 async function submitUserMessage(content: string) {
 	"use server";

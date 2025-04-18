@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-
 import {
 	Form,
 	FormControl,
@@ -12,16 +11,14 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form"
-import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+	Input,
+	Button,
+} from "@/components/ui"
 import { updateSystemConfig } from "@/lib/features/admin/actions"
 import { ConfigCardContainer } from "@/components/ui/tables/config-card-container"
 import { useTransition } from "react"
@@ -29,14 +26,24 @@ import { useToast } from "@/hooks/use-toast"
 
 const GEMINI_MODELS = [
 	{
-		value: "gemini-2.0-flash-exp",
-		label: "Gemini 2.0 Flash (Experimental)",
-		description: "Modelo balanceado entre velocidad y calidad"
+		value: "gemini-2.5-flash-preview-04-17",
+		label: "Gemini 2.5 Flash (Preview)",
+		description: "Modelo más actualizado, gran precisión y velocidad"
 	},
 	{
-		value: "gemini-2.0-flash-lite-preview-02-05",
-		label: "Gemini 2.0 Flash Lite (Preview)",
-		description: "Modelo rápido y eficiente, ideal para respuestas cortas"
+		value: "gemini-2.5-pro-preview-03-25",
+		label: "Gemini 2.5 Pro (Preview)",
+		description: "Modelo más potente, ideal para respuestas elaboradas"
+	},
+	{
+		value: "gemini-2.0-flash",
+		label: "Gemini 2.0 Flash",
+		description: "Modelo balanceado entre velocidad y calidad, con soporte para generación multimodal, streaming en tiempo real y capacidades de pensamiento avanzadas"
+	},
+	{
+		value: "gemini-2.0-flash-lite",
+		label: "Gemini 2.0 Flash Lite",
+		description: "Modelo de bajo costo y baja latencia, optimizado para eficiencia"
 	},
 	{
 		value: "gemini-2.0-flash-thinking-exp-01-21",

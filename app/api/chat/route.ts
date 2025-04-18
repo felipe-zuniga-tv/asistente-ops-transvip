@@ -5,7 +5,8 @@ import { getSession } from '@/lib/core/auth';
 import { streamChat } from '@/lib/services/ai';
 
 // Fixed model that will be used for all chat requests
-const MODEL_NAME = 'gemini-2.0-flash-exp';
+// const MODEL_NAME = 'gemini-2.0-flash-exp';
+const MODEL_NAME = 'gemini-2.5-flash-preview-04-17';
 
 export async function POST(request: Request) {
 	const { id, messages }: { id: string; messages: Array<Message>; } = await request.json();

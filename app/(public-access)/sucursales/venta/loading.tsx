@@ -2,7 +2,7 @@ import { Card, CardContent, CardFooter, Skeleton } from "@/components/ui";
 
 export default function Loading() {
     return (
-        <div className="container max-w-2xl mx-auto p-4 sm:py-8">
+        <div className="container max-w-2xl mx-auto p-4 sm:p-8">
             <Card>
                 <CardContent className="pt-6">
                     <Skeleton className="h-2 w-full mb-4" />

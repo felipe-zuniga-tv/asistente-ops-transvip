@@ -8,7 +8,8 @@ import { google } from '@ai-sdk/google';
 import { SYSTEM_MESSAGE } from '@/lib/core/config/chat';
 
 // Initialize the Google AI client
-const GOOGLE_MODEL_NAME_DEFAULT = 'gemini-2.0-flash-exp';
+// const GOOGLE_MODEL_NAME_DEFAULT = 'gemini-2.0-flash';
+const GOOGLE_MODEL_NAME_DEFAULT = 'gemini-2.5-flash-preview-04-17';
 
 export interface StreamChatOptions {
   model: string;
