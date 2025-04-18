@@ -6,7 +6,7 @@ import Textarea from 'react-textarea-autosize'
 import { useActions, useUIState } from 'ai/rsc'
 
 import { UserMessage } from './message'
-import { type AI } from '@/lib/services/chat/actions'
+import { type AI } from '@/lib/features/chat/actions'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { useEnterSubmit } from '@/hooks/use-enter-submit'
