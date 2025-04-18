@@ -221,9 +221,6 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 		}
 	}, [branchCode, branchName, formData, initialLanguage, onSuccess, t.error.description, t.error.title, t.success.description, t.success.title, toast]);
 
-	console.log(`step: ${step}`)
-	console.log(formData)
-
 	return (
 		<Card>
 			<CardContent className="pt-6">
