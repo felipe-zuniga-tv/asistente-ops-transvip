@@ -100,7 +100,12 @@ export default function ResumenPage() {
 	return (
 		<Card className="w-full max-w-full mx-auto">
 			<CardHeader>
-				<CardTitle>Resumen Diario de Respuestas</CardTitle>
+				<CardTitle>
+					<div className="flex items-center gap-2">
+						Resumen Diario de Respuestas
+						<TrendingUp className="inline-block h-4 w-4" />
+					</div>
+				</CardTitle>
 				<CardDescription>
 					Número de respuestas recibidas por día (últimos días)
 				</CardDescription>
@@ -120,20 +125,15 @@ export default function ResumenPage() {
 							<XAxis dataKey="creation_date" tickLine={false} tickMargin={10} axisLine={false} />
 							<YAxis tickLine={false} axisLine={false} tickMargin={10} />
 							<ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />
-							<Bar dataKey="total_responses" fill="var(--color-total_responses)" />
+							<Bar dataKey="total_responses" fill="var(--color-total_responses)" label={{ fill: 'white', fontSize: 14 }} />
 							<Bar dataKey="es_cl_responses" fill="var(--color-es_cl_responses)" stackId="a" />
-							<Bar dataKey="en_us_responses" fill="var(--color-en_us_responses)" stackId="a" />
 							<Bar dataKey="pt_br_responses" fill="var(--color-pt_br_responses)" stackId="a" />
+							<Bar dataKey="en_us_responses" fill="var(--color-en_us_responses)" stackId="a" />
 							<Bar dataKey="de_de_responses" fill="var(--color-de_de_responses)" stackId="a" />
 						</BarChart>
 					</ChartContainer>
 				)}
 			</CardContent>
-			<CardFooter className="flex-col items-start gap-2 text-sm">
-				<div className="leading-none text-muted-foreground">
-					Total de respuestas diarias.
-				</div>
-			</CardFooter>
 		</Card>
 	)
 }
