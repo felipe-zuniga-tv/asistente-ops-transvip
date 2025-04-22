@@ -2,24 +2,20 @@
 
 import { useEffect, useState } from "react"
 import { TrendingUp, RefreshCw } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis, Legend } from "recharts"
-
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Legend } from "recharts"
 import {
 	Card,
 	CardContent,
 	CardDescription,
-	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card"
-import {
 	ChartConfig,
 	ChartContainer,
 	ChartTooltip,
 	ChartTooltipContent,
+	Skeleton,
+	Button,
 } from "@/components/ui"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Button } from "@/components/ui/button"
 
 // Define the expected structure of the data returned by the API
 interface DailyStat {

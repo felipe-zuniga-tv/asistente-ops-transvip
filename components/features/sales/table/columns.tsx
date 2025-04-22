@@ -73,9 +73,9 @@ export const columns: ColumnDef<SalesResponse>[] = [
 	},
 	{
 		accessorKey: "client_name_email",
-		header: () => <div className="text-center w-[210px]">Nombre / Teléfono / Email</div>,
+		header: () => <div className="text-center w-[240px]">Nombre / Teléfono / Email</div>,
 		cell: ({ row }) => (
-			<div className="text-center flex flex-col items-center gap-0.5 justify-center w-[210px]">
+			<div className="text-center flex flex-col items-center gap-0.5 justify-center w-[240px]">
 				<div className="text-center text-sm">
 					{row.original.first_name} {row.original.last_name}
 				</div>
