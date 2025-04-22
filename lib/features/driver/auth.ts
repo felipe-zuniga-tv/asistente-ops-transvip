@@ -4,7 +4,6 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { SignJWT, jwtVerify } from "jose"
 import type { DriverSession, DriverDetails } from '@/types/domain/driver'
-import { searchDriver, getDriverProfile } from '@/lib/services/driver'
 import { config as appConfig } from '@/lib/core/config/general'
 import { Routes } from '@/utils/routes'
 

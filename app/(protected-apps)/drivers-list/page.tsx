@@ -1,6 +1,6 @@
 import { Suspense } from "react"
 import { DriversDataTable } from "@/components/features/drivers/table"
-import { searchDrivers } from "@/lib/services/driver"
+import { searchDrivers } from "@/lib/features/driver"
 import SuspenseLoading from "@/components/ui/suspense"
 
 export default async function DriversPage() {

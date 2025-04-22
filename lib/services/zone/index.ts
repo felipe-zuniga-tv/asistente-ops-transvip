@@ -1,7 +1,9 @@
 import { getSession } from "@/lib/core/auth"
+import { airportZones } from "@/lib/core/config/airport"
 import { branches } from "@/lib/core/config"
-import { ZONA_ILUMINADA_CITY, ZONA_ILUMINADA_SERVICES, AIRPORT_ZONE_API_URL } from "@/lib/services/config/urls"
-import { getResponseFromURL } from "@/lib/services/utils/helpers"
+import { ZONA_ILUMINADA_CITY, ZONA_ILUMINADA_SERVICES, AIRPORT_ZONE_API_URL } from "@/lib/core/config/urls"
+import { getResponseFromURL } from "@/lib/core/utils/helpers"
+import { IAirportZone, IZonaIluminadaCity, IZonaIluminadaService } from "@/types/domain/chat/models"
 
 export async function getZonaIluminada(cityName = 'Santiago') {
     const session = await getSession()

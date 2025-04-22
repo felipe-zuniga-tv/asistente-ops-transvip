@@ -1,11 +1,13 @@
 'use server'
 
 import { format } from "date-fns"
-import { branches } from "@/lib/core/config"
-import { DRIVER_SEARCH_API_URL, DRIVER_PROFILE_API_URL, DRIVER_RATINGS_API_URL } from "@/lib/services/config/urls"
-import { getResponseFromURL, getAssignedVehicles } from "@/lib/services/utils/helpers"
+import { branches } from "@/lib/core/config/transvip-general"
+import { DRIVER_SEARCH_API_URL, DRIVER_PROFILE_API_URL, DRIVER_RATINGS_API_URL } from "@/lib/core/config/urls"
+import { getResponseFromURL, getAssignedVehicles } from "@/lib/core/utils/helpers"
 import { IDriverProfile } from "@/types/domain/chat/models"
 import { getAccessToken, buildUrlParams } from "@/utils/helpers"
+
+const MAX_RESULTS = 10
 
 export async function searchDriver(driverEmail: string, accessToken: string | null = null) {
     if (!accessToken) {

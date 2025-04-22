@@ -33,7 +33,7 @@ import {
 import { BookingIdBadge } from '../badges/booking-badge';
 import GoogleMapsButton from './google-maps-url-button';
 import { IBookingInfoOutput } from '@/types/domain/chat/models';
-import { buildGoogleMapsURL, buildWhatsappLink, formatChileanPeso } from '@/lib/services/utils/helpers';
+import { buildGoogleMapsURL, buildWhatsappLink, formatChileanPeso } from '@/lib/core/utils/helpers';
 import { ChatSession } from '@/types/domain/chat';
 
 // Vehicle States to Show

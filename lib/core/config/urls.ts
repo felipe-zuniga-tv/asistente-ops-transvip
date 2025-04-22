@@ -1,4 +1,4 @@
-import { buildAPIUrl } from "@/lib/services/utils/helpers"
+import { buildAPIUrl } from "@/lib/core/utils/helpers"
 
 export const VEHICLE_STATUS_API_URL         = buildAPIUrl(process.env.GET_VEHICLE_STATUS)
 export const VEHICLE_DETAIL_API_URL         = buildAPIUrl(process.env.GET_VEHICLE_DETAIL)

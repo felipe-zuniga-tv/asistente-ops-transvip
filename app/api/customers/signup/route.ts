@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { ADMIN_CUSTOMER_SIGNUP_API_URL } from '@/lib/services/config/urls';
+import { ADMIN_CUSTOMER_SIGNUP_API_URL } from '@/lib/core/config/urls';
 
 // Access Token for Sales Branches Forms
 const ACCESS_TOKEN = process.env.TOKEN_SALES_BRANCHES_FORMS
