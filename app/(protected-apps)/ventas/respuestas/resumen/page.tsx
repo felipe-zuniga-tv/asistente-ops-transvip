@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { TrendingUp } from "lucide-react"
+import { TrendingUp, RefreshCw } from "lucide-react"
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis, Legend } from "recharts"
 
 import {
@@ -19,6 +19,7 @@ import {
 	ChartTooltipContent,
 } from "@/components/ui"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Button } from "@/components/ui/button"
 
 // Define the expected structure of the data returned by the API
 interface DailyStat {
@@ -57,53 +58,65 @@ export default function ResumenPage() {
 	const [isLoading, setIsLoading] = useState(true)
 	const [error, setError] = useState<string | null>(null)
 
-	useEffect(() => {
-		async function fetchDailyStats() {
-			try {
-				setIsLoading(true)
-				setError(null)
-				// Fetch data from the API route
-				const response = await fetch("/api/ventas/respuestas/resumen")
+	// Extract fetch logic into a reusable function
+	async function fetchDailyStats() {
+		try {
+			setIsLoading(true)
+			setError(null)
+			// Fetch data from the API route
+			const response = await fetch("/api/ventas/respuestas/resumen")
 
-				if (!response.ok) {
-					// Attempt to read error message from response body
-					let errorMessage = `Error HTTP: ${response.status}`
-					try {
-						const errorData = await response.json()
-						if (errorData && errorData.error) {
-							errorMessage = errorData.error
-						}
-					} catch (jsonError) {
-						// Ignore if response body is not valid JSON
-						console.error("Failed to parse error response JSON:", jsonError)
+			if (!response.ok) {
+				// Attempt to read error message from response body
+				let errorMessage = `Error HTTP: ${response.status}`
+				try {
+					const errorData = await response.json()
+					if (errorData && errorData.error) {
+						errorMessage = errorData.error
 					}
-					throw new Error(errorMessage)
+				} catch (jsonError) {
+					// Ignore if response body is not valid JSON
+					console.error("Failed to parse error response JSON:", jsonError)
 				}
-
-				const data: DailyStat[] = await response.json()
-
-				console.log("data from API", data)
-
-				// Data is already formatted by the API route
-				setChartData(data || [])
-			} catch (err: any) {
-				setError(`Error al cargar estadísticas: ${err.message}`)
-				console.error(err)
-			} finally {
-				setIsLoading(false)
+				throw new Error(errorMessage)
 			}
-		}
 
-		fetchDailyStats()
-	}, []) // Removed supabase from dependencies
+			const data: DailyStat[] = await response.json()
+
+			console.log("data from API", data)
+
+			// Data is already formatted by the API route
+			setChartData(data || [])
+		} catch (err: any) {
+			setError(`Error al cargar estadísticas: ${err.message}`)
+			console.error(err)
+		} finally {
+			setIsLoading(false)
+		}
+	}
+
+	useEffect(() => {
+		fetchDailyStats() // Call the function on initial load
+	}, []) // Empty dependency array means this runs once on mount
 
 	return (
 		<Card className="w-full max-w-full mx-auto">
 			<CardHeader>
 				<CardTitle>
-					<div className="flex items-center gap-2">
-						Resumen Diario de Respuestas
-						<TrendingUp className="inline-block h-4 w-4" />
+					<div className="flex items-center justify-between">
+						<div className="flex items-center gap-2">
+							Resumen Diario de Respuestas
+							<TrendingUp className="inline-block h-4 w-4" />
+						</div>
+						<Button
+							variant="outline"
+							size="icon"
+							onClick={fetchDailyStats}
+							disabled={isLoading}
+							aria-label="Recargar datos"
+						>
+							<RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+						</Button>
 					</div>
 				</CardTitle>
 				<CardDescription>
