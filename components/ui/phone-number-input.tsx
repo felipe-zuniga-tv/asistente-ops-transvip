@@ -53,7 +53,6 @@ export const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
 	...rest // Pass remaining props like name, id, etc.
 }) => {
 	const setValue = (value: string | undefined) => {
-		console.log("setValue", value)
 		onChange(value)
 	}
 	return (

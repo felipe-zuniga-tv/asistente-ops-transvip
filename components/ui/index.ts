@@ -9,6 +9,7 @@ export * from "./calendar";
 export * from "./calendar-grid";
 export * from "./card";
 export * from "./card-title-content";
+export * from "./chart";
 export * from "./checkbox";
 export * from "./collapsible";
 export * from "./command";

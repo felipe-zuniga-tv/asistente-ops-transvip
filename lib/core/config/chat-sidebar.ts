@@ -28,6 +28,7 @@ import {
 	ClipboardList,
 	UserRound,
 	ChartBar,
+	BarChart3,
 } from "lucide-react"
 import { toolsList } from "./tools";
 import { SidebarItem } from "@/components/features/chat/panel/types";
@@ -89,15 +90,21 @@ const formsMenu: SidebarItem = {
 }
 
 const salesFormsMenu: SidebarItem = {
-	title: "Formularios Ventas",
+	title: "Formularios Sucursales",
 	url: '#',
 	icon: ListChecks,
 	active: false,
 	items: [
 		{
-			title: "Respuestas Sucursales",
+			title: "Respuestas",
 			url: Routes.SALES.RESPONSES,
 			icon: ListChecks,
+			active: true,
+		},
+		{
+			title: "Resumen Respuestas",
+			url: Routes.SALES.RESPONSES_SUMMARY,
+			icon: BarChart3,
 			active: true,
 		},
 	],

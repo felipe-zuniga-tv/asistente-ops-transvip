@@ -49,7 +49,7 @@ export async function getResponseFromURL(URL: string) {
         const output = await response.json();
         return output;
     } catch (e) {
-        console.log(e);
+        console.error(e);
         return null;
     }
 }
@@ -68,7 +68,7 @@ export async function postJSONRequest(URL: string, data: Record<string, any>) {
         const output = await response.json()
         return output;
     } catch (e) {
-        console.log(e)
+        console.error(e)
         return null;
     }
 }

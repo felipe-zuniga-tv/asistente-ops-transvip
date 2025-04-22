@@ -170,8 +170,6 @@ export function TicketUploadForm({ session }: TicketUploadFormProps) {
 				// Ensure booking_id is a string
 				const booking_id = ensureString(values.booking_id)
 
-				console.log('session', session)
-
 				// Create ticket with form data and image URL
 				await createTicket(session.driver_id, values.vehicle_number, booking_id, uploadedImageUrl, {
 					nro_boleta: values.nro_boleta,

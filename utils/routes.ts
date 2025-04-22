@@ -64,6 +64,7 @@ export const Routes = Object.freeze({
 	},
 	SALES: {
 		RESPONSES: '/ventas/respuestas',
+		RESPONSES_SUMMARY: '/ventas/respuestas/resumen',
 		BRANCH_RESPONSES: '/ventas/respuestas/:branch',
 	},
 	TEXT: {

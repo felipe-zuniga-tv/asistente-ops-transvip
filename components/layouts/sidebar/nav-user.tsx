@@ -28,8 +28,6 @@ import { ChatSession } from "@/types/domain/chat/models"
 export function NavUser({ user }: ChatSession) {
 	const { isMobile } = useSidebar()
 
-	console.log(user)
-
 	return (
 		<SidebarMenu>
 			<SidebarMenuItem>
