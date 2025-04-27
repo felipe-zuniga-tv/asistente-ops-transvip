@@ -150,21 +150,20 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 				timezone: new Date().getTimezoneOffset().toString(),
 			}
 
-			// const customerResponse = await fetch(Routes.API.CUSTOMER_SIGNUP, {
-			// 	method: 'POST',
-			// 	headers: {
-			// 		'Content-Type': 'application/json',
-			// 	},
-			// 	body: JSON.stringify(payload),
-			// });
+			const customerResponse = await fetch(Routes.API.CUSTOMER_SIGNUP, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(payload),
+			});
 
-			const customerResult = null
-			// const customerResult = await customerResponse.json();
+			const customerResult = await customerResponse.json();
 
-			// // Only proceed with sales response if customer account was created successfully
-			// if (!customerResult || 'error' in customerResult) {
-			// 	throw new Error('No fue posible crear el usuario en el sistema. Consulta en counter para avanzar.');
-			// }
+			// Only proceed with sales response if customer account was created successfully
+			if (!customerResult || 'error' in customerResult) {
+				throw new Error('No fue posible crear el usuario en el sistema. Consulta en counter para avanzar.');
+			}
 
 			// Format return date and time
 			const returnDate = formData.returnDate ? new Date(formData.returnDate).toISOString().split('T')[0] : null;
