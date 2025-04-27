@@ -116,7 +116,7 @@ export default function ResumenPage() {
 					</div>
 				</CardTitle>
 				<CardDescription>
-					Número de respuestas recibidas por día (últimos días)
+					Número de respuestas recibidas por día (últimos 7 días)
 				</CardDescription>
 			</CardHeader>
 			<CardContent>

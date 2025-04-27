@@ -14,8 +14,8 @@ export default async function BranchesPage({ searchParams }: { searchParams: { l
 
 	return (
 		<Card>
-			<CardHeader className="flex flex-col sm:flex-row gap-2 items-center justify-between border-b pb-6">
-				<div className="flex items-center gap-4">
+			<CardHeader className="space-y-0 flex flex-row gap-2 items-center justify-between border-b pb-6">
+				<div className="flex justify-start items-center gap-2">
 					<TransvipLogo size={20} />
 					<CardTitle className="text-2xl font-bold">Transvip</CardTitle>
 				</div>
@@ -32,7 +32,7 @@ export default async function BranchesPage({ searchParams }: { searchParams: { l
 				</div>
 
 				<div className="w-full flex flex-col gap-6">
-					<BranchesList branches={branchesWithSalesForm} language={language} />
+					<BranchesList branches={branchesWithSalesForm} t={t.branches} language={language} />
 				</div>
 			</CardContent>
 			<CardFooter className="bg-gray-200 rounded-b-lg p-0">

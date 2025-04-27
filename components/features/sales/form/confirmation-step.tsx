@@ -14,7 +14,8 @@ interface ConfirmationStepProps {
 		email: string
 		phoneNumber: string
 		countryCode?: string
-		returnDateTime: Date | null
+		returnDate: Date | null
+		returnTime: string | null
 		accommodation: string
 	}
 	translations: {
@@ -67,11 +68,19 @@ export function ConfirmationStep({ formData, translations, onSubmit }: Confirmat
 
 				<div>
 					<h3 className="font-bold text-transvip">{translations.returnFlight}</h3>
-					<p className="text-sm">
-						{formData.returnDateTime
-							? format(formData.returnDateTime, 'PPP', { locale: es })
-							: translations.notSpecified}
-					</p>
+					<div className="text-sm flex flex-row gap-2 items-center">
+						<span>
+							{formData.returnDate
+								? format(formData.returnDate, 'PPP', { locale: es })
+								: translations.notSpecified}
+						</span>
+						<span className="text-center">·</span>
+						<span>
+							{formData.returnTime
+								? formData.returnTime
+								: translations.notSpecified}
+						</span>
+					</div>
 				</div>
 
 				<div>
@@ -80,7 +89,7 @@ export function ConfirmationStep({ formData, translations, onSubmit }: Confirmat
 				</div>
 			</div>
 
-			<p className="text-sm text-muted-foreground animate-pulse">
+			<p className="text-sm text-muted-foreground animate-pulse p-2 rounded-md">
 				{translations.redirecting}
 			</p>
 		</div>

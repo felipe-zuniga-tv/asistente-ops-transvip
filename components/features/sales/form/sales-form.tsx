@@ -31,7 +31,8 @@ interface SalesFormData {
 	phoneNumber: string
 	countryCode?: string
 	country?: Country
-	returnDateTime: Date | null
+	returnDate: Date | null
+	returnTime: string | null
 	accommodation: string
 }
 
@@ -55,7 +56,8 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 		email: '',
 		phoneNumber: '',
 		countryCode: '',
-		returnDateTime: null,
+		returnDate: null,
+		returnTime: null,
 		accommodation: ''
 	})
 
@@ -148,24 +150,25 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 				timezone: new Date().getTimezoneOffset().toString(),
 			}
 
-			const customerResponse = await fetch(Routes.API.CUSTOMER_SIGNUP, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(payload),
-			});
+			// const customerResponse = await fetch(Routes.API.CUSTOMER_SIGNUP, {
+			// 	method: 'POST',
+			// 	headers: {
+			// 		'Content-Type': 'application/json',
+			// 	},
+			// 	body: JSON.stringify(payload),
+			// });
 
-			const customerResult = await customerResponse.json();
+			const customerResult = null
+			// const customerResult = await customerResponse.json();
 
-			// Only proceed with sales response if customer account was created successfully
-			if (!customerResult || 'error' in customerResult) {
-				throw new Error('No fue posible crear el usuario en el sistema. Consulta en counter para avanzar.');
-			}
+			// // Only proceed with sales response if customer account was created successfully
+			// if (!customerResult || 'error' in customerResult) {
+			// 	throw new Error('No fue posible crear el usuario en el sistema. Consulta en counter para avanzar.');
+			// }
 
 			// Format return date and time
-			const returnDate = formData.returnDateTime ? new Date(formData.returnDateTime).toISOString().split('T')[0] : null;
-			const returnTime = formData.returnDateTime ? new Date(formData.returnDateTime).toLocaleTimeString('es-CL', { hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit" }) : null;
+			const returnDate = formData.returnDate ? new Date(formData.returnDate).toISOString().split('T')[0] : null;
+			const returnTime = formData.returnTime ?? null;
 
 			const salesResult = await createSalesResponse({
 				branch_code: branchCode,
@@ -189,10 +192,10 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 			toast({
 				title: t.success.title,
 				description: t.success.description,
-				duration: 3000,
+				duration: 5000,
 			})
 
-			// Reset after 3 seconds
+			// Reset after 5 seconds
 			setTimeout(() => {
 				setStep(1)
 				setFormData({
@@ -202,24 +205,27 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 					email: '',
 					phoneNumber: '',
 					countryCode: '',
-					returnDateTime: null,
+					returnDate: null,
+					returnTime: null,
 					accommodation: ''
 				})
 				onSuccess?.()
-			}, 3000)
+			}, 5000)
 		} catch (error) {
 			console.error('Form submission error:', error)
 			toast({
 				title: t.error.title,
 				description: error instanceof Error ? error.message : t.error.description,
 				variant: 'destructive',
-				duration: 3000,
+				duration: 5000,
 			})
 			onSuccess?.()
 		} finally {
 			isSubmitting.current = false;
 		}
 	}, [branchCode, branchName, formData, initialLanguage, onSuccess, t.error.description, t.error.title, t.success.description, t.success.title, toast]);
+
+	console.log(formData)
 
 	return (
 		<Card>
@@ -261,7 +267,8 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 							country: formData.country,
 							phoneNumber: formData.phoneNumber,
 							countryCode: formData.countryCode,
-							returnDateTime: formData.returnDateTime
+							returnDate: formData.returnDate,
+							returnTime: formData.returnTime
 						}}
 						onChange={(data) => updateFormData(data)}
 						onNext={nextStep}
@@ -290,7 +297,8 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 							email: formData.email,
 							phoneNumber: formData.phoneNumber,
 							countryCode: formData.countryCode,
-							returnDateTime: formData.returnDateTime,
+							returnDate: formData.returnDate,
+							returnTime: formData.returnTime,
 							accommodation: formData.accommodation,
 						}}
 						translations={t.steps.confirmation}

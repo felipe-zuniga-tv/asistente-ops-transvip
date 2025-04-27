@@ -18,18 +18,40 @@ interface DateTimePickerProps {
 	onChange: (date: Date | undefined) => void
 	label: string
 	placeholder?: string
+	hourPlaceholder?: string
+	minutePlaceholder?: string
 	disabled?: boolean
 	id?: string
+	mode?: 'date' | 'time' | 'datetime'
 }
 
 export function DateTimePicker({
 	value,
 	onChange,
 	label,
-	placeholder = "Seleccionar fecha y hora",
+	placeholder,
+	hourPlaceholder,
+	minutePlaceholder,
 	disabled,
-	id
+	id,
+	mode = 'datetime'
 }: DateTimePickerProps) {
+	const showCalendar = mode === 'date' || mode === 'datetime';
+	const showTime = mode === 'time' || mode === 'datetime';
+
+	let defaultPlaceholder = "Seleccionar";
+	if (showCalendar && showTime) defaultPlaceholder = "Seleccionar fecha y hora";
+	else if (showCalendar) defaultPlaceholder = "Seleccionar fecha";
+	else if (showTime) defaultPlaceholder = "Seleccionar hora";
+	const finalPlaceholder = placeholder ?? defaultPlaceholder;
+
+	let formatString = "";
+	if (showCalendar && showTime) formatString = "PPP p";
+	else if (showCalendar) formatString = "PPP";
+	else if (showTime) formatString = "p";
+
+	const IconComponent = showTime && !showCalendar ? Clock : CalendarIcon;
+
 	const hours = Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, "0"))
 	const minutes = ["00", "15", "30", "45"]
 
@@ -39,13 +61,19 @@ export function DateTimePicker({
 
 	const handleDateSelect = (newDate: Date | undefined) => {
 		if (!newDate) {
-			onChange(undefined)
+			if (mode === 'date') {
+				onChange(undefined);
+			}
 			return
 		}
 
 		const currentDate = value ? new Date(value) : new Date()
-		newDate.setHours(currentDate.getHours())
-		newDate.setMinutes(currentDate.getMinutes())
+		if (showTime) {
+			newDate.setHours(currentDate.getHours())
+			newDate.setMinutes(currentDate.getMinutes())
+		} else {
+			newDate.setHours(0, 0, 0, 0);
+		}
 		onChange(newDate)
 	}
 
@@ -54,6 +82,7 @@ export function DateTimePicker({
 		if (!value) {
 			targetDate = new Date();
 			targetDate.setMinutes(parseInt(minute))
+			targetDate.setSeconds(0, 0);
 		} else {
 			targetDate = new Date(value)
 		}
@@ -66,6 +95,7 @@ export function DateTimePicker({
 		if (!value) {
 			targetDate = new Date();
 			targetDate.setHours(parseInt(hour))
+			targetDate.setSeconds(0, 0);
 		} else {
 			targetDate = new Date(value)
 		}
@@ -88,71 +118,79 @@ export function DateTimePicker({
 						disabled={disabled}
 					>
 						<div className="flex items-center gap-2">
-							<CalendarIcon className="h-4 w-4" />
-							{value ? (
-								format(value, "PPP p", { locale: es })
+							<IconComponent className="h-4 w-4" />
+							{value && formatString ? (
+								format(value, formatString, { locale: es })
 							) : (
-								<span>{placeholder}</span>
+								<span>{finalPlaceholder}</span>
 							)}
 						</div>
 					</Button>
 				</PopoverTrigger>
 				<PopoverContent className="w-auto p-0 flex" align="start">
-					<div>
-						<Calendar
-							mode="single"
-							selected={value ?? undefined}
-							onSelect={handleDateSelect}
-							disabled={(date) =>
-								date < new Date(new Date().setHours(0, 0, 0, 0))
-							}
-							initialFocus
-							locale={es}
-						/>
-					</div>
-					<Separator orientation="vertical" className="h-auto" />
-					<div className="p-4 flex flex-col justify-center min-w-[180px]">
-						<div className="flex items-center mb-4">
-							<Clock className="mr-2 h-4 w-4" />
-							<span className="text-sm font-medium">Seleccionar hora</span>
+					{showCalendar && (
+						<div>
+							<Calendar
+								mode="single"
+								selected={value ?? undefined}
+								onSelect={handleDateSelect}
+								disabled={(date) =>
+									date < new Date(new Date().setHours(0, 0, 0, 0))
+								}
+								initialFocus
+								locale={es}
+							/>
 						</div>
-						<div className="space-y-4">
-							<div className="grid gap-1">
-								<label htmlFor={`${id}-hour`} className="text-xs">
-									Hora
-								</label>
-								<Select value={hour} onValueChange={handleHourChange}>
-									<SelectTrigger id={`${id}-hour`}>
-										<SelectValue placeholder="Hora" />
-									</SelectTrigger>
-									<SelectContent>
-										{hours.map((h) => (
-											<SelectItem key={h} value={h}>
-												{h}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
-							</div>
-							<div className="grid gap-1">
-								<label htmlFor={`${id}-minute`} className="text-xs">
-									Minuto
-								</label>
-								<Select value={minute} onValueChange={handleMinuteChange}>
-									<SelectTrigger id={`${id}-minute`}>
-										<SelectValue placeholder="Minuto" />
-									</SelectTrigger>
-									<SelectContent>
-										{minutes.map((m) => (
-											<SelectItem key={m} value={m}>
-												{m}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
+					)}
+					{showCalendar && showTime && (
+						<Separator orientation="vertical" className="h-auto" />
+					)}
+					{showTime && (
+						<div className={cn("p-4 flex flex-col justify-center min-w-[180px]", !showCalendar && "w-full")}>
+							{showCalendar && (
+								<div className="flex items-center mb-4">
+									<Clock className="mr-2 h-4 w-4" />
+									<span className="text-sm font-medium">{finalPlaceholder}</span>
+								</div>
+							)}
+							<div className="flex flex-row justify-between gap-2 min-w-[180px] w-full">
+								<div className="grid gap-1 flex-1">
+									<label htmlFor={`${id}-hour`} className="text-xs">
+										{hourPlaceholder}
+									</label>
+									<Select value={hour} onValueChange={handleHourChange} disabled={disabled}>
+										<SelectTrigger id={`${id}-hour`}>
+											<SelectValue placeholder="Hora" />
+										</SelectTrigger>
+										<SelectContent>
+											{hours.map((h) => (
+												<SelectItem key={h} value={h}>
+													{h}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+								</div>
+								<div className="grid gap-1 flex-1">
+									<label htmlFor={`${id}-minute`} className="text-xs">
+										{minutePlaceholder}
+									</label>
+									<Select value={minute} onValueChange={handleMinuteChange} disabled={disabled}>
+										<SelectTrigger id={`${id}-minute`}>
+											<SelectValue placeholder="Minuto" />
+										</SelectTrigger>
+										<SelectContent>
+											{minutes.map((m) => (
+												<SelectItem key={m} value={m}>
+													{m}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+								</div>
 							</div>
 						</div>
-					</div>
+					)}
 				</PopoverContent>
 			</Popover>
 		</div>

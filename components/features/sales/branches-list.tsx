@@ -3,15 +3,19 @@
 import Link from 'next/link'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import type { Branch } from '@/lib/core/types/admin'
-import type { Language } from '@/lib/core/i18n'
+import type { Translation, Language } from '@/lib/core/i18n'
 import { Routes } from '@/utils/routes'
+
+// Define the type for the branches part of the translation
+type BranchesTranslation = Translation['branches']
 
 interface BranchesListProps {
     branches: Branch[]
+    t: BranchesTranslation // Expect only the branches translation
     language: Language
 }
 
-export function BranchesList({ branches, language }: BranchesListProps) {
+export function BranchesList({ branches, t, language }: BranchesListProps) {
     if (branches.length === 0) {
         return (
             <div className="text-center text-muted-foreground">
@@ -29,7 +33,7 @@ export function BranchesList({ branches, language }: BranchesListProps) {
                 >
                     <Card className="h-full hover:bg-transvip/80 hover:text-white transition-colors">
                         <CardHeader className="text-center">
-                            <CardTitle className="text-2xl font-bold">{branch.name}</CardTitle>
+                            <CardTitle className="text-2xl font-bold">{t.branchLocationPrefix} {branch.name}</CardTitle>
                         </CardHeader>
                     </Card>
                 </Link>

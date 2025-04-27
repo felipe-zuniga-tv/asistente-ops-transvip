@@ -3,9 +3,10 @@ export * from './index';
 export const translations = {
   'es-CL': {
     branches: {
-      title: 'Sucursales Transvip',
-      description: 'Selecciona una sucursal para comenzar tu reserva',
-      bookService: 'Reservar Servicio'
+      title: 'Bienvenido a Transvip',
+      description: 'Indícame dónde te encuentras para comenzar tu reserva',
+      bookService: 'Reservar Servicio',
+      branchLocationPrefix: 'Estoy en'
     },
     steps: {
       language: {
@@ -38,18 +39,24 @@ export const translations = {
         country: 'País',
         countryCode: 'Código de País',
         phoneNumber: 'Número de Teléfono',
+        returnDate: 'Fecha de tu vuelo de regreso',
+        returnTime: 'Hora de despegue de tu vuelo de regreso',
         returnDateTime: 'Fecha y Hora de Regreso',
         selectDate: 'Selecciona una fecha',
+        selectTime: 'Selecciona una hora',
+        hourPlaceholder: 'Hora',
+        minutePlaceholder: 'Minuto',
         selectCountry: 'Selecciona un país',
         searchCountry: 'Buscar país...',
         noCountryFound: 'País no encontrado',
         continue: 'Continuar',
         back: 'Volver',
         validation: {
-          countryCode: 'Por favor selecciona un código de país.',
           phoneNumber: 'El número de teléfono debe tener al menos 6 dígitos.',
           returnDateTime: 'Por favor selecciona una fecha y hora.',
-          countryRequired: 'Por favor selecciona un código de país.',
+          returnDateRequired: 'Por favor selecciona una fecha.',
+          returnTimeRequired: 'Por favor selecciona una hora.',
+          countryRequired: 'Selecciona un código de país.',
           phoneNumberRequired: 'El número de teléfono debe tener al menos 6 dígitos.',
           phoneNumberInvalid: 'Por favor ingresa un número de teléfono válido.'
         }
@@ -70,7 +77,7 @@ export const translations = {
         description: 'Tu información ha sido enviada exitosamente',
         personalInfo: 'Información Personal',
         contactInfo: 'Información de Contacto',
-        returnFlight: 'Vuelo de Regreso',
+        returnFlight: 'Fecha y Hora de vuelo de Regreso',
         accommodation: 'Alojamiento',
         notSpecified: 'No especificado',
         redirecting: 'Redirigiendo a la página principal...'
@@ -87,9 +94,10 @@ export const translations = {
   },
   'en-US': {
     branches: {
-      title: 'Transvip Branches',
-      description: 'Select a branch to start your booking',
-      bookService: 'Book Service'
+      title: 'Welcome to Transvip',
+      description: 'Indicate where you are to start your booking',
+      bookService: 'Book Service',
+      branchLocationPrefix: "I'm in"
     },
     steps: {
       language: {
@@ -122,18 +130,24 @@ export const translations = {
         country: 'Country',
         countryCode: 'Country Code',
         phoneNumber: 'Phone Number',
+        returnDate: 'Departure Date of your return flight',
+        returnTime: 'Departure Time of your return flight',
         returnDateTime: 'Return Date & Time',
         selectDate: 'Pick a date',
+        selectTime: 'Pick a time',
         selectCountry: 'Select a country',
         searchCountry: 'Search country...',
         noCountryFound: 'Country not found',
+        hourPlaceholder: 'Hour',
+        minutePlaceholder: 'Minute',
         continue: 'Continue',
         back: 'Back',
         validation: {
-          countryCode: 'Please select a country code.',
           phoneNumber: 'Phone number must be at least 6 digits.',
           returnDateTime: 'Please select a date and time.',
-          countryRequired: 'Please select a country code.',
+          returnDateRequired: 'Please select a date.',
+          returnTimeRequired: 'Please select a time.',
+          countryRequired: 'Select a country code.',
           phoneNumberRequired: 'Phone number must be at least 6 digits.',
           phoneNumberInvalid: 'Please enter a valid phone number.'
         }
@@ -154,7 +168,7 @@ export const translations = {
         description: 'Your information has been submitted successfully',
         personalInfo: 'Personal Information',
         contactInfo: 'Contact Information',
-        returnFlight: 'Return Flight',
+        returnFlight: 'Return Flight Date & Time',
         accommodation: 'Accommodation',
         notSpecified: 'Not specified',
         redirecting: 'Redirecting to home page...'
@@ -171,9 +185,10 @@ export const translations = {
   },
   'de-DE': {
     branches: {
-      title: 'Transvip Filialen',
-      description: 'Wählen Sie eine Filiale aus, um Ihre Buchung zu beginnen',
-      bookService: 'Service buchen'
+      title: 'Willkommen bei Transvip',
+      description: 'Indikieren Sie, wo Sie sind, um Ihre Buchung zu beginnen',
+      bookService: 'Service buchen',
+      branchLocationPrefix: 'Ich bin in'
     },
     steps: {
       language: {
@@ -206,18 +221,24 @@ export const translations = {
         country: 'Land',
         countryCode: 'Ländervorwahl',
         phoneNumber: 'Telefonnummer',
+        returnDate: 'Rückreisedatum',
+        returnTime: 'Abflugzeit Ihres Rückflugs',
+        hourPlaceholder: 'Stunde',
+        minutePlaceholder: 'Minute',
         returnDateTime: 'Rückreisedatum und -zeit',
         selectDate: 'Datum auswählen',
+        selectTime: 'Zeit auswählen',
         selectCountry: 'Ländervorwahl auswählen',
         searchCountry: 'Land suchen...',
         noCountryFound: 'Land nicht gefunden',
         continue: 'Weiter',
         back: 'Zurück',
         validation: {
-          countryCode: 'Bitte wählen Sie eine Ländervorwahl aus.',
           phoneNumber: 'Die Telefonnummer muss mindestens 6 Ziffern haben.',
           returnDateTime: 'Bitte wählen Sie ein Datum und eine Uhrzeit aus.',
-          countryRequired: 'Bitte wählen Sie eine Ländervorwahl aus.',
+          returnDateRequired: 'Bitte wählen Sie ein Datum aus.',
+          returnTimeRequired: 'Bitte wählen Sie eine Uhrzeit aus.',
+          countryRequired: 'Wählen Sie eine Ländervorwahl aus.',
           phoneNumberRequired: 'Die Telefonnummer muss mindestens 6 Ziffern haben.',
           phoneNumberInvalid: 'Bitte geben Sie eine gültige Telefonnummer ein.'
         }
@@ -238,7 +259,7 @@ export const translations = {
         description: 'Ihre Informationen wurden erfolgreich übermittelt',
         personalInfo: 'Persönliche Informationen',
         contactInfo: 'Kontaktinformationen',
-        returnFlight: 'Rückflug',
+        returnFlight: 'Rückflugdatum und -zeit',
         accommodation: 'Unterkunft',
         notSpecified: 'Nicht angegeben',
         redirecting: 'Weiterleitung zur Startseite...'
@@ -255,9 +276,10 @@ export const translations = {
   },
   'pt-BR': {
     branches: {
-      title: 'Filiais Transvip',
-      description: 'Selecione uma filial para iniciar sua reserva',
-      bookService: 'Reservar Serviço'
+      title: 'Bem-vindo à Transvip',
+      description: 'Indique onde você está para começar sua reserva',
+      bookService: 'Reservar Serviço',
+      branchLocationPrefix: 'Estou em'
     },
     steps: {
       language: {
@@ -290,18 +312,24 @@ export const translations = {
         country: 'País',
         countryCode: 'Código do País',
         phoneNumber: 'Número de Telefone',
+        returnDate: 'Data de voo de retorno',
+        returnTime: 'Hora de voo de retorno',
         returnDateTime: 'Data e Hora de Retorno',
         selectDate: 'Selecione uma data',
+        selectTime: 'Selecione uma hora',
+        hourPlaceholder: 'Hora',
+        minutePlaceholder: 'Minuto',
         selectCountry: 'Selecione um país',
         searchCountry: 'Buscar país...',
         noCountryFound: 'País não encontrado',
         continue: 'Continuar',
         back: 'Voltar',
         validation: {
-          countryCode: 'Por favor, selecione um código de país.',
           phoneNumber: 'O número de telefone deve ter pelo menos 6 dígitos.',
           returnDateTime: 'Por favor, selecione uma data e um horário.',
-          countryRequired: 'Por favor, selecione um código de país.',
+          returnDateRequired: 'Por favor, selecione uma data.',
+          returnTimeRequired: 'Por favor, selecione uma hora.',
+          countryRequired: 'Selecione um código de país.',
           phoneNumberRequired: 'O número de telefone deve ter pelo menos 6 dígitos.',
           phoneNumberInvalid: 'Por favor, insira um número de telefone válido.'
         }
@@ -322,7 +350,7 @@ export const translations = {
         description: 'Suas informações foram enviadas com sucesso',
         personalInfo: 'Informações Pessoais',
         contactInfo: 'Informações de Contato',
-        returnFlight: 'Voo de Retorno',
+        returnFlight: 'Data e Hora de voo de Retorno',
         accommodation: 'Hospedagem',
         notSpecified: 'Não especificado',
         redirecting: 'Redirecionando para a página inicial...'

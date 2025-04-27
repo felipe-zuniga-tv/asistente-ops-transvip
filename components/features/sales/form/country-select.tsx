@@ -28,7 +28,7 @@ const FlagComponent = ({ country, countryName }: { country: Country; countryName
 	const Flag = flags[country]
 
 	return (
-		<span className="flex h-4 w-6 overflow-hidden rounded-sm" title={countryName}>
+		<span className="flex h-4 w-4 overflow-hidden rounded-sm" title={countryName}>
 			{Flag ? (
 				<Flag title={countryName} />
 			) : (
@@ -69,7 +69,7 @@ export function CountrySelect({ value, onChange, disabled, translations }: Count
 					variant="outline"
 					role="combobox"
 					aria-expanded={open}
-					className="w-full justify-between h-9"
+					className="w-full justify-between h-9 px-3"
 					disabled={disabled}
 				>
 					{selectedCountry ? (
@@ -83,7 +83,7 @@ export function CountrySelect({ value, onChange, disabled, translations }: Count
 					<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+			<PopoverContent className="w-[--radix-popover-trigger-width] min-w-[220px] p-0">
 				<Command>
 					<CommandInput placeholder={translations.searchCountry} />
 					<CommandList>

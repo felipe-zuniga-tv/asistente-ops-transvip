@@ -4,6 +4,7 @@ import { useState } from 'react'
 import {
 	Button,
 	Label,
+	TimePickerInput,
 } from '@/components/ui'
 import { Loader2, ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
 import type { Country } from 'react-phone-number-input'
@@ -17,12 +18,14 @@ import { CountrySelect } from './country-select'
 interface TravelInfoStepProps {
 	data: {
 		country?: Country
-		returnDateTime: Date | null
+		returnDate: Date | null
+		returnTime: string | null
 		countryCode?: string
 		phoneNumber?: string
 	}
 	onChange: (data: {
-		returnDateTime?: Date | null
+		returnDate?: Date | null
+		returnTime?: string | null
 		countryCode?: string
 		phoneNumber?: string
 		country?: Country
@@ -34,8 +37,12 @@ interface TravelInfoStepProps {
 		description: string
 		country: string
 		phoneNumber: string
-		returnDateTime: string
+		returnDate: string
+		returnTime: string
 		selectDate: string
+		selectTime: string
+		hourPlaceholder: string
+		minutePlaceholder: string
 		selectCountry: string
 		searchCountry: string
 		noCountryFound: string
@@ -46,8 +53,31 @@ interface TravelInfoStepProps {
 			countryRequired: string
 			phoneNumberRequired: string
 			phoneNumberInvalid: string // Added for more specific validation
+			returnDateRequired: string
+			returnTimeRequired: string
 		}
 	}
+}
+
+// Helper to parse "HH:mm" string to Date for the picker
+function parseTimeString(timeString: string | null): Date | null {
+	if (!timeString) return null;
+	const parts = timeString.split(':');
+	if (parts.length !== 2) return null;
+	const hours = parseInt(parts[0], 10);
+	const minutes = parseInt(parts[1], 10);
+	if (isNaN(hours) || isNaN(minutes) || hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return null;
+	const date = new Date();
+	date.setHours(hours, minutes, 0, 0);
+	return date;
+}
+
+// Helper to format Date from picker to "HH:mm" string
+function formatTimeValue(date: Date | undefined | null): string | null {
+	if (!date) return null;
+	const hours = date.getHours().toString().padStart(2, '0');
+	const minutes = date.getMinutes().toString().padStart(2, '0');
+	return `${hours}:${minutes}`;
 }
 
 // Validation functions
@@ -70,13 +100,19 @@ function validatePhoneNumber(phoneNumber: string | undefined, country: Country |
 	return null;
 }
 
-function validateReturnDateTime(returnDateTime: Date | null): string | null {
-	if (!returnDateTime) {
+function validateReturnDate(returnDate: Date | null): string | null {
+	if (!returnDate) {
 		return 'validation.returnDateTime';
 	}
 	return null;
 }
 
+function validateReturnTime(returnTime: string | null): string | null {
+	if (!returnTime) {
+		return 'validation.returnDateTime';
+	}
+	return null;
+}
 
 export function TravelInfoStep({
 	data,
@@ -88,29 +124,33 @@ export function TravelInfoStep({
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const [selectedCountry, setSelectedCountry] = useState<Country | undefined>(data.country);
 	const [phoneNumber, setPhoneNumber] = useState<string | undefined>(`${data.countryCode}${data.phoneNumber}`);
-	const [returnDateTime, setReturnDateTime] = useState<Date | null>(data.returnDateTime);
+	const [returnDate, setReturnDate] = useState<Date | null>(data.returnDate);
+	const [returnTime, setReturnTime] = useState<string | null>(data.returnTime);
 
 	const [errors, setErrors] = useState<{
 		country?: string;
 		phoneNumber?: string;
-		returnDateTime?: string;
+		returnDate?: string;
+		returnTime?: string;
 	}>({});
 
 	const handleValidation = () => {
 		const countryError = validateCountry(selectedCountry);
 		const phoneError = validatePhoneNumber(phoneNumber, selectedCountry);
-		const dateTimeError = validateReturnDateTime(returnDateTime);
+		const dateError = validateReturnDate(returnDate);
+		const timeError = validateReturnTime(returnTime);
 
 		const newErrors = {
-			country: countryError ? translations.validation[countryError as keyof typeof translations.validation] : undefined,
-			phoneNumber: phoneError ? translations.validation[phoneError as keyof typeof translations.validation] : undefined,
-			returnDateTime: dateTimeError ? translations.validation[dateTimeError as keyof typeof translations.validation] : undefined,
+			country: countryError ? translations.validation["countryRequired"] : undefined,
+			phoneNumber: phoneError ? translations.validation["phoneNumberRequired"] : undefined,
+			returnDate: dateError ? translations.validation["returnDateRequired"] : undefined,
+			returnTime: timeError ? translations.validation["returnTimeRequired"] : undefined,
 		};
 
 		setErrors(newErrors);
 
 		// Return true if there are no errors
-		return !newErrors.country && !newErrors.phoneNumber && !newErrors.returnDateTime;
+		return !newErrors.country && !newErrors.phoneNumber && !newErrors.returnDate && !newErrors.returnTime;
 	};
 
 	async function handleNext() {
@@ -121,7 +161,8 @@ export function TravelInfoStep({
 		try {
 			setIsSubmitting(true)
 			onChange({
-				returnDateTime: returnDateTime,
+				returnDate: returnDate,
+				returnTime: returnTime,
 				country: selectedCountry,
 				phoneNumber: phoneNumber,
 			})
@@ -153,13 +194,22 @@ export function TravelInfoStep({
 		setErrors(prev => ({ ...prev, phoneNumber: phoneError ? translations.validation[phoneError as keyof typeof translations.validation] : undefined }));
 	};
 
-	const handleDateTimeChange = (newDateTime: Date | undefined) => {
-		const date = newDateTime ?? null;
-		setReturnDateTime(date);
-		onChange({ returnDateTime: date });
+	const handleDateChange = (newDate: Date | undefined) => {
+		const date = newDate ?? null;
+		setReturnDate(date);
+		onChange({ returnDate: date });
 
-		const dateTimeError = validateReturnDateTime(date);
-		setErrors(prev => ({ ...prev, returnDateTime: dateTimeError ? translations.validation[dateTimeError as keyof typeof translations.validation] : undefined }));
+		const dateError = validateReturnDate(date);
+		setErrors(prev => ({ ...prev, returnDate: dateError ? translations.validation[dateError as keyof typeof translations.validation] : undefined }));
+	}
+
+	const handleTimeChange = (newTimeDate: Date | undefined) => {
+		const timeString = formatTimeValue(newTimeDate);
+		setReturnTime(timeString);
+		onChange({ returnTime: timeString });
+
+		const timeError = validateReturnTime(timeString);
+		setErrors(prev => ({ ...prev, returnTime: timeError ? translations.validation[timeError as keyof typeof translations.validation] : undefined }));
 	}
 
 	return (
@@ -171,11 +221,11 @@ export function TravelInfoStep({
 				</p>
 			</div>
 
-			<div className="flex flex-col gap-4">
+			<div className="flex flex-col gap-2">
 				{/* Phone Number Input Group */}
 				<div className="flex gap-1 items-start">
 					{/* Country Select */}
-					<div className="space-y-0 w-2/5 flex flex-col gap-1">
+					<div className="space-y-0 w-1/2 sm:w-2/5 flex flex-col gap-1">
 						<Label htmlFor="country-select" className="text-sm font-medium">{translations.phoneNumber}</Label>
 						<CountrySelect
 							value={selectedCountry}
@@ -214,18 +264,37 @@ export function TravelInfoStep({
 					</div>
 				</div>
 
-				{/* Date Time Picker */}
+				{/* Date Picker */}
 				<div className="flex flex-col gap-1">
 					<DateTimePicker
-						id="return-date-time"
-						value={returnDateTime}
-						onChange={handleDateTimeChange}
-						label={translations.returnDateTime}
+						id="return-date"
+						mode="date"
+						value={returnDate}
+						onChange={handleDateChange}
+						label={translations.returnDate}
 						placeholder={translations.selectDate}
 						disabled={isSubmitting}
 					/>
 					<div className="h-5 text-xs text-destructive">
-						{errors.returnDateTime && <span>{errors.returnDateTime}</span>}
+						{errors.returnDate && <span>{errors.returnDate}</span>}
+					</div>
+				</div>
+
+				{/* Time Picker */}
+				<div className="flex flex-col gap-1">
+					<DateTimePicker
+						id="return-time"
+						mode="time"
+						value={parseTimeString(returnTime)}
+						onChange={handleTimeChange}
+						label={translations.returnTime}
+						placeholder={translations.selectTime}
+						hourPlaceholder={translations.hourPlaceholder}
+						minutePlaceholder={translations.minutePlaceholder}
+						disabled={isSubmitting}
+					/>
+					<div className="h-5 text-xs text-destructive">
+						{errors.returnTime && <span>{errors.returnTime}</span>}
 					</div>
 				</div>
 
@@ -245,7 +314,7 @@ export function TravelInfoStep({
 						type="button" // Change to button type
 						onClick={handleNext} // Use custom handler
 						className="w-1/2 h-10"
-						disabled={isSubmitting || !!errors.country || !!errors.phoneNumber || !!errors.returnDateTime} // Disable based on errors or submission state
+						disabled={isSubmitting || !!errors.country || !!errors.phoneNumber || !!errors.returnDate || !!errors.returnTime} // Updated disabled condition
 					>
 						{isSubmitting ? (
 							<>
