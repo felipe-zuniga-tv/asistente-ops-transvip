@@ -229,7 +229,7 @@ async function submitUserMessage(content: string) {
 						/>
 
 					const futureBookings = await getBookings(futureHours)
-					console.log(futureBookings);
+					// console.log(futureBookings);
 					
 					aiState.done({
 						...aiState.get(),

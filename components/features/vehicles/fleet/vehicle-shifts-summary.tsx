@@ -280,7 +280,6 @@ export function VehicleShiftsSummary({ branches }: { branches: Branch[] }) {
                                         mode="single"
                                         selected={date}
                                         onSelect={(newDate) => newDate && setDate(newDate)}
-                                        initialFocus
                                         locale={es}
                                     />
                                 </PopoverContent>
