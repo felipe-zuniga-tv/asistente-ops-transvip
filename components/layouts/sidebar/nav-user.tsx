@@ -74,14 +74,13 @@ export function NavUser({ user }: ChatSession) {
 							</DropdownMenuItem>
 							<DropdownMenuItem className="hidden">
 								<CreditCard />
-								Billing
+								Facturación
 							</DropdownMenuItem>
 							<DropdownMenuItem>
 								<Bell />
 								Alertas
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
-						<DropdownMenuSeparator />
 					</DropdownMenuContent>
 				</DropdownMenu>
 			</SidebarMenuItem>

@@ -157,6 +157,12 @@ const financeMenu: SidebarItem = {
 			url: Routes.FINANCE.TICKETS,
 			active: true
 		},
+		{
+			title: 'Resumen Tickets',
+			icon: BarChart3,
+			url: Routes.FINANCE.TICKETS_SUMMARY,
+			active: true
+		},
 	],
 }
 
@@ -250,50 +256,50 @@ const bookingsMenu: SidebarItem = {
 	],
 }
 
-const configMenu: SidebarItem = {
-	title: "Configuración",
-	url: Routes.ADMIN.HOME,
-	icon: Settings,
-	active: false,
-	items: [
-		{
-			title: 'Control de Acceso',
-			icon: UserRound,
-			url: Routes.ADMIN.ACCESS_CONTROL,
-			active: true
-		},
-		{
-			title: 'Estados del Móvil',
-			icon: Settings2,
-			url: Routes.ADMIN.VEHICLE_STATUS_CONFIG,
-			active: true
-		},
-		{
-			title: 'Métodos de Pago',
-			icon: CreditCard,
-			url: Routes.ADMIN.PAYMENT_METHODS_CONFIG,
-			active: true
-		},
-		{
-			title: 'Tipos de Vehículo',
-			icon: CarFront,
-			url: Routes.ADMIN.VEHICLE_TYPES_CONFIG,
-			active: true
-		},
-		{
-			title: 'Sucursales',
-			icon: Building2,
-			url: Routes.ADMIN.BRANCHES_CONFIG,
-			active: true
-		},
-		{
-			title: 'Configuración de Sistema',
-			icon: Settings2,
-			url: Routes.ADMIN.SYSTEM_CONFIG,
-			active: true
-		},
-	],
-}
+// const configMenu: SidebarItem = {
+// 	title: "Configuración",
+// 	url: Routes.ADMIN.HOME,
+// 	icon: Settings,
+// 	active: false,
+// 	items: [
+// 		{
+// 			title: 'Control de Acceso',
+// 			icon: UserRound,
+// 			url: Routes.ADMIN.ACCESS_CONTROL,
+// 			active: true
+// 		},
+// 		{
+// 			title: 'Estados del Móvil',
+// 			icon: Settings2,
+// 			url: Routes.ADMIN.VEHICLE_STATUS_CONFIG,
+// 			active: true
+// 		},
+// 		{
+// 			title: 'Métodos de Pago',
+// 			icon: CreditCard,
+// 			url: Routes.ADMIN.PAYMENT_METHODS_CONFIG,
+// 			active: true
+// 		},
+// 		{
+// 			title: 'Tipos de Vehículo',
+// 			icon: CarFront,
+// 			url: Routes.ADMIN.VEHICLE_TYPES_CONFIG,
+// 			active: true
+// 		},
+// 		{
+// 			title: 'Sucursales',
+// 			icon: Building2,
+// 			url: Routes.ADMIN.BRANCHES_CONFIG,
+// 			active: true
+// 		},
+// 		{
+// 			title: 'Configuración de Sistema',
+// 			icon: Settings2,
+// 			url: Routes.ADMIN.SYSTEM_CONFIG,
+// 			active: true
+// 		},
+// 	],
+// }
 
 export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] } = {
 	navMain: [

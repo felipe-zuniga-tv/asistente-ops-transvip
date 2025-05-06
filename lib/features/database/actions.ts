@@ -1,8 +1,8 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { revalidatePath } from 'next/cache'
-import { Routes } from '@/utils/routes'
+// import { revalidatePath } from 'next/cache'
+// import { Routes } from '@/utils/routes'
 import type { 
 	ShiftData, 
 	VehicleStatus, 
@@ -27,7 +27,7 @@ export async function getShifts() {
 		.order('name', { ascending: true })
 
 	if (error) throw new Error(error.message)
-	revalidatePath(Routes.CONTROL_FLOTA.SHIFTS)
+	// revalidatePath(Routes.CONTROL_FLOTA.SHIFTS)
 	
 	return data.map(shift => ({
 		id: shift.id,
@@ -105,7 +105,7 @@ export async function createShift(shiftData: Omit<ShiftData, 'branch_id'> & { br
 		.insert([shiftWithBranchId])
 
 	if (error) throw new Error(error.message)
-	revalidatePath(Routes.CONTROL_FLOTA.SHIFTS)
+	// revalidatePath(Routes.CONTROL_FLOTA.SHIFTS)
 }
 
 export async function updateShift(id: string, shiftData: Partial<ShiftData>) {
@@ -117,7 +117,7 @@ export async function updateShift(id: string, shiftData: Partial<ShiftData>) {
 		.eq('id', id)
 
 	if (error) throw new Error(error.message)
-	revalidatePath(Routes.CONTROL_FLOTA.SHIFTS)
+	// revalidatePath(Routes.CONTROL_FLOTA.SHIFTS)
 }
 
 export async function deleteShift(id: string) {
@@ -129,7 +129,7 @@ export async function deleteShift(id: string) {
 		.eq('id', id)
 
 	if (error) throw new Error(error.message)
-	revalidatePath(Routes.CONTROL_FLOTA.SHIFTS)
+	// revalidatePath(Routes.CONTROL_FLOTA.SHIFTS)
 }
 
 // VEHICLE SHIFTS
@@ -188,7 +188,7 @@ export async function getVehicleShiftsByDateRange(
 			branch_name: shift.shifts?.branches?.name,
 		}))
 
-		revalidatePath(Routes.CONTROL_FLOTA.SHIFTS_PER_VEHICLE)
+		// revalidatePath(Routes.CONTROL_FLOTA.SHIFTS_PER_VEHICLE)
 		return { data: transformedShifts }
 	} catch (error) {
 		console.error("Error in getVehicleShiftsByDateRange:", error)

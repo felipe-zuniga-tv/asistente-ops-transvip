@@ -12,7 +12,7 @@ export interface MTTVehicleInfo {
   error?: string;
 }
 
-const licensePlateSchema = z.string().regex(/^[A-Z0-9]{6}$/, {
+const licensePlateSchema = z.string().regex(/^[A-Za-z]{4}[0-9]{2}$/, {
   message: "La patente debe tener 6 caracteres alfanuméricos",
 });
 
@@ -32,13 +32,15 @@ async function queryMTTWebsite(licensePlate: string): Promise<MTTVehicleInfo> {
         "__EVENTTARGET": "",
         "__EVENTARGUMENT": "",
         "__EVENTVALIDATION": "/wEdAASJM4uUaVK+jmvS4YEub/2HIKnzPnVFgXAZ20CcrnWXzeHx18AZ0epHV1po9+JEZeBnTMb45aJIIeXNdhdxmB5yakObqeaaMd2mG/7Wdjt50HQ9i1HxqqQN0LiJfL2qHH0=",
-        "ctl00$MainContent$ppu": licensePlate,
+        "ctl00$MainContent$ppu": licensePlate.toUpperCase(),
         "ctl00$MainContent$btn_buscar": "Buscar"
       }).toString()
     });
 
     const html = await response.text();
     const parsedResponse = parseMTTResponse(html);
+
+    console.log(parsedResponse)
     
     return {
       licensePlate,

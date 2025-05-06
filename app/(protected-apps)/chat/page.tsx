@@ -6,9 +6,6 @@ import { ChatSession } from '@/types/domain/chat';
 export default async function TransvipChat() {
 	const id = nanoid();
 	const sessionData = await getSession();
-	if (!sessionData) {
-		throw new Error("Session not found");
-	}
 	const session = sessionData as unknown as ChatSession;
 
 	return (

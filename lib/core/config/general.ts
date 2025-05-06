@@ -1,4 +1,4 @@
-export const config = {
+export const config = Object.freeze({
     COOKIES: {
         TOKEN_JWT_SECRET: "secret_key_transvip",
         COOKIE_KEY: "TRANSVIP_ACCESS_TOKEN",
@@ -20,4 +20,4 @@ export const config = {
         GET_ZONA_ILUMINADA_SERVICES: "get_illuminated_zone_services",
         GET_STATUS_AIRPORT_CITY: "view_illuminated_zone_data_admin",
     }
-}
+})

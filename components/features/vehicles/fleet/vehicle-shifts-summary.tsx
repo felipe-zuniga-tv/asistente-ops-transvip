@@ -341,7 +341,7 @@ export function VehicleShiftsSummary({ branches }: { branches: Branch[] }) {
                                     <div className="grid gap-2 grid-cols-1 sm:grid-cols-5 md:grid-cols-7">
                                         {vehicles.map((vehicleNumber) => (
                                             <Badge
-                                                key={vehicleNumber}
+                                                key={vehicleNumber + "_" + Math.random()}
                                                 variant="secondary"
                                                 className="justify-center py-1.5"
                                             >

@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { ConfigCardContainer } from "@/components/ui/tables/config-card-container";
 import { DataTable } from "@/components/ui/tables/data-table";
 import { columns } from "./form-table/columns";
-import { updateOperationsForm } from "@/lib/services/forms";
+import { updateOperationsForm } from "@/lib/features/forms";
 import { useToast } from "@/hooks/use-toast";
 import { OperationsFormEditDialog } from "./dialogs/operations-form-edit-dialog";
 

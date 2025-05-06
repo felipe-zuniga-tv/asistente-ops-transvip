@@ -6,13 +6,14 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/componen
 import { TransvipLogo } from '@/components/features/transvip/transvip-logo'
 import { getTranslation, type Language } from '@/lib/core/i18n'
 
-export default async function BranchesPage({ searchParams }: { searchParams: { lang?: string } }) {
-	const language = (searchParams.lang || 'es-CL') as Language
-	const t = getTranslation(language)
-	const salesFormActiveFilter = true
-	const branchesWithSalesForm = await getBranches(salesFormActiveFilter)
+export default async function BranchesPage(props: { searchParams: Promise<{ lang?: string }> }) {
+    const searchParams = await props.searchParams;
+    const language = (searchParams.lang || 'es-CL') as Language
+    const t = getTranslation(language)
+    const salesFormActiveFilter = true
+    const branchesWithSalesForm = await getBranches(salesFormActiveFilter)
 
-	return (
+    return (
 		<Card>
 			<CardHeader className="space-y-0 flex flex-row gap-2 items-center justify-between border-b pb-6">
 				<div className="flex justify-start items-center gap-2">

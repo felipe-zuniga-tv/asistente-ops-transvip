@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import SuspenseLoading from "@/components/ui/suspense";
-import { getOperationsForms } from "@/lib/services/forms";
+import { getOperationsForms } from "@/lib/features/forms";
 import { Routes } from "@/utils/routes";
 import { FormulariosContent } from "@/components/ui/forms/forms-content";
 

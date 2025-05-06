@@ -20,7 +20,7 @@ const licensePlatesSchema = z.array(licensePlateSchema).min(1).max(50);
 
 async function queryMTTWebsite(licensePlate: string): Promise<MTTVehicleInfo> {
   try {
-    const response = await fetch("https://apps.mtt.cl/consultaweb/default.aspx", {
+    const response = await fetch("https://apps.mtt.cl/consultaweb/", {
       method: "POST",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
@@ -39,6 +39,8 @@ async function queryMTTWebsite(licensePlate: string): Promise<MTTVehicleInfo> {
 
     const html = await response.text();
     const parsedResponse = parseMTTResponse(html);
+
+    console.log(parsedResponse)
     
     return {
       licensePlate,

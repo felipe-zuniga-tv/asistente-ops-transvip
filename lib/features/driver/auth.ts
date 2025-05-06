@@ -42,7 +42,7 @@ export async function createDriverSession(driver: DriverDetails): Promise<Driver
 
 	const encryptedSession = await encryptSession(session)
 
-	cookies().set(DRIVER_COOKIE_KEY, encryptedSession, {
+	(await cookies()).set(DRIVER_COOKIE_KEY, encryptedSession, {
 		httpOnly: true,
 		secure: process.env.NODE_ENV === 'production',
 		sameSite: 'lax',
@@ -53,7 +53,7 @@ export async function createDriverSession(driver: DriverDetails): Promise<Driver
 }
 
 export async function getDriverSession(): Promise<DriverSession | null> {
-	const sessionCookie = cookies().get(DRIVER_COOKIE_KEY)
+	const sessionCookie = (await cookies()).get(DRIVER_COOKIE_KEY)
 
 	if (!sessionCookie) {
 		redirect(Routes.DRIVERS.HOME)
@@ -63,17 +63,17 @@ export async function getDriverSession(): Promise<DriverSession | null> {
 		const session = await decryptSession(sessionCookie.value)
 
 		if (new Date(session.expires) < new Date()) {
-			cookies().delete(DRIVER_COOKIE_KEY)
+			(await cookies()).delete(DRIVER_COOKIE_KEY)
 			redirect(Routes.DRIVERS.HOME)
 		}
 
 		return session
 	} catch {
-		cookies().delete(DRIVER_COOKIE_KEY)
+		(await cookies()).delete(DRIVER_COOKIE_KEY)
 		redirect(Routes.DRIVERS.HOME)
 	}
 }
 
 export async function clearDriverSession() {
-	cookies().delete(DRIVER_COOKIE_KEY)
+	(await cookies()).delete(DRIVER_COOKIE_KEY)
 } 

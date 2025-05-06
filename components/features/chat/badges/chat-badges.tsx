@@ -15,6 +15,7 @@ const bookingStatus = [
     { status: 9, label: 'Cancelada', color: 'bg-orange-800 hover:bg-orange-700' },
     { status: 12, label: 'No Show', color: 'bg-yellow-600 hover:bg-yellow-500' },
     { status: 15, label: 'En camino', color: 'bg-blue-400 hover:bg-blue-500' },
+    { status: 17, label: 'No asignada', color: 'bg-orange-800 hover:bg-orange-700' },
 ]
 
 const paymentStatus = [

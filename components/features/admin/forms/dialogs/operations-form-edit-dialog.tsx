@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { updateOperationsForm } from "@/lib/services/forms";
+import { updateOperationsForm } from "@/lib/features/forms";
 
 export interface OperationsFormEditDialogProps {
 	editingForm: OperationsForm;

@@ -16,23 +16,24 @@ import { ArrowLeft } from "lucide-react"
 import { Routes } from "@/utils/routes"
 
 interface PageProps {
-	params: {
+	params: Promise<{
 		id: string
-	}
+	}>
 }
 
-export default async function TicketDetailPage({ params }: PageProps) {
-	const session = await getDriverSession()
-	if (!session) {
+export default async function TicketDetailPage(props: PageProps) {
+    const params = await props.params;
+    const session = await getDriverSession()
+    if (!session) {
 		redirect(Routes.DRIVERS.HOME)
 	}
-	const ticket = await getTicketById(params.id)
+    const ticket = await getTicketById(params.id)
 
-	if (!ticket || ticket.driver_id !== session.driver_id) {
+    if (!ticket || ticket.driver_id !== session.driver_id) {
 		notFound()
 	}
 
-	const statusConfig = {
+    const statusConfig = {
 		pending_review: { label: "Pending Review", variant: "warning" },
 		auto_approved: { label: "Approved", variant: "success" },
 		auto_rejected: { label: "Rejected", variant: "destructive" },
@@ -40,9 +41,9 @@ export default async function TicketDetailPage({ params }: PageProps) {
 		admin_rejected: { label: "Rejected", variant: "destructive" },
 	}
 
-	const status = statusConfig[ticket.status]
+    const status = statusConfig[ticket.status]
 
-	return (
+    return (
 		<div className="space-y-6">
 			<div className="flex items-center gap-4">
 				<Button variant="ghost" size="icon" asChild>

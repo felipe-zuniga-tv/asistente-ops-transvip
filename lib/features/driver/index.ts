@@ -219,7 +219,7 @@ interface DriverRating {
     fleet_comment: string;
 }
 
-export const getDriverRatingSummary = (driverRatings: DriverRating[]): Record<string, { count: number; comments: Record<string, number> }> => {
+export const getDriverRatingSummary = async (driverRatings: DriverRating[]): Promise<Record<string, { count: number; comments: Record<string, number> }>> => {
     const summary = driverRatings.reduce((acc, job) => {
         const rating = job.fleet_rating.toString();
         if (!acc[rating]) {

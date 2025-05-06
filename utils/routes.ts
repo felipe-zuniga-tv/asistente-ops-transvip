@@ -46,6 +46,7 @@ export const Routes = Object.freeze({
 	},
 	FINANCE: {
 		TICKETS: '/finanzas/tickets',
+		TICKETS_SUMMARY: '/finanzas/tickets/resumen',
 	},
 	OPERATIONS_FORMS: {
 		HOME: '/forms',

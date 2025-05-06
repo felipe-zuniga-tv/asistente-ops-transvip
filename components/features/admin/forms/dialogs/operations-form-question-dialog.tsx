@@ -13,7 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { OperationsFormQuestion, QuestionType, QUESTION_TYPE_CONFIG } from "@/lib/core/types/vehicle/forms";
-import { createQuestion, updateQuestion } from "@/lib/services/forms";
+import { createQuestion, updateQuestion } from "@/lib/features/forms";
 import { Plus, Trash2 } from "lucide-react";
 
 const QUESTION_TYPES = Object.entries(QUESTION_TYPE_CONFIG).map(([value, config]) => ({

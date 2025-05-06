@@ -9,7 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { createSection, updateSection } from "@/lib/services/forms";
+import { createSection, updateSection } from "@/lib/features/forms";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { OperationsFormSection } from "@/lib/core/types/vehicle/forms";

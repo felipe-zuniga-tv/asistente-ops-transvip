@@ -246,28 +246,48 @@ export async function getBookings(next_x_hours = 2) {
     }
 
     const searchParams = {
-        limit: '30',
-        offset: '0',
-        search_filter: '0',
-        branch_filter: '1',
-        branch_value: '1',
-        date_time_filter: '1',
+        limit: 20,
+        offset: 0,
+        search_filter: 0,
+        branch_filter: 0,
+        // branch_value: '1',
+        date_time_filter: 1,
         date_time_value1: new Date().toISOString(),
         date_time_value2: addHours(new Date(), next_x_hours).toISOString(),
-        job_status_filter: '1',
-        job_status_value: '%5B0,6,7,17%5D',
-        aggrement_filter: '0',
-        booking_status: '0',
-        search_by_agreement_filter: '0',
-        search_user_filter: '0',
-        service_filter: '0',
-        type_of_trip_filter: '0',
-        vehicle_filter: '0',
+        job_status_filter: 1,
+        job_status_value: '[6]', // 0, 6, 7, 17
+        aggrement_filter: 0,
+        booking_status: 0,
+        search_by_agreement_filter: 0,
+        search_user_filter: 0,
+        service_filter: 0,
+        type_of_trip_filter: 0,
+        vehicle_filter: 0,
     };
 
-    const { status, data } = await getResponseFromURL(
-        `${BOOKING_DETAIL_URL}?${new URLSearchParams({ ...searchParams, access_token: accessToken }).toString()}`
+    const stringifiedSearchParams = Object.fromEntries(
+        Object.entries(searchParams).map(([key, value]) => [key, String(value)])
     );
+
+    let status: number;
+    let data: any;
+
+    try {
+        const response = await getResponseFromURL(
+            `${BOOKING_DETAIL_URL}?${new URLSearchParams({ ...stringifiedSearchParams, access_token: accessToken }).toString()}`
+        );
+
+        if (response === null) {
+            console.error('Failed to fetch booking details: API response was null.');
+            return null; // Exit early if the response is null, as per instruction
+        }
+        
+        ({ status, data } = response);
+
+    } catch (error) {
+        console.error('Error fetching or processing booking details:', error);
+        return null;
+    }
 
     if (status !== 200) return null;
 

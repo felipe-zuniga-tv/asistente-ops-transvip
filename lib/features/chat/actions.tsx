@@ -218,7 +218,8 @@ async function submitUserMessage(content: string) {
 						.describe("El número de horas futuras para buscar las reservas"),
 				}).required(),
 				generate: async function* ({ hours }) {
-					const futureHours = Math.min(hours, 6)
+					const MAX_HOURS = 6
+					const futureHours = Math.min(hours, MAX_HOURS)
 					yield <LoadingMessage text={`Usa máximo ${futureHours} horas en tu búsqueda...`} 
 							className="text-xs md:text-base"
 						/>
@@ -228,7 +229,7 @@ async function submitUserMessage(content: string) {
 						/>
 
 					const futureBookings = await getBookings(futureHours)
-					// console.log(futureBookings);
+					console.log(futureBookings);
 					
 					aiState.done({
 						...aiState.get(),
@@ -452,6 +453,8 @@ async function submitUserMessage(content: string) {
 					yield <LoadingMessage text={`Consultando ${licensePlates.length} patente${licensePlates.length > 1 ? 's' : ''} en el MTT...`} />
 
 					const results = await getMTTVehiclesInfo(licensePlates);
+
+					console.log(results)
 
 					aiState.done({
 						...aiState.get(),

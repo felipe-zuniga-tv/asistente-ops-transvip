@@ -29,7 +29,7 @@ export async function getOperationsForms() {
         .order("created_at", { ascending: false });
 
     if (error) throw error;
-    revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
+    // revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
     return data as OperationsForm[];
 }
 
@@ -49,8 +49,8 @@ export async function getOperationsFormById(id: string) {
         .single();
 
     if (error) throw error;
-    revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
-    revalidatePath(`${Routes.OPERATIONS_FORMS.CONFIG}/${id}`)
+    // revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
+    // revalidatePath(`${Routes.OPERATIONS_FORMS.CONFIG}/${id}`)
     return data as OperationsForm & {
         sections: (OperationsFormSection & {
             questions: OperationsFormQuestion[];
@@ -68,7 +68,7 @@ export async function createOperationsForm(input: CreateOperationsFormInput) {
         .single();
 
     if (error) throw error;
-    revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
+    // revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
     return data as OperationsForm;
 }
 
@@ -83,8 +83,8 @@ export async function updateOperationsForm(id: string, input: UpdateOperationsFo
         .single();
 
     if (error) throw error;
-    revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
-    revalidatePath(`${Routes.OPERATIONS_FORMS.CONFIG}/${id}`)
+    // revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
+    // revalidatePath(`${Routes.OPERATIONS_FORMS.CONFIG}/${id}`)
     return data as OperationsForm;
 }
 
@@ -167,7 +167,7 @@ export async function createQuestion(input: CreateOperationsFormQuestionInput) {
         if (optionsError) throw optionsError;
     }
 
-    revalidatePath(Routes.OPERATIONS_FORMS.CONFIG);
+    // revalidatePath(Routes.OPERATIONS_FORMS.CONFIG);
     return question as OperationsFormQuestion;
 }
 
@@ -211,7 +211,7 @@ export async function updateQuestion(id: string, input: UpdateOperationsFormQues
         }
     }
 
-    revalidatePath(Routes.OPERATIONS_FORMS.CONFIG);
+    // revalidatePath(Routes.OPERATIONS_FORMS.CONFIG);
     return question as OperationsFormQuestion;
 }
 
@@ -223,7 +223,7 @@ export async function deleteQuestion(id: string) {
         .delete()
         .eq("id", id);
 
-    revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
+    // revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
 
     if (error) throw error;
 }
@@ -317,3 +317,62 @@ export async function updateInspectionStatus(id: string, status: string) {
     if (error) throw error;
     return data;
 }
+
+// Section Ordering
+interface ReorderSectionsInput {
+    sections: {
+        id: string
+        order: number
+    }[]
+}
+
+export async function reorderSections(formId: string, input: ReorderSectionsInput) {
+    const supabase = await createClient()
+
+    try {
+        // Update all sections in a transaction
+        const { error } = await supabase.rpc('reorder_form_sections', {
+            p_sections: input.sections,
+            p_form_id: formId
+        })
+
+        if (error) throw error
+
+        // revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
+        // revalidatePath(`${Routes.OPERATIONS_FORMS.CONFIG}/${formId}`)
+
+        return { success: true }
+    } catch (error) {
+        console.error('Error reordering sections:', error)
+        return { success: false, error }
+    }
+}
+
+interface ReorderQuestionsInput {
+    questions: {
+        id: string;
+        order: number;
+    }[];
+}
+
+export async function reorderQuestions(sectionId: string, input: ReorderQuestionsInput) {
+    try {
+        const { questions } = input;
+        const supabase = await createClient();
+
+        // Update each question's order
+        const promises = questions.map(({ id, order }) =>
+            supabase
+                .from('operations_form_questions')
+                .update({ order })
+                .eq('id', id)
+        );
+
+        await Promise.all(promises);
+
+        return { success: true };
+    } catch (error) {
+        console.error('Error reordering questions:', error);
+        return { success: false };
+    }
+} 

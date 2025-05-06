@@ -1,8 +1,8 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { revalidatePath } from 'next/cache'
-import { Routes } from '@/utils/routes'
+// import { revalidatePath } from 'next/cache'
+// import { Routes } from '@/utils/routes'
 
 export async function getSystemConfig(key: string) {
 	const supabase = await createClient()
@@ -51,5 +51,5 @@ export async function updateSystemConfig({
 		throw error
 	}
 
-	revalidatePath(Routes.ADMIN.SYSTEM_CONFIG)
+	// revalidatePath(Routes.ADMIN.SYSTEM_CONFIG)
 } 

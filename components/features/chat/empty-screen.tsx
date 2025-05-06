@@ -19,7 +19,7 @@ export function EmptyScreen({ session }: { session: ChatSession }) {
         if (tool?.search) {
             const textarea = document.querySelector('textarea');
             if (textarea) {
-                textarea.value = tool.search + ' ';
+                textarea.value = tool.search;
                 // Trigger input event to update internal state
                 textarea.dispatchEvent(new Event('input', { bubbles: true }));
                 

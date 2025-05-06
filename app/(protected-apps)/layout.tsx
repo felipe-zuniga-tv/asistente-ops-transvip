@@ -12,7 +12,7 @@ export default async function ChatAppLayout({ children }: { children: React.Reac
 	const session = await getSession() as ChatSession | null;
 
 	if (!session) {
-		return redirect(Routes.LOGIN);
+		redirect(Routes.LOGIN);
 	}
 
 	const id = nanoid()

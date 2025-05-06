@@ -1,6 +1,8 @@
 import { cn } from '@/utils/ui';
 import Image from "next/image";
 
+import type { JSX } from "react";
+
 interface TransvipLogoProps {
     logoOnly?: boolean;
     colored?: boolean;

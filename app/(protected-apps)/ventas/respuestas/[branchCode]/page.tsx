@@ -4,14 +4,15 @@ import { getSalesResponsesByBranch } from '@/lib/services/sales'
 import { SalesResponsesContent } from '@/components/features/sales/sales-responses-content'
 
 interface SalesResponsesBranchPageProps {
-  params: {
+  params: Promise<{
     branchCode: string;
-  };
+  }>;
 }
 
-export default async function SalesResponsesBranchPage({ params }: SalesResponsesBranchPageProps) {
+export default async function SalesResponsesBranchPage(props: SalesResponsesBranchPageProps) {
+  const params = await props.params;
   const { branchCode } = params
-  
+
   try {
     // Verify the branch exists
     const branch = await getBranchByCode(branchCode.toUpperCase())
