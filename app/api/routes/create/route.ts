@@ -1,5 +1,5 @@
-import { getBookingInfo } from '@/lib/services/booking';
-import { getVehicleDetailList } from '@/lib/services/vehicle';
+import { getBookingInfo } from '@/lib/features/booking';
+import { getVehicleDetailList } from '@/lib/features/vehicle/functions';
 import { NextResponse } from 'next/server';
 
 const ROUTE_CREATION_ENDPOINT = 'https://southamerica-west1-ops-chat-app.cloudfunctions.net/route-optimization-functions'

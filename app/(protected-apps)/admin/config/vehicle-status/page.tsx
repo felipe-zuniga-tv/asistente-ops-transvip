@@ -1,4 +1,4 @@
-import { getVehicleStatusConfigs } from "@/lib/services/database/actions";
+import { getVehicleStatusConfigs } from "@/lib/features/vehicle-status";
 import { VehicleStatusConfig } from "@/components/features/admin/vehicle-status/vehicle-status-config";
 
 export const metadata = {

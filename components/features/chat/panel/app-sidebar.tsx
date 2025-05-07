@@ -21,7 +21,7 @@ import { PublicSection } from "./public-section"
 import { useSidebarActions } from "@/components/features/chat/panel/use-sidebar-actions"
 import { SidebarItem, Tool } from "@/components/features/chat/panel/types"
 import { TransvipLogo } from "@/components/features/transvip/transvip-logo"
-import { getUserSectionAccess } from "@/lib/services/access-control"
+import { getUserSectionAccess } from "@/lib/features/access-control"
 import AppSidebarSkeleton from "./app-sidebar-skeleton"
 
 // Import helper functions

@@ -7,7 +7,7 @@ import { columns } from "./table/columns";
 import { useRouter } from "next/navigation";
 import { AlertDialogDeleteStatus } from "./delete-status-alert-dialog";
 import { toast } from "sonner";
-import { deleteVehicleStatus } from "@/lib/services/database/actions";
+import { deleteVehicleStatus } from "@/lib/features/vehicle-status";
 import type { VehicleStatus } from "@/lib/core/types";
 import { ConfigCardContainer } from "@/components/ui/tables/config-card-container";
 import { getSession } from "@/lib/core/auth";

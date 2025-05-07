@@ -8,7 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
-import { addEmailGroup } from "@/lib/services/access-control"
+import { addEmailGroup } from "@/lib/features/access-control"
 
 const formSchema = z.object({
     name: z.string().min(1, "El nombre es requerido"),

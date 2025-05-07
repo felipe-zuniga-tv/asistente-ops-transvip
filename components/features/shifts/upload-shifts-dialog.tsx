@@ -10,7 +10,7 @@ import {
     Progress,
     Button
 } from "@/components/ui";
-import { createShift } from "@/lib/services/database/actions";
+import { createShift } from "@/lib/features/vehicle-shifts";
 import { Shift } from "./shifts-definition";
 
 interface UploadShiftsDialogProps {

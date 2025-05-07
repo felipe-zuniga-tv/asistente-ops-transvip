@@ -2,7 +2,7 @@
 
 import { Message } from 'ai';
 import { getSession } from '@/lib/core/auth';
-import { streamChat } from '@/lib/services/ai';
+import { streamChat } from '@/lib/features/ai';
 
 // Fixed model that will be used for all chat requests
 // const MODEL_NAME = 'gemini-2.0-flash-exp';

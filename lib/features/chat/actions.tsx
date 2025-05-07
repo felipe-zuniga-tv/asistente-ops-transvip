@@ -26,10 +26,10 @@ import { VehicleInfoCard } from "@/components/features/mtt/vehicle-info-card";
 import { VEHICLE_STATUS } from "@/utils/constants";
 import { nanoid } from "@/utils/id";
 import { CREATE_DRIVER_RATINGS_SUMMARY, CREATE_TEXT_PROMPT, EMAIL_TEXT_OPS_EXAMPLE, SYSTEM_MESSAGE } from "@/lib/core/config/chat"
-import { getVehicleStatus, getVehicleDetail } from "@/lib/services/vehicle";
+import { getVehicleStatus, getVehicleDetail } from "@/lib/features/vehicle/functions";
 import { getDriverProfile, searchDriver, getDriverRatings, getDriverRatingSummary } from "@/lib/features/driver";
-import { getBookingInfo, getBookings } from "@/lib/services/booking";
-import { getZonaIluminadaServices } from "@/lib/services/zone";
+import { getBookingInfo, getBookings } from "@/lib/features/booking";
+import { getZonaIluminadaServices } from "@/lib/features/airport-status";
 
 import { airportZones } from "@/lib/core/config/airport";
 

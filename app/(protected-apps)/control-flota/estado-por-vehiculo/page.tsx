@@ -1,21 +1,11 @@
 import { VehicleStatus } from "@/components/features/vehicles/vehicle-status";
-import { getVehicleStatusConfigs, getVehicleStatuses } from '@/lib/services/database/actions';
-import { Suspense } from "react";
-import SuspenseLoading from "@/components/ui/suspense";
+import { getVehicleStatusConfigs, getVehicleStatuses } from "@/lib/features/vehicle-status";
 
 export const revalidate = 60;
 
-async function VehicleStatusPageContent() {
+export default async function VehicleStatusPage() {
     const statuses = await getVehicleStatuses()
     const statusConfigs = await getVehicleStatusConfigs()
 
     return <VehicleStatus statuses={statuses} statusConfigs={statusConfigs} />
-}
-
-export default async function VehicleStatusPage() {
-    return (
-        <Suspense fallback={<SuspenseLoading />}>
-            <VehicleStatusPageContent />
-        </Suspense>
-    );
 }

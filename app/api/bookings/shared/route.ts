@@ -1,4 +1,4 @@
-import { getBookingInfo } from '@/lib/services/booking';
+import { getBookingInfo } from '@/lib/features/booking';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {

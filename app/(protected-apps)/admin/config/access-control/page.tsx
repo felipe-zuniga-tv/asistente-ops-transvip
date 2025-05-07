@@ -1,4 +1,4 @@
-import { getEmailGroupsWithCounts, getEmailGroupMembers, getSectionAccess } from '@/lib/services/access-control'
+import { getEmailGroupsWithCounts, getEmailGroupMembers, getSectionAccess } from '@/lib/features/access-control'
 import { AccessControlForm } from '@/components/features/admin/access-control/access-control-form'
 
 export const metadata = {

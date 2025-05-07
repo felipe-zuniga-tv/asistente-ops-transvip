@@ -1,4 +1,4 @@
-import { getAirportStatus } from '@/lib/services/zone'
+import { getAirportStatus } from '@/lib/features/airport-status'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {

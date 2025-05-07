@@ -1,7 +1,8 @@
 'use client'
 import { useState, useCallback, useEffect } from "react"
 import { startOfToday, addDays, format } from "date-fns"
-import { getVehicleShiftsByDateRange, getVehicleStatusesForCalendar } from "@/lib/services/database/actions"
+import { getVehicleShiftsByDateRange } from "@/lib/features/vehicle-shifts"
+import { getVehicleStatusesForCalendar } from "@/lib/features/vehicle-status"
 import { useDebounce } from "@/hooks/use-debounce"
 import { useToast } from "@/hooks/use-toast"
 import { Card } from "@/components/ui/card"

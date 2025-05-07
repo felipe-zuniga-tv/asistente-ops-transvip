@@ -1,5 +1,5 @@
 import { ALLOWED_VEHICLE_NAMES_PARKING_TICKETS, type AllowedCarName } from "@/utils/constants"
-import { getVehicleDetail } from "@/lib/services/vehicle"
+import { getVehicleDetail } from "@/lib/features/vehicle/functions"
 
 interface Vehicle {
     value: string

@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ShiftDialog } from "./shift-dialog";
-import { deleteShift } from "@/lib/services/database/actions";
+import { deleteShift } from "@/lib/features/vehicle-shifts";
 import { UploadShiftsDialog } from "./upload-shifts-dialog";
 import { ShiftsDataTable } from "./table/shifts-data-table";
 import { columns } from "./table/columns";

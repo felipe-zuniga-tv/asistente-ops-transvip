@@ -2,11 +2,9 @@
 
 import { SimpleDialog, SimpleDialogHeader, SimpleDialogTitle } from "@/components/ui/simple-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Label } from "@/components/ui/label";
-import { createShift, updateShift } from "@/lib/services/database/actions";
+import { Input, Button, Label } from "@/components/ui";
+import { createShift, updateShift } from "@/lib/features/vehicle-shifts";
 import { useTransition, useCallback, useMemo } from "react";
 import { WEEKDAYS, Shift } from "./shifts-definition";
 import { useState, useEffect } from "react";

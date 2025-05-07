@@ -13,7 +13,7 @@ import {
     getSectionAccess,
     removeGroupMember,
     removeSectionAccess,
-} from "@/lib/services/access-control"
+} from "@/lib/features/access-control"
 import { ConfigCardContainer } from "@/components/ui/tables/config-card-container"
 import { CreateGroupDialog } from "./create-group-dialog"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"

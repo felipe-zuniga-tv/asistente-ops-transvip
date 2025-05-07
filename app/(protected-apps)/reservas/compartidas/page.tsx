@@ -15,7 +15,7 @@ import { BookingCard, SharedServiceSummary } from "@/components/features/chat/se
 import { Switch } from "@/components/ui/switch";
 import { ResetButton } from "@/components/ui/buttons";
 import { CardTitleContent } from "@/components/ui/card-title-content";
-import { getBookingInfo } from "@/lib/services/booking";
+import { getBookingInfo } from "@/lib/features/booking";
 
 export default function SharedBookingsPage() {
     const [bookingId, setBookingId] = useState<string>("");

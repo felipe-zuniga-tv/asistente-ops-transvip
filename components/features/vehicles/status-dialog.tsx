@@ -26,7 +26,7 @@ import { Button,
 } from "@/components/ui";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { createVehicleStatus, updateVehicleStatus } from "@/lib/services/database/actions";
+import { createVehicleStatus, updateVehicleStatus } from "@/lib/features/vehicle-status";
 import type { VehicleStatus } from "@/lib/core/types";
 import { getSession } from "@/lib/core/auth";
 

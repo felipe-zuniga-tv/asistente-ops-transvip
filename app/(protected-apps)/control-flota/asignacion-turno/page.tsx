@@ -1,4 +1,4 @@
-import { getShifts, getVehicleShifts } from "@/lib/services/database/actions"
+import { getShifts, getVehicleShifts } from "@/lib/features/vehicle-shifts"
 import { VehicleShifts } from "@/components/features/vehicles/vehicle-shifts"
 
 export default async function VehicleShiftsPage() {

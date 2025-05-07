@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { StatusConfigDialog } from "./status-config-dialog";
 import { AlertDialogDeleteStatusConfig } from "./delete-status-config-alert-dialog";
 import { toast } from "sonner";
-import { deleteVehicleStatusConfig } from "@/lib/services/database/actions";
+import { deleteVehicleStatusConfig } from "@/lib/features/vehicle-status";
 import type { VehicleStatusConfig as VehicleStatusConfigType } from "@/lib/core/types/vehicle/status";
 import { ConfigCardContainer } from "@/components/ui/tables/config-card-container";
 

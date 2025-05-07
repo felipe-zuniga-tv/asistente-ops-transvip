@@ -22,7 +22,7 @@ import {
 } from "@/components/ui";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { createVehicleStatusConfig, updateVehicleStatusConfig } from "@/lib/services/database/actions";
+import { createVehicleStatusConfig, updateVehicleStatusConfig } from "@/lib/features/vehicle-status";
 import type { VehicleStatusConfig } from "@/lib/core/types/vehicle/status";
 
 interface StatusConfigDialogProps {

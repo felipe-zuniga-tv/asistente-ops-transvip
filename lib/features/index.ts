@@ -12,7 +12,7 @@ import * as csvModule from './csv';
 import * as salesModule from './sales';
 import * as databaseModule from './database'
 import * as systemModule from './system';
-import * as zoneModule from './zone';
+import * as zoneModule from './airport-status';
 import * as mttModule from './mtt'
 
 export const tickets = ticketsModule;
