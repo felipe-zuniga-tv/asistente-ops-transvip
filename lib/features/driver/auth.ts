@@ -17,7 +17,12 @@ const key = new TextEncoder().encode(secretKey)
 // Add error handling for missing env variables
 if (!secretKey) throw new Error('TOKEN_JWT_SECRET is not defined')
 
-async function encryptSession(payload: DriverSession) {
+interface CreateDriverSessionReturnType {
+	session: DriverSession;
+	encryptedSession: string;
+}
+
+async function encryptDriverSession(payload: DriverSession): Promise<string> {
 	return await new SignJWT(payload as unknown as Record<string, any>)
 		.setProtectedHeader({ alg: "HS256" })
 		.setIssuedAt()
@@ -32,7 +37,7 @@ async function decryptSession(input: string): Promise<DriverSession> {
 	return payload as unknown as DriverSession
 }
 
-export async function createDriverSession(driver: DriverDetails): Promise<DriverSession> {
+async function createDriverSessionInternal(driver: DriverDetails): Promise<CreateDriverSessionReturnType> {
 	const session: DriverSession = {
 		driver_id: driver.fleet_id,
 		email: driver.email,
@@ -40,15 +45,23 @@ export async function createDriverSession(driver: DriverDetails): Promise<Driver
 		expires: new Date(Date.now() + SESSION_DURATION)
 	}
 
-	const encryptedSession = await encryptSession(session)
+	const encryptedSession = await encryptDriverSession(session)
 
+	return { session, encryptedSession }
+}
+
+async function setDriverCookie(encryptedSession: string, expires: Date): Promise<void> {
 	(await cookies()).set(DRIVER_COOKIE_KEY, encryptedSession, {
 		httpOnly: true,
 		secure: process.env.NODE_ENV === 'production',
 		sameSite: 'lax',
-		expires: session.expires
+		expires
 	})
+}
 
+export async function createDriverSession(driver: DriverDetails): Promise<DriverSession> {
+	const { session, encryptedSession } = await createDriverSessionInternal(driver)
+	await setDriverCookie(encryptedSession, session.expires)
 	return session
 }
 
