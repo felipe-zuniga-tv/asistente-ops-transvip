@@ -10,7 +10,6 @@ import * as chatModule from './chat';
 import * as formsModule from './forms';
 import * as csvModule from './csv';
 import * as salesModule from './sales';
-import * as databaseModule from './database'
 import * as systemModule from './system';
 import * as zoneModule from './airport-status';
 import * as mttModule from './mtt'
@@ -27,7 +26,6 @@ export const chat = chatModule;
 export const forms = formsModule;
 export const csv = csvModule;
 export const sales = salesModule;
-export const database = databaseModule;
 export const system = systemModule;
 export const zone = zoneModule;
 export const mtt = mttModule; 
