@@ -14,11 +14,13 @@ import { flexRender } from "@tanstack/react-table"
 interface DataTableContentProps<TData> {
     table: Table<TData>
     columns: number
+    compact?: boolean
 }
 
 export function DataTableContent<TData>({
     table,
     columns,
+    compact = false,
 }: DataTableContentProps<TData>) {
     return (
         <div className="rounded-md border">
@@ -47,9 +49,10 @@ export function DataTableContent<TData>({
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
+                                className={`h-${compact ? 3 : 4} p-${compact ? 0.5 : 1}`}
                             >
                                 {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id}>
+                                    <TableCell key={cell.id} className={`h-${compact ? 3 : 4} p-${compact ? 0.5 : 1}`}>
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </TableCell>
                                 ))}

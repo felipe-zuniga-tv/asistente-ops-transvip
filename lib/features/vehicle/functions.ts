@@ -96,6 +96,8 @@ export async function getVehicleStatus(vehicleNumber: number) {
     const { status, data } = await getResponseFromURL(`${VEHICLE_STATUS_API_URL}?${params}`)
 
     if (status === 200 && data.length > 0) {
+        console.log(data[0])
+        
         const {
             fleet_id, fleet_image,
             first_name, last_name,

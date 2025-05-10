@@ -65,6 +65,7 @@ export function VehicleShiftsTable({
             <DataTable
                 data={data}
                 columns={columns}
+                compact={true}
                 onEdit={onEdit}
                 onDelete={onDelete}
                 enableRowSelection={true}

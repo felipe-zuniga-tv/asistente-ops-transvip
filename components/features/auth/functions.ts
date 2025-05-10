@@ -3,7 +3,7 @@ import { createSession, setCookie } from "@/lib/core/auth";
 /**
  * Returns the full URL for the admin login endpoint by combining environment variables
  */
-function getLoginUrl(): string {
+export function getLoginUrl(): string {
     return `${process.env.NEXT_PUBLIC_API_BASE_URL}/${process.env.NEXT_PUBLIC_API_ADMIN_LOGIN_ROUTE}`;
 }
 
@@ -48,7 +48,7 @@ function getApiHeaders(): Record<string, string> {
  * @param password - User's password
  * @throws Error if the login request fails
  */
-async function fetchLoginData(url: string, email: string, password: string): Promise<any> {
+export async function fetchLoginData(url: string, email: string, password: string): Promise<any> {
     const response = await fetch(url, {
         method: "POST",
         body: JSON.stringify({ email, password }),

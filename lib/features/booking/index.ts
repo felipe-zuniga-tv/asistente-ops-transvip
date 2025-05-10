@@ -231,6 +231,8 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
         })
     );
 
+    console.log('output', output);
+
     return output.filter(Boolean);
 }
 

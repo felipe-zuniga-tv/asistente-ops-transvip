@@ -48,11 +48,13 @@ interface DataTableProps<TData> {
     initialPageSize?: number;
     meta?: Record<string, unknown>;
     children?: ReactNode;
+    compact?: boolean;
 }
 
 export function DataTable<TData>({
     data,
     columns,
+    compact = false,
     searchPlaceholder = "Buscar...",
     searchColumnId,
     filterOptions = [],
@@ -164,7 +166,7 @@ export function DataTable<TData>({
             )}
             {children}
             <DataTableHeader table={table} />
-            <DataTableContent columns={columns.length} table={table} />
+            <DataTableContent columns={columns.length} compact={compact} table={table} />
             <DataTablePagination table={table} />
         </div>
     );
