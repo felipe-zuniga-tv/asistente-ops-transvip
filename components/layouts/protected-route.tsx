@@ -21,7 +21,11 @@ export default function ProtectedRoute({
     }, [user, isLoading, router])
 
     if (isLoading) {
-        return <LoadingMessage text="Cargando..." />
+        return (
+            <div className="flex h-screen w-full items-center justify-center">
+                <LoadingMessage text="Cargando..." />
+            </div>
+        )
     }
 
     if (!user) {

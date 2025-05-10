@@ -1,10 +1,8 @@
-// lib/providers/auth-provider.tsx 
 'use client'
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import { Routes } from '@/utils/routes'
-import { fetchLoginData } from '@/components/features/auth/functions'
 
 // Define the User type based on your current session structure 
 export interface User {
