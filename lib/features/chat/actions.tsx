@@ -16,7 +16,7 @@ import { getSession } from "@/lib/core/auth";
 
 import { BotCard, AssistantMessage, LoadingMessage, UserMessage } from "@/components/features/chat/message";
 import { VehicleStatusSearch } from "@/components/features/chat/search/vehicle-status-search";
-import { BookingCard, BookingIdSearch } from "@/components/features/chat/search/booking-search";
+import { BookingCard, BookingIdSearch } from "@/components/chat/booking";
 import { IVehicleDetail, IDriverProfile } from "@/types/domain/chat/models";
 import { VehicleDetail } from "@/components/features/chat/search/vehicle-detail-search";
 import { DriverProfile } from "@/components/features/chat/search/driver-profile-search";
