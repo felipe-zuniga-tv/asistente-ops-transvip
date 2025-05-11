@@ -167,7 +167,7 @@ const financeMenu: SidebarItem = {
 }
 
 const controlFlotaAdminMenu: SidebarItem = {
-	title: "Control de Flota - Admin",
+	title: "Control de Flota",
 	url: "#",
 	icon: TowerControl,
 	active: false,
@@ -188,6 +188,18 @@ const controlFlotaAdminMenu: SidebarItem = {
 			title: 'Asignar Estado al Móvil',
 			icon: AlertTriangle,
 			url: Routes.CONTROL_FLOTA.VEHICLE_STATUS,
+			active: true
+		},
+		{
+			title: 'Ver Turnos por Móvil',
+			icon: Calendar,
+			url: Routes.CONTROL_FLOTA.SHIFTS_PER_VEHICLE,
+			active: true
+		},
+		{
+			title: 'Ver Calendario de Turnos',
+			icon: Calendar,
+			url: Routes.CONTROL_FLOTA.FLEET_SHIFTS_CALENDAR,
 			active: true
 		},
 	],
