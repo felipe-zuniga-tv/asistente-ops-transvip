@@ -6,7 +6,6 @@ export const metadata = {
     description: "Administra los estados disponibles para los vehículos",
 };
 
-
 export default async function PaymentMethodPage() {
     const paymentMethods = await getPaymentMethods()
     return <PaymentMethodConfig data={paymentMethods} />

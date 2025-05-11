@@ -19,8 +19,6 @@ const adminTools = [
     { name: 'Configuración Sistema', active: false, href: Routes.ADMIN.SYSTEM_CONFIG, icon: Cog },
 ];
 
-export const revalidate = 60;
-
 export default function AdminPage() {
     return (
         <ConfigCardContainer 

@@ -3,7 +3,7 @@ export const metadata = {
     description: "Panel de administración de Transvip",
 };
 
-export const revalidate = 0
+export const revalidate = 60
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     return <>{children}</>

@@ -166,8 +166,8 @@ const financeMenu: SidebarItem = {
 	],
 }
 
-const controlFlotaMenu: SidebarItem = {
-	title: "Control de Flota",
+const controlFlotaAdminMenu: SidebarItem = {
+	title: "Control de Flota - Admin",
 	url: "#",
 	icon: TowerControl,
 	active: false,
@@ -190,6 +190,15 @@ const controlFlotaMenu: SidebarItem = {
 			url: Routes.CONTROL_FLOTA.VEHICLE_STATUS,
 			active: true
 		},
+	],
+}
+
+const controlFlotaViewMenu: SidebarItem = {
+	title: "Control de Flota - Turnos",
+	url: "#",
+	icon: TowerControl,
+	active: false,
+	items: [
 		{
 			title: 'Ver Turnos por Móvil',
 			icon: Calendar,
@@ -309,30 +318,12 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 		financeMenu,
 		formsMenu,
 		salesFormsMenu,
-		controlFlotaMenu,
+		controlFlotaAdminMenu,
+		controlFlotaViewMenu,
 		bookingsMenu,
 		// driversMenu,
 		// vehiclesMenu,
 		// configMenu,
-		// {
-		// 	title: "Reportes",
-		// 	url: "#",
-		// 	icon: PieChart,
-		// 	items: [
-		// 		{
-		// 			title: "Cumplimiento",
-		// 			url: "#",
-		// 			icon: BarChart3,
-		//			active: false
-		// 		},
-		// 		{
-		// 			title: "Cumplimiento 2024",
-		// 			url: "#",
-		// 			icon: BarChart3,
-		//			active: false
-		// 		},
-		// 	],
-		// },
 	],
 	navSecondary: [
 		{
