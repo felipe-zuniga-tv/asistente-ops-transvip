@@ -1,4 +1,5 @@
 import { PaymentRouteTypeBadge } from "@/components/features/chat/badges/chat-badges"
+import { formatChileanPeso } from "@/lib/core/utils/helpers"
 import type { IBookingInfoOutput } from '@/types/domain/chat/models'
 
 interface BookingPaymentProps {
@@ -14,13 +15,13 @@ export function BookingPayment({ result }: BookingPaymentProps) {
         <div className='flex flex-col gap-1 w-full'>
           <div className='card-info-detail flex-row gap-1'>
             <span className='font-semibold'>Monto Estimado:</span>
-            <span className=''>{result.payment.estimated_payment}</span>
+            <span className=''>{formatChileanPeso(result.payment.estimated_payment)}</span>
             <PaymentRouteTypeBadge result={result} />
           </div>
           { result.payment.actual_payment && (
             <div className='card-info-detail flex-row gap-1'>
               <span className='font-semibold'>Monto Real:</span>
-              <span className=''>{result.payment.actual_payment}</span>
+              <span className=''>{formatChileanPeso(result.payment.actual_payment)}</span>
             </div>
           )}
           <div className='card-info-detail flex-row gap-1'>
