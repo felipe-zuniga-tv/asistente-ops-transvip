@@ -155,7 +155,7 @@ export async function getVehicleShiftsByDateRange(
 			.or(`start_date.lte.${endDate},end_date.gte.${startDate}`)
 
 		// Only apply vehicle number filter if not 0
-		if (vehicleNumber !== 0) {
+		if (vehicleNumber !== 0 && vehicleNumber !== undefined) {
 			query = query.eq("vehicle_number", vehicleNumber)
 		}
 

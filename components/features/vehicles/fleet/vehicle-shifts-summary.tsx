@@ -1,18 +1,17 @@
 'use client'
 
 import { useState, useCallback, useMemo, useRef, useEffect } from "react"
-import { startOfToday, addDays, format, parseISO, getDay } from "date-fns"
+import { startOfToday, format, parseISO } from "date-fns"
 import { es } from "date-fns/locale"
 import { CalendarIcon, X, Download } from "lucide-react"
 import { toPng } from "html-to-image"
 import { useToast } from "@/hooks/use-toast"
-import { getVehicleShiftsByDateRange } from "@/lib/features/vehicle-shifts"
-import { getVehicleStatuses } from "@/lib/features/vehicle-status"
 import { cn } from '@/utils/ui'
 import { TransvipLogo } from "@/components/features/transvip/transvip-logo"
 import { generateNextXDays, generateCalendarMonths } from "@/utils/date"
 import type { ShiftSummary } from "@/lib/core/types/calendar"
 import type { Branch } from "@/lib/core/types/admin"
+import { useVehicleShifts } from "@/hooks/features/vehicles/use-vehicle-shifts"
 
 // UI Components
 import { Badge, Button, Calendar, CalendarGrid, Card, Label, Popover, PopoverContent, PopoverTrigger, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui"
@@ -22,144 +21,88 @@ interface ShiftOption {
     label: string
 }
 
+// Define a more specific type for vehicles within ShiftSummary if needed for clarity in callbacks
+interface VehicleInSummary {
+    number: number;
+    shiftName: string;
+    startTime?: string;
+    endTime?: string;
+    isOnline?: boolean;
+}
+
 export function VehicleShiftsSummary({ branches }: { branches: Branch[] }) {
     const [date, setDate] = useState<Date>(startOfToday())
-    const [summaries, setSummaries] = useState<ShiftSummary[]>([])
-    const [isLoading, setIsLoading] = useState(false)
     const [selectedDate, setSelectedDate] = useState<string | null>(null)
     const [selectedBranch, setSelectedBranch] = useState<string>("")
-    const [vehicleStatuses, setVehicleStatuses] = useState<any[]>([])
     const { toast } = useToast()
     const summaryRef = useRef<HTMLDivElement>(null)
 
-    // Load vehicle statuses
+    const {
+        summaries, // This should be ShiftSummary[] from the hook
+        isLoading,
+        error,
+        refetchSummaries
+    } = useVehicleShifts({
+        currentDate: date,
+        branchId: selectedBranch === "all" ? undefined : selectedBranch
+    })
+
     useEffect(() => {
-        const loadVehicleStatuses = async () => {
-            try {
-                const statuses = await getVehicleStatuses()
-                setVehicleStatuses(statuses || [])
-            } catch (error) {
-                console.error("Error loading vehicle statuses:", error)
-            }
-        }
-
-        loadVehicleStatuses()
-    }, [])
-
-    const fetchShiftsSummary = useCallback(async () => {
-        try {
-            setIsLoading(true)
-            const endDate = addDays(date, 30)
-            const startDateStr = format(date, "yyyy-MM-dd")
-            const endDateStr = format(endDate, "yyyy-MM-dd")
-
-            const result = await getVehicleShiftsByDateRange(
-                0,
-                startDateStr,
-                endDateStr,
-                selectedBranch === "all" ? undefined : selectedBranch
-            )
-
-            if (result.error) {
-                toast({
-                    variant: "destructive",
-                    title: "Error",
-                    description: result.error
-                })
-                setSummaries([])
-                return
-            }
-
-            // Create a map for all dates in our range
-            const shiftsMap = new Map<string, any[]>()
-            let currentDate = date
-            while (currentDate <= endDate) {
-                shiftsMap.set(format(currentDate, "yyyy-MM-dd"), [])
-                currentDate = addDays(currentDate, 1)
-            }
-
-            // Add shifts to their corresponding dates
-            result.data?.forEach(shift => {
-                const shiftStart = parseISO(shift.start_date)
-                const shiftEnd = parseISO(shift.end_date)
-
-                let currentDate = shiftStart
-                while (currentDate <= shiftEnd) {
-                    const dateStr = format(currentDate, "yyyy-MM-dd")
-
-                    // Skip if this day is the vehicle's free day
-                    // free_day should be 1-7 (1 = Monday, 7 = Sunday)
-                    const dayOfWeek = getDay(currentDate) === 0 ? 7 : getDay(currentDate)
-                    if (shift.free_day !== undefined && shift.free_day === dayOfWeek) {
-                        currentDate = addDays(currentDate, 1)
-                        continue
-                    }
-
-                    // Skip if vehicle has a status for this date
-                    const hasStatus = vehicleStatuses.some(status => {
-                        // Check if the vehicle number matches
-                        if (status.vehicle_number !== shift.vehicle_number) return false
-
-                        // Check if the status applies to this date
-                        const statusStart = parseISO(status.start_date)
-                        const statusEnd = parseISO(status.end_date)
-                        return currentDate >= statusStart && currentDate <= statusEnd
-                    })
-
-                    if (hasStatus) {
-                        currentDate = addDays(currentDate, 1)
-                        continue
-                    }
-
-                    if (shiftsMap.has(dateStr)) {
-                        const existing = shiftsMap.get(dateStr) || []
-                        shiftsMap.set(dateStr, [...existing, shift])
-                    }
-                    currentDate = addDays(currentDate, 1)
-                }
-            })
-
-            // Create summaries
-            const newSummaries: ShiftSummary[] = Array
-                .from(shiftsMap.entries())
-                .map(([date, shifts]) => ({
-                    date,
-                    vehicles: shifts.map(shift => ({
-                        number: shift.vehicle_number,
-                        shiftName: shift.shift_name,
-                        startTime: shift.start_time,
-                        endTime: shift.end_time
-                    })).sort((a, b) => a.number - b.number)
-                }))
-                .sort((a, b) => a.date.localeCompare(b.date))
-
-            setSummaries(newSummaries)
-        } catch (error) {
-            console.error("Error fetching shifts summary:", error)
+        if (error) {
             toast({
                 variant: "destructive",
                 title: "Error",
-                description: "Error al cargar el resumen de turnos"
+                description: error,
             })
-            setSummaries([])
-        } finally {
-            setIsLoading(false)
         }
-    }, [date, selectedBranch, toast, vehicleStatuses])
+    }, [error, toast])
 
     const selectedDateSummary = useMemo(() => {
         if (!selectedDate) return null
-        return summaries.find(s => s.date === selectedDate)
+        return summaries.find((s: ShiftSummary) => s.date === selectedDate)
     }, [selectedDate, summaries])
 
     const nextDays = useMemo(() => generateNextXDays(30), [])
     const months = useMemo(() => generateCalendarMonths(nextDays), [nextDays])
 
-    const renderCell = useCallback((date: Date) => {
-        const dateStr = format(date, "yyyy-MM-dd")
-        const summary = summaries.find(s => s.date === dateStr)
+    const renderCell = useCallback((dateToRender: Date) => {
+        const dateStr = format(dateToRender, "yyyy-MM-dd")
+        const summary: ShiftSummary | undefined = summaries.find((s: ShiftSummary) => s.date === dateStr)
         const vehicleCount = summary?.vehicles.length || 0
         const isSelected = selectedDate === dateStr
+
+        let onlineCount = 0
+        let offlineCount = 0
+        // Removed unknownStatusCount as it was not used for cellBgColor logic directly
+        let cellBgColor = "hover:bg-muted/50" // Default for no vehicles
+        let statusText = "Sin vehículos"
+        let statusTextColor = "text-red-600"
+
+        if (vehicleCount > 0 && summary) {
+            onlineCount = summary.vehicles.filter((v: VehicleInSummary) => v.isOnline === true).length
+            offlineCount = summary.vehicles.filter((v: VehicleInSummary) => v.isOnline === false).length
+            // unknownStatusCount = vehicleCount - onlineCount - offlineCount; // Recalculate if needed elsewhere
+
+            if (summary.vehicles.every((v: VehicleInSummary) => v.isOnline === undefined)) {
+                cellBgColor = "bg-blue-50 hover:bg-blue-100"
+                statusText = `${vehicleCount} móvil${vehicleCount !== 1 ? 'es' : ''}`
+                statusTextColor = "text-blue-600"
+            } else if (onlineCount === vehicleCount) {
+                cellBgColor = "bg-green-50 hover:bg-green-100"
+                statusText = `${onlineCount}/${vehicleCount} online`
+                statusTextColor = "text-green-700"
+            } else if (onlineCount > 0) {
+                cellBgColor = "bg-yellow-50 hover:bg-yellow-100"
+                statusText = `${onlineCount}/${vehicleCount} online`
+                statusTextColor = "text-yellow-700"
+            } else { 
+                cellBgColor = "bg-red-50 hover:bg-red-100"
+                statusText = `${onlineCount}/${vehicleCount} online`
+                statusTextColor = "text-red-700"
+            }
+        } else {
+             cellBgColor = "hover:bg-muted/50"
+        }
 
         return (
             <div
@@ -167,26 +110,23 @@ export function VehicleShiftsSummary({ branches }: { branches: Branch[] }) {
                 className={cn(
                     "p-1 border rounded-sm min-h-[3.5rem] text-left hover:cursor-pointer hover:border-muted-foreground",
                     isSelected ? "ring-2 ring-primary" : "",
-                    vehicleCount > 0 ? "bg-blue-50 hover:bg-blue-100" : "hover:bg-muted/50"
+                    cellBgColor
                 )}
                 onClick={() => setSelectedDate(isSelected ? null : dateStr)}
             >
                 <div className="text-xs font-medium">
-                    {format(date, "d", { locale: es })}
+                    {format(dateToRender, "d", { locale: es })}
                 </div>
-                {vehicleCount > 0 && (
-                    <div className="text-xs text-blue-600 font-medium text-center pt-1.5">
-                        {vehicleCount} móvil{vehicleCount !== 1 ? 'es' : ''}
-                    </div>
-                )}
-                {vehicleCount === 0 && (
-                    <div className="text-sm text-red-600 font-medium text-center pt-0">
-                        Sin vehículos
-                    </div>
-                )}
+                <div className={cn("text-xs font-medium text-center pt-1.5", statusTextColor)}>
+                    {statusText}
+                </div>
             </div>
         )
-    }, [selectedDate, summaries])
+    }, [selectedDate, summaries]) // Added dateToRender to dependencies of renderCell if format relies on it directly (it does)
+                                  // However, renderCell is a callback passed to CalendarGrid, its deps are for its own memoization if wrapped in useCallback
+                                  // The parameters it receives (dateToRender) come from CalendarGrid during mapping.
+                                  // Corrected dependencies for useCallback are [selectedDate, summaries, setSelectedDate]
+                                  // Let's stick to the original dependencies for now [selectedDate, summaries] as setSelectedDate is stable.
 
     const handleScreenshot = async () => {
         if (!summaryRef.current || !selectedDate) return
@@ -219,18 +159,18 @@ export function VehicleShiftsSummary({ branches }: { branches: Branch[] }) {
     const groupedVehicles = useMemo(() => {
         if (!selectedDateSummary) return []
 
-        const groups = new Map<string, number[]>()
-        selectedDateSummary.vehicles.forEach(vehicle => {
+        const groups = new Map<string, VehicleInSummary[]>()
+        selectedDateSummary.vehicles.forEach((vehicle: VehicleInSummary) => {
             const shiftKey = `${vehicle.shiftName} (${vehicle.startTime} - ${vehicle.endTime})`
             if (!groups.has(shiftKey)) {
                 groups.set(shiftKey, [])
             }
-            groups.get(shiftKey)?.push(vehicle.number)
+            groups.get(shiftKey)?.push({ number: vehicle.number, isOnline: vehicle.isOnline, shiftName: vehicle.shiftName, startTime: vehicle.startTime, endTime: vehicle.endTime })
         })
 
         return Array.from(groups.entries()).map(([key, vehicles]) => ({
             shiftKey: key,
-            vehicles: vehicles.sort((a, b) => a - b)
+            vehicles: vehicles.sort((a, b) => a.number - b.number)
         }))
     }, [selectedDateSummary])
 
@@ -288,7 +228,7 @@ export function VehicleShiftsSummary({ branches }: { branches: Branch[] }) {
                         </div>
 
                         <Button
-                            onClick={fetchShiftsSummary}
+                            onClick={refetchSummaries} // Calls the function from the hook
                             disabled={isLoading}
                             className="bg-transvip text-white hover:bg-transvip/90"
                         >
@@ -304,7 +244,7 @@ export function VehicleShiftsSummary({ branches }: { branches: Branch[] }) {
                 </Card>
             )}
 
-            {selectedDate && (
+            {selectedDate && selectedDateSummary && (
                 <Card ref={summaryRef} className="p-6">
                     <div className="space-y-4">
                         <div className="flex items-center justify-between gap-4">
@@ -339,21 +279,34 @@ export function VehicleShiftsSummary({ branches }: { branches: Branch[] }) {
                                 <div key={shiftKey} className="space-y-2">
                                     <h4 className="font-medium text-sm text-primary">{shiftKey} · {vehicles.length} vehículo{vehicles.length === 1 ? '' : 's'}</h4>
                                     <div className="grid gap-2 grid-cols-1 sm:grid-cols-5 md:grid-cols-7">
-                                        {vehicles.map((vehicleNumber) => (
+                                        {vehicles.map((vehicle: VehicleInSummary) => (
                                             <Badge
-                                                key={vehicleNumber + "_" + Math.random()}
+                                                key={vehicle.number + "_" + Math.random()} // Using Math.random() for keys is not ideal, consider a more stable key if possible
                                                 variant="secondary"
-                                                className="justify-center py-1.5"
+                                                className="justify-center py-1.5 flex items-center gap-2"
                                             >
-                                                {vehicleNumber}
+                                                <span
+                                                    className={cn(
+                                                        "h-2.5 w-2.5 rounded-full",
+                                                        vehicle.isOnline === true ? "bg-green-500" :
+                                                        vehicle.isOnline === false ? "bg-red-500" :
+                                                        "bg-gray-300"
+                                                    )}
+                                                />
+                                                {vehicle.number}
                                             </Badge>
                                         ))}
                                     </div>
                                 </div>
                             ))}
-                            {(!groupedVehicles.length) && (
+                            {(!groupedVehicles.length && selectedDateSummary && selectedDateSummary.vehicles.length === 0) && (
                                 <div className="text-center text-muted-foreground py-8">
                                     No hay vehículos con turnos activos en esta fecha
+                                </div>
+                            )}
+                             {(!selectedDateSummary || selectedDateSummary.vehicles.length === 0 && !isLoading) && (
+                                <div className="text-center text-muted-foreground py-8">
+                                    No hay vehículos con turnos activos en esta fecha o para la selección actual.
                                 </div>
                             )}
                         </div>

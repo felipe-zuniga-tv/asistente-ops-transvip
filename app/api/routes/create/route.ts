@@ -51,10 +51,6 @@ export async function POST(request: Request) {
             }
         })
     )
-    
-    // console.log(bookingDetails)
-    console.log(vehicleDetails)
-    
 
     return NextResponse.json({ message: 'Data received', data: { bookings, vehicles } });
 }

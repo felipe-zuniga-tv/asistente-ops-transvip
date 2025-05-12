@@ -26,7 +26,7 @@ import { VehicleInfoCard } from "@/components/features/mtt/vehicle-info-card";
 import { VEHICLE_STATUS } from "@/utils/constants";
 import { nanoid } from "@/utils/id";
 import { CREATE_DRIVER_RATINGS_SUMMARY, CREATE_TEXT_PROMPT, EMAIL_TEXT_OPS_EXAMPLE, SYSTEM_MESSAGE } from "@/lib/core/config/chat"
-import { getVehicleStatus, getVehicleDetail } from "@/lib/features/vehicle/functions";
+import { getVehicleOnlineStatus, getVehicleDetail } from "@/lib/features/vehicle/functions";
 import { getDriverProfile, searchDriver, getDriverRatings, getDriverRatingSummary } from "@/lib/features/driver";
 import { getBookingInfo, getBookings } from "@/lib/features/booking";
 import { getZonaIluminadaServices } from "@/lib/features/airport-status";
@@ -91,7 +91,7 @@ async function submitUserMessage(content: string) {
 				generate: async function* ({ vehicleNumber }) {
 					yield <LoadingMessage text={`Buscando el status del móvil #${vehicleNumber}...`} />
 
-					const vehicleStatus = await getVehicleStatus(vehicleNumber)
+					const vehicleStatus = await getVehicleOnlineStatus(vehicleNumber)
 					// console.log(vehicleStatus);
 
 					aiState.done({
@@ -453,8 +453,7 @@ async function submitUserMessage(content: string) {
 					yield <LoadingMessage text={`Consultando ${licensePlates.length} patente${licensePlates.length > 1 ? 's' : ''} en el MTT...`} />
 
 					const results = await getMTTVehiclesInfo(licensePlates);
-
-					console.log(results)
+					// console.log(results)
 
 					aiState.done({
 						...aiState.get(),

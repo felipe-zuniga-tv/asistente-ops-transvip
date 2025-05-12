@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useAuth } from '@/lib/providers/auth-provider'
+import { Loader2 } from 'lucide-react'
 
 export function LoginFormClient() {
     const [error, setError] = useState<string | null>(null)
@@ -73,7 +74,10 @@ export function LoginFormClient() {
                     className="w-full"
                     disabled={isLoading}
                 >
-                    {isLoading ? "Verificando..." : "Continuar"}
+                    {isLoading ?
+                        <span className="flex items-center gap-2"><Loader2 className="w-4 h-4 animate-spin" />Verificando...</span> :
+                        <span className="flex items-center gap-2">Continuar</span>
+                    }
                 </Button>
             </form>
         </div>

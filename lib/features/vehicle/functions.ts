@@ -4,6 +4,7 @@ import { getResponseFromURL, cleanDriverInfo } from "@/lib/core/utils/helpers"
 import { VEHICLE_STATUS } from "@/utils/constants"
 import { IVehicleDetail } from "@/types/domain/chat/models"
 import { buildUrlParams, getAccessToken } from "@/utils/helpers"
+import { getSession } from "@/lib/core/auth"
 
 // Utility function to map API response to IVehicleDetail
 function mapToVehicleDetail(data: any): IVehicleDetail {
@@ -86,8 +87,9 @@ async function fetchVehicleDetails(params: Record<string, string | number>) {
     return result
 }
 
-export async function getVehicleStatus(vehicleNumber: number) {
-    const accessToken = await getAccessToken()
+export async function getVehicleOnlineStatus(vehicleNumber: number) {
+    const session = await getSession()
+    const accessToken = (session?.user as any)?.accessToken
     const params = buildUrlParams({
         access_token: accessToken,
         search_id: vehicleNumber,
@@ -96,8 +98,6 @@ export async function getVehicleStatus(vehicleNumber: number) {
     const { status, data } = await getResponseFromURL(`${VEHICLE_STATUS_API_URL}?${params}`)
 
     if (status === 200 && data.length > 0) {
-        console.log(data[0])
-        
         const {
             fleet_id, fleet_image,
             first_name, last_name,

@@ -1,7 +1,7 @@
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
 import { CardContent } from "@/components/ui/card"
-import { CalendarX2, Download } from "lucide-react"
+import { CalendarX2, CircleCheck, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useRef } from "react"
 import { toPng } from "html-to-image"
@@ -60,7 +60,7 @@ export function ShiftsPerVehicleCalendar({ shifts, hasSearched, daysToShow, vehi
         return (
             <CardContent>
                 <div className="flex flex-col gap-4 items-center justify-center py-16 text-muted-foreground">
-                    <p className="text-sm">Ingrese un número de móvil para ver sus turnos</p>
+                    <p className="text-sm text-center px-4 sm:px-0">Ingrese un número de móvil para ver sus turnos</p>
                 </div>
             </CardContent>
         )
@@ -82,28 +82,34 @@ export function ShiftsPerVehicleCalendar({ shifts, hasSearched, daysToShow, vehi
 
         return (
             <div key={date.toISOString()}
-                className={`p-1 border rounded-sm transition-colors min-h-[3.5rem] ${
-                    shift?.isFreeDay ? "bg-green-50 hover:bg-green-100" :
-                    shift?.isStatus ? `bg-opacity-10 hover:bg-opacity-20` :
-                    shift ? "bg-blue-50 hover:bg-blue-100" : "hover:bg-muted/50"
-                }`}
+                className={`flex flex-col gap-0.5 p-0.5 sm:p-1 border rounded-sm transition-colors min-h-[3.5rem] ${shift?.isFreeDay ? "bg-green-50 hover:bg-green-100" :
+                        shift?.isStatus ? `bg-opacity-10 hover:bg-opacity-20` :
+                            shift ? "bg-blue-50 hover:bg-blue-100" : "hover:bg-muted/50"
+                    }`}
                 style={shift?.isStatus ? { backgroundColor: shift.status_color } : undefined}
             >
-                <div className="text-xs font-medium pb-2">
+                <div className="text-xs font-medium pb-0">
                     {format(date, "d", { locale: es })}
                 </div>
                 {shift && (
-                    <div className="space-y-0.5">
-                        <div className={`text-[0.8rem] ${
-                            shift.isFreeDay ? 'text-green-600' :
-                            shift.isStatus ? 'text-black font-medium' :
-                            'text-blue-600'
-                        } font-medium truncate`}>
-                            {shift.isFreeDay ? 'Libre' : shift.shift_name}
+                    <div className="flex-1 flex flex-col gap-1 justify-center">
+                        <div className={`text-center sm:text-left text-[0.8rem] ${shift.isFreeDay ? 'text-green-600' :
+                                shift.isStatus ? 'text-black font-medium' :
+                                    'text-blue-600'
+                            } font-medium truncate`}>
+                            {shift.isFreeDay ?
+                                <div className="flex flex-row items-center justify-center gap-1">
+                                    <CircleCheck className="h-4 w-4" />
+                                    <span className="hidden sm:inline">Libre</span>
+                                </div> :
+                                shift.shift_name
+                            }
                         </div>
                         {!shift.isFreeDay && !shift.isStatus && shift.start_time && shift.end_time && (
-                            <div className="text-[0.7rem] text-muted-foreground">
-                                {shift.start_time} - {shift.end_time}
+                            <div className="text-[0.7rem] text-muted-foreground flex flex-col sm:flex-row items-center justify-center xs:justify-start gap-0.5 xs:gap-1">
+                                <span className="inline">{shift.start_time.slice(0, 5)}</span>
+                                <span className="hidden sm:inline"> - </span>
+                                <span className="inline">{shift.end_time.slice(0, 5)}</span>
                             </div>
                         )}
                     </div>
@@ -113,7 +119,7 @@ export function ShiftsPerVehicleCalendar({ shifts, hasSearched, daysToShow, vehi
     }
 
     return (
-        <CardContent>
+        <CardContent className="flex flex-col gap-2 px-4">
             <div className="flex justify-end">
                 <Button
                     variant="default"
@@ -127,8 +133,14 @@ export function ShiftsPerVehicleCalendar({ shifts, hasSearched, daysToShow, vehi
             </div>
             <div ref={calendarRef} className="grid gap-6 bg-white rounded-lg">
                 <div className="flex flex-col items-center justify-center">
-                    <div className="text-lg font-semibold text-slate-700 text-center">
-                        Jornadas de Conexión · Móvil {vehicleNumber}
+                    <div className="flex flex-row items-center gap-2 text-base sm:text-lg font-semibold">
+                        <div className="text-slate-700 text-center">
+                            Jornadas de Conexión
+                        </div>
+                        <span className="text-slate-700 text-center">·</span>
+                        <div className="text-slate-700 text-center">
+                            Móvil {vehicleNumber}
+                        </div>
                     </div>
                     <div className="text-xs text-slate-500 text-center">
                         Fecha: {format(new Date(), 'EEEE, d MMMM yyyy HH:mm', { locale: es })}

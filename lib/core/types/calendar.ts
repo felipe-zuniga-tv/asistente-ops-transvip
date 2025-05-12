@@ -22,6 +22,7 @@ export interface ShiftSummary {
         shiftName: string
         startTime?: string
         endTime?: string
+        isOnline?: boolean
     }[]
 }
 

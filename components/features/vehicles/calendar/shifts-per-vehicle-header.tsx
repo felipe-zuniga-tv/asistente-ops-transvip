@@ -9,7 +9,7 @@ import {
     SelectTrigger,
     SelectValue,
  } from "@/components/ui"
-import { Loader2, Search, X } from "lucide-react"
+import { Bus, Loader2, X } from "lucide-react"
 import { TransvipLogo } from "@/components/features/transvip/transvip-logo"
 import { cn } from '@/utils/ui'
 
@@ -73,7 +73,7 @@ export function ShiftsPerVehicleHeader({
                                 )}
                             />
                             <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80">
-                                <Search className="h-4 w-4" />
+                                <Bus className="h-4 w-4" />
                             </div>
                             {(vehicleNumber || isLoading) && (
                                 <div className={cn("absolute inset-y-0 end-0 flex items-center", isLoading ? "pe-3" : "")}>

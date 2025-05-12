@@ -59,7 +59,7 @@
     "libphonenumber-js": "^1.12.6",
     "lucide-react": "^0.474.0",
     "nanoid": "^5.0.9",
-    "next": "15.3.1",
+    "next": "^15.3.2",
     "node": "^18.20.7",
     "prisma": "^6.2.1",
     "react": "19.1.0",
