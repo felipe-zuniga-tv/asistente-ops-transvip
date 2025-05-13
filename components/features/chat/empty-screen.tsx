@@ -62,7 +62,7 @@ export function EmptyScreen({ session }: { session: ChatSession }) {
                     </div>
                     <span className="font-bold">¿Con qué puedo ayudarte hoy?</span>
                     
-                    <div className="w-full max-w-4xl">
+                    <div className="w-full max-w-7xl">
                         <Tabs defaultValue="Reservas" className="w-full">
                             <TabsList className="grid gap-1 w-full grid-cols-5 h-12">
                                 {Object.keys(toolGroups).map((group) => (
