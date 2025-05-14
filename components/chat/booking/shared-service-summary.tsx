@@ -2,6 +2,7 @@ import { BookingIdBadge } from './booking-badge'
 import { BookingStatusBadge, PaymentStatusBadge, CityBadge } from '@/components/features/chat/badges/chat-badges'
 import GoogleMapsButton from './google-maps-url-button'
 import type { IBookingInfoOutput } from '@/types/domain/chat/models'
+import { formatChileanPeso } from '@/lib/core/utils/helpers'
 
 interface SharedServiceSummaryProps {
   result: IBookingInfoOutput[]
@@ -34,25 +35,13 @@ interface SharedServiceTotalsProps {
 
 export function SharedServiceTotals({ result }: SharedServiceTotalsProps) {
   const totalPayment = result.reduce((acc, curr) => acc + curr.payment.actual_payment, 0)
-  // const totalEstimatedDistance = result.reduce((acc, curr) => acc + curr.directions.estimated_travel_kms, 0)
-  // const totalActualDistance = result.reduce((acc, curr) => acc + curr.directions.total_travel_kms, 0)
 
   return (
     <div className='shared-service-totals card-info-detail flex flex-row gap-3 justify-start bg-green-200 rounded-md shadow-md mb-2'>
       <div className='shared-service-total-payment flex flex-row gap-1 p-2 w-full'>
         <span className='font-semibold'>Pago Total:</span>
-        <span>{/* formatChileanPeso(totalPayment) */ totalPayment}</span>
+        <span>{formatChileanPeso(totalPayment)}</span>
       </div>
-      {/* <span>·</span>
-      <div className='shared-service-total-estimated-distance flex flex-row gap-1'>
-        <span className='font-semibold'>Distancia Estimada:</span>
-        <span>{totalEstimatedDistance.toFixed(2)} kms</span>
-      </div>
-      <span>·</span>
-      <div className='shared-service-total-actual-distance flex flex-row gap-1'>
-        <span className='font-semibold'>Distancia Real:</span>
-        <span>{totalActualDistance.toFixed(2)} kms</span>
-      </div> */}
     </div>
   )
 } 
