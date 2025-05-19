@@ -8,13 +8,8 @@ import { useToast } from '@/hooks/use-toast'
 import { ConfigCardContainer } from '@/components/ui/tables/config-card-container'
 import { Button } from '@/components/ui/button'
 import { RefreshCw } from 'lucide-react'
-import {
-	updateSalesResponseStatusAction,
-	updateSalesResponseWhatsappConfirmationAction,
-	updateSalesResponseNotesAction,
-	getSalesResponses
-} from '@/lib/features/sales'
 import { useRouter } from 'next/navigation'
+import { useSalesResponses } from '@/hooks/features/sales-responses/use-sales-responses'
 
 const WHATSAPP_MESSAGES = {
 	'es-CL': "Hola [NAME], te escribimos de Transvip. Este mensaje es sólo para confirmar que obtuvimos correctamente tu número de teléfono. ¡Buen viaje!",
@@ -44,11 +39,29 @@ export function SalesResponsesContent({
 }: SalesResponsesContentProps) {
 	const router = useRouter()
 	const { toast } = useToast()
-	const [responses, setResponses] = useState<SalesResponse[]>(initialResponses)
-	const [isRefreshing, setIsRefreshing] = useState(false)
 	const [isDialogOpen, setIsDialogOpen] = useState(false)
 	const [editingResponse, setEditingResponse] = useState<SalesResponse | null>(null)
 
+	const {
+		responses,
+		isLoading: isRefreshing,
+		error,
+		fetchResponses: loadResponses,
+		updateStatus: handleUpdateStatus,
+		confirmWhatsapp: handleConfirmWhatsapp,
+		updateNotes: handleUpdateNotes,
+	} = useSalesResponses({ initialResponses })
+
+	useEffect(() => {
+		if (error) {
+			toast({
+				title: "Error",
+				description: error,
+				variant: "destructive"
+			})
+		}
+	}, [error, toast])
+	
 	useEffect(() => {
 		if (!isDialogOpen || !editingResponse) {
 			const timer = setTimeout(() => {
@@ -61,69 +74,32 @@ export function SalesResponsesContent({
 		}
 	}, [isDialogOpen, editingResponse])
 
-	const loadResponses = async () => {
-		try {
-			setIsRefreshing(true)
-			const data = await getSalesResponses()
-			setResponses(data)
-		} catch (error) {
-			toast({
-				title: "Error",
-				description: "Ocurrió un error al cargar las respuestas.",
-				variant: "destructive"
-			})
-		} finally {
-			setIsRefreshing(false)
-		}
-	}
-
-	const handleUpdateStatus = async (id: string, status: string) => {
-		try {
-			await updateSalesResponseStatusAction(id, status as SalesResponse['status'])
-			router.refresh()
-			toast({
-				title: "Estado actualizado",
-				description: "El estado de la respuesta ha sido actualizado correctamente."
-			})
-		} catch (error) {
-			toast({
-				title: "Error",
-				description: "Ocurrió un error al actualizar el estado.",
-				variant: "destructive"
-			})
-		}
-	}
-
-	const handleConfirmWhatsapp = async (id: string, confirmed: boolean) => {
-		try {
-			await updateSalesResponseWhatsappConfirmationAction(id, confirmed)
-			router.refresh()
-			toast({
-				title: "WhatsApp confirmado",
-				description: `El número de WhatsApp ha sido ${confirmed ? 'confirmado' : 'desconfirmado'} correctamente.`
-			})
-		} catch (error) {
-			toast({
-				title: "Error",
-				description: "Ocurrió un error al actualizar el estado de confirmación de WhatsApp.",
-				variant: "destructive"
-			})
-		}
-	}
-
-	const handleUpdateNotes = async (id: string, notes: string) => {
-		try {
-			await updateSalesResponseNotesAction(id, notes)
-			router.refresh()
+	const onUpdateNotes = async (id: string, notes: string) => {
+		await handleUpdateNotes(id, notes)
+		if (!error) {
 			toast({
 				title: "Notas actualizadas",
 				description: "Las notas han sido actualizadas correctamente."
 			})
-		} catch (error) {
+		}
+	}
+
+	const onUpdateStatus = async (id: string, status: string) => {
+		await handleUpdateStatus(id, status as SalesResponse['status'])
+		if (!error) {
 			toast({
-				title: "Error",
-				description: "Ocurrió un error al actualizar las notas.",
-				variant: "destructive"
+				title: "Estado actualizado",
+				description: "El estado de la respuesta ha sido actualizado correctamente."
+			})
+		}
+	}
+	
+	const onConfirmWhatsapp = async (id: string, confirmed: boolean) => {
+		await handleConfirmWhatsapp(id, confirmed)
+		if (!error) {
+			toast({
+				title: "WhatsApp confirmado",
+				description: `El número de WhatsApp ha sido ${confirmed ? 'confirmado' : 'desconfirmado'} correctamente.`
 			})
 		}
 	}
@@ -143,7 +119,7 @@ export function SalesResponsesContent({
 	}
 
 	const handleSendWhatsAppMessage = (response: SalesResponse) => {
-		const message = getWhatsAppMessage(response.first_name, response.language);
+		const message = getWhatsAppMessage(response.first_name.trim(), response.language);
 		const phoneNumber = response.country_code ? `${response.country_code}${response.phone_number}` : response.phone_number;
 		sendWhatsAppMessage(phoneNumber, message);
 	}
@@ -170,8 +146,8 @@ export function SalesResponsesContent({
 
 			<SalesResponsesTable
 				data={responses}
-				onUpdateStatus={handleUpdateStatus}
-				onConfirmWhatsapp={handleConfirmWhatsapp}
+				onUpdateStatus={onUpdateStatus}
+				onConfirmWhatsapp={onConfirmWhatsapp}
 				onUpdateNotes={handleEditResponse}
 				onSendWhatsApp={handleSendWhatsAppMessage}
 			/>
@@ -180,7 +156,7 @@ export function SalesResponsesContent({
 				open={isDialogOpen}
 				onOpenChange={handleDialogClose}
 				response={editingResponse}
-				onSave={handleUpdateNotes}
+				onSave={onUpdateNotes}
 			/>
 		</ConfigCardContainer>
 	)

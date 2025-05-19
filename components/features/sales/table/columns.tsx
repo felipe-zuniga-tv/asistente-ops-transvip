@@ -1,14 +1,15 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { format } from "date-fns";
-import { X, ChevronDown, ArrowRight } from "lucide-react";
+import { format, parseISO, differenceInCalendarDays } from "date-fns";
+import { X, ChevronDown, ArrowRight, SendHorizontal, CheckCheck } from "lucide-react";
 import {
 	Button,
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
+	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui"
 import type { SalesResponse } from "@/lib/core/types/sales";
@@ -51,20 +52,21 @@ export const columns: ColumnDef<SalesResponse>[] = [
 	// },
 	{
 		accessorKey: "created_at",
-		header: () => <div className="text-center w-[130px]">Fecha solicitud</div>,
+		header: () => <div className="text-center">Fecha solicitud</div>,
 		cell: ({ row }) => (
-			<div className="text-center text-sm w-[130px]">
-				{format(new Date(row.getValue("created_at")), 'dd/MM/yyyy HH:mm')}
+			<div className="text-center text-sm flex flex-col items-center gap-0.5">
+				<span>{format(new Date(row.getValue("created_at")), 'dd/MM/yyyy')}</span>
+				<span>{format(new Date(row.getValue("created_at")), 'HH:mm')}</span>
 			</div>
 		),
 	},
 	{
 		accessorKey: "language",
-		header: () => <div className="text-center w-[50px]">Idioma</div>,
+		header: () => <div className="text-center w-full">Idioma</div>,
 		cell: ({ row }) => {
 			const lang = languages.find(l => l.value === (row.original.language as Language));
 			return (
-				<div className="flex items-center justify-center gap-2 text-sm w-[50px]">
+				<div className="flex items-center justify-center gap-2 text-sm w-full">
 					<span className="text-lg">{lang?.flag.split(" ")[0]}</span>
 					<span className="hidden">{lang?.label}</span>
 				</div>
@@ -73,11 +75,11 @@ export const columns: ColumnDef<SalesResponse>[] = [
 	},
 	{
 		accessorKey: "client_name_email",
-		header: () => <div className="text-center w-[240px]">Nombre / Teléfono / Email</div>,
+		header: () => <div className="text-center">Nombre / Teléfono / Email</div>,
 		cell: ({ row }) => (
-			<div className="text-center flex flex-col items-center gap-0.5 justify-center w-[240px]">
+			<div className="text-center flex flex-col items-center gap-0.5 justify-center">
 				<div className="text-center text-sm">
-					{row.original.first_name} {row.original.last_name}
+					{row.original.first_name.trim()} {row.original.last_name.trim()}
 				</div>
 				<div className="text-center flex items-center gap-1 justify-center">
 					<span className="text-center">{row.original.country_code}</span>
@@ -91,41 +93,49 @@ export const columns: ColumnDef<SalesResponse>[] = [
 	},
 	{
 		accessorKey: "accommodation",
-		header: () => <div className="text-center w-[220px]">Alojamiento</div>,
+		header: () => <div className="text-center">Alojamiento</div>,
 		cell: ({ row }) => (
-			<div className="text-center text-sm w-[220px] text-wrap">
+			<div className="text-center text-sm text-wrap">
 				{row.original.accommodation || "-"}
 			</div>
 		),
 	},
 	{
 		accessorKey: "return_datetime",
-		header: () => <div className="text-center w-[130px]">Fecha de retorno</div>,
-		cell: ({ row }) => (
-			<div className="text-center text-sm w-[130px]">
-				{row.original.return_date ? format(new Date(row.original.return_date), 'dd/MM/yyyy') : ''}
-				{row.original.return_time ? ` ${row.original.return_time.slice(0, 5)}` : ''}
-			</div>
-		),
+		header: () => <div className="text-center">Fecha de retorno</div>,
+		cell: ({ row }) => {
+			const returnDate = row.original.return_date ? parseISO(row.original.return_date) : null;
+			const createdAt = row.original.created_at ? parseISO(row.original.created_at) : null;
+			const daysDiff = returnDate && createdAt ? differenceInCalendarDays(returnDate, createdAt) : null;
+			return (
+				<div className="text-center text-sm w-full flex flex-col items-center gap-0.5">
+					<div className="flex items-center gap-1">
+						<span>{row.original.return_date ? format(returnDate!, 'dd/MM/yyyy') : ''}</span>
+						<span>{row.original.return_time ? row.original.return_time.toString().slice(0, 5) : ''}</span>
+					</div>
+					<span className="text-xs text-muted-foreground">({daysDiff && daysDiff > 0 ? `+${daysDiff} días` : daysDiff})</span>
+				</div>
+			);
+		},
 	},
-	{
-		accessorKey: "send_whatsapp",
-		header: () => <div className="text-center">Enviar WhatsApp</div>,
-		cell: ({ row, table }) => (
-			<div className="text-center">
-				<Button
-					variant="ghost"
-					size="sm"
-					className="h-8 px-2 bg-green-600 hover:bg-green-700 shadow"
-					onClick={() => table.options.meta?.onSendWhatsApp?.(row.original)}
-				>
-					<WhatsappIcon className="hidden h-4 w-4" />
-					<span className="text-white">Enviar mensaje</span>
-					<ArrowRight className="h-4 w-4 text-white" />
-				</Button>
-			</div>
-		),
-	},
+	// {
+	// 	accessorKey: "send_whatsapp",
+	// 	header: () => <div className="text-center">Enviar WhatsApp</div>,
+	// 	cell: ({ row, table }) => (
+	// 		<div className="text-center">
+	// 			<Button
+	// 				variant="ghost"
+	// 				size="sm"
+	// 				className="h-8 px-2 bg-green-600 hover:bg-green-700 shadow"
+	// 				onClick={() => table.options.meta?.onSendWhatsApp?.(row.original)}
+	// 			>
+	// 				<WhatsappIcon className="hidden h-4 w-4" />
+	// 				<span className="text-white">Enviar mensaje</span>
+	// 				<ArrowRight className="h-4 w-4 text-white" />
+	// 			</Button>
+	// 		</div>
+	// 	),
+	// },
 	// {
 	// 	accessorKey: "whatsapp_confirmed",
 	// 	header: () => <div className="text-center">WhatsApp</div>,
@@ -179,16 +189,24 @@ export const columns: ColumnDef<SalesResponse>[] = [
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end" className="flex flex-col gap-1">
 							<DropdownMenuItem
-								onClick={() => (table.options.meta as any).onConfirmWhatsapp(row.original.id, true)}
-								className="bg-green-400 text-white hover:bg-green-500"
+								className="h-8"
+								onClick={() => table.options.meta?.onSendWhatsApp?.(row.original)}
 							>
-								<WhatsappIcon className="h-4 w-4" />
+								<span className="text-black">Enviar mensaje</span>
+								<SendHorizontal className="h-4 w-4 ml-auto" />
+							</DropdownMenuItem>
+							<DropdownMenuSeparator />
+							<DropdownMenuItem
+								onClick={() => (table.options.meta as any).onConfirmWhatsapp(row.original.id, true)}
+								className="h-8"
+							>
 								Confirmar
+								<CheckCheck className="h-4 w-4 ml-auto" />
 							</DropdownMenuItem>
 							<DropdownMenuItem
 								onClick={() => (table.options.meta as any).onConfirmWhatsapp(row.original.id, false)}>
-								<X className="h-4 w-4" />
 								Desconfirmar
+								<X className="h-4 w-4 ml-auto" />
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>

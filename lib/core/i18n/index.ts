@@ -3,6 +3,7 @@ export * from './index';
 export const translations = {
   'es-CL': {
     branches: {
+      selectLanguage: 'Selecciona tu idioma',
       title: 'Bienvenido a Transvip',
       description: 'Indícame dónde te encuentras para comenzar tu reserva',
       bookService: 'Reservar Servicio',
@@ -94,6 +95,7 @@ export const translations = {
   },
   'en-US': {
     branches: {
+      selectLanguage: 'Select your language',
       title: 'Welcome to Transvip',
       description: 'Indicate where you are to start your booking',
       bookService: 'Book Service',
@@ -185,6 +187,7 @@ export const translations = {
   },
   'de-DE': {
     branches: {
+      selectLanguage: 'Sprache auswählen',
       title: 'Willkommen bei Transvip',
       description: 'Indikieren Sie, wo Sie sind, um Ihre Buchung zu beginnen',
       bookService: 'Service buchen',
@@ -276,6 +279,7 @@ export const translations = {
   },
   'pt-BR': {
     branches: {
+      selectLanguage: 'Selecione seu idioma',
       title: 'Bem-vindo à Transvip',
       description: 'Indique onde você está para começar sua reserva',
       bookService: 'Reservar Serviço',
