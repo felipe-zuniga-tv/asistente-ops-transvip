@@ -36,6 +36,7 @@ export interface Shift {
     branch_id: string;
     branch_name: string;
     created_timestamp: string;
+    anexo_2_signed: boolean;
 }
 
 interface ShiftsCardProps {
@@ -178,6 +179,7 @@ export function ShiftsDefinition({ shifts }: ShiftsCardProps) {
                 shift={editingShift}
                 isOpen={isDialogOpen}
                 onClose={handleDialogClose}
+                onShiftUpdate={router.refresh}
             />
 
             <UploadShiftsDialog

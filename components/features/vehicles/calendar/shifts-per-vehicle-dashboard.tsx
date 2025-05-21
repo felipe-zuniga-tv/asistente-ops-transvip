@@ -21,7 +21,7 @@ interface ShiftsPerVehicleDashboardProps {
 
 export function ShiftsPerVehicleDashboard({ 
     shifts: initialShifts,
-    daysToShow: initialDaysToShow = 90,
+    daysToShow: initialDaysToShow = 30,
     vehicleNumber: initialVehicleNumber,
     className = ""
 }: ShiftsPerVehicleDashboardProps) {

@@ -3,7 +3,7 @@
 import { SimpleDialog, SimpleDialogHeader, SimpleDialogTitle } from "@/components/ui/simple-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Input, Button, Label } from "@/components/ui";
+import { Input, Button, Label, Checkbox } from "@/components/ui";
 import { createShift, updateShift } from "@/lib/features/vehicle-shifts";
 import { useTransition, useCallback, useMemo } from "react";
 import { WEEKDAYS, Shift } from "./shifts-definition";
@@ -15,6 +15,7 @@ interface ShiftDialogProps {
     shift?: Shift | null;
     isOpen: boolean;
     onClose: () => void;
+    onShiftUpdate?: () => void;
 }
 
 const initialFormData = {
@@ -23,9 +24,15 @@ const initialFormData = {
     end_time: "",
     free_day: 1,
     branch_id: "",
+    anexo_2_signed: false,
 };
 
-export function ShiftDialog({ shift, isOpen, onClose }: ShiftDialogProps) {
+export function ShiftDialog({
+    shift,
+    isOpen,
+    onClose,
+    onShiftUpdate, 
+}: ShiftDialogProps) {
     const [isPending, startTransition] = useTransition();
     const [branches, setBranches] = useState<Branch[]>([]);
     const [formData, setFormData] = useState(initialFormData);
@@ -56,6 +63,7 @@ export function ShiftDialog({ shift, isOpen, onClose }: ShiftDialogProps) {
                 end_time: shift.end_time,
                 free_day: shift.free_day,
                 branch_id: shift.branch_id,
+                anexo_2_signed: Boolean(shift.anexo_2_signed),
             });
         } else {
             setFormData(initialFormData);
@@ -70,6 +78,7 @@ export function ShiftDialog({ shift, isOpen, onClose }: ShiftDialogProps) {
                 if (isEditing && shift?.id) {
                     await updateShift(shift.id, formData);
                     toast.success("Turno actualizado exitosamente");
+                    if (onShiftUpdate) onShiftUpdate(); 
                 } else {
                     const selectedBranch = branches.find(b => b.id === formData.branch_id);
                     if (!selectedBranch) throw new Error("Sucursal no encontrada");
@@ -77,6 +86,7 @@ export function ShiftDialog({ shift, isOpen, onClose }: ShiftDialogProps) {
                     const { branch_id, ...shiftData } = formData;
                     await createShift({ ...shiftData, branch_name: selectedBranch.name });
                     toast.success("Turno creado exitosamente");
+                    if (onShiftUpdate) onShiftUpdate(); 
                 }
                 onClose();
             } catch (error) {
@@ -84,10 +94,17 @@ export function ShiftDialog({ shift, isOpen, onClose }: ShiftDialogProps) {
                 console.error(error);
             }
         });
-    }, [formData, isEditing, shift?.id, onClose, branches]);
+    }, [formData, isEditing, shift?.id, onClose, branches, onShiftUpdate]);
 
-    const handleInputChange = useCallback((field: keyof typeof formData, value: string | number) => {
-        setFormData(prev => ({ ...prev, [field]: value }));
+    const handleInputChange = useCallback((field: keyof typeof formData, value: string | number | boolean) => {
+        if ((field === "start_time" || field === "end_time") && typeof value === 'string') {
+            // Ensure the time is in HH:mm format
+            const [hours, minutes] = value.split(':');
+            const formattedTime = `${hours}:${minutes}`;
+            setFormData(prev => ({ ...prev, [field]: formattedTime }));
+        } else {
+            setFormData(prev => ({ ...prev, [field]: value }));
+        }
     }, []);
 
     const branchOptions = useMemo(() => 
@@ -103,8 +120,8 @@ export function ShiftDialog({ shift, isOpen, onClose }: ShiftDialogProps) {
             <SimpleDialogHeader>
                 <SimpleDialogTitle>{isEditing ? "Editar" : "Nueva"} Jornada</SimpleDialogTitle>
             </SimpleDialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
                     <Label htmlFor="branch_id">Sucursal</Label>
                     <Select
                         name="branch_id"
@@ -120,7 +137,7 @@ export function ShiftDialog({ shift, isOpen, onClose }: ShiftDialogProps) {
                         </SelectContent>
                     </Select>
                 </div>
-                <div className="space-y-2">
+                <div className="flex flex-col gap-2">
                     <Label htmlFor="name">Nombre del Turno</Label>
                     <Input
                         id="name"
@@ -130,7 +147,7 @@ export function ShiftDialog({ shift, isOpen, onClose }: ShiftDialogProps) {
                     />
                 </div>                    
                 <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
+                    <div className="flex flex-col gap-2">
                         <Label htmlFor="startTime">Hora Inicio</Label>
                         <Input
                             id="startTime"
@@ -140,7 +157,7 @@ export function ShiftDialog({ shift, isOpen, onClose }: ShiftDialogProps) {
                             required
                         />
                     </div>
-                    <div className="space-y-2">
+                    <div className="flex flex-col gap-2">
                         <Label htmlFor="endTime">Hora Fin</Label>
                         <Input
                             id="endTime"
@@ -151,7 +168,7 @@ export function ShiftDialog({ shift, isOpen, onClose }: ShiftDialogProps) {
                         />
                     </div>
                 </div>
-                <div className="space-y-2">
+                <div className="flex flex-col gap-2">
                     <Label>Día Libre</Label>
                     <Select 
                         value={formData.free_day.toString()}
@@ -169,7 +186,15 @@ export function ShiftDialog({ shift, isOpen, onClose }: ShiftDialogProps) {
                         </SelectContent>
                     </Select>
                 </div>
-                <div className="flex justify-end space-x-2">
+                <div className="flex items-center justify-between gap-2 p-3 border rounded-md">
+                    <Label htmlFor="anexo_2_signed">Anexo 2</Label>
+                    <Checkbox
+                        id="anexo_2_signed"
+                        checked={formData.anexo_2_signed}
+                        onCheckedChange={(checked) => handleInputChange("anexo_2_signed", checked === true)}
+                    />
+                </div>
+                <div className="flex justify-end space-x-2 mt-4">
                     <Button type="button" variant="outline" onClick={onClose}>
                         Cancelar
                     </Button>

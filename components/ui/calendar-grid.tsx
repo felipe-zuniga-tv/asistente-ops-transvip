@@ -2,6 +2,7 @@ import { format } from "date-fns"
 import { es } from "date-fns/locale"
 import { weekDays, adjustDayIndex } from "@/utils/date"
 import { CalendarMonth } from "@/lib/core/types/calendar"
+import { date } from "zod"
 
 interface CalendarGridProps {
     months: CalendarMonth[]
@@ -10,10 +11,10 @@ interface CalendarGridProps {
 
 export function CalendarGrid({ months, renderCell }: CalendarGridProps) {
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 w-full">
             <div className="grid grid-cols-7 gap-1.5">
                 {weekDays.map((day) => (
-                    <div key={day} className="text-center font-semibold p-1 text-sm bg-muted shadow">
+                    <div key={day} className="text-center font-semibold p-1 text-sm text-muted-foreground border-b">
                         {day}
                     </div>
                 ))}

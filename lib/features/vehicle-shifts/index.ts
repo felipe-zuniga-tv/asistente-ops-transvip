@@ -21,7 +21,6 @@ export async function getShifts() {
 		.order('name', { ascending: true })
 
 	if (error) throw new Error(error.message)
-	// revalidatePath(Routes.CONTROL_FLOTA.SHIFTS)
 	
 	return data.map(shift => ({
 		id: shift.id,
@@ -29,6 +28,7 @@ export async function getShifts() {
 		start_time: shift.start_time,
 		end_time: shift.end_time,
 		free_day: shift.free_day,
+		anexo_2_signed: shift.anexo_2_signed,
 		created_timestamp: shift.created_timestamp,
 		branch_id: shift.branches?.id,
 		branch_name: shift.branches?.name,
@@ -70,6 +70,7 @@ export async function getVehicleShifts(): Promise<VehicleShiftWithShiftInfo[]> {
 		shift_start_time: shift.shift_data.start_time,
 		shift_end_time: shift.shift_data.end_time,
 		shift_free_day: shift.shift_data.free_day,
+		anexo_2_signed: shift.shift_data.anexo_2_signed,
 		branch_id: shift.shift_data.branches?.id,
 		branch_name: shift.shift_data.branches?.name,
 	})) as VehicleShiftWithShiftInfo[]
@@ -111,7 +112,6 @@ export async function updateShift(id: string, shiftData: Partial<ShiftData>) {
 		.eq('id', id)
 
 	if (error) throw new Error(error.message)
-	// revalidatePath(Routes.CONTROL_FLOTA.SHIFTS)
 }
 
 export async function deleteShift(id: string) {
@@ -123,7 +123,6 @@ export async function deleteShift(id: string) {
 		.eq('id', id)
 
 	if (error) throw new Error(error.message)
-	// revalidatePath(Routes.CONTROL_FLOTA.SHIFTS)
 }
 
 // VEHICLE SHIFTS
@@ -146,6 +145,7 @@ export async function getVehicleShiftsByDateRange(
 					end_time,
 					free_day,
 					branch_id,
+					anexo_2_signed,
 					branches (
 						id,
 						name
@@ -178,11 +178,11 @@ export async function getVehicleShiftsByDateRange(
 			start_time: shift.shifts?.start_time,
 			end_time: shift.shifts?.end_time,
 			free_day: shift.shifts?.free_day,
+			anexo_2_signed: shift.shifts?.anexo_2_signed,
 			branch_id: shift.shifts?.branches?.id,
 			branch_name: shift.shifts?.branches?.name,
 		}))
 
-		// revalidatePath(Routes.CONTROL_FLOTA.SHIFTS_PER_VEHICLE)
 		return { data: transformedShifts }
 	} catch (error) {
 		console.error("Error in getVehicleShiftsByDateRange:", error)

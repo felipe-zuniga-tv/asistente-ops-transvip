@@ -10,6 +10,7 @@ export interface VehicleShift {
     start_time?: string;
     end_time?: string;
     priority: number;
+    anexo_2_signed?: boolean;
 }
 
 export interface VehicleShiftWithShiftInfo extends VehicleShift {
@@ -33,4 +34,5 @@ export interface ShiftData {
     end_time: string;
     free_day: number;
     created_timestamp?: string;
+    anexo_2_signed: boolean;
 } 

@@ -27,6 +27,7 @@ export const Routes = Object.freeze({
 	CHAT: '/chat',
 	CONTROL_FLOTA: {
 		FLEET_SHIFTS_CALENDAR: '/control-flota/calendario-flota',
+		TODAYS_SHIFTS: '/control-flota/turnos-hoy',
 		SHIFTS: '/control-flota/definicion-turnos',
 		SHIFTS_PER_VEHICLE: '/control-flota/calendario-por-vehiculo',
 		VEHICLE_SHIFT: '/control-flota/asignacion-turno',

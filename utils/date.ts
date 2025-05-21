@@ -8,9 +8,9 @@ export function adjustDayIndex(date: Date): number {
     return day === 0 ? 6 : day - 1 // Convert Sunday (0) to 6, and shift other days back by 1
 }
 
-export function generateNextXDays(next_X_days: number) {
-    const today = startOfToday()
-    return Array.from({ length: next_X_days }, (_, i) => addDays(today, i))
+export function generateNextXDays(next_X_days: number, startDate?: Date) {
+    const baseDate = startDate || startOfToday()
+    return Array.from({ length: next_X_days }, (_, i) => addDays(baseDate, i))
 }
 
 export function generateCalendarMonths(days: Date[]) {

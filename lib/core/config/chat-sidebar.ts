@@ -197,11 +197,17 @@ const controlFlotaAdminMenu: SidebarItem = {
 			active: true
 		},
 		{
-			title: 'Ver Calendario de Turnos',
+			title: 'Turnos de Hoy',
 			icon: Calendar,
-			url: Routes.CONTROL_FLOTA.FLEET_SHIFTS_CALENDAR,
+			url: Routes.CONTROL_FLOTA.TODAYS_SHIFTS,
 			active: true
 		},
+		// {
+		// 	title: 'Ver Calendario de Turnos',
+		// 	icon: Calendar,
+		// 	url: Routes.CONTROL_FLOTA.FLEET_SHIFTS_CALENDAR,
+		// 	active: true
+		// },
 	],
 }
 
@@ -218,11 +224,17 @@ const controlFlotaViewMenu: SidebarItem = {
 			active: true
 		},
 		{
-			title: 'Ver Calendario de Turnos',
+			title: 'Turnos de Hoy',
 			icon: Calendar,
-			url: Routes.CONTROL_FLOTA.FLEET_SHIFTS_CALENDAR,
+			url: Routes.CONTROL_FLOTA.TODAYS_SHIFTS,
 			active: true
 		},
+		// {
+		// 	title: 'Ver Calendario de Turnos',
+		// 	icon: Calendar,
+		// 	url: Routes.CONTROL_FLOTA.FLEET_SHIFTS_CALENDAR,
+		// 	active: true
+		// },
 	],
 }
 

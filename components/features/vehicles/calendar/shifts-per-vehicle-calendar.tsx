@@ -80,9 +80,12 @@ export function ShiftsPerVehicleCalendar({ shifts, hasSearched, daysToShow, vehi
     const renderCell = (date: Date) => {
         const shift = getHighestPriorityShiftForDate(shifts, date, vehicleStatuses)
 
+        // This avoids rendering empty cells
+        if (!shift) return null
+
         return (
             <div key={date.toISOString()}
-                className={`flex flex-col gap-0.5 p-0.5 sm:p-1 border rounded-sm transition-colors min-h-[3.5rem] ${shift?.isFreeDay ? "bg-green-50 hover:bg-green-100" :
+                className={`flex flex-col gap-0.5 p-0.5 sm:p-1 border rounded-sm transition-colors min-h-[80px] ${shift?.isFreeDay ? "bg-green-50 hover:bg-green-100" :
                         shift?.isStatus ? `bg-opacity-10 hover:bg-opacity-20` :
                             shift ? "bg-blue-50 hover:bg-blue-100" : "hover:bg-muted/50"
                     }`}
@@ -92,14 +95,14 @@ export function ShiftsPerVehicleCalendar({ shifts, hasSearched, daysToShow, vehi
                     {format(date, "d", { locale: es })}
                 </div>
                 {shift && (
-                    <div className="flex-1 flex flex-col gap-1 justify-center">
+                    <div className="flex-1 flex flex-col justify-center">
                         <div className={`text-center sm:text-left text-[0.8rem] ${shift.isFreeDay ? 'text-green-600' :
                                 shift.isStatus ? 'text-black font-medium' :
                                     'text-blue-600'
                             } font-medium truncate`}>
                             {shift.isFreeDay ?
-                                <div className="flex flex-row items-center justify-center gap-1">
-                                    <CircleCheck className="h-4 w-4" />
+                                <div className="flex flex-row items-center justify-center gap-1.5">
+                                    <CircleCheck className="size-4 shrink-0" />
                                     <span className="hidden sm:inline">Libre</span>
                                 </div> :
                                 shift.shift_name

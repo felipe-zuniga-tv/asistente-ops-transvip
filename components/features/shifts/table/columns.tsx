@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowDown, ArrowUp, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, CircleCheck, CircleX, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 import { Shift, WEEKDAYS } from "../shifts-definition";
 import {
@@ -77,6 +77,16 @@ export const columns: ColumnDef<Shift>[] = [
             const weekday = WEEKDAYS.find(day => day.value === String(row.getValue("free_day")))
             return <div className="text-center">{weekday?.label || "-"}</div>
         }
+    },
+    {
+        accessorKey: "anexo_2_signed",
+        header: () => <div className="text-center">Anexo 2</div>,
+        cell: ({ row }) => <div className="flex items-center justify-center">
+            {row.original.anexo_2_signed ? 
+                <CircleCheck className="size-5 shrink-0 text-green-500" /> :
+                <CircleX className="size-5 shrink-0 text-red-500" />
+            }
+        </div>
     },
     {
         accessorKey: "created_at",

@@ -7,8 +7,8 @@ import { z } from "zod"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
-import { 
-	Button, 
+import {
+	Button,
 	Input,
 	SimpleDialog,
 	SimpleDialogHeader,
@@ -183,59 +183,61 @@ export function VehicleShiftDialog({ open, onOpenChange, shifts, assignment }: P
 
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-					<FormField
-						control={form.control}
-						name="branch_id"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Sucursal</FormLabel>
-								<Select onValueChange={field.onChange} value={field.value}>
-									<FormControl>
-										<SelectTrigger>
-											<SelectValue placeholder="Seleccione una sucursal" />
-										</SelectTrigger>
-									</FormControl>
-									<SelectContent>
-										{branches.map((branch) => (
-											<SelectItem key={branch.id} value={branch.id}>
-												{branch.name}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+					<div className="grid grid-cols-2 gap-4">
+						<FormField
+							control={form.control}
+							name="branch_id"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Sucursal</FormLabel>
+									<Select onValueChange={field.onChange} value={field.value}>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue placeholder="Seleccione una sucursal" />
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{branches.map((branch) => (
+												<SelectItem key={branch.id} value={branch.id}>
+													{branch.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 
-					<FormField
-						control={form.control}
-						name="shift_id"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Turno</FormLabel>
-								<Select
-									onValueChange={field.onChange}
-									value={field.value}
-									disabled={!form.getValues("branch_id")}
-								>
-									<FormControl>
-										<SelectTrigger>
-											<SelectValue placeholder={form.getValues("branch_id") ? "Seleccione un turno" : "Primero seleccione una sucursal"} />
-										</SelectTrigger>
-									</FormControl>
-									<SelectContent>
-										{filteredShifts.map((shift) => (
-											<SelectItem key={shift.id} value={shift.id}>
-												{shift.name}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+						<FormField
+							control={form.control}
+							name="shift_id"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Turno</FormLabel>
+									<Select
+										onValueChange={field.onChange}
+										value={field.value}
+										disabled={!form.getValues("branch_id")}
+									>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue placeholder={form.getValues("branch_id") ? "Seleccione un turno" : "Seleccione una sucursal"} />
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{filteredShifts.map((shift) => (
+												<SelectItem key={shift.id} value={shift.id}>
+													{shift.name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
 
 					<FormField
 						control={form.control}

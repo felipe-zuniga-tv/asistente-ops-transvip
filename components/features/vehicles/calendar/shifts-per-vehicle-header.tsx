@@ -9,7 +9,7 @@ import {
     SelectTrigger,
     SelectValue,
  } from "@/components/ui"
-import { Bus, Loader2, X } from "lucide-react"
+import { Bus, Loader2, Search, X } from "lucide-react"
 import { TransvipLogo } from "@/components/features/transvip/transvip-logo"
 import { cn } from '@/utils/ui'
 
@@ -98,6 +98,7 @@ export function ShiftsPerVehicleHeader({
                             disabled={!vehicleNumber || isLoading}
                             className="whitespace-nowrap"
                         >
+                            <Search className="h-4 w-4" />
                             Buscar
                         </Button>
                     </div>
