@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, useCallback, useMemo, useRef, useEffect } from "react"
-import { startOfToday, format, parseISO, isWithinInterval, setHours, setMinutes, setSeconds, setMilliseconds, parse } from "date-fns"
+import { startOfToday, format, parseISO, isWithinInterval, setHours, setMinutes, setSeconds, setMilliseconds, addDays } from "date-fns"
 import { es } from "date-fns/locale"
-import { CalendarIcon, X, Download } from "lucide-react"
+import { X, Download } from "lucide-react"
 import { toPng } from "html-to-image"
 import { useToast } from "@/hooks/use-toast"
 import { cn } from '@/utils/ui'
@@ -13,7 +13,7 @@ import type { Branch } from "@/lib/core/types/admin"
 import { useVehicleCalendarData, type CalendarDaySummary, type VehicleCalendarEntry } from "@/hooks/features/vehicles/use-vehicle-calendar-data"
 
 // UI Components
-import { Badge, Button, Calendar, CalendarGrid, Card, CardHeader, Label, Popover, PopoverContent, PopoverTrigger, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui"
+import { Badge, Button, CalendarGrid, Card, CardHeader, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui"
 
 interface ShiftOption {
     value: string
@@ -145,14 +145,12 @@ export function VehicleShiftsSummary({ branches }: { branches: Branch[] }) {
                     const [endHour, endMinute] = vehicle.endTime.split(':').map(Number)
 
                     const shiftStartDateTime = setMilliseconds(setSeconds(setMinutes(setHours(selectedDayBase, startHour), startMinute), 0), 0)
-                    const shiftEndDateTime = setMilliseconds(setSeconds(setMinutes(setHours(selectedDayBase, endHour), endMinute), 0), 0)
+                    let shiftEndDateTime = setMilliseconds(setSeconds(setMinutes(setHours(selectedDayBase, endHour), endMinute), 0), 0)
                     
-                    // Handle cases where shift might cross midnight, though typically not expected for daily shifts
-                    // For simplicity here, assuming shifts are within the same calendar day of selectedDate
-                    // If a shift ends at "00:00" it might mean end of day, or if startTime > endTime it crosses midnight.
-                    // Current date-fns isWithinInterval might need adjustment for overnight shifts if selectedDayBase is not handled carefully.
-                    // Assuming startTime and endTime define a period within the selectedDate.
-                    
+                    if (shiftEndDateTime < shiftStartDateTime) {
+                        shiftEndDateTime = addDays(shiftEndDateTime, 1)
+                    }
+
                     return isWithinInterval(now, { start: shiftStartDateTime, end: shiftEndDateTime })
                 } catch (e) {
                     console.warn("Error parsing shift times for vehicle:", vehicle.number, e)
@@ -203,7 +201,7 @@ export function VehicleShiftsSummary({ branches }: { branches: Branch[] }) {
                         <h2 className="font-semibold text-lg">Resumen de Turnos por Fecha</h2>
                     </div>
                     <p className="text-sm text-muted-foreground">
-                        Para visualizar el resumen, seleccione una sucursal, el número de días y presione 'Buscar'. El calendario comenzará desde hoy.
+                        Para visualizar el resumen, seleccione una sucursal, el número de días y presione Buscar. El calendario comenzará desde hoy.
                     </p>
                     <div className="flex items-center gap-4 pt-4">
                         <div className="flex items-center gap-4">
@@ -304,8 +302,6 @@ export function VehicleShiftsSummary({ branches }: { branches: Branch[] }) {
                                             >
                                                 {/* Conditional rendering for status indicator or online status dot */}
                                                 {vehicle.statusInfo ? (
-                                                    // Optionally, add an icon or different styling for general statuses
-                                                    // For now, the badge color itself indicates the status
                                                     <span className="font-semibold">{vehicle.statusInfo.label.substring(0,3).toUpperCase()}</span>
                                                 ) : (
                                                     <span
