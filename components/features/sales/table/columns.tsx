@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { format, parseISO, differenceInCalendarDays } from "date-fns";
-import { X, ChevronDown, ArrowRight, SendHorizontal, CheckCheck } from "lucide-react";
+import { X, ChevronDown, SendHorizontal, CheckCheck } from "lucide-react";
 import {
 	Button,
 	DropdownMenu,
@@ -12,12 +12,10 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui"
-import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import type { SalesResponse } from "@/types/domain/sales/types";
 import { WhatsappIcon } from "@/components/ui/whatsapp-icon";
 import { languages } from "../language-selector";
-import type { Language } from "@/lib/core/i18n";
+import type { Language } from "@/types/core/i18n";
 
 const statusColors: Record<SalesResponse['status'], string> = {
 	pending: "bg-yellow-100 text-black hover:bg-yellow-200 hover:text-black",

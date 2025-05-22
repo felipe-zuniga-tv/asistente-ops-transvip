@@ -1,7 +1,5 @@
 import type { Language } from '@/types/core/i18n';
 
-// export * from './index'; // Removed circular dependency
-
 export const translations = {
   'es-CL': {
     branches: {

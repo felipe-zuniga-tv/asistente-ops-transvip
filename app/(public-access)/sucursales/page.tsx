@@ -1,10 +1,10 @@
-import { Suspense } from 'react'
 import { getBranches } from '@/lib/features/admin'
 import { LanguageSelector } from '@/components/features/sales/language-selector'
 import { BranchesList } from '@/components/features/sales/branches-list'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
 import { TransvipLogo } from '@/components/features/transvip/transvip-logo'
-import { getTranslation, type Language } from '@/lib/core/i18n'
+import { getTranslation } from '@/lib/core/i18n'
+import type { Language } from '@/types/core/i18n'
 
 export default async function BranchesPage(props: { searchParams: Promise<{ lang?: string }> }) {
 	const searchParams = await props.searchParams;

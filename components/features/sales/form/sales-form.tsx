@@ -5,12 +5,13 @@ import Link from 'next/link'
 import { Routes } from '@/utils/routes'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
-import { useToast } from '@/hooks/use-toast'
-import { getTranslation, type Language } from '@/lib/core/i18n/'
+import { getTranslation } from '@/lib/core/i18n/'
+import type { Language } from '@/types/core/i18n'
 import { createSalesResponse } from '@/lib/services/sales'
 // Import necessary types and functions from react-phone-number-input
 import type { Country } from 'react-phone-number-input';
 import { getCountries, getCountryCallingCode } from 'react-phone-number-input/input';
+import { toast } from 'sonner'
 
 // Form Steps
 import { LanguageStep } from './language-step'
@@ -61,7 +62,6 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 		accommodation: ''
 	})
 
-	const { toast } = useToast()
 	const totalSteps = 5
 	const t = getTranslation(formData.language)
 
@@ -188,8 +188,7 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 			}
 
 			// Show success message
-			toast({
-				title: t.success.title,
+			toast.success(t.success.title, {
 				description: t.success.description,
 				duration: 5000,
 			})
@@ -212,17 +211,15 @@ export function SalesForm({ branchCode, branchName, initialLanguage, onSuccess }
 			}, 5000)
 		} catch (error) {
 			console.error('Form submission error:', error)
-			toast({
-				title: t.error.title,
+			toast.error(t.error.title, {
 				description: error instanceof Error ? error.message : t.error.description,
-				variant: 'destructive',
 				duration: 5000,
 			})
 			onSuccess?.()
 		} finally {
 			isSubmitting.current = false;
 		}
-	}, [branchCode, branchName, formData, initialLanguage, onSuccess, t.error.description, t.error.title, t.success.description, t.success.title, toast]);
+	}, [branchCode, branchName, formData, initialLanguage, onSuccess, t.error.description, t.error.title, t.success.description, t.success.title]);
 
 	return (
 		<Card>

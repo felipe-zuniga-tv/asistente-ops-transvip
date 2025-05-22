@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { LANGUAGES_CONFIG } from "@/lib/core/config/i18n"
 import type { Language } from "@/types/core/i18n"
 
 interface LanguageOption {
