@@ -1,3 +1,15 @@
+export interface Shift {
+    id: string;
+    name: string;
+    start_time: string;
+    end_time: string;
+    free_day: number;
+    branch_id: string;
+    branch_name: string;
+    created_timestamp: string;
+    anexo_2_signed: boolean;
+}
+
 export interface VehicleShift {
     id: string;
     vehicle_number: number;

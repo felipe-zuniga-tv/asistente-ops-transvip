@@ -72,7 +72,7 @@ export function useVehicleShifts({ currentDate, branchId }: UseVehicleShiftsProp
         loopDate = addDays(loopDate, 1)
       }
 
-      result.data?.forEach(shift => {
+      result.data?.forEach((shift: Partial<Shift>) => {
         const shiftStart = parseISO(shift.start_date)
         const shiftEnd = parseISO(shift.end_date)
         let currentShiftDay = new Date(shiftStart)

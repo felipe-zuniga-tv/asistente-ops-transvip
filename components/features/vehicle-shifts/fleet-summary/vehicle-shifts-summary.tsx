@@ -16,11 +16,6 @@ import type { CalendarDaySummary, VehicleCalendarEntry } from "@/types/domain/ca
 // UI Components
 import { Badge, Button, CalendarGrid, Card, CardHeader, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui"
 
-interface ShiftOption {
-    value: string
-    label: string
-}
-
 export function VehicleShiftsSummary({ branches }: { branches: Branch[] }) {
     const today = useMemo(() => startOfToday(), []);
     const [daysToShow, setDaysToShow] = useState<number>(0); // Default to 0 days, user must select

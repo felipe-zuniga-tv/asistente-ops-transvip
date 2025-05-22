@@ -16,6 +16,8 @@ import { AlertDialogDeleteShift } from "./delete-shift-alert-dialog";
 import { toast } from "sonner";
 import { ConfigCardContainer } from "@/components/ui/tables/config-card-container";
 import { downloadFile } from "@/utils/file";
+import type { Shift } from "@/types/domain/shifts/types";
+import { ColumnDef } from "@tanstack/react-table";
 
 export const WEEKDAYS = [
     { value: "1", label: "Lunes" },
@@ -26,18 +28,6 @@ export const WEEKDAYS = [
     { value: "6", label: "Sábado" },
     { value: "7", label: "Domingo" },
 ];
-
-export interface Shift {
-    id: string;
-    name: string;
-    start_time: string;
-    end_time: string;
-    free_day: number;
-    branch_id: string;
-    branch_name: string;
-    created_timestamp: string;
-    anexo_2_signed: boolean;
-}
 
 interface ShiftsCardProps {
     shifts: Shift[];
@@ -168,7 +158,7 @@ export function ShiftsDefinition({ shifts }: ShiftsCardProps) {
             )}
 
             <ShiftsDataTable
-                columns={columns}
+                columns={columns as ColumnDef<Shift>[]}
                 data={shifts}
                 selectedDays={selectedDays}
                 onEdit={handleEditShift}

@@ -6,10 +6,11 @@ import { toast } from "sonner";
 import { Input, Button, Label, Checkbox } from "@/components/ui";
 import { createShift, updateShift } from "@/lib/features/vehicle-shifts";
 import { useTransition, useCallback, useMemo } from "react";
-import { WEEKDAYS, Shift } from "./shifts-definition";
+import { WEEKDAYS } from "./shifts-definition";
 import { useState, useEffect } from "react";
 import { Branch } from "@/types/domain/admin/types";
 import { getBranches } from "@/lib/features/admin";
+import type { Shift } from "@/types/domain/shifts/types";
 
 interface ShiftDialogProps {
     shift?: Shift | null;
