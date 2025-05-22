@@ -8,6 +8,13 @@ import type { User, AuthContextType } from '@/types/core/auth'
 // Create the context with a default value 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
+// Props for the AuthProvider, including polling configuration
+interface AuthProviderProps {
+    children: ReactNode;
+    pollingEnabled?: boolean;
+    pollingInterval?: number; // in milliseconds
+}
+
 // Create a hook to use the auth context 
 export function useAuth() {
     const context = useContext(AuthContext)
@@ -18,7 +25,11 @@ export function useAuth() {
 }
 
 // Create the AuthProvider component 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export function AuthProvider({ 
+    children, 
+    pollingEnabled = false, 
+    pollingInterval = 60000 // Default to 1 minute
+}: AuthProviderProps) {
     const [user, setUser] = useState<User | null>(null)
     const [isLoading, setIsLoading] = useState(true)
     const router = useRouter()
@@ -72,6 +83,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         initAuth();
     }, [getUser]);
 
+    // Provide the auth context value 
+    const isLogged = user !== null;
+
+    // Effect for polling to check session status
+    useEffect(() => {
+        let intervalId: NodeJS.Timeout | undefined;
+
+        if (pollingEnabled && isLogged) {
+            intervalId = setInterval(async () => {
+                console.log('Polling for session update...');
+                await getUser();
+            }, pollingInterval);
+        }
+
+        return () => {
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+        };
+    }, [pollingEnabled, pollingInterval, getUser, isLogged]);
+
     // Login function 
     const login = async (email: string, password: string) => {
         setIsLoading(true)
@@ -110,8 +142,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
     }
 
-    // Provide the auth context value 
-    const isLogged = user !== null;
     const value = {
         user,
         isLoading,

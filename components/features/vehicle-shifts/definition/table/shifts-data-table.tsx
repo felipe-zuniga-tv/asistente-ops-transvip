@@ -41,6 +41,7 @@ export function ShiftsDataTable<TData>({
 		<DataTable
 			data={filteredData}
 			columns={columns}
+			compact={true}
 			onEdit={onEdit}
 			onDelete={onDelete}
 			searchPlaceholder="Filtrar por nombre..."
