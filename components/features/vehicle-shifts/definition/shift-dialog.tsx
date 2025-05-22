@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import { SimpleDialog, SimpleDialogHeader, SimpleDialogTitle } from "@/components/ui/simple-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
@@ -7,7 +8,6 @@ import { Input, Button, Label, Checkbox } from "@/components/ui";
 import { createShift, updateShift } from "@/lib/features/vehicle-shifts";
 import { useTransition, useCallback, useMemo } from "react";
 import { WEEKDAYS } from "./shifts-definition";
-import { useState, useEffect } from "react";
 import { Branch } from "@/types/domain/admin/types";
 import { getBranches } from "@/lib/features/admin";
 import type { Shift } from "@/types/domain/shifts/types";
@@ -110,7 +110,7 @@ export function ShiftDialog({
 
     const branchOptions = useMemo(() => 
         branches.map((branch) => (
-            <SelectItem key={branch.id} value={branch.id}>
+            <SelectItem key={branch.id} value={branch.id || ""}>
                 {branch.name}
             </SelectItem>
         )),

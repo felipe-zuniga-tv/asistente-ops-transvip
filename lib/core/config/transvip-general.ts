@@ -1,3 +1,4 @@
+import { Branch } from "@/types"
 import { BarChart, CarFront, Gauge, PlaneTakeoff, Coins, CreditCard, ReceiptText } from "lucide-react"
 
 // Transvip Ops Teams
@@ -25,11 +26,11 @@ export const opsTeams = [
   ]
 
 // Transvip Data configuration
-export const branches = [
-    { branch_id: 1, name: 'Santiago', code: 'SCL', salesFormActive: false },
-    { branch_id: 798, name: 'Valparaiso', code: 'VAP', salesFormActive: false },
-    { branch_id: 179, name: 'Calama', code: 'CJC', salesFormActive: true },
-    { branch_id: 34, name: 'Antofagasta', code: 'ANF', salesFormActive: false },
+export const branches: Branch[] = [
+    { branch_id: 1, name: 'Santiago', code: 'SCL', sales_form_active: false },
+    { branch_id: 798, name: 'Valparaiso', code: 'VAP', sales_form_active: false },
+    { branch_id: 179, name: 'Calama', code: 'CJC', sales_form_active: true },
+    { branch_id: 34, name: 'Antofagasta', code: 'ANF', sales_form_active: false },
 ]
 
 export const paymentMethods = [

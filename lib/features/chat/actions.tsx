@@ -17,16 +17,14 @@ import { getSession } from "@/lib/core/auth";
 import { BotCard, AssistantMessage, LoadingMessage, UserMessage } from "@/components/features/chat/message";
 import { VehicleStatusSearch } from "@/components/features/chat/search/vehicle-status-search";
 import { BookingCard, BookingIdSearch } from "@/components/chat/booking";
-import { IVehicleDetail } from "@/types/domain/chat/types";
-import { DriverDetails } from "@/types/domain/driver/types";
 import { VehicleDetail } from "@/components/features/chat/search/vehicle-detail-search";
 import { DriverProfile } from "@/components/features/chat/search/driver-profile-search";
 import AirportStatus from "@/components/features/chat/airport/airport-status";
 import { VehicleInfoCard } from "@/components/features/mtt/vehicle-info-card";
 
 import { VEHICLE_STATUS } from "@/utils/constants";
-import { nanoid, customAlphabet } from 'nanoid';
-import { CREATE_DRIVER_RATINGS_SUMMARY, CREATE_TEXT_PROMPT, EMAIL_TEXT_OPS_EXAMPLE, SYSTEM_MESSAGE } from "@/lib/core/config/chat"
+import { nanoid } from 'nanoid';
+import { CREATE_DRIVER_RATINGS_SUMMARY, SYSTEM_MESSAGE } from "@/lib/core/config/chat"
 import { getVehicleOnlineStatus, getVehicleDetail } from "@/lib/features/vehicle/functions";
 import { getDriverProfile, searchDriver, getDriverRatings, getDriverRatingSummary } from "@/lib/features/driver";
 import { getBookingInfo, getBookings } from "@/lib/features/booking";
@@ -497,7 +495,6 @@ async function submitUserMessage(content: string) {
 	}
 }
 
-import { ChatBubbleIcon } from "@radix-ui/react-icons";
 import type { AIState, UIState, ChatActionMessage } from '@/types/domain/chat/types';
 
 export const AI = createAI<AIState, UIState>({

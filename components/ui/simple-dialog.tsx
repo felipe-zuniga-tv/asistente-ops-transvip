@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback } from "react"
+import React, { useState, useEffect, useRef, useCallback } from "react"
 import { X } from "lucide-react"
 import { cn } from '@/utils/ui'
 import { Button } from "./button"

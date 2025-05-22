@@ -113,7 +113,7 @@ export async function getDriverProfile(fleet_id: number, accessToken: string | n
         assigned_cars,
     } = driver_detail
 
-    console.log(assigned_cars)
+    // console.log(assigned_cars)
 
     const output_item: DriverDetails = {
         id: driver_id,

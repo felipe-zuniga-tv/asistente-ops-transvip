@@ -274,7 +274,7 @@ export async function getShifts() {
 	if (error) throw new Error(error.message)
 	revalidatePath(Routes.CONTROL_FLOTA.SHIFTS)
 	
-	return data.map(shift => ({
+	return data.map((shift: any) => ({
 		id: shift.id,
 		name: shift.name,
 		start_time: shift.start_time,
@@ -309,7 +309,7 @@ export async function getVehicleShifts(): Promise<VehicleShiftWithShiftInfo[]> {
 
 	if (error) throw new Error(error.message)
 	
-	return data.map(shift => ({
+	return data.map((shift: any) => ({
 		id: shift.id,
 		vehicle_number: shift.vehicle_number,
 		shift_id: shift.shift_id,
@@ -421,7 +421,7 @@ export async function getVehicleShiftsByDateRange(
 		}
 
 		// Transform the data to include shift times
-		const transformedShifts = vehicleShifts.map(shift => ({
+		const transformedShifts = vehicleShifts.map((shift: any) => ({
 			...shift,
 			shift_name: shift.shifts?.name,
 			start_time: shift.shifts?.start_time,

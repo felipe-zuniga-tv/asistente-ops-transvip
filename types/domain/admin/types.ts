@@ -30,14 +30,14 @@ export interface VehicleType {
 
 // Branch Configuration
 export interface Branch {
-    id: string;
+    id?: string;
     name: string;
     code: string;
     branch_id: number;
     sales_form_active: boolean;
-    is_active: boolean;
-    created_at: string;
-    updated_at: string;
+    is_active?: boolean;
+    created_at?: string;
+    updated_at?: string;
 }
 
 // Language Configuration for Admin CRUD

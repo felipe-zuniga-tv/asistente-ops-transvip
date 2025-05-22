@@ -158,7 +158,7 @@ export async function createQuestion(input: CreateOperationsFormQuestionInput) {
         const { error: optionsError } = await supabase
             .from("operations_form_question_options")
             .insert(
-                options.map((option, index) => ({
+                options.map((option) => ({
                     question_id: question.id,
                     label: option.label,
                     order_number: option.order,
@@ -201,7 +201,7 @@ export async function updateQuestion(id: string, input: UpdateOperationsFormQues
             const { error: optionsError } = await supabase
                 .from("operations_form_question_options")
                 .insert(
-                    options.map((option, index) => ({
+                    options.map((option) => ({
                         question_id: id,
                         label: option.label,
                         order_number: option.order,
