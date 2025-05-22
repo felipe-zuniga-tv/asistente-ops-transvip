@@ -26,7 +26,7 @@ export async function getUserSectionAccess(userEmail: string): Promise<string[]>
     }
 
     // Return array of section_ids
-    return accessData.map(access => access.section_id)
+    return accessData.map((access: any) => access.section_id)
 }
 
 export async function getEmailGroups() {
@@ -179,7 +179,7 @@ export async function getEmailGroupsWithCounts() {
         return []
     }
 
-    return groups.map(group => ({
+    return groups.map((group: any) => ({
         ...group,
         member_count: group.member_count[0].count
     }))

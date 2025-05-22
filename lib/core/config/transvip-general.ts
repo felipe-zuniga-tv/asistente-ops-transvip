@@ -1,4 +1,4 @@
-import { Branch } from "@/types"
+import { Branch } from "@/types/domain/admin/types"
 import { BarChart, CarFront, Gauge, PlaneTakeoff, Coins, CreditCard, ReceiptText } from "lucide-react"
 
 // Transvip Ops Teams

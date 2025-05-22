@@ -16,8 +16,6 @@ import type {
     CreateOperationsFormResponseInput,
 } from "@/types/domain/forms/types";
 import { createClient } from "@/lib/supabase/server";
-// import { revalidatePath } from "next/cache";
-// import { Routes } from "@/utils/routes";
 import type { ReorderSectionsInput, ReorderQuestionsInput } from '@/types/domain/forms/types';
 
 // Forms Management
@@ -30,7 +28,6 @@ export async function getOperationsForms() {
         .order("created_at", { ascending: false });
 
     if (error) throw error;
-    // revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
     return data as OperationsForm[];
 }
 
@@ -50,8 +47,6 @@ export async function getOperationsFormById(id: string) {
         .single();
 
     if (error) throw error;
-    // revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
-    // revalidatePath(`${Routes.OPERATIONS_FORMS.CONFIG}/${id}`)
     return data as OperationsForm & {
         sections: (OperationsFormSection & {
             questions: OperationsFormQuestion[];
@@ -69,7 +64,6 @@ export async function createOperationsForm(input: CreateOperationsFormInput) {
         .single();
 
     if (error) throw error;
-    // revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
     return data as OperationsForm;
 }
 
@@ -84,8 +78,6 @@ export async function updateOperationsForm(id: string, input: UpdateOperationsFo
         .single();
 
     if (error) throw error;
-    // revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
-    // revalidatePath(`${Routes.OPERATIONS_FORMS.CONFIG}/${id}`)
     return data as OperationsForm;
 }
 
@@ -168,7 +160,6 @@ export async function createQuestion(input: CreateOperationsFormQuestionInput) {
         if (optionsError) throw optionsError;
     }
 
-    // revalidatePath(Routes.OPERATIONS_FORMS.CONFIG);
     return question as OperationsFormQuestion;
 }
 
@@ -212,7 +203,6 @@ export async function updateQuestion(id: string, input: UpdateOperationsFormQues
         }
     }
 
-    // revalidatePath(Routes.OPERATIONS_FORMS.CONFIG);
     return question as OperationsFormQuestion;
 }
 
@@ -223,8 +213,6 @@ export async function deleteQuestion(id: string) {
         .from("operations_forms_questions")
         .delete()
         .eq("id", id);
-
-    // revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
 
     if (error) throw error;
 }
@@ -331,9 +319,6 @@ export async function reorderSections(formId: string, input: ReorderSectionsInpu
         })
 
         if (error) throw error
-
-        // revalidatePath(Routes.OPERATIONS_FORMS.CONFIG)
-        // revalidatePath(`${Routes.OPERATIONS_FORMS.CONFIG}/${formId}`)
 
         return { success: true }
     } catch (error) {

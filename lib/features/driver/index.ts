@@ -7,7 +7,7 @@ import { getResponseFromURL, getAssignedVehicles } from "@/lib/core/utils/helper
 import type { DriverDetails, DriverRating } from '@/types/domain/driver/types'
 import { getAccessToken, buildUrlParams } from "@/utils/helpers"
 
-const MAX_RESULTS = 10
+// const MAX_RESULTS = 10
 
 export async function searchDriver(driverEmail: string, accessToken: string | null = null) {
     if (!accessToken) {
