@@ -9,8 +9,8 @@ import { ChatSession } from '@/types/domain/chat/types';
 import { nanoid } from "@/utils/id";
 
 export default async function ChatAppLayout({ children }: { children: React.ReactNode }) {
-	const session = await getSession() as ChatSession | null;
-	const id = nanoid()
+	const session = await getSession() as ChatSession | null; // Keep ChatSession for now as `session` is typed with it.
+	const id = nanoid() // This was for the AI component
 
 	return (
 		<ProtectedRoute>

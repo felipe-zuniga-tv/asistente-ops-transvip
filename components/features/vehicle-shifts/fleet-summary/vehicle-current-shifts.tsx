@@ -1,15 +1,14 @@
 'use client'
 
 import { useState, useCallback, useMemo, useRef, useEffect } from "react"
-import { startOfToday, format, isWithinInterval, setHours, setMinutes, setSeconds, setMilliseconds, addDays } from "date-fns"
+import { startOfToday, format } from "date-fns"
 import { toPng } from "html-to-image"
-import { useToast } from "@/hooks/use-toast"
+import { toast } from "sonner"
 import { TransvipLogo } from "@/components/features/transvip/transvip-logo"
-import type { Branch } from "@/types/domain/admin/types"
 import { useVehicleCalendarData } from "@/hooks/vehicles/use-vehicle-calendar-data"
 import { useVehicleOnlineStatus } from "@/hooks/vehicles/use-vehicle-online-status"
-import type { CalendarDaySummary, VehicleCalendarEntry as BaseVehicleCalendarEntry } from "@/types/domain/calendar/types"
-import type { VehicleOnlineStatus } from "@/types/domain/vehicle/types"
+import type { Branch } from "@/types/domain/admin/types"
+import type { CalendarDaySummary } from "@/types/domain/calendar/types"
 
 // UI Components
 import { Button, Card, CardHeader } from "@/components/ui"
@@ -24,72 +23,7 @@ import {
     EmptyStateMessage
 } from "./current-shifts"
 import { Search } from "lucide-react"
-
-// Define a new type for the vehicle entry that includes online status
-interface EnrichedVehicleCalendarEntry extends BaseVehicleCalendarEntry {
-    isOnline?: boolean;
-    lastOnlineStatusUpdate?: number;
-}
-
-// Helper hook to derive displayed vehicles and vehicles by shift
-function useDerivedFleetData(
-    currentDaySummary: CalendarDaySummary | null,
-    showOnlyActiveShifts: boolean,
-    today: Date,
-    vehicleOnlineStatusData: Map<number, VehicleOnlineStatus>
-) {
-    const enrichedVehiclesForDay = useMemo(() => {
-        if (!currentDaySummary?.vehicles) return [];
-        return currentDaySummary.vehicles.map(vehicle => {
-            const onlineStatus = vehicleOnlineStatusData.get(vehicle.number);
-            return {
-                ...vehicle,
-                isOnline: onlineStatus?.isOnline,
-                lastOnlineStatusUpdate: onlineStatus?.timestamp,
-            };
-        }) as EnrichedVehicleCalendarEntry[];
-    }, [currentDaySummary, vehicleOnlineStatusData]);
-
-    const displayedVehicles = useMemo(() => {
-        if (!enrichedVehiclesForDay) return [];
-        if (showOnlyActiveShifts) {
-            const now = new Date();
-            return enrichedVehiclesForDay.filter((vehicle: EnrichedVehicleCalendarEntry) => {
-                if (vehicle.statusInfo) return true;
-                if (vehicle.isOnline) return true;
-                if (vehicle.startTime && vehicle.endTime) {
-                    try {
-                        const [startHour, startMinute] = vehicle.startTime.split(':').map(Number);
-                        const [endHour, endMinute] = vehicle.endTime.split(':').map(Number);
-                        const shiftStartDateTime = setMilliseconds(setSeconds(setMinutes(setHours(today, startHour), startMinute), 0), 0);
-                        let shiftEndDateTime = setMilliseconds(setSeconds(setMinutes(setHours(today, endHour), endMinute), 0), 0);
-                        if (shiftEndDateTime < shiftStartDateTime) {
-                            shiftEndDateTime = addDays(shiftEndDateTime, 1);
-                        }
-                        return isWithinInterval(now, { start: shiftStartDateTime, end: shiftEndDateTime });
-                    } catch (e) {
-                        console.warn("Error parsing shift times for vehicle:", vehicle.number, e);
-                        return false;
-                    }
-                }
-                return false;
-            });
-        }
-        return enrichedVehiclesForDay;
-    }, [enrichedVehiclesForDay, showOnlyActiveShifts, today]);
-
-    const vehiclesByShift = useMemo(() => {
-        if (!displayedVehicles || displayedVehicles.length === 0) return {};
-        return displayedVehicles.reduce((acc, vehicle) => {
-            const shiftKey = vehicle.shiftName || "Sin Turno Asignado";
-            if (!acc[shiftKey]) acc[shiftKey] = [];
-            acc[shiftKey].push(vehicle);
-            return acc;
-        }, {} as Record<string, EnrichedVehicleCalendarEntry[]>);
-    }, [displayedVehicles]);
-
-    return { displayedVehicles, vehiclesByShift };
-}
+import { useDerivedFleetData } from "@/hooks/vehicles/use-shifts-derived-fleet-data"
 
 export function FleetCurrentShifts({ branches }: { branches: Branch[] }) {
     const today = useMemo(() => startOfToday(), []);
@@ -98,7 +32,6 @@ export function FleetCurrentShifts({ branches }: { branches: Branch[] }) {
     const [selectedBranch, setSelectedBranch] = useState<string>("");
     const [showOnlyActiveShifts, setShowOnlyActiveShifts] = useState<boolean>(true);
     const [hasAttemptedFetch, setHasAttemptedFetch] = useState<boolean>(false);
-    const { toast } = useToast()
     const summaryRef = useRef<HTMLDivElement>(null)
 
     const {
@@ -121,9 +54,7 @@ export function FleetCurrentShifts({ branches }: { branches: Branch[] }) {
 
     useEffect(() => {
         if (primaryDataError && hasAttemptedFetch) {
-            toast({
-                variant: "destructive",
-                title: "Error al cargar turnos",
+            toast.error("Error al cargar turnos", {
                 description: primaryDataError,
             })
         }
@@ -131,9 +62,7 @@ export function FleetCurrentShifts({ branches }: { branches: Branch[] }) {
 
     useEffect(() => {
         if (onlineHookError) {
-            toast({
-                variant: "default",
-                title: "Error al cargar estado online",
+            toast.error("Error al cargar estado online", {
                 description: onlineHookError,
             })
         }
@@ -163,7 +92,7 @@ export function FleetCurrentShifts({ branches }: { branches: Branch[] }) {
         showOnlyActiveShifts,
         today,
         vehicleOnlineStatusData
-    );
+    )
 
     const handleBranchSelect = (branchId: string) => {
         setSelectedBranch(branchId);
@@ -172,9 +101,7 @@ export function FleetCurrentShifts({ branches }: { branches: Branch[] }) {
 
     const handleFetchData = useCallback(async () => {
         if (!selectedBranch) {
-            toast({
-                variant: "default",
-                title: "Acción Requerida",
+            toast.error("Acción Requerida", {
                 description: "Por favor, seleccione una sucursal para continuar.",
             });
             return;
@@ -191,10 +118,14 @@ export function FleetCurrentShifts({ branches }: { branches: Branch[] }) {
             link.download = `estado-flota-hoy-${format(today, 'yyyy-MM-dd')}.png`
             link.href = dataUrl
             link.click()
-            toast({ title: "Éxito", description: "Resumen guardado como imagen" })
+            toast.success("Éxito", {
+                description: "Resumen guardado como imagen"
+            })
         } catch (err) {
             console.error('Error al generar la imagen:', err)
-            toast({ variant: "destructive", title: "Error", description: "No se pudo generar la imagen del resumen" })
+            toast.error("Error", {
+                description: "No se pudo generar la imagen del resumen"
+            })
         }
     }
 
@@ -236,7 +167,7 @@ export function FleetCurrentShifts({ branches }: { branches: Branch[] }) {
                 </div>
             </Card>
         );
-    };
+    }
 
     return (
         <div className="space-y-2 max-w-full">

@@ -12,6 +12,7 @@ interface VehicleStatusBadgeProps {
 }
 
 export function VehicleStatusBadge({ vehicle }: VehicleStatusBadgeProps) {
+
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -23,8 +24,7 @@ export function VehicleStatusBadge({ vehicle }: VehicleStatusBadgeProps) {
               : "bg-gray-100 text-black hover:bg-gray-200"
           )}
         >
-          <span className={cn(
-            "h-2 w-2 rounded-full",
+          <span className={cn("h-2 w-2 rounded-full",
             vehicle.isOnline === true ? "bg-green-500" :
               vehicle.isOnline === false ? "bg-red-500" :
                 "bg-gray-300"

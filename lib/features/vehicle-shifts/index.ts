@@ -170,16 +170,21 @@ export async function getVehicleShiftsByDateRange(
 		}
 
 		// Transform the data to include shift times
-		const transformedShifts = vehicleShifts.map((shift: any) => ({
-			...shift,
-			shift_name: shift.shifts?.name,
-			start_time: shift.shifts?.start_time,
-			end_time: shift.shifts?.end_time,
-			free_day: shift.shifts?.free_day,
-			anexo_2_signed: shift.shifts?.anexo_2_signed,
-			branch_id: shift.shifts?.branches?.id,
-			branch_name: shift.shifts?.branches?.name,
-		}))
+		const transformedShifts = vehicleShifts.map((vehicleShiftFullData: any) => {
+			const { shifts: shiftDetails, ...baseVehicleShift } = vehicleShiftFullData;
+			const branchDetails = shiftDetails?.branches;
+
+			return {
+				...baseVehicleShift, // Contains all direct fields of 'vehicle_shifts' table
+				shift_name: shiftDetails?.name,
+				start_time: shiftDetails?.start_time,
+				end_time: shiftDetails?.end_time,
+				free_day: shiftDetails?.free_day,
+				anexo_2_signed: shiftDetails?.anexo_2_signed,
+				branch_id: branchDetails?.id,
+				branch_name: branchDetails?.name,
+			};
+		});
 
 		return { data: transformedShifts }
 	} catch (error) {

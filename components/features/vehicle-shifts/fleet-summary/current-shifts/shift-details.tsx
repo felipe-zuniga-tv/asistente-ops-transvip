@@ -19,8 +19,6 @@ export function ShiftDetails({ shiftName, vehiclesInShift }: ShiftDetailsProps) 
     ? `${shiftName} - ${vehiclesInShift.length} móvil${vehiclesInShift.length === 1 ? '' : 'es'}`
     : `${shiftName} ${shiftTimeDisplay} - ${vehiclesInShift.length} móvil${vehiclesInShift.length === 1 ? '' : 'es'}`;
 
-  console.log(vehiclesInShift);
-
   return (
     <div className="mb-4">
       <h4 className="text-sm font-medium text-gray-700 mb-2 border-b pb-1 flex items-center gap-6">

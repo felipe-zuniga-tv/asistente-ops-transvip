@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { Routes } from '@/utils/routes'
 import type { User, AuthContextType } from '@/types/core/auth'
 
@@ -84,6 +84,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             const response = await fetch('/api/auth/session')
             if (!response.ok) return null
             const data = await response.json()
+
+            if (!data.user) {
+                redirect(Routes.LOGIN)
+            }
+
             return data.user || null
         } catch (error) {
             console.error('Get user error:', error)
