@@ -4,7 +4,6 @@ import { ConfigCardContainer } from '@/components/ui/tables/config-card-containe
 import { Building2 } from 'lucide-react'
 import { cn } from '@/utils/ui'
 import type { Branch } from '@/types/domain/admin/types'
-import { Button } from '@/components/ui/button'
 
 interface BranchSelectionGridProps {
 	branches: Branch[]

@@ -4,7 +4,6 @@ import React from 'react'
 import type { Branch } from "@/types/domain/admin/types"
 import { Button, Label } from "@/components/ui"
 import { cn } from '@/utils/ui'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface BranchSelectorProps {
   branches: Branch[];
@@ -23,7 +22,7 @@ export function BranchSelector({ branches, selectedBranch, onSelectBranch, isLoa
         <Button
           key={branch.id}
           variant={selectedBranch === branch.id ? "default" : "outline"}
-          onClick={() => onSelectBranch(branch.id)}
+          onClick={() => onSelectBranch(branch.id || "")}
           disabled={isLoading}
           className={cn(selectedBranch === branch.id && "bg-transvip text-white hover:bg-transvip/90")}
         >

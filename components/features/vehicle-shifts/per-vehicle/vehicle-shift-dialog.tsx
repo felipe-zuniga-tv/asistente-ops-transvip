@@ -1,14 +1,13 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
-import { CalendarIcon } from "@radix-ui/react-icons"
 import type { Branch } from "@/types/domain/admin/types"
-import type { ShiftData, VehicleShift } from "@/types/domain/shifts/types"
+import type { VehicleShift } from "@/types/domain/shifts/types"
 import {
 	Button,
 	Input,
@@ -26,21 +25,6 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-	Calendar,
-	Checkbox,
-	Dialog,
-	DialogClose,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	Label,
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-	SelectGroup,
-	SelectLabel,
 } from "@/components/ui"
 import { createVehicleShift, updateVehicleShift } from "@/lib/features/shifts/actions"
 import { getBranches } from "@/lib/features/admin"
@@ -213,7 +197,7 @@ export function VehicleShiftDialog({ open, onOpenChange, shifts, assignment }: P
 										</FormControl>
 										<SelectContent>
 											{branches.map((branch) => (
-												<SelectItem key={branch.id} value={branch.id}>
+												<SelectItem key={branch.id} value={branch.id || ""}>
 													{branch.name}
 												</SelectItem>
 											))}

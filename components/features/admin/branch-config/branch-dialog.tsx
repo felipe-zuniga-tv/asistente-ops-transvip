@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
 import { createBranch, updateBranch } from '@/lib/features/admin'
@@ -9,10 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
-import type { Branch, CreateBranchInput, UpdateBranchInput } from '@/types/domain/admin/types'
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import type { Branch, CreateBranchInput } from '@/types/domain/admin/types'
 
 interface BranchDialogProps {
     branch?: Branch | null
@@ -65,7 +62,7 @@ export function BranchDialog({
         setIsSubmitting(true)
 
         try {
-            if (isEditMode && branch) {
+            if (isEditMode && branch && branch.id) {
                 const updatedBranch = await updateBranch(branch.id, formData)
                 toast({
                     title: 'Éxito',
