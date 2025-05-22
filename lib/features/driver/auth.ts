@@ -34,9 +34,9 @@ async function decryptSession(input: string): Promise<DriverSession> {
 
 async function createDriverSessionInternal(driver: DriverDetails): Promise<CreateDriverSessionReturnType> {
 	const session: DriverSession = {
-		driver_id: driver.fleet_id,
-		email: driver.email,
-		full_name: `${driver.first_name.trim()} ${driver.last_name.trim()}`,
+		driver_id: driver.id,
+		email: driver.personal.email,
+		full_name: driver.personal.full_name.trim(),
 		expires: new Date(Date.now() + SESSION_DURATION)
 	}
 
