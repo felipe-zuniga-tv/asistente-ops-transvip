@@ -1,16 +1,9 @@
 'use client'
 
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+import { Input, Card, CardContent, CardHeader, CardTitle, Button } from "@/components/ui";
 
-import { Button } from "@/components/ui/button";
-import { IBookingInfoOutput } from "@/types/domain/chat/models";
+import { IBookingInfoOutput } from "@/types/domain/booking/types";
 import { BookingCard, SharedServiceSummary } from "@/components/chat/booking";
 import { Switch } from "@/components/ui/switch";
 import { ResetButton } from "@/components/ui/buttons";

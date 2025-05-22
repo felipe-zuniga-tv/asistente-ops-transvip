@@ -1,15 +1,8 @@
 import { Routes } from "@/utils/routes";
-import type { AirportZone } from "@/types/domain/airport/types";
+import type { BranchAirportZone } from "@/types/domain/airport/types";
 
 // Airport Zones
-// export interface AirportZone {
-//   city_name: string;
-//   airport_code: string;
-//   branch_id: number;
-//   zone_id: number;
-// }
-
-export const airportZones: AirportZone[] = [
+export const airportZones: BranchAirportZone[] = [
   { city_name: 'Santiago', airport_code: 'SCL', branch_id: 1, zone_id: 2 },
   { city_name: 'Antofagasta', airport_code: 'ANF', branch_id: 34, zone_id: 3 },
 ]

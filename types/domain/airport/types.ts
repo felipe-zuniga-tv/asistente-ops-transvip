@@ -47,6 +47,13 @@ export interface AirportZone {
     description?: string;
 }
 
+export interface BranchAirportZone {
+    city_name: string;
+    airport_code: string;
+    branch_id: number;
+    zone_id: number;
+}
+
 export interface AirportVehicleType {
     id: number[]
     count: number

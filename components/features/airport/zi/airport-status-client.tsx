@@ -7,18 +7,18 @@ import { TransvipLogo } from '@/components/features/transvip/transvip-logo'
 import { cn } from '@/utils/ui'
 import { calculateDuration } from '@/utils/time'
 import { LiveClock } from '@/components/ui/live-clock'
-import { ArrowLeft, Clock, Users, AlertTriangle, ArrowRight, CheckCircle, RefreshCcw, Search, WifiOff, XCircle } from 'lucide-react'
-import { AirportZone, airportZones } from '@/lib/core/config/airport'
+import { ArrowLeft, Clock, Users } from 'lucide-react'
+import { airportZones } from '@/lib/core/config/airport'
 import { Routes } from '@/utils/routes'
 import { QRCodeGeneratorDialog } from '@/components/features/qr/qr-code-generator-dialog'
-import type { AirportVehicleType, AirportVehicleDetail } from '@/types/domain/airport/types'
+import type { AirportVehicleType, AirportVehicleDetail, BranchAirportZone } from '@/types/domain/airport/types'
 
 const secondsToUpdate = 60 // Refresh data
 const maxWaitTime = 15 // Minutes
 
 export default function AirportStatusClient({ vehicleTypesList, zone: initialZoneId }: {
     vehicleTypesList: AirportVehicleType[]
-    zone: AirportZone
+    zone: BranchAirportZone
 }) {
     const [selectedZone, _] = useState(initialZoneId || airportZones[0])
     const [vehicleTypes, setVehicleTypes] = useState(vehicleTypesList)
@@ -102,7 +102,7 @@ export default function AirportStatusClient({ vehicleTypesList, zone: initialZon
 
 // New component for the header
 function AirportHeader({ selectedZone }: {
-    selectedZone: AirportZone
+    selectedZone: BranchAirportZone
 }) {
     return (
         <header className="bg-transvip/90 shadow-md p-3 flex flex-col sm:flex-row justify-center sm:justify-start items-center gap-2 sm:gap-4">

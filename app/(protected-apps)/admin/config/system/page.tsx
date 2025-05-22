@@ -1,10 +1,6 @@
-import { Suspense } from 'react'
 import { getSystemConfigs } from '@/lib/services/system'
 import { SystemConfigForm } from '@/components/features/admin/system-config/system-config-form'
-import SuspenseLoading from '@/components/ui/suspense'
 import type { Database } from '@/types/database/schema'
-import { createClient } from "@/lib/supabase/server";
-import { SystemConfigTable } from "@/components/features/admin/system-config/system-config-table";
 
 type SystemConfig = Database['public']['Tables']['system_configs']['Row']
 
