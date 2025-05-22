@@ -1,8 +1,8 @@
 'use client'
 
 import type { ColumnDef } from "@tanstack/react-table"
-import { type PaymentMethod } from "@/types/domain/admin/types"
 import { DataTable } from "@/components/ui/tables/data-table"
+import type { PaymentMethod } from "@/types/domain/admin/types"
 
 interface PaymentMethodDataTableProps {
     columns: ColumnDef<PaymentMethod>[]

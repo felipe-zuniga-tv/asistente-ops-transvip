@@ -2,17 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useToast } from '@/hooks/use-toast'
-import { createVehicleType, updateVehicleType } from '@/lib/features/admin'
-import { SimpleDialog, SimpleDialogHeader, SimpleDialogTitle } from '@/components/ui/simple-dialog'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Switch } from '@/components/ui/switch'
-import type { VehicleType, CreateVehicleTypeInput, UpdateVehicleTypeInput } from '@/types/domain/admin/types'
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { useToast } from '@/hooks/use-toast'
+import { Button, Input, Label, Switch } from '@/components/ui'
+import { SimpleDialog, SimpleDialogHeader, SimpleDialogTitle } from '@/components/ui/simple-dialog'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createVehicleType, updateVehicleType } from '@/lib/features/admin'
+import type { VehicleType, CreateVehicleTypeInput } from '@/types/domain/admin/types'
 
 interface VehicleTypeDialogProps {
     vehicleType?: VehicleType | null
@@ -58,19 +55,23 @@ export function VehicleTypeDialog({
         }
     }, [vehicleType])
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
+    const handleSubmit = async (dataFromHookForm: CreateVehicleTypeInput) => {
         setIsSubmitting(true)
+
+        const payload: CreateVehicleTypeInput = {
+            ...dataFromHookForm,
+            is_active: formData.is_active,
+        };
 
         try {
             if (isEditMode && vehicleType) {
-                await updateVehicleType(vehicleType.id, formData)
+                await updateVehicleType(vehicleType.id, payload)
                 toast({
                     title: 'Éxito',
                     description: 'Tipo de vehículo actualizado exitosamente',
                 })
             } else {
-                await createVehicleType(formData)
+                await createVehicleType(payload)
                 toast({
                     title: 'Éxito',
                     description: 'Tipo de vehículo creado exitosamente',
