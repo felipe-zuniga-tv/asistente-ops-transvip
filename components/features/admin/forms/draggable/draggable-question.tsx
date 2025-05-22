@@ -1,10 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui";
 import { Draggable, DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd";
 import { GripVertical, Settings2 } from "lucide-react";
+import { OperationsFormQuestion, QUESTION_TYPE_CONFIG } from "@/types/domain/forms/types";
 import { cn } from '@/utils/ui';
-import { OperationsFormQuestion, QUESTION_TYPE_CONFIG } from "@/lib/core/types/vehicle/forms";
 
 interface DraggableQuestionProps {
     question: OperationsFormQuestion;

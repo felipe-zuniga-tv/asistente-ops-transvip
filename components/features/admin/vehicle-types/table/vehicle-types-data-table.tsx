@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/tables/data-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { VehicleType } from "@/types/domain/admin/types";
 

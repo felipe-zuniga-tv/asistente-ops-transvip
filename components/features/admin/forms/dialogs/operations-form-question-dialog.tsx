@@ -2,19 +2,16 @@
 
 import { useTransition, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { SimpleDialog, SimpleDialogHeader, SimpleDialogTitle } from "@/components/ui/simple-dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
-import { OperationsFormQuestion, QuestionType, QUESTION_TYPE_CONFIG } from "@/lib/core/types/vehicle/forms";
+import { Input, Button, Switch, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui";
+import { OperationsFormQuestion, QuestionType, QUESTION_TYPE_CONFIG } from "@/types/domain/forms/types";
 import { createQuestion, updateQuestion } from "@/lib/features/forms";
 import { Plus, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
 const QUESTION_TYPES = Object.entries(QUESTION_TYPE_CONFIG).map(([value, config]) => ({
     value: value as QuestionType,
@@ -54,7 +51,6 @@ export function OperationsFormQuestionDialog({
     onQuestionUpdate,
 }: OperationsFormQuestionDialogProps) {
     const [isPending, startTransition] = useTransition();
-    const { toast } = useToast();
     const router = useRouter();
     const [options, setOptions] = useState<{ label: string; order: number; }[]>([]);
 
@@ -126,8 +122,7 @@ export function OperationsFormQuestionDialog({
 
                 if (question) {
                     const updatedQuestion = await updateQuestion(question.id, submitData);
-                    toast({
-                        title: "Pregunta actualizada",
+                    toast.success("Pregunta actualizada", {
                         description: "La pregunta ha sido actualizada exitosamente.",
                     });
                     onQuestionUpdate?.(updatedQuestion);
@@ -136,18 +131,15 @@ export function OperationsFormQuestionDialog({
                         ...submitData,
                         section_id: sectionId,
                     });
-                    toast({
-                        title: "Pregunta creada",
+                    toast.success("Pregunta creada", {
                         description: "La pregunta ha sido creada exitosamente.",
                     });
                 }
                 onOpenChange(false);
                 router.refresh();
             } catch (error) {
-                toast({
-                    title: "Error",
+                toast.error("Error", {
                     description: "Ha ocurrido un error al guardar la pregunta.",
-                    variant: "destructive",
                 });
             }
         });

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/tables/data-table";
 import { columns, statusLabels } from "./table/columns";
 import type { SalesResponse } from "@/types/domain/sales/types";
 
