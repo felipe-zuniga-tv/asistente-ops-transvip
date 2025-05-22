@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { Routes } from '@/utils/routes'
 import type { User, AuthContextType } from '@/types/core/auth'
 
@@ -27,7 +27,7 @@ export function useAuth() {
 // Create the AuthProvider component 
 export function AuthProvider({ 
     children, 
-    pollingEnabled = false, 
+    pollingEnabled = true, 
     pollingInterval = 60000 // Default to 1 minute
 }: AuthProviderProps) {
     const [user, setUser] = useState<User | null>(null)
