@@ -125,7 +125,7 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
                 return newSet;
             });
         }
-    }, [formId, responseId, localAnswers, toast]);
+    }, [formId, responseId, localAnswers]);
 
     // Cleanup timeouts on unmount
     useEffect(() => {

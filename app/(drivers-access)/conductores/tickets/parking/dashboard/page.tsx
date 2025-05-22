@@ -10,7 +10,7 @@ export default async function ParkingTicketsDashboardPage() {
 		redirect(Routes.DRIVERS.HOME)
 	}
 
-	const tickets = await getDriverTickets(session.driver_id)
+	const tickets = await getDriverTickets(String(session.driver_id))
 
 	return (
 		<div className="w-full max-w-screen-xl mx-auto p-4 flex flex-row items-center justify-center">

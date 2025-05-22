@@ -78,7 +78,7 @@ export function ShiftsPerVehicleDashboard({
             setIsLoading(false)
             setHasSearched(true)
         }
-    }, [toast, daysToShow])
+    }, [daysToShow])
 
     const handleSearch = useCallback(() => {
         if (vehicleNumber && !isNaN(parseInt(vehicleNumber))) {
