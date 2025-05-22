@@ -10,7 +10,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Shift } from "./shifts-definition";
+import type { Shift } from "@/types/domain/shifts/types";
 
 const WEEKDAYS = {
 	1: "Lunes",
