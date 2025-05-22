@@ -186,8 +186,6 @@ export function VehicleShiftsSummary({ branches }: { branches: Branch[] }) {
         }))
     }, [selectedDateSummary, selectedDate])
 
-    console.log(groupedVehicles)
-
     return (
         <div className="space-y-2 max-w-full">
             <Card className="p-0">
@@ -209,7 +207,7 @@ export function VehicleShiftsSummary({ branches }: { branches: Branch[] }) {
                                 <SelectContent>
                                     <SelectItem value="all">Todas</SelectItem>
                                     {branches.map((branch) => (
-                                        <SelectItem key={branch.id} value={branch.id}>
+                                        <SelectItem key={branch.id} value={branch.id || ""}>
                                             {branch.name}
                                         </SelectItem>
                                     ))}

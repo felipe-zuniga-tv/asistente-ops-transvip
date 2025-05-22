@@ -29,7 +29,7 @@ export function AlertDialogDeleteBranch({
     const { toast } = useToast()
 
     const handleDelete = async () => {
-        if (!branch) return
+        if (!branch || !branch.id) return
 
         try {
             await deleteBranch(branch.id)
