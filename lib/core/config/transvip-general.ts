@@ -33,12 +33,13 @@ export const branches = [
 ]
 
 export const paymentMethods = [
+  { key: 'FACTURA', name: 'Factura Crédito', id: 1, icon: ReceiptText },
+  { key: 'CASH', name: 'Efectivo Pesos', id: 3, icon: Coins },
   { key: 'CARD', name: 'Tarjeta de Credito o Debito', id: 4, icon: CreditCard },
   { key: 'CREDIT_CARD', name: 'Tarjeta de Crédito', id: 10, icon: CreditCard },
   { key: 'CREDIT_CARD_MP', name: 'Tarjeta de Crédito Mercadopago', id: 15, icon: CreditCard },
+  { key: 'CASH_WEBPAY', name: 'Efectivo Web', id: 16, icon: Coins },
   { key: 'CARD_TOTEM', name: 'Tarjeta de crédito/débito tótem', id: 18, icon: CreditCard },
-  { key: 'FACTURA', name: 'Factura Credito', icon: ReceiptText },
-  { key: 'CASH', name: 'Efectivo Pesos', id: 3, icon: Coins },
 ]
 
 export const vehicleTypes = [

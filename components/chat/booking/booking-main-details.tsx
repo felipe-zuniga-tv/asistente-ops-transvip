@@ -1,3 +1,4 @@
+'use client'
 import { Badge } from '@/components/ui'
 import { ServiceNameBadge, CityBadge } from '@/components/features/chat/badges/chat-badges'
 import type { IBookingInfoOutput } from '@/types/domain/booking/types'

@@ -1,12 +1,11 @@
 'use server'
 import { addHours } from "date-fns"
-import { getSession } from "@/lib/core/auth"
 import { branches, paymentMethods } from "@/lib/core/config"
 import { BOOKING_DETAIL_URL, BOOKING_ID_API_URL, BOOKING_INFO_FULL_URL } from "@/lib/core/config/urls"
 import { getResponseFromURL } from "@/lib/core/utils/helpers"
-import { IBookingInfo, IBookingInfoOutput } from "@/types/domain/chat/types"
 import { getVehicleDetail } from "../../features/vehicle/functions"
-import type { DateFields } from '@/types/domain/booking/types'
+import type { DateFields, IBookingInfo, IBookingInfoOutput } from '@/types/domain/booking/types'
+import { getAccessToken } from "@/utils/helpers"
 
 const NULL_DATE = '0000-00-00 00:00:00'
 
@@ -40,7 +39,6 @@ async function mapBookingToOutput(bookingData: any, vehicleDetail: any): Promise
         branch_name,
         creation_identity,
         customer_category_name,
-        payment_status,
         fleet_first_name,
         fleet_last_name,
         fleet_country_code,
@@ -77,6 +75,8 @@ async function mapBookingToOutput(bookingData: any, vehicleDetail: any): Promise
         noshow_identity: no_show_identity,
         cancellation_identity,
         fleet_image,
+        payment_status,
+        payment_method,
         payment_method_id,
         payment_method_name,
         qr_link,
@@ -150,7 +150,9 @@ async function mapBookingToOutput(bookingData: any, vehicleDetail: any): Promise
             status: payment_status,
             estimated_payment: estimated_payment_cost,
             actual_payment: payment_amount > 0 ? payment_amount : null,
-            method_name: payment_method_name || paymentMethods.find(pm => pm.id === Number(payment_method_id))?.name,
+            method_name: payment_method_name || 
+                paymentMethods.find(pm => pm.id === Number(payment_method_id))?.name || 
+                paymentMethods.find(pm => pm.id === Number(payment_method))?.name,
             ...(route_details && {
                 fare_route_name: route_details.route_name,
                 fare_route_type: route_details.route_type
@@ -185,8 +187,7 @@ async function mapBookingToOutput(bookingData: any, vehicleDetail: any): Promise
 }
 
 export async function getBookingInfo(bookingId: number, isShared: boolean) {
-    const session = await getSession();
-    const accessToken = (session?.user as any)?.accessToken;
+    const accessToken = await getAccessToken();
     if (!accessToken) return null;
 
     const params = isShared ? 
@@ -222,8 +223,7 @@ export async function getBookingInfo(bookingId: number, isShared: boolean) {
 }
 
 export async function getBookings(next_x_hours = 2) {
-    const session = await getSession();
-    const accessToken = (session?.user as any)?.accessToken;
+    const accessToken = await getAccessToken();
     if (!accessToken) return null;
 
     if (!BOOKING_DETAIL_URL) {

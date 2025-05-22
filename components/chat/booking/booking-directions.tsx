@@ -1,13 +1,10 @@
+'use client'
 import { MapPin, GoalIcon, Clock, MapIcon } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { buildGoogleMapsURL } from '@/lib/core/utils/helpers'
 import type { IBookingInfoOutput } from '@/types/domain/booking/types'
 
-interface BookingDirectionsProps {
-  result: IBookingInfoOutput
-}
-
-export function BookingDirections({ result }: BookingDirectionsProps) {
+export function BookingDirections({ result }: { result: IBookingInfoOutput }) {
   if (!result.directions) return null
 
   const originAddress = result.directions.origin.address

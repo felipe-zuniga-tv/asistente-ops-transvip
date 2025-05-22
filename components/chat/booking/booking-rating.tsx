@@ -1,10 +1,6 @@
 import type { IBookingInfoOutput } from '@/types/domain/booking/types'
 
-interface BookingRatingProps {
-  result: IBookingInfoOutput
-}
-
-export function BookingRating({ result }: BookingRatingProps) {
+export function BookingRating({ result }: { result: IBookingInfoOutput }) {
   if (!result.rating || result.rating.number === 0) return null
 
   return (

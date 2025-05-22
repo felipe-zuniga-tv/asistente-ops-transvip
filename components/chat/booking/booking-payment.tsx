@@ -2,11 +2,7 @@ import { PaymentRouteTypeBadge } from "@/components/features/chat/badges/chat-ba
 import { formatChileanPeso } from "@/lib/core/utils/helpers"
 import type { IBookingInfoOutput } from '@/types/domain/booking/types'
 
-interface BookingPaymentProps {
-  result: IBookingInfoOutput
-}
-
-export function BookingPayment({ result }: BookingPaymentProps) {
+export function BookingPayment({ result }: { result: IBookingInfoOutput }) {
   if (!result.payment) return null
 
   return (
