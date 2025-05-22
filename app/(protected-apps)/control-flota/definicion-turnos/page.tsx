@@ -1,4 +1,4 @@
-import { ShiftsDefinition } from "@/components/features/vehicle-shifts/shifts-definition";
+import { ShiftsDefinition } from "@/components/features/vehicle-shifts/definition/shifts-definition"
 import { getShifts } from "@/lib/features/vehicle-shifts"
 
 export default async function ShiftsDefinitionPage() {
