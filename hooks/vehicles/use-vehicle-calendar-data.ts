@@ -67,7 +67,7 @@ export function useVehicleCalendarData({
         const vehiclesForDay: VehicleCalendarEntry[] = []
         const dayOfWeek = getDay(loopDate) === 0 ? 7 : getDay(loopDate)
 
-        shiftsResult.data?.forEach(shift => {
+        shiftsResult.data?.forEach((shift: any) => {
           const shiftStartDate = parseISO(shift.start_date)
           const shiftEndDate = parseISO(shift.end_date)
 
@@ -80,7 +80,7 @@ export function useVehicleCalendarData({
           }
 
           const activeGeneralStatus = fetchedGeneralStatuses.find(status => {
-            if (status.vehicle_number !== shift.vehicle_number) return false
+            if (status.vehicle_number !== String(shift.vehicle_number)) return false
             const statusStart = parseISO(status.start_date)
             const statusEnd = parseISO(status.end_date)
             return isWithinInterval(loopDate, { start: startOfDay(statusStart), end: endOfDay(statusEnd) })
