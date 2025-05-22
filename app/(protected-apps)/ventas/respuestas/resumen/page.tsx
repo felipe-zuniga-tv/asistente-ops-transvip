@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { TrendingUp, RefreshCw } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Legend } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Legend as RechartsLegend } from "recharts"
 import {
 	Card,
 	CardContent,
@@ -130,7 +130,7 @@ export default function ResumenPage() {
 					<ChartContainer config={chartConfig} className="h-[360px] w-full">
 						<BarChart accessibilityLayer data={chartData} margin={{ top: 20, right: 20, left: 0, bottom: 15 }}>
 							<CartesianGrid vertical={false} />
-							<Legend verticalAlign="bottom" />
+							<RechartsLegend verticalAlign="bottom" />
 							<XAxis dataKey="creation_date" tickLine={false} tickMargin={10} axisLine={false} />
 							<YAxis tickLine={false} axisLine={false} tickMargin={10} />
 							<ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />

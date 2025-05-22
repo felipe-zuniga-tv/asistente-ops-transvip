@@ -13,7 +13,7 @@ import {
     Skeleton,
     Button,
 } from "@/components/ui";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Legend } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Legend as RechartsLegend } from "recharts";
 import { TrendingUp, RefreshCw } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -134,7 +134,7 @@ export default function ResumenTicketsPage() {
                                 cursor={false}
                                 content={<ChartTooltipContent indicator="dot" />}
                             />
-							<Legend verticalAlign="top" align="right" />
+							<RechartsLegend verticalAlign="top" align="right" />
 							<Bar dataKey="approved_count" name={chartConfig.approved.label} fill="var(--color-approved)" radius={[4, 4, 0, 0]} />
                             <Bar dataKey="rejected_count" name={chartConfig.rejected.label} fill="var(--color-rejected)" radius={[4, 4, 0, 0]} />
 						</BarChart>

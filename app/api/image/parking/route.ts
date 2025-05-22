@@ -3,7 +3,7 @@ import { generateText } from 'ai';
 import { google } from "@ai-sdk/google";
 import { TICKET_OCR_SYSTEM_MESSAGE } from "@/lib/core/config/finance";
 
-const GOOGLE_MODEL_NAME = 'gemini-2.0-flash'
+const GOOGLE_MODEL_NAME = 'gemini-2.5-flash-preview-04-17'
 
 export async function POST(request: NextRequest) {
     try {        

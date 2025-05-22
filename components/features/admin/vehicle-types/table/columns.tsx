@@ -1,21 +1,17 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, Pencil, Trash, ArrowUpDown } from "lucide-react";
+import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import type { VehicleType } from "@/types/domain/admin/types";
 import { cn } from '@/utils/ui';
-import { DeleteVehicleTypeDialog } from "../alert-dialog-delete-vehicle-type";
 
 export const columns: ColumnDef<VehicleType>[] = [
     {
