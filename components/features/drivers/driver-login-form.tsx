@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { createDriverSession } from "@/lib/features/driver/auth"
 import { searchDriver } from "@/lib/features/driver"
-import { IDriverVehicles } from "@/types"
+import type { IDriverVehicles } from "@/types/domain/driver/types"
 import { Routes } from "@/utils/routes"
 import { ALLOWED_VEHICLE_NAMES_PARKING_TICKETS } from "@/utils/constants"
 
