@@ -8,3 +8,6 @@ export const VEHICLE_STATUS = {
 
 export const ALLOWED_VEHICLE_NAMES_PARKING_TICKETS = ['Sedan', 'Minibus']
 export type AllowedCarName = typeof ALLOWED_VEHICLE_NAMES_PARKING_TICKETS[number] 
+
+// Bucket name
+export const BUCKET_NAME = 'parking-tickets'

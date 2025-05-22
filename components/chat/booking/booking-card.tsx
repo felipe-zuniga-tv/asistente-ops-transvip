@@ -5,7 +5,7 @@ import { BookingDates } from './booking-dates'
 import { BookingPayment } from './booking-payment'
 import { BookingDirections } from './booking-directions'
 import { BookingVehicle } from './booking-vehicle'
-import type { IBookingInfoOutput } from '@/types/domain/chat/types'
+import type { IBookingInfoOutput } from '@/types/domain/booking/types'
 
 interface BookingCardProps {
   result: IBookingInfoOutput

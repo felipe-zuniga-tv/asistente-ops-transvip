@@ -1,6 +1,6 @@
 'use client'
 import { Button } from "@/components/ui/button";
-import { IBookingInfoOutput } from "@/types/domain/chat/types";
+import { IBookingInfoOutput } from "@/types/domain/booking/types";
 import { cn } from '@/utils/ui';
 
 export function BookingIdBadge({ result, handleClick, className }: { 

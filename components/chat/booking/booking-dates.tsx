@@ -1,7 +1,6 @@
 import { addMinutes, differenceInDays, differenceInMinutes } from 'date-fns'
 import { CheckIcon, X } from 'lucide-react'
-import type { IBookingInfoOutput } from '@/types/domain/chat/types'
-import React from 'react'
+import type { IBookingInfoOutput } from '@/types/domain/booking/types'
 
 interface BookingDatesProps {
   result: IBookingInfoOutput

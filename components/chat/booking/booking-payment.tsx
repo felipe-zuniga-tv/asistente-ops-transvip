@@ -1,6 +1,6 @@
 import { PaymentRouteTypeBadge } from "@/components/features/chat/badges/chat-badges"
 import { formatChileanPeso } from "@/lib/core/utils/helpers"
-import type { IBookingInfoOutput } from '@/types/domain/chat/types'
+import type { IBookingInfoOutput } from '@/types/domain/booking/types'
 
 interface BookingPaymentProps {
   result: IBookingInfoOutput

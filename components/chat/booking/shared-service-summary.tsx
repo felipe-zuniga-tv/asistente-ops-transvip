@@ -1,8 +1,8 @@
 import { BookingIdBadge } from './booking-badge'
 import { BookingStatusBadge, PaymentStatusBadge, CityBadge } from '@/components/features/chat/badges/chat-badges'
 import GoogleMapsButton from './google-maps-url-button'
-import type { IBookingInfoOutput } from '@/types/domain/chat/types'
 import { formatChileanPeso } from '@/lib/core/utils/helpers'
+import type { IBookingInfoOutput } from '@/types/domain/booking/types'
 
 interface SharedServiceSummaryProps {
   result: IBookingInfoOutput[]
@@ -34,7 +34,7 @@ interface SharedServiceTotalsProps {
 }
 
 export function SharedServiceTotals({ result }: SharedServiceTotalsProps) {
-  const totalPayment = result.reduce((acc, curr) => acc + curr.payment.actual_payment, 0)
+  const totalPayment = result.reduce((acc, curr) => acc + (curr.payment.actual_payment || 0), 0)
 
   return (
     <div className='shared-service-totals card-info-detail flex flex-row gap-3 justify-start bg-green-200 rounded-md shadow-md mb-2'>

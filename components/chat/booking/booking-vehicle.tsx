@@ -1,11 +1,11 @@
+import Link from 'next/link'
+import { ExternalLinkIcon } from 'lucide-react'
 import { Badge, Button } from '@/components/ui'
 import { BookingSearchRequest } from './helpers'
-import { ExternalLinkIcon } from 'lucide-react'
 import { WhatsappIcon } from '@/components/ui/whatsapp-icon'
 import DriverAvatar from '@/components/features/drivers/driver-avatar'
-import Link from 'next/link'
 import { buildWhatsappLink } from '@/lib/core/utils/helpers'
-import type { IBookingInfoOutput } from '@/types/domain/chat/types'
+import type { IBookingInfoOutput } from '@/types/domain/booking/types'
 
 interface BookingVehicleProps {
   result: IBookingInfoOutput

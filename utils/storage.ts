@@ -1,13 +1,13 @@
 'use server'
 import { createClient } from '@/lib/supabase/server'
-
-const BUCKET_NAME = 'parking-tickets'
+import { BUCKET_NAME } from '@/utils/constants'
 
 // Client-side upload (affected by RLS)
 export async function uploadTicketImage(
   driverId: string,
   bookingId: string,
-  imageBase64: string
+  imageBase64: string,
+  bucketName: string = BUCKET_NAME
 ): Promise<string> {
   const supabase = await createClient()
 
@@ -35,7 +35,7 @@ export async function uploadTicketImage(
 
   // Upload to Supabase Storage
   const { data, error } = await supabase.storage
-    .from(BUCKET_NAME)
+    .from(bucketName)
     .upload(filename, blob, {
       contentType: 'image/jpeg',
       cacheControl: '3600',
@@ -48,7 +48,7 @@ export async function uploadTicketImage(
 
   // Get public URL
   const { data: { publicUrl } } = supabase.storage
-    .from(BUCKET_NAME)
+    .from(bucketName)
     .getPublicUrl(filename)
 
   return publicUrl
@@ -58,7 +58,8 @@ export async function uploadTicketImage(
 export async function uploadTicketImageServer(
   driverId: string,
   bookingId: string,
-  imageBase64: string
+  imageBase64: string,
+  bucketName: string = BUCKET_NAME
 ): Promise<string> {
   'use server'
 
@@ -91,7 +92,7 @@ export async function uploadTicketImageServer(
 
   // Upload to Supabase Storage
   const { data, error } = await supabase.storage
-    .from(BUCKET_NAME)
+    .from(bucketName)
     .upload(filename, buffer, {
       contentType: 'image/jpeg',
       cacheControl: '3600',
@@ -104,17 +105,17 @@ export async function uploadTicketImageServer(
 
   // Get public URL
   const { data: { publicUrl } } = supabase.storage
-    .from(BUCKET_NAME)
+    .from(bucketName)
     .getPublicUrl(filename)
 
   return publicUrl
 }
 
-export async function getTicketImageUrl(path: string): Promise<string> {
+export async function getTicketImageUrl(path: string, bucketName: string = BUCKET_NAME): Promise<string> {
   const supabase = await createClient()
 
   const { data: { publicUrl } } = supabase.storage
-    .from(BUCKET_NAME)
+    .from(bucketName)
     .getPublicUrl(path)
 
   return publicUrl

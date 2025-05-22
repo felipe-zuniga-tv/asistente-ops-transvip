@@ -9,7 +9,7 @@ import {
  } from "@/components/ui";
 import { ClipboardList } from "lucide-react";
 import { TransvipLogo } from "@/components/features/transvip/transvip-logo";
-import { OperationsForm } from "@/lib/core/types/vehicle/forms";
+import type { OperationsForm } from "@/types/domain/forms/types";
 
 export async function FormulariosContent({ activeForms, baseUrl }: {
 	activeForms: OperationsForm[]

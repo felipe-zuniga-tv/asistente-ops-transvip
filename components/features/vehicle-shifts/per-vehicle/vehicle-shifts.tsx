@@ -8,12 +8,12 @@ import { Label } from "@/components/ui/label"
 import { VehicleShiftsTable } from "@/components/features/vehicle-shifts/per-vehicle/table/vehicle-shifts-table"
 import { columns } from "@/components/features/vehicle-shifts/per-vehicle/table/columns"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 import { VehicleShiftDialog } from "@/components/features/vehicle-shifts/per-vehicle/vehicle-shift-dialog"
 import { UploadShiftsDialog } from "@/components/features/vehicle-shifts/per-vehicle/upload-vehicle-shifts-dialog"
 import { AlertDialogDeleteVehicleShift } from "@/components/features/vehicle-shifts/per-vehicle/delete-vehicle-shift-alert-dialog"
 import { generateVehicleShiftsTemplate } from "@/lib/features/csv/vehicle-shifts-template"
 import { bulkDeleteVehicleShifts } from "@/lib/features/shifts/actions"
-import { useToast } from "@/hooks/use-toast"
 import { ConfigCardContainer } from "@/components/ui/tables/config-card-container"
 import { downloadFile } from "@/utils/file"
 
@@ -43,7 +43,6 @@ interface VehicleShiftsContentProps {
 
 export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentProps) {
     const router = useRouter()
-    const { toast } = useToast()
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
     const [editingAssignment, setEditingAssignment] = useState<VehicleShift | null>(null)
@@ -67,9 +66,7 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
         const template = generateVehicleShiftsTemplate()
         await downloadFile(template, "plantilla-asignaciones.csv", {
             onError: () => {
-                toast({
-                    variant: "destructive",
-                    title: "Error",
+                toast.error("Error", {
                     description: "No se pudo descargar el archivo"
                 })
             }
@@ -94,9 +91,7 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
 
         await downloadFile(csvContent, "asignaciones-seleccionadas.csv", {
             onError: () => {
-                toast({
-                    variant: "destructive",
-                    title: "Error",
+                toast.error("Error", {
                     description: "No se pudo descargar el archivo"
                 })
             }
@@ -123,14 +118,11 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
             const { error } = await bulkDeleteVehicleShifts(selectedShifts.map(shift => shift.id))
 
             if (error) {
-                toast({
-                    variant: "destructive",
-                    title: "Error",
+                toast.error("Error", {
                     description: error
                 })
             } else {
-                toast({
-                    title: "Éxito",
+                toast.success("Éxito", {
                     description: `${selectedShifts.length} asignaciones eliminadas correctamente`
                 })
             }
@@ -138,9 +130,7 @@ export function VehicleShifts({ shifts, vehicleShifts }: VehicleShiftsContentPro
             router.refresh()
         } catch (error) {
             console.error('Error deleting shifts:', error)
-            toast({
-                variant: "destructive",
-                title: "Error",
+            toast.error("Error", {
                 description: "Error al eliminar las asignaciones"
             })
         }

@@ -1,8 +1,8 @@
 "use client";
 
 import { Input, Label } from "@/components/ui";
-import { OperationsFormQuestion } from "@/lib/core/types/vehicle/forms";
 import { ImageInput } from "@/components/ui/forms/image-input";
+import type { OperationsFormQuestion } from "@/types/domain/forms/types";
 
 interface QuestionInputProps {
     question: OperationsFormQuestion;
