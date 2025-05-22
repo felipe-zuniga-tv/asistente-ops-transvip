@@ -41,7 +41,7 @@ export default async function TicketDetailPage(props: PageProps) {
 		admin_rejected: { label: "Rejected", variant: "destructive" },
 	}
 
-    const status = statusConfig[ticket.status]
+    const status = statusConfig[ticket.status as keyof typeof statusConfig]
 
     return (
 		<div className="space-y-6">
