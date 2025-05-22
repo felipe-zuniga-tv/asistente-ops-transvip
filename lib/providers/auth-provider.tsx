@@ -111,9 +111,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     // Provide the auth context value 
+    const isLogged = user !== null;
     const value = {
         user,
         isLoading,
+        isLogged,
         login,
         logout,
         getUser,

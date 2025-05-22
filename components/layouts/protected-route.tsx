@@ -11,7 +11,11 @@ export default function ProtectedRoute({
 }: {
     children: React.ReactNode
 }) {
-    const { user, isLoading } = useAuth()
+    const { user, isLoading, isLogged } = useAuth()
+
+    if (!isLogged || !user) {
+        redirect(Routes.LOGIN)
+    }
 
     useEffect(() => {
         if (!isLoading && !user) {
@@ -25,10 +29,6 @@ export default function ProtectedRoute({
                 <LoadingMessage text="Cargando..." />
             </div>
         )
-    }
-
-    if (!user) {
-        return null
     }
 
     return <>{children}</>
