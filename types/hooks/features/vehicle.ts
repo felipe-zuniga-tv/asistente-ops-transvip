@@ -1,5 +1,4 @@
 import type { VehicleOnlineStatus } from "@/types/domain/vehicle/types";
-import type { UseVehicleOnlineStatusReturn } from "@/types/hooks/features/vehicle";
 
 export interface UseVehicleOnlineStatusReturn {
   vehicleOnlineStatusData: Map<number, VehicleOnlineStatus>;
