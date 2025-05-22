@@ -10,7 +10,7 @@ import { createTicket } from "@/lib/features/tickets"
 import { uploadTicketImageServer } from "@/lib/features/storage"
 import { ImageUploadStep } from "./image-upload-step"
 import { ConfirmationStep } from "./confirmation-step"
-import { type DriverSession } from "@/types/domain/driver/models"
+import type { DriverSession } from "@/types/domain/driver/types"
 import { 
 	imageUploadSchema, 
 	confirmationSchema, 
@@ -122,7 +122,7 @@ export function TicketUploadForm({ session }: TicketUploadFormProps) {
 			setParsedData(extractedData)
 
 			// Upload image to storage to get URL using server function
-			const imageUrl = await uploadTicketImageServer(session.driver_id, "temp", imageBase64)
+			const imageUrl = await uploadTicketImageServer(String(session.driver_id), "temp", imageBase64)
 			setUploadedImageUrl(imageUrl)
 
 			// Reset the form with all extracted data at once
@@ -171,7 +171,7 @@ export function TicketUploadForm({ session }: TicketUploadFormProps) {
 				const booking_id = ensureString(values.booking_id)
 
 				// Create ticket with form data and image URL
-				await createTicket(session.driver_id, values.vehicle_number, booking_id, uploadedImageUrl, {
+				await createTicket(String(session.driver_id), values.vehicle_number, booking_id, uploadedImageUrl, {
 					nro_boleta: values.nro_boleta,
 					entry_date: values.entry_date,
 					entry_time: values.entry_time,
