@@ -16,7 +16,7 @@ export default function GoogleMapsButton({ result, text, className = "" } : {
     const destination = result[result.length - 1].directions.destination.address
 
     // Get waypoints
-    let waypoints = result.length === 2 
+    const waypoints = result.length === 2 
         ? result[1].booking.type_of_trip === 'P' || result[1].booking.type_of_trip === 'R' ? [result[1].directions.origin.address] : [result[1].directions.destination.address]
         : result[1].booking.type_of_trip === 'P' || result[1].booking.type_of_trip === 'R' ? result.slice(1, -1).map(r => r.directions.origin.address) : result.slice(1, -1).map(r => r.directions.destination.address)
 

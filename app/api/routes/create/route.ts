@@ -36,8 +36,8 @@ export async function POST(request: Request) {
 
     const vehicleDetails = await Promise.all(
         vehicleList.map(async (vehicle_number: number) => {
-            let vehicleDetailList = await getVehicleDetailList(String(vehicle_number));
-            let result = vehicleDetailList ? vehicleDetailList.find((r: any) => r.vehicle_number === vehicle_number) : null;
+            const vehicleDetailList = await getVehicleDetailList(String(vehicle_number));
+            const result = vehicleDetailList ? vehicleDetailList.find((r: any) => r.vehicle_number === vehicle_number) : null;
 
             if (!result) return;
 

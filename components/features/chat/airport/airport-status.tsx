@@ -4,10 +4,11 @@ import { Routes } from "@/utils/routes";
 
 export default function AirportStatus({ services }: { services: any[] }) {
 
-    if (!services || services.length === 0)
+    if (!services || services.length === 0) {
         return (
             <span>No hay móviles en esta zona iluminada</span>
-    )
+        )
+    }
 
     return (
         <div className="flex flex-col gap-2 items-start justify-start">
