@@ -31,7 +31,7 @@ import {
 	filterSecondaryItems
 } from "@/components/layouts/sidebar/helpers"
 import { LucideIcon } from "lucide-react"
-import { ChatSession } from "@/types/domain/chat/models"
+import { ChatSession } from "@/types/domain/chat/types"
 
 // --- Component Props Interface ---
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {

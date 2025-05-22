@@ -1,5 +1,5 @@
 import { Pencil } from 'lucide-react'
-import type { IBookingInfoOutput } from '@/types/domain/chat/models'
+import type { IBookingInfoOutput } from '@/types/domain/chat/types'
 
 interface BookingObservationsProps {
   result: IBookingInfoOutput

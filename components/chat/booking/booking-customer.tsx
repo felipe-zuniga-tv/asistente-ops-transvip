@@ -1,7 +1,7 @@
 import { UserCircleIcon, MailIcon, PhoneIcon } from 'lucide-react'
 import { EmailLink } from '@/components/ui'
 import { CustomerVipBadge } from '@/components/features/chat/badges/chat-badges'
-import type { IBookingInfoOutput } from '@/types/domain/chat/models'
+import type { IBookingInfoOutput } from '@/types/domain/chat/types'
 import Link from 'next/link'
 
 interface BookingCustomerProps {

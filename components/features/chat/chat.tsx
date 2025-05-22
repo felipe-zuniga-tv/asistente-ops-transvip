@@ -9,7 +9,7 @@ import { useScrollAnchor } from '@/hooks/use-scroll-anchor'
 import { MessagesList } from './messages-list'
 import { EmptyScreen } from './empty-screen'
 import { ChatPanel } from './chat-panel'
-import type { ChatProps } from '@/types/domain/chat/models'
+import type { ChatProps } from '@/types/domain/chat/types'
 import { NewChatButton } from './new-chat-button'
 import { Routes } from '@/utils/routes'
 

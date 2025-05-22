@@ -4,7 +4,7 @@ import Header from "@/components/ui/header";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { getSession } from "@/lib/core/auth";
 import { AI } from "@/lib/features/chat/actions";
-import { ChatSession } from '@/types/domain/chat/models';
+import { ChatSession } from '@/types/domain/chat/types';
 import { nanoid } from "@/utils/id";
 
 export default async function ChatAppLayout({ children }: { children: React.ReactNode }) {

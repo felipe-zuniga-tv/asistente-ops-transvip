@@ -1,6 +1,6 @@
 import { BookingIdBadge } from './booking-badge'
 import { BookingStatusBadge, PaymentStatusBadge, CityBadge } from '@/components/features/chat/badges/chat-badges'
-import type { IBookingInfoOutput } from '@/types/domain/chat/models'
+import type { IBookingInfoOutput } from '@/types/domain/chat/types'
 
 interface BookingBadgesProps {
   result: IBookingInfoOutput

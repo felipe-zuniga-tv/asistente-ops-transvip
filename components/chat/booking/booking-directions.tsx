@@ -1,7 +1,7 @@
 import { MapPin, GoalIcon, Clock, MapIcon } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { buildGoogleMapsURL } from '@/lib/core/utils/helpers'
-import type { IBookingInfoOutput } from '@/types/domain/chat/models'
+import type { IBookingInfoOutput } from '@/types/domain/chat/types'
 
 interface BookingDirectionsProps {
   result: IBookingInfoOutput

@@ -6,7 +6,7 @@ import { SharedServiceSummary } from './shared-service-summary'
 import { MESSAGE_TEMPLATES, BookingSearchRequest } from './helpers'
 import { useMessageSubmission } from '@/hooks/use-message-submission'
 import type { ChatSession } from '@/types/domain/chat'
-import type { IBookingInfoOutput } from '@/types/domain/chat/models'
+import type { IBookingInfoOutput } from '@/types/domain/chat/types'
 
 export function BookingIdSearch({ session, searchResults, content }: {
     session: ChatSession,

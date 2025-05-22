@@ -1,4 +1,4 @@
-import type { IBookingInfoOutput } from '@/types/domain/chat/models'
+import type { IBookingInfoOutput } from '@/types/domain/chat/types'
 
 export enum BookingSearchRequest {
     BOOKING = 'booking',

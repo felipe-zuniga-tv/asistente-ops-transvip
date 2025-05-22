@@ -1,5 +1,5 @@
 import { getSession } from "@/lib/core/auth"
-import { ChatSession } from '@/types/domain/chat/models'
+import { ChatSession } from '@/types/domain/chat/types'
 
 export default async function UserDetails() {
     const session = (await getSession()) as ChatSession | null; // Define the session type

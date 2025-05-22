@@ -5,7 +5,7 @@ import { WhatsappIcon } from '@/components/ui/whatsapp-icon'
 import DriverAvatar from '@/components/features/drivers/driver-avatar'
 import Link from 'next/link'
 import { buildWhatsappLink } from '@/lib/core/utils/helpers'
-import type { IBookingInfoOutput } from '@/types/domain/chat/models'
+import type { IBookingInfoOutput } from '@/types/domain/chat/types'
 
 interface BookingVehicleProps {
   result: IBookingInfoOutput

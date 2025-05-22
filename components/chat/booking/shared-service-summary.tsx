@@ -1,7 +1,7 @@
 import { BookingIdBadge } from './booking-badge'
 import { BookingStatusBadge, PaymentStatusBadge, CityBadge } from '@/components/features/chat/badges/chat-badges'
 import GoogleMapsButton from './google-maps-url-button'
-import type { IBookingInfoOutput } from '@/types/domain/chat/models'
+import type { IBookingInfoOutput } from '@/types/domain/chat/types'
 import { formatChileanPeso } from '@/lib/core/utils/helpers'
 
 interface SharedServiceSummaryProps {

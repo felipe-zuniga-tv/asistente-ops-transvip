@@ -4,7 +4,7 @@ import { getSession } from "@/lib/core/auth"
 import { branches, paymentMethods } from "@/lib/core/config"
 import { BOOKING_DETAIL_URL, BOOKING_ID_API_URL, BOOKING_INFO_FULL_URL } from "@/lib/core/config/urls"
 import { getResponseFromURL } from "@/lib/core/utils/helpers"
-import { IBookingInfo, IBookingInfoOutput } from "@/types/domain/chat/models"
+import { IBookingInfo, IBookingInfoOutput } from "@/types/domain/chat/types"
 import { getVehicleDetail } from "../../features/vehicle/functions"
 import type { DateFields } from '@/types/domain/booking/types'
 

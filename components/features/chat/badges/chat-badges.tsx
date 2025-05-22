@@ -1,4 +1,4 @@
-import { IBookingInfoOutput, IBranch, IDriverProfile, IVehicleDetail } from "@/types/domain/chat/models";
+import { IBookingInfoOutput, IBranch, IDriverProfile, IVehicleDetail } from "@/types/domain/chat/types";
 import { cn } from '@/utils/ui';
 import PaymentAvatar from "../payment/payment-avatar";
 import { differenceInDays } from "date-fns";
