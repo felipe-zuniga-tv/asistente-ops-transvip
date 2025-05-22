@@ -1,26 +1,7 @@
-import { ALLOWED_VEHICLE_NAMES_PARKING_TICKETS, type AllowedCarName } from "@/utils/constants"
+import { ALLOWED_VEHICLE_NAMES_PARKING_TICKETS } from "@/utils/constants"
 import { getVehicleDetail } from "@/lib/features/vehicle/functions"
 import type { VehicleSelectItem } from "@/types/domain/vehicle/types"
 import type { DriverOwnVehicle, DriverAssignedVehicle } from "@/types/domain/driver/types"
-
-// interface Vehicle { // Removed
-//     value: string
-//     label: string
-//     type: AllowedCarName
-// }
-
-// interface DriverOwnVehicle { // Removed
-//     registration_number: string
-//     working_status?: number
-//     unique_car_id: number
-//     car_name: string
-// }
-
-// interface DriverAssignedVehicle { // Removed
-//     unique_car_id: string
-//     car_name: string
-//     car_number: string
-// }
 
 export async function getDriverVehicleList(driverDetails: any): Promise<VehicleSelectItem[]> {
     // Get and process own vehicles

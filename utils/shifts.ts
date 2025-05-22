@@ -1,6 +1,5 @@
 import { format } from "date-fns"
 import { adjustDayIndex } from "./date"
-import { es } from "date-fns/locale"
 import type { VehicleStatus } from "@/types/domain/vehicle/types"
 import type { VehicleShiftWithShiftInfo, VehicleShiftWithFreeDay } from "@/types/domain/calendar/types"
 

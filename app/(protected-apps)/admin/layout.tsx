@@ -1,3 +1,5 @@
+import React from "react"
+
 export const metadata = {
     title: "Administración | Transvip",
     description: "Panel de administración de Transvip",

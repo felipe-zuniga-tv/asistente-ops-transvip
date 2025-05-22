@@ -1,3 +1,4 @@
+import React from "react"
 import { AppSidebar } from "@/components/features/chat/panel/app-sidebar";
 import ProtectedRoute from "@/components/layouts/protected-route";
 import Header from "@/components/ui/header";

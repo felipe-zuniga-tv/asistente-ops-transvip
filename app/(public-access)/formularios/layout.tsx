@@ -1,3 +1,5 @@
+import React from "react"
+
 export default function PublicAppsLayout({ children }: { children: React.ReactNode }) {
     return (
         <div className="relative h-screen">

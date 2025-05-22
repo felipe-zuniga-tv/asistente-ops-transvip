@@ -52,5 +52,12 @@ export async function POST(request: Request) {
         })
     )
 
+    const response = await fetch(ROUTE_CREATION_ENDPOINT, {
+        method: 'POST',
+        body: JSON.stringify({ bookings: bookingDetails, vehicles: vehicleDetails })
+    })
+
+    const data = await response.json()
+
     return NextResponse.json({ message: 'Data received', data: { bookings, vehicles } });
 }

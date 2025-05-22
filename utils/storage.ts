@@ -34,7 +34,7 @@ export async function uploadTicketImage(
   const filename = `${driverId}/${bookingId}_${timestamp}.jpg`
 
   // Upload to Supabase Storage
-  const { data, error } = await supabase.storage
+  const { error } = await supabase.storage
     .from(bucketName)
     .upload(filename, blob, {
       contentType: 'image/jpeg',
@@ -91,7 +91,7 @@ export async function uploadTicketImageServer(
   const buffer = Buffer.concat(byteArrays.map(arr => Buffer.from(arr)))
 
   // Upload to Supabase Storage
-  const { data, error } = await supabase.storage
+  const { error } = await supabase.storage
     .from(bucketName)
     .upload(filename, buffer, {
       contentType: 'image/jpeg',
