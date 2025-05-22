@@ -1,12 +1,7 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-// import { type ParsedMTTResponse } from "@/lib/services/mtt/parser";
-import { type MTTVehicleInfo } from "@/lib/services/mtt/actions";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
+import type { MTTVehicleInfo } from "@/types/domain/mtt/types";
 
-interface VehicleInfoCardProps {
-	result: MTTVehicleInfo;
-}
-
-export function VehicleInfoCard({ result }: VehicleInfoCardProps) {
+export function VehicleInfoCard({ result }: { result: MTTVehicleInfo }) {
 	return (
 		<Card className="w-full">
 			<CardHeader className="pb-2">
