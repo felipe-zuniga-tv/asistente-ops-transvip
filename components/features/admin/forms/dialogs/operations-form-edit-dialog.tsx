@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useTransition, FormEvent } from "react";
-import { OperationsForm } from "@/lib/core/types/vehicle/forms";
+import { OperationsForm } from "@/types/domain/forms/types";
 import { SimpleDialog, SimpleDialogHeader, SimpleDialogTitle, SimpleDialogDescription, SimpleDialogFooter } from "@/components/ui/simple-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

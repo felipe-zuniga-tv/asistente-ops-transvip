@@ -2,7 +2,7 @@
 
 import { DataTable } from "@/components/ui/tables/data-table";
 import { columns } from "./columns";
-import type { OperationsFormQuestion } from "@/lib/core/types/vehicle/forms";
+import type { OperationsFormQuestion } from "@/types/domain/forms/types";
 
 interface OperationsFormQuestionsDataTableProps {
     data: OperationsFormQuestion[];

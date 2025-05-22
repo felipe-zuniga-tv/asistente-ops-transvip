@@ -10,7 +10,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import type { OperationsFormQuestion } from "@/lib/core/types/vehicle/forms";
+import type { OperationsFormQuestion } from "@/types/domain/forms/types";
 
 interface AlertDialogDeleteQuestionProps {
     question: OperationsFormQuestion | null;

@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { OperationsFormSectionDialog } from "./dialogs/operations-form-section-dialog";
 import { OperationsFormQuestionDialog } from "./dialogs/operations-form-question-dialog";
-import { OperationsForm, OperationsFormSection, OperationsFormQuestion } from "@/lib/core/types/vehicle/forms";
+import type { OperationsForm, OperationsFormSection, OperationsFormQuestion } from "@/types/domain/forms/types";
 import { ArrowLeft, PlusCircle } from "lucide-react";
 import { DragDropContext, Droppable, DropResult, DroppableProvided } from "@hello-pangea/dnd";
 import { ConfigCardContainer } from "@/components/ui/tables/config-card-container";

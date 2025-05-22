@@ -8,7 +8,7 @@ import { OperationsFormQuestionDialog } from "./dialogs/operations-form-question
 import { AlertDialogDeleteQuestion } from "./alert-dialog-delete-question";
 import { ConfigCardContainer } from "@/components/ui/tables/config-card-container";
 import { deleteQuestion } from "@/lib/features/forms";
-import type { OperationsFormQuestion } from "@/lib/core/types/vehicle/forms";
+import type { OperationsFormQuestion } from "@/types/domain/forms/types";
 
 interface OperationsFormQuestionsConfigProps {
     data: OperationsFormQuestion[];

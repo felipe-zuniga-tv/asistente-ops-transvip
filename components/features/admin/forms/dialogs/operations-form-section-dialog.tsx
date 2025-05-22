@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { createSection, updateSection } from "@/lib/features/forms";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { OperationsFormSection } from "@/lib/core/types/vehicle/forms";
+import type { OperationsFormSection } from "@/types/domain/forms/types";
 
 const formSchema = z.object({
     title: z.string().min(1, "El título es requerido"),

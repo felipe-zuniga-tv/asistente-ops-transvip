@@ -23,7 +23,7 @@ import {
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { createVehicleStatusConfig, updateVehicleStatusConfig } from "@/lib/features/vehicle-status";
-import type { VehicleStatusConfig } from "@/lib/core/types/vehicle/status";
+import type { VehicleStatusConfig } from "@/types/domain/vehicle/types";
 
 interface StatusConfigDialogProps {
     config?: VehicleStatusConfig | null;

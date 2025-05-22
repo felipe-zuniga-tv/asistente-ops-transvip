@@ -1,10 +1,8 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Edit2, Trash2, MoreHorizontal, Eye, Power, Pencil } from "lucide-react";
-import type { OperationsFormQuestion, OperationsForm } from "@/lib/core/types/vehicle/forms";
+import { Badge, Button } from "@/components/ui";
+import { MoreHorizontal, Power, Pencil } from "lucide-react";
 import { formatDate } from "@/utils/dates";
 import {
     DropdownMenu,
@@ -13,6 +11,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import type { OperationsForm } from "@/types/domain/forms/types";
 
 interface ColumnsProps {
     handleView: (formId: string) => void;

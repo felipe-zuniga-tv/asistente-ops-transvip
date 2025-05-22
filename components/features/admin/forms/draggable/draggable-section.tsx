@@ -1,15 +1,14 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button } from "@/components/ui";
 import { Draggable, Droppable, DroppableProvided, DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd";
 import { GripVertical, PlusCircle, Pencil, ChevronDown } from "lucide-react";
 import { cn } from '@/utils/ui';
-import { OperationsFormSection, OperationsFormQuestion } from "@/lib/core/types/vehicle/forms";
 import { DraggableQuestion } from "./draggable-question";
 import { Separator } from "@/components/ui/separator";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { useState } from "react";
+import type { OperationsFormSection, OperationsFormQuestion } from "@/types/domain/forms/types";
 
 interface DraggableSectionProps {
     section: OperationsFormSection & { questions: OperationsFormQuestion[] };

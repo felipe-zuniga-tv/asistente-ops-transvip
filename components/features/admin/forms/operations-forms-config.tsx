@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { OperationsForm } from "@/lib/core/types/vehicle/forms";
+import { OperationsForm } from "@/types/domain/forms/types";
 import { OperationsFormDialog } from "./dialogs/operations-form-dialog";
 import { useRouter } from "next/navigation";
 import { ConfigCardContainer } from "@/components/ui/tables/config-card-container";
