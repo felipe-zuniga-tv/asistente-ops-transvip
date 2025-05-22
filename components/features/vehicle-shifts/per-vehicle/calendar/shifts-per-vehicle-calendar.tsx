@@ -120,10 +120,9 @@ export function ShiftsPerVehicleCalendar({ shifts, hasSearched, daysToShow, vehi
         <CardContent className="flex flex-col gap-2 px-4">
             <div className="flex justify-end">
                 <Button
-                    variant="default"
                     size="sm"
                     onClick={handleScreenshot}
-                    className="gap-2"
+                    className="gap-2 bg-transvip hover:bg-transvip-dark text-white hover:text-white"
                 >
                     <Download className="h-4 w-4" />
                     <span>Descargar calendario</span>
