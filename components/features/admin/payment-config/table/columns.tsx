@@ -1,6 +1,6 @@
 'use client'
 
-import { type PaymentMethod } from '@/lib/core/types/admin'
+import { type PaymentMethod } from "@/types/domain/admin/types"
 import { type ColumnDef } from '@tanstack/react-table'
 import { MoreHorizontal, Pencil, Trash, icons } from 'lucide-react'
 import {

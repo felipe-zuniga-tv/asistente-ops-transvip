@@ -1,6 +1,6 @@
 'use server'
 
-import type { ParkingTicket } from '@/types/domain/tickets'
+import type { ParkingTicket, BookingValidation } from '@/types/domain/tickets/types'
 import { Routes } from '@/utils/routes'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
@@ -91,11 +91,6 @@ export async function createTicket(
   }
 
   return data
-}
-
-interface BookingValidation {
-  isValid: boolean
-  error?: string
 }
 
 export async function validateBookingId(bookingId: string): Promise<BookingValidation> {

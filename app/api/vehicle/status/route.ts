@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
   if (isNaN(parsedNumber) || parsedNumber <= 0) {
     return NextResponse.json({ error: 'Invalid vehicle number. Must be an integer > 0.' }, { status: 400 });
   }
-  
+
   try {
     const statusResult = await getVehicleOnlineStatus(parsedNumber);
     if (statusResult == null) {

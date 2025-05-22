@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { type PaymentMethod } from '@/lib/core/types/admin'
+import { type PaymentMethod } from "@/types/domain/admin/types"
 import { PaymentMethodDataTable } from './table/payment-method-data-table'
 import { columns } from './table/columns'
 import { PaymentMethodDialog } from './payment-method-dialog'

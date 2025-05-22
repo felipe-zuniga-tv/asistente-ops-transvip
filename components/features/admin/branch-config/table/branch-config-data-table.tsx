@@ -1,6 +1,6 @@
 'use client'
 
-import { type Branch } from '@/lib/core/types/admin'
+import { type Branch } from "@/types/domain/admin/types"
 import { DataTable } from '@/components/ui/tables/data-table'
 import { columns } from './columns'
 

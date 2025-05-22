@@ -12,7 +12,9 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui"
-import type { SalesResponse } from "@/lib/core/types/sales";
+import { Checkbox } from "@/components/ui/checkbox";
+import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import type { SalesResponse } from "@/types/domain/sales/types";
 import { WhatsappIcon } from "@/components/ui/whatsapp-icon";
 import { languages } from "../language-selector";
 import type { Language } from "@/lib/core/i18n";

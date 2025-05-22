@@ -10,7 +10,10 @@ import {
 } from "@/components/ui/simple-dialog"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import type { SalesResponse } from "@/lib/core/types/sales"
+import type { SalesResponse } from "@/types/domain/sales/types"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
 
 interface SalesResponseNotesDialogProps {
     open: boolean

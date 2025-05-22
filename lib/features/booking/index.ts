@@ -6,22 +6,9 @@ import { BOOKING_DETAIL_URL, BOOKING_ID_API_URL, BOOKING_INFO_FULL_URL } from "@
 import { getResponseFromURL } from "@/lib/core/utils/helpers"
 import { IBookingInfo, IBookingInfoOutput } from "@/types/domain/chat/models"
 import { getVehicleDetail } from "../../features/vehicle/functions"
+import type { DateFields } from '@/types/domain/booking/types'
 
 const NULL_DATE = '0000-00-00 00:00:00'
-
-interface DateFields {
-    creation_datetime: string;
-    job_time: string;
-    job_time_utc: string;
-    temp_pickup_time: string;
-    assignment_datetime: string;
-    on_road_datetime: string;
-    arrived_datetime: string;
-    started_datetime: string;
-    completed_datetime: string;
-    no_show_datetime: string;
-    cancellation_datetime: string;
-}
 
 function formatPhoneNumber(countryCode: string, phoneNumber: string, passengerCountryCode?: string): string {
     const cleanCountryCode = countryCode.trim();

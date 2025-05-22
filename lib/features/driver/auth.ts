@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { SignJWT, jwtVerify } from "jose"
-import type { DriverSession, DriverDetails } from '@/types/domain/driver'
+import type { DriverSession, DriverDetails, CreateDriverSessionReturnType } from '@/types/domain/driver/types'
 import { config as appConfig } from '@/lib/core/config/general'
 import { Routes } from '@/utils/routes'
 
@@ -16,11 +16,6 @@ const key = new TextEncoder().encode(secretKey)
 
 // Add error handling for missing env variables
 if (!secretKey) throw new Error('TOKEN_JWT_SECRET is not defined')
-
-interface CreateDriverSessionReturnType {
-	session: DriverSession;
-	encryptedSession: string;
-}
 
 async function encryptDriverSession(payload: DriverSession): Promise<string> {
 	return await new SignJWT(payload as unknown as Record<string, any>)

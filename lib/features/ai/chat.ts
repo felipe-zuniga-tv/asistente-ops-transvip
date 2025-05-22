@@ -6,17 +6,12 @@ import { google } from '@ai-sdk/google';
 
 // Import the SYSTEM_MESSAGE from config
 import { SYSTEM_MESSAGE } from '@/lib/core/config/chat';
+// Import the type from its new location
+import type { StreamChatOptions } from '@/types/domain/chat/types';
 
 // Initialize the Google AI client
 // const GOOGLE_MODEL_NAME_DEFAULT = 'gemini-2.0-flash';
 const GOOGLE_MODEL_NAME_DEFAULT = 'gemini-2.5-flash-preview-04-17';
-
-export interface StreamChatOptions {
-  model: string;
-  messages: Message[];
-  id: string;
-  user: any;
-}
 
 export async function streamChat({ model, messages, id, user }: StreamChatOptions) {
   try {

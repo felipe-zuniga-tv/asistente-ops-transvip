@@ -2,8 +2,10 @@
 
 import Link from 'next/link'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
-import type { Branch } from '@/lib/core/types/admin'
-import type { Translation, Language } from '@/lib/core/i18n'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Label } from '@/components/ui/label'
+import type { Branch } from '@/types/domain/admin/types'
+import type { Translation, Language } from '@/types/core/i18n'
 import { Routes } from '@/utils/routes'
 
 // Define the type for the branches part of the translation

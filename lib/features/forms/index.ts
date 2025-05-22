@@ -14,10 +14,11 @@ import type {
     CreateOperationsFormSectionInput,
     UpdateOperationsFormSectionInput,
     CreateOperationsFormResponseInput,
-} from "@/lib/core/types/vehicle/forms";
+} from "@/types/domain/forms/types";
 import { createClient } from "@/lib/supabase/server";
 // import { revalidatePath } from "next/cache";
 // import { Routes } from "@/utils/routes";
+import type { ReorderSectionsInput, ReorderQuestionsInput } from '@/types/domain/forms/types';
 
 // Forms Management
 export async function getOperationsForms() {
@@ -319,13 +320,6 @@ export async function updateInspectionStatus(id: string, status: string) {
 }
 
 // Section Ordering
-interface ReorderSectionsInput {
-    sections: {
-        id: string
-        order: number
-    }[]
-}
-
 export async function reorderSections(formId: string, input: ReorderSectionsInput) {
     const supabase = await createClient()
 
@@ -346,13 +340,6 @@ export async function reorderSections(formId: string, input: ReorderSectionsInpu
         console.error('Error reordering sections:', error)
         return { success: false, error }
     }
-}
-
-interface ReorderQuestionsInput {
-    questions: {
-        id: string;
-        order: number;
-    }[];
 }
 
 export async function reorderQuestions(sectionId: string, input: ReorderQuestionsInput) {

@@ -1,16 +1,18 @@
 "use server";
 
 import { z } from "zod";
-import { parseMTTResponse, type ParsedMTTResponse } from "./parser";
+// import { parseMTTResponse, type ParsedMTTResponse } from "./parser"; // Original import for ParsedMTTResponse
+import { parseMTTResponse } from "./parser";
+import type { ParsedMTTResponse, MTTVehicleInfo } from "@/types/domain/mtt/types";
 
 // Schema for the response data
-export interface MTTVehicleInfo {
-  licensePlate: string;
-  status: string;
-  lastUpdate: string;
-  details?: ParsedMTTResponse['details'];
-  error?: string;
-}
+// export interface MTTVehicleInfo { // Removed
+//   licensePlate: string;
+//   status: string;
+//   lastUpdate: string;
+//   details?: ParsedMTTResponse['details'];
+//   error?: string;
+// }
 
 const licensePlateSchema = z.string().regex(/^[A-Z0-9]{6}$/, {
   message: "La patente debe tener 6 caracteres alfanuméricos",

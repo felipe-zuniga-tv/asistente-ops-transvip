@@ -1,14 +1,15 @@
 import { useState, useCallback } from 'react';
+import type { UseClipboardOptions, UseClipboardReturn } from '@/types/hooks/use-clipboard';
 
-interface UseClipboardOptions {
-  timeout?: number;
-}
+// interface UseClipboardOptions { // Removed
+//   timeout?: number;
+// }
 
-interface UseClipboardReturn {
-  copyToClipboard: (text: string) => Promise<void>;
-  isCopied: boolean;
-  error: Error | null;
-}
+// interface UseClipboardReturn { // Removed
+//   copyToClipboard: (text: string) => Promise<void>;
+//   isCopied: boolean;
+//   error: Error | null;
+// }
 
 const useClipboard = ({ timeout = 2000 }: UseClipboardOptions = {}): UseClipboardReturn => {
   const [isCopied, setIsCopied] = useState(false);

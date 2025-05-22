@@ -1,15 +1,4 @@
-interface BookingDetails {
-  id: string
-  driver_id: string
-  start_time: string
-  end_time: string
-  location: string
-}
-
-interface ValidationResult {
-  isValid: boolean
-  error?: string
-}
+import type { BookingDetails, ValidationResult } from '@/types/domain/booking/types';
 
 // Mock booking data
 const mockBookings: BookingDetails[] = [

@@ -1,14 +1,5 @@
 import { cleanMarkdownCodeBlocks } from '@/utils/string'
-
-interface ParsedTicketData {
-  nro_boleta: string
-  entry_date: string
-  entry_time: string
-  exit_date: string
-  exit_time: string
-  amount: number
-  location: string
-}
+import type { ParsedTicketData } from '@/types/domain/tickets/types'
 
 export async function parseTicketImage(imageBase64: string): Promise<ParsedTicketData> {
   const formData = new FormData()

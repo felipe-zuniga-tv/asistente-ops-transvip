@@ -1,10 +1,8 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import type { 
-	ShiftData, 
-	VehicleShiftWithShiftInfo
-} from '@/lib/core/types'
+import type { ShiftData } from "@/types/domain/shifts/types";
+import type { VehicleShiftWithShiftInfo } from "@/types/domain/calendar/types";
 
 export async function getShifts() {
 	const supabase = await createClient()

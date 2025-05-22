@@ -1,2 +1,2 @@
 // Re-export airport domain types
-export * from './models';
+export * from './types';

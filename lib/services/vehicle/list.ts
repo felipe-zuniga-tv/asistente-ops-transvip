@@ -1,26 +1,28 @@
 import { ALLOWED_VEHICLE_NAMES_PARKING_TICKETS, type AllowedCarName } from "@/utils/constants"
 import { getVehicleDetail } from "@/lib/features/vehicle/functions"
+import type { VehicleSelectItem } from "@/types/domain/vehicle/types"
+import type { DriverOwnVehicle, DriverAssignedVehicle } from "@/types/domain/driver/types"
 
-interface Vehicle {
-    value: string
-    label: string
-    type: AllowedCarName
-}
+// interface Vehicle { // Removed
+//     value: string
+//     label: string
+//     type: AllowedCarName
+// }
 
-interface DriverOwnVehicle {
-    registration_number: string
-    working_status?: number
-    unique_car_id: number
-    car_name: string
-}
+// interface DriverOwnVehicle { // Removed
+//     registration_number: string
+//     working_status?: number
+//     unique_car_id: number
+//     car_name: string
+// }
 
-interface DriverAssignedVehicle {
-    unique_car_id: string
-    car_name: string
-    car_number: string
-}
+// interface DriverAssignedVehicle { // Removed
+//     unique_car_id: string
+//     car_name: string
+//     car_number: string
+// }
 
-export async function getDriverVehicleList(driverDetails: any): Promise<Vehicle[]> {
+export async function getDriverVehicleList(driverDetails: any): Promise<VehicleSelectItem[]> {
     // Get and process own vehicles
     const ownVehiclesPromises = (driverDetails.car_details || [])
         .filter((v: DriverOwnVehicle) => v.working_status === 1 && 
@@ -66,6 +68,6 @@ export async function getDriverVehicleList(driverDetails: any): Promise<Vehicle[
     // Deduplicate vehicles by value property
     const uniqueVehicles = Array.from(
         new Set([...ownVehicles, ...assignedVehicles].filter(Boolean).map(v => v.value))
-    ).map(value => [...ownVehicles, ...assignedVehicles].find(v => v?.value === value)!) as Vehicle[]
+    ).map(value => [...ownVehicles, ...assignedVehicles].find(v => v?.value === value)!) as VehicleSelectItem[]
     return uniqueVehicles
 } 

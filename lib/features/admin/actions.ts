@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import type { UpdateSystemConfigInput } from '@/types/domain/admin/types';
 // import { revalidatePath } from 'next/cache'
 // import { Routes } from '@/utils/routes'
 
@@ -25,11 +26,7 @@ export async function updateSystemConfig({
 	key,
 	value,
 	description,
-}: {
-	key: string
-	value: string
-	description?: string
-}) {
+}: UpdateSystemConfigInput) {
 	const supabase = await createClient()
 
 	const { error } = await supabase

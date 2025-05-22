@@ -1,2 +1,2 @@
 // Re-export admin domain types
-export * from './models'; 
+export * from './types'; 

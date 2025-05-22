@@ -1,4 +1,4 @@
-import { VehicleStatus } from "@/components/features/vehicles/vehicle-status";
+import { VehicleStatus } from "@/components/features/vehicle-status/vehicle-status";
 import { getVehicleStatusConfigs, getVehicleStatuses } from "@/lib/features/vehicle-status";
 
 export const revalidate = 60;

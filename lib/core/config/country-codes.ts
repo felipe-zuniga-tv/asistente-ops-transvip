@@ -1,7 +1,9 @@
-interface CountryCode {
-  value: string
-  label: string
-}
+import type { CountryCode } from "@/types/core/utilities";
+
+// interface CountryCode {
+//   value: string
+//   label: string
+// }
 
 export const countryCodes: CountryCode[] = [
   { value: '+56', label: 'Chile (+56)' },

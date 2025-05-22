@@ -9,7 +9,7 @@ import { createClient } from "@/lib/supabase/server"
 import type { 
 	ShiftData,
 	VehicleShiftWithShiftInfo
-} from './types'
+} from '@/types/domain/shifts/types'
 
 const vehicleShiftSchema = z.object({
     vehicle_number: z.coerce.number().positive("El número debe ser positivo"),

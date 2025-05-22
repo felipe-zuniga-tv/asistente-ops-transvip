@@ -1,4 +1,6 @@
-export * from './index';
+import type { Language } from '@/types/core/i18n';
+
+// export * from './index'; // Removed circular dependency
 
 export const translations = {
   'es-CL': {
@@ -371,9 +373,9 @@ export const translations = {
   }
 } as const
 
-export type Language = keyof typeof translations
-export type Translation = typeof translations[Language]
+// export type Language = keyof typeof translations; // Moved to @types/core/i18n.ts
+// export type Translation = typeof translations[Language]; // Moved to @types/core/i18n.ts
 
 export function getTranslation(language: Language) {
-  return translations[language]
+  return translations[language];
 } 

@@ -9,7 +9,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
-import type { Branch, CreateBranchInput } from '@/lib/core/types/admin'
+import type { Branch, CreateBranchInput, UpdateBranchInput } from '@/types/domain/admin/types'
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 interface BranchDialogProps {
     branch?: Branch | null

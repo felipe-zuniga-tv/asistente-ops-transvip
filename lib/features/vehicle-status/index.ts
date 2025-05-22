@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from "@/lib/supabase/server"
-import { VehicleStatus, VehicleStatusConfig, CreateVehicleStatusInput } from "@/lib/core/types"
+import { VehicleStatus, VehicleStatusConfig, CreateVehicleStatusInput } from "@/types/domain/vehicle/types"
 
 // VEHICLE STATUS
 export async function getVehicleStatusConfigs() {

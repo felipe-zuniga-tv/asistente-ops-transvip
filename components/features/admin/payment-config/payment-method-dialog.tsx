@@ -27,8 +27,9 @@ import {
     SelectValue,
 } from "@/components/ui"
 import { createPaymentMethod, updatePaymentMethod } from '@/lib/features/admin'
-import { type PaymentMethod } from '@/lib/core/types/admin'
+import { type PaymentMethod } from '@/types/domain/admin/types'
 import { Label } from '@/components/ui/label'
+import { toast } from "sonner"
 
 const formSchema = z.object({
     name: z.string().min(2, {

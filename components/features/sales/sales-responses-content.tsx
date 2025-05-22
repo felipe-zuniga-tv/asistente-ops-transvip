@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { SalesResponse } from '@/lib/core/types/sales'
+import { SalesResponse } from "@/types/domain/sales/types"
 import { SalesResponsesTable } from './sales-responses-table'
 import { SalesResponseNotesDialog } from './sales-response-notes-dialog'
 import { useToast } from '@/hooks/use-toast'
@@ -9,7 +9,7 @@ import { ConfigCardContainer } from '@/components/ui/tables/config-card-containe
 import { Button } from '@/components/ui/button'
 import { RefreshCw } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useSalesResponses } from '@/hooks/features/sales-responses/use-sales-responses'
+import { useSalesResponses } from '@/hooks/sales-responses/use-sales-responses'
 
 const WHATSAPP_MESSAGES = {
 	'es-CL': "Hola [NAME], te escribimos de Transvip. Este mensaje es sólo para confirmar que obtuvimos correctamente tu número de teléfono. ¡Buen viaje!",

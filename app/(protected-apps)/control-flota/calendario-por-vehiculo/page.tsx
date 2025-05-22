@@ -1,4 +1,4 @@
-import { ShiftsPerVehicleDashboard } from "@/components/features/vehicles/calendar/shifts-per-vehicle-dashboard"
+import { ShiftsPerVehicleDashboard } from "@/components/features/vehicle-shifts/per-vehicle/calendar/shifts-per-vehicle-dashboard"
 
 export default function DashboardPage() {
     return (

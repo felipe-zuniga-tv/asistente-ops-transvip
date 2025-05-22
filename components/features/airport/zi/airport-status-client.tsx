@@ -7,11 +7,11 @@ import { TransvipLogo } from '@/components/features/transvip/transvip-logo'
 import { cn } from '@/utils/ui'
 import { calculateDuration } from '@/utils/time'
 import { LiveClock } from '@/components/ui/live-clock'
-import { ArrowLeft, Clock, Users } from 'lucide-react'
+import { ArrowLeft, Clock, Users, AlertTriangle, ArrowRight, CheckCircle, RefreshCcw, Search, WifiOff, XCircle } from 'lucide-react'
 import { AirportZone, airportZones } from '@/lib/core/config/airport'
 import { Routes } from '@/utils/routes'
 import { QRCodeGeneratorDialog } from '@/components/features/qr/qr-code-generator-dialog'
-import type { AirportVehicleType, AirportVehicleDetail } from '@/lib/core/types/airport'
+import type { AirportVehicleType, AirportVehicleDetail } from '@/types/domain/airport/types'
 
 const secondsToUpdate = 60 // Refresh data
 const maxWaitTime = 15 // Minutes

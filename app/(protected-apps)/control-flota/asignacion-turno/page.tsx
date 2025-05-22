@@ -1,5 +1,5 @@
 import { getShifts, getVehicleShifts } from "@/lib/features/vehicle-shifts"
-import { VehicleShifts } from "@/components/features/vehicles/vehicle-shifts"
+import { VehicleShifts } from "@/components/features/vehicle-shifts/per-vehicle/vehicle-shifts"
 
 export default async function VehicleShiftsPage() {
     const shifts = await getShifts()

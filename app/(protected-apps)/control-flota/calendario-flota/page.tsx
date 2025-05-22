@@ -1,5 +1,5 @@
 import { getBranches } from "@/lib/features/admin"
-import { VehicleShiftsSummary } from "@/components/features/vehicles/fleet/vehicle-shifts-summary"
+import { VehicleShiftsSummary } from "@/components/features/vehicle-shifts/fleet-summary/vehicle-shifts-summary"
 
 export default async function FleetShiftsPage() {
     const branches = await getBranches()

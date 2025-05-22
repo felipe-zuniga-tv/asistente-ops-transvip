@@ -1,7 +1,7 @@
 'use server'
 import { revalidatePath } from 'next/cache'
 import { Routes } from '@/utils/routes'
-import { CreateSalesResponse, SalesResponse } from '@/lib/core/types/sales'
+import { CreateSalesResponse, SalesResponse } from '@/types/domain/sales/types'
 import { createClient } from '@/lib/supabase/server'
 import { getSession } from '@/lib/core/auth';
 

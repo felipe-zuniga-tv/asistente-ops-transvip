@@ -24,7 +24,7 @@ import AirportStatus from "@/components/features/chat/airport/airport-status";
 import { VehicleInfoCard } from "@/components/features/mtt/vehicle-info-card";
 
 import { VEHICLE_STATUS } from "@/utils/constants";
-import { nanoid } from "@/utils/id";
+import { nanoid, customAlphabet } from 'nanoid';
 import { CREATE_DRIVER_RATINGS_SUMMARY, CREATE_TEXT_PROMPT, EMAIL_TEXT_OPS_EXAMPLE, SYSTEM_MESSAGE } from "@/lib/core/config/chat"
 import { getVehicleOnlineStatus, getVehicleDetail } from "@/lib/features/vehicle/functions";
 import { getDriverProfile, searchDriver, getDriverRatings, getDriverRatingSummary } from "@/lib/features/driver";
@@ -496,36 +496,15 @@ async function submitUserMessage(content: string) {
 	}
 }
 
-export type Message = {
-	role: "user" | "assistant" | "system" | "function" | "data" | "tool";
-	content: string;
-	id?: string;
-	name?: string;
-	display?: {
-		name: string;
-		props: Record<string, any>;
-	};
-};
-
-export type AIState = {
-	chatId: string;
-	interactions?: string[];
-	messages: Message[];
-};
-
-export type UIState = {
-	id: string;
-	display: React.ReactNode;
-	spinner?: React.ReactNode;
-	attachments?: React.ReactNode;
-}[];
+import { ChatBubbleIcon } from "@radix-ui/react-icons";
+import type { AIState, UIState, ChatActionMessage } from '@/types/domain/chat/types';
 
 export const AI = createAI<AIState, UIState>({
 	actions: {
 		submitUserMessage,
 	},
 	initialUIState: [],
-	initialAIState: { chatId: nanoid(), interactions: [], messages: [] },
+	initialAIState: { chatId: nanoid(), interactions: [], messages: [] as ChatActionMessage[] },
 	onGetUIState: async () => {
 		"use server";
 		const session = await getSession()
@@ -558,7 +537,7 @@ export const AI = createAI<AIState, UIState>({
 				title,
 				userId,
 				createdAt,
-				messages,
+				messages: messages as ChatActionMessage[],
 				path,
 			};
 			//   await saveChat(chat);
@@ -568,7 +547,7 @@ export const AI = createAI<AIState, UIState>({
 	},
 });
 
-export const getUIStateFromAIState = (aiState: Chat) => {
+export const getUIStateFromAIState = (aiState: AIState) => {
 	return aiState.messages
 		.filter(message => message.role !== 'system')
 		.map((message, index) => ({

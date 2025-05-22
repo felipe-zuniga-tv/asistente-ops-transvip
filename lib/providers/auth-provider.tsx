@@ -3,24 +3,25 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import { Routes } from '@/utils/routes'
+import type { User, AuthContextType } from '@/types/core/auth'
 
 // Define the User type based on your current session structure 
-export interface User {
-    id: string
-    email: string
-    full_name: string
-    role: string[]
-    accessToken: string
-}
+// export interface User {
+//     id: string
+//     email: string
+//     full_name: string
+//     role: string[]
+//     accessToken: string
+// }
 
 // Define the AuthContext interface 
-interface AuthContextType {
-    user: User | null
-    isLoading: boolean
-    login: (email: string, password: string) => Promise<void>
-    logout: () => Promise<void>
-    getUser: () => Promise<User | null>
-}
+// interface AuthContextType {
+//     user: User | null
+//     isLoading: boolean
+//     login: (email: string, password: string) => Promise<void>
+//     logout: () => Promise<void>
+//     getUser: () => Promise<User | null>
+// }
 
 // Create the context with a default value 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)

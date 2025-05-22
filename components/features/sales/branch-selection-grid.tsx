@@ -3,7 +3,8 @@ import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { ConfigCardContainer } from '@/components/ui/tables/config-card-container'
 import { Building2 } from 'lucide-react'
 import { cn } from '@/utils/ui'
-import type { Branch } from '@/lib/core/types/admin'
+import type { Branch } from '@/types/domain/admin/types'
+import { Button } from '@/components/ui/button'
 
 interface BranchSelectionGridProps {
 	branches: Branch[]

@@ -4,7 +4,7 @@ import { format } from "date-fns"
 import { branches } from "@/lib/core/config/transvip-general"
 import { DRIVER_SEARCH_API_URL, DRIVER_PROFILE_API_URL, DRIVER_RATINGS_API_URL } from "@/lib/core/config/urls"
 import { getResponseFromURL, getAssignedVehicles } from "@/lib/core/utils/helpers"
-import { IDriverProfile } from "@/types/domain/chat/models"
+import type { DriverDetails, DriverRating } from '@/types/domain/driver/types'
 import { getAccessToken, buildUrlParams } from "@/utils/helpers"
 
 const MAX_RESULTS = 10
@@ -67,7 +67,7 @@ export async function searchDrivers({ limit = 10, offset = 0 }: { limit?: number
     return result.length > 0 ? result : null
 }
 
-export async function getDriverProfile(fleet_id: number, accessToken: string | null = null) {
+export async function getDriverProfile(fleet_id: number, accessToken: string | null = null): Promise<DriverDetails | null> {
     if (!accessToken) {
         try {
             accessToken = await getAccessToken()
@@ -115,7 +115,7 @@ export async function getDriverProfile(fleet_id: number, accessToken: string | n
 
     console.log(assigned_cars)
 
-    const output_item: IDriverProfile = {
+    const output_item: DriverDetails = {
         id: driver_id,
         created_at: creation_datetime,
         last_login,
@@ -211,12 +211,6 @@ export async function getDriverRatings(fleet_id: number, accessToken: string | n
     if (status !== 200) return null
 
     return data
-}
-
-// Driver rating summary interface
-interface DriverRating {
-    fleet_rating: number;
-    fleet_comment: string;
 }
 
 export const getDriverRatingSummary = async (driverRatings: DriverRating[]): Promise<Record<string, { count: number; comments: Record<string, number> }>> => {

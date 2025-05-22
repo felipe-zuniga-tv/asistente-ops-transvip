@@ -9,7 +9,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
-import type { VehicleType, CreateVehicleTypeInput } from '@/lib/core/types/admin'
+import type { VehicleType, CreateVehicleTypeInput, UpdateVehicleTypeInput } from '@/types/domain/admin/types'
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 interface VehicleTypeDialogProps {
     vehicleType?: VehicleType | null
@@ -89,6 +92,23 @@ export function VehicleTypeDialog({
         }
     }
 
+    const formSchema = z.object({
+        name: z.string().min(1, 'El nombre es requerido'),
+        code: z.string().min(1, 'El código es requerido'),
+        passenger_capacity: z.number().min(1, 'La capacidad de pasajeros es requerida'),
+        luggage_capacity: z.number().min(1, 'La capacidad de maletas es requerida'),
+        is_active: z.boolean(),
+    });
+
+    const {
+        register,
+        handleSubmit: hookFormHandleSubmit,
+        formState: { errors },
+    } = useForm<CreateVehicleTypeInput>({
+        resolver: zodResolver(formSchema),
+        defaultValues: formData,
+    });
+
     return (
         <SimpleDialog isOpen={open} onClose={() => onOpenChange(false)}>
             <SimpleDialogHeader>
@@ -96,58 +116,44 @@ export function VehicleTypeDialog({
                     {isEditMode ? 'Editar Tipo de Vehículo' : 'Nuevo Tipo de Vehículo'}
                 </SimpleDialogTitle>
             </SimpleDialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={hookFormHandleSubmit(handleSubmit)} className="space-y-4">
                 <div className="space-y-2">
                     <Label htmlFor="name">Nombre</Label>
                     <Input
                         id="name"
-                        value={formData.name}
-                        onChange={(e) =>
-                            setFormData({ ...formData, name: e.target.value })
-                        }
+                        {...register('name')}
                         required
                     />
+                    {errors.name && <span className="text-red-500">{errors.name.message}</span>}
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="code">Código</Label>
                     <Input
                         id="code"
-                        value={formData.code}
-                        onChange={(e) =>
-                            setFormData({ ...formData, code: e.target.value })
-                        }
+                        {...register('code')}
                         required
                     />
+                    {errors.code && <span className="text-red-500">{errors.code.message}</span>}
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="passenger_capacity">Capacidad de Pasajeros</Label>
                     <Input
                         id="passenger_capacity"
                         type="number"
-                        value={formData.passenger_capacity}
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                passenger_capacity: parseInt(e.target.value, 10),
-                            })
-                        }
+                        {...register('passenger_capacity')}
                         required
                     />
+                    {errors.passenger_capacity && <span className="text-red-500">{errors.passenger_capacity.message}</span>}
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="luggage_capacity">Capacidad de Maletas</Label>
                     <Input
                         id="luggage_capacity"
                         type="number"
-                        value={formData.luggage_capacity}
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                luggage_capacity: parseInt(e.target.value, 10),
-                            })
-                        }
+                        {...register('luggage_capacity')}
                         required
                     />
+                    {errors.luggage_capacity && <span className="text-red-500">{errors.luggage_capacity.message}</span>}
                 </div>
                 <div className="flex items-center space-x-2">
                     <Switch

@@ -2,7 +2,7 @@ import { branches, vehicleTypes } from "@/lib/core/config"
 import { VEHICLE_STATUS_API_URL, VEHICLE_DETAIL_API_URL } from "@/lib/core/config/urls"
 import { getResponseFromURL, cleanDriverInfo } from "@/lib/core/utils/helpers"
 import { VEHICLE_STATUS } from "@/utils/constants"
-import { IVehicleDetail } from "@/types/domain/chat/models"
+import { IVehicleDetail } from "@/types/domain/vehicle/types"
 import { buildUrlParams, getAccessToken } from "@/utils/helpers"
 import { getSession } from "@/lib/core/auth"
 

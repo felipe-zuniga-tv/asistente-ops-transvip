@@ -13,7 +13,8 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import type { VehicleType } from '@/lib/core/types/admin'
+import type { VehicleType } from '@/types/domain/admin/types'
+import { toast } from "sonner";
 
 interface AlertDialogDeleteVehicleTypeProps {
     vehicleType: VehicleType | null

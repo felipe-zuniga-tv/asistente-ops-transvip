@@ -3,12 +3,12 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { OperationsFormQuestion, OperationsFormSection } from "@/lib/core/types/vehicle/forms";
 import { QuestionInput } from "@/components/ui/forms/question-input";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { saveOperationsFormAnswer, updateOperationsFormAnswer, updateFormResponse } from "@/lib/features/forms";
 import { Routes } from "@/utils/routes";
+import type { OperationsFormQuestion, OperationsFormSection } from "@/types/domain/forms/types";
 
 interface FormResponseProps {
     formId: string;
@@ -25,7 +25,6 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
     const [pendingSaves, setPendingSaves] = useState<Set<string>>(new Set());
     const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
     const saveTimeoutsRef = useRef<Record<string, NodeJS.Timeout>>({});
-    const { toast } = useToast();
     const router = useRouter();
 
     const section = sections[currentSection];
@@ -117,10 +116,8 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
             });
         } catch (error) {
             console.error(error);
-            toast({
-                title: "Error",
+            toast.error("Error", {
                 description: "Ha ocurrido un error al guardar la respuesta.",
-                variant: "destructive",
             });
             setPendingSaves(prev => {
                 const newSet = new Set(prev);
@@ -181,10 +178,8 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
             // Clear validation errors when changing section
             setValidationErrors({});
         } else {
-            toast({
-                title: "Validación fallida",
+            toast.error("Validación fallida", {
                 description: "Por favor corrija los errores antes de continuar.",
-                variant: "destructive",
             });
         }
     };
@@ -192,10 +187,8 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
     async function onComplete() {
         // Validate current section before completion
         if (!validateCurrentSection()) {
-            toast({
-                title: "Validación fallida",
+            toast.error("Validación fallida", {
                 description: "Por favor corrija los errores antes de completar el formulario.",
-                variant: "destructive",
             });
             return;
         }
@@ -203,8 +196,7 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
         // Wait for any pending saves to complete
         const pendingSavesList = Array.from(pendingSaves);
         if (pendingSavesList.length > 0) {
-            toast({
-                title: "Guardando cambios",
+            toast("Guardando cambios", {
                 description: "Espere mientras se guardan los cambios pendientes...",
             });
             
@@ -227,10 +219,8 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
         );
 
         if (!allRequiredAnswered) {
-            toast({
-                title: "Formulario incompleto",
+            toast.error("Formulario incompleto", {
                 description: "Por favor complete todas las preguntas obligatorias.",
-                variant: "destructive",
             });
             return;
         }
@@ -242,17 +232,14 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
                 completed_at: new Date().toISOString()
             });
 
-            toast({
-                title: "Formulario completado",
+            toast.success("Formulario completado", {
                 description: "El formulario ha sido completado exitosamente.",
             });
             router.refresh();
             router.push(Routes.PUBLIC.FORMULARIOS);
         } catch (error) {
-            toast({
-                title: "Error",
+            toast.error("Error", {
                 description: "Ha ocurrido un error al completar el formulario.",
-                variant: "destructive",
             });
         }
     }

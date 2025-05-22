@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { SidebarItem } from "./types"
+import { SidebarItem } from "@/types/domain/chat/types"
 import { Routes } from "@/utils/routes"
 import { chatbotMenu } from "@/lib/core/config/chat-sidebar"
 import { useMessageSubmission } from "@/hooks/use-message-submission"

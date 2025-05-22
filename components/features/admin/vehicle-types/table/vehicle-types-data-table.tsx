@@ -1,8 +1,8 @@
 "use client";
 
+import { DataTable } from "@/components/ui/data-table";
 import type { ColumnDef } from "@tanstack/react-table";
-import type { VehicleType } from "@/lib/core/types/admin";
-import { DataTable } from "@/components/ui/tables/data-table";
+import type { VehicleType } from "@/types/domain/admin/types";
 
 interface DataTableProps {
     columns: ColumnDef<VehicleType>[];
