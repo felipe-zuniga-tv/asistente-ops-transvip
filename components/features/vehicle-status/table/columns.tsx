@@ -12,7 +12,6 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui";
 import type { VehicleStatus } from "@/types/domain/vehicle/types";
-import { StatusDialog } from "../status-dialog";
 
 const FORMAT_DATE = "dd/MM/yyyy HH:mm"
 

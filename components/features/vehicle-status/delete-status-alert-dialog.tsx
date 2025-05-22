@@ -10,8 +10,6 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { toast } from "sonner";
-import { deleteVehicleStatus } from "@/lib/features/vehicle-status";
 import type { VehicleStatus } from "@/types/domain/vehicle/types";
 
 interface AlertDialogDeleteStatusProps {

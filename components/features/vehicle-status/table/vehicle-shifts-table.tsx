@@ -1,1 +1,0 @@
-import { DataTable } from "@/components/ui/tables/data-table" 

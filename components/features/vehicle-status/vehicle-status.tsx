@@ -8,8 +8,6 @@ import { useRouter } from "next/navigation";
 import { AlertDialogDeleteStatus } from "./delete-status-alert-dialog";
 import { toast } from "sonner";
 import { deleteVehicleStatus } from "@/lib/features/vehicle-status";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { VehicleStatus } from "@/types/domain/vehicle/types";
 import { ConfigCardContainer } from "@/components/ui/tables/config-card-container";
 import { getSession } from "@/lib/core/auth";

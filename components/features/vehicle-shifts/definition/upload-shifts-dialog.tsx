@@ -11,7 +11,7 @@ import {
     Button
 } from "@/components/ui";
 import { createShift } from "@/lib/features/vehicle-shifts";
-import { Shift } from "./shifts-definition";
+import type { Shift } from "@/types/domain/shifts/types";
 
 interface UploadShiftsDialogProps {
     isOpen: boolean;

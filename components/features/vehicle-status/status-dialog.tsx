@@ -27,8 +27,7 @@ import { Button,
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { createVehicleStatus, updateVehicleStatus } from "@/lib/features/vehicle-status";
-import type { VehicleStatus, CreateVehicleStatusInput, UpdateVehicleStatusInput } from "@/types/domain/vehicle/types";
-import type { VehicleStatusConfig } from "@/types/domain/vehicle/types";
+import type { VehicleStatus } from "@/types/domain/vehicle/types";
 import { getSession } from "@/lib/core/auth";
 
 interface StatusConfig {
@@ -132,12 +131,14 @@ export function StatusDialog({
             if (statusToEdit) {
                 await updateVehicleStatus(statusToEdit.id, {
                     ...data,
+                    comments: data.comments ?? null,
                     updated_by: userEmail
                 });
                 toast.success("Estado actualizado exitosamente");
             } else {
                 await createVehicleStatus({
                     ...data,
+                    comments: data.comments ?? null,
                     created_by: userEmail,
                     is_active: true
                 });
