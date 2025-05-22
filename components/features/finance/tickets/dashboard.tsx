@@ -5,13 +5,9 @@ import { ConfigCardContainer } from "@/components/ui/tables/config-card-containe
 import { columns } from "@/components/features/finance/tickets/table/columns"
 import { ParkingTicketsDataTable } from "@/components/features/finance/tickets/table/parking-tickets-data-table"
 import UploadButton from "@/components/features/finance/tickets/upload/ticket-upload-button"
-import { ParkingTicket } from "@/types"
+import type { ParkingTicket } from "@/types/domain/tickets/types"
 
-interface TicketsDashboardProps {
-  tickets: ParkingTicket[]
-}
-
-export function TicketsDashboard({ tickets }: TicketsDashboardProps) {
+export function TicketsDashboard({ tickets }: { tickets: ParkingTicket[] }) {
   return (
     <ConfigCardContainer
       title="Tickets de Estacionamiento"

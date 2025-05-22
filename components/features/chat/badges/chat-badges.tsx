@@ -1,8 +1,11 @@
-import { IBookingInfoOutput, IBranch, IDriverProfile, IVehicleDetail } from "@/types/domain/chat/types";
 import { cn } from '@/utils/ui';
-import PaymentAvatar from "../payment/payment-avatar";
+import { IBookingInfoOutput } from "@/types/domain/booking/types";
+import { Branch } from "@/types/domain/admin/types";
+import { DriverDetails } from "@/types/domain/driver/types";
+import { IVehicleDetail } from "@/types/domain/vehicle/types";
 import { differenceInDays } from "date-fns";
 import { Badge } from "@/components/ui/badge";
+import PaymentAvatar from "../payment/payment-avatar";
 
 // Badge Configurations
 const bookingStatus = [
@@ -35,7 +38,7 @@ const vehicleStatus = [
 ]
 
 // Components
-export function CityBadge({ branch, className, isCode = true }: { branch?: IBranch, className?: string, isCode?: boolean }) {
+export function CityBadge({ branch, className, isCode = true }: { branch?: Branch, className?: string, isCode?: boolean }) {
     return (
         <Badge variant={"default"} 
             className={cn("py-1 bg-slate-600 hover:bg-slate-700 text-xs text-white", className as string)}>
@@ -103,7 +106,7 @@ export function PaymentRouteTypeBadge({ result, className } : {
     )
 }
 
-export function DriverStatusBadge({ result } : { result : IDriverProfile }) {
+export function DriverStatusBadge({ result } : { result : DriverDetails }) {
     const driverStatusItem = driverStatus.filter(ds => ds.status === result.status.current)[0]
     const driverStatusLabel = driverStatusItem ? driverStatusItem.label : result.status.current
     const driverStatusColor = driverStatusItem.color
@@ -129,7 +132,7 @@ export function VehicleStatusBadge({ result } : { result : IVehicleDetail }) {
     )
 }
 
-export function LicenseExpirationBadge({ result } : { result : IDriverProfile }) {
+export function LicenseExpirationBadge({ result } : { result : DriverDetails }) {
     let days_to_expiration_license = null
     if (result.driver_documents.license.expiration_date) {
         const _aux_license_expiration_date = result.driver_documents.license.expiration_date?.substring(0, result.driver_documents.license.expiration_date.indexOf("T")) as string

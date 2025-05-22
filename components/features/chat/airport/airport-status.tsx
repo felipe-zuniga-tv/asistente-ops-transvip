@@ -1,6 +1,6 @@
-import { Routes } from "@/utils/routes";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
+import { Routes } from "@/utils/routes";
 
 export default function AirportStatus({ services }: { services: any[] }) {
 

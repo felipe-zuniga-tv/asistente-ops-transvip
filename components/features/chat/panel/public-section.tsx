@@ -10,7 +10,7 @@ import {
 	SidebarMenuItem,
 	SidebarMenuButton
 } from "@/components/ui/sidebar"
-import { SidebarItem, SidebarSection } from "@/types/domain/chat/types"
+import { SidebarItem, SidebarSection } from "@/components/features/chat/panel/types"
 
 interface PublicSectionProps {
 	section: SidebarSection

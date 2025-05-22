@@ -29,7 +29,7 @@ export default async function TicketDetailPage(props: PageProps) {
 	}
     const ticket = await getTicketById(params.id)
 
-    if (!ticket || ticket.driver_id !== session.driver_id) {
+    if (!ticket || ticket.driver_id !== String(session.driver_id)) {
 		notFound()
 	}
 

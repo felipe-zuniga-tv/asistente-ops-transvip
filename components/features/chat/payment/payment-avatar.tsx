@@ -1,4 +1,4 @@
-import { IBookingInfoOutput } from "@/types/domain/chat/types";
+import { IBookingInfoOutput } from "@/types/domain/booking/types";
 import { paymentMethods } from "@/lib/core/config/transvip-general";
 
 export default function PaymentAvatar({ result }: { result: IBookingInfoOutput }) {

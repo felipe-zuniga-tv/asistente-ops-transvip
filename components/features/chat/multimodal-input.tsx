@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/utils/ui';
 import equal from 'fast-deep-equal';
-import { ChatSession } from '@/types/domain/chat';
+import { ChatSession } from '@/types/domain/chat/types';
 interface MultimodalInputProps {
 	chatId: string;
 	input: string;

@@ -58,8 +58,12 @@ export interface IVehicleStatusSearchResult {
 }
 
 export interface IVehicleDetailDrivers {
-    driver_id: number;
+    fleet_id: number;
     full_name: string;
+    country_code: string;
+    phone: string;
+    first_name: string;
+    last_name: string;
 }
 
 export interface IVehicleDetail {

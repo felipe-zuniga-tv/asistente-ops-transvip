@@ -1,17 +1,17 @@
 'use client'
 import Link from 'next/link';
-import { CarIcon, PhoneIcon, UserCircleIcon } from 'lucide-react';
+import Image from 'next/image'
 import { cn } from '@/utils/ui';
+import { CarIcon, PhoneIcon, UserCircleIcon } from 'lucide-react';
 import { AssistantMessageContent } from '../message';
-import { IVehicleDetailDrivers, IVehicleDetail } from '@/types/domain/chat/types';
 import { Badge, Button } from '@/components/ui';
 import ToolsButton from '../tools/tools-button';
 import { CityBadge, VehicleStatusBadge } from '../badges/chat-badges';
+import { IVehicleDetailDrivers, IVehicleDetail } from "@/types/domain/vehicle/types";
 import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
-import Image from 'next/image'
 import { useMessageSubmission } from '@/hooks/use-message-submission';
-import { ChatSession } from '@/types/domain/chat';
+import { ChatSession } from '@/types/domain/chat/types';
 
 const vehicleColor = [
     { name: 'BLANCO', code: '#ffffff', color: 'bg-white hover:bg-gray-100 text-black' },

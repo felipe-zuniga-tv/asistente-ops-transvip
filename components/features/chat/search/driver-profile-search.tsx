@@ -1,7 +1,7 @@
 'use client'
 import { useMessageSubmission } from '@/hooks/use-message-submission';
 import { UserCircle } from 'lucide-react';
-import { IDriverAssignedVehicles, IDriverProfile, IDriverVehicles } from '@/types/domain/chat/types';
+import { DriverDetails, IDriverVehicles, IDriverAssignedVehicles } from '@/types/domain/driver/types';
 import { AssistantMessageContent } from '../message';
 import { Badge, Button } from '@/components/ui';
 import DriverAvatar from '@/components/features/drivers/driver-avatar';
@@ -13,12 +13,12 @@ import 'react-medium-image-zoom/dist/styles.css'
 
 export function DriverProfile({ session, driverProfile, content }: { 
     session: ChatSession,
-    driverProfile: IDriverProfile
+    driverProfile: DriverDetails
     content: string 
 }) {
     const { submitMessage } = useMessageSubmission()
 
-    const handleDriverClick = async (result : IDriverProfile) => {
+    const handleDriverClick = async (result : DriverDetails) => {
         const userMessageContent = `Me gustaría construir un resumen de las evaluaciones del conductor ${result.personal.email}.`
         await submitMessage(userMessageContent, session);
     }
@@ -85,7 +85,7 @@ function DriverProfileCard({ result, handleDriverClick, handleVehicleClick } : {
 }
 
 function DriverMainDetails({ result } : { 
-    result : IDriverProfile 
+    result : DriverDetails 
 }) {
     return (
         <div className='driver-main-details'>
@@ -113,7 +113,7 @@ function DriverMainDetails({ result } : {
 }
 
 function DriverRatings({ result, handleClick } : { 
-    result : IDriverProfile
+    result : DriverDetails
     handleClick: any
  }) {
     return (
@@ -124,7 +124,7 @@ function DriverRatings({ result, handleClick } : {
     )
 }
 
-function DriverDocuments({ result } : { result : IDriverProfile }) {
+function DriverDocuments({ result } : { result : DriverDetails }) {
     return (
         <div className='driver-documents'>
             <div className='flex flex-col gap-2 items-start justify-start text-slate-700'>
@@ -186,7 +186,7 @@ function DriverDocuments({ result } : { result : IDriverProfile }) {
 }
 
 function DriverOwnVehicles({ result, handleClick } : {
-    result : IDriverProfile 
+    result : DriverDetails 
     handleClick: any
 }) {
     if (result.vehicles.length === 0 || result.vehicles.filter(v => v.working_status === 1).length === 0) return null
@@ -228,7 +228,7 @@ function DriverOwnVehicles({ result, handleClick } : {
 }
 
 function DriverVehicles({ result, handleClick } : {
-    result : IDriverProfile 
+    result : DriverDetails 
     handleClick: any
 }) {
     // if (result.assigned_vehicles.length === 0 || result.assigned_vehicles.filter(v => v.active).length === 0) return
@@ -270,7 +270,7 @@ function DriverVehicles({ result, handleClick } : {
 }
 
 function DriverBadges({ result, handleStatusClick } : { 
-    result : IDriverProfile
+    result : DriverDetails
     handleStatusClick?: any
 }) {
     return (

@@ -1,4 +1,4 @@
-import { UIState } from '@/lib/features/chat/actions'
+import { UIState } from "@/types/domain/chat/types"
 import { nanoid } from 'nanoid'
 
 export interface ChatList {

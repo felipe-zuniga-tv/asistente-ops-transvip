@@ -88,8 +88,8 @@ export function ShiftsDefinition({ shifts }: ShiftsCardProps) {
     };
 
     const generateShiftsTemplate = () => {
-        const headers = ["Sucursal", "Nombre", "Hora Inicio", "Hora Fin", "Día Libre"]
-        const example = ["Santiago", "Turno AM", "08:00", "16:00", "1"]
+        const headers = ["Sucursal", "Nombre", "Hora Inicio", "Hora Fin", "Día Libre", "Anexo 2"]
+        const example = ["Santiago", "Turno AM", "08:00", "16:00", "1", "True"]
         return [headers.join(","), example.join(",")].join("\n")
     }
 

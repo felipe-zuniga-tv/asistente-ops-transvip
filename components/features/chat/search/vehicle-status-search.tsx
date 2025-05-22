@@ -1,10 +1,10 @@
 'use client'
-import { useMessageSubmission } from '@/hooks/use-message-submission';
 import Image from 'next/image';
+import { cn } from '@/utils/ui';
+import { useMessageSubmission } from '@/hooks/use-message-submission';
 import { CheckCircle, SparklesIcon } from 'lucide-react';
 import { AssistantMessageContent } from '../message';
-import { IVehicleStatusSearchResult } from '@/types/domain/chat/types';
-import { cn } from '@/utils/ui';
+import { IVehicleStatusSearchResult } from '@/types/domain/vehicle/types';
 import { VEHICLE_STATUS } from '@/utils/constants';
 import { Button } from '@/components/ui';
 import ToolsButton from '../tools/tools-button';

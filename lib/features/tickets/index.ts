@@ -68,11 +68,11 @@ export async function createTicket(
   // No need to upload image as we now receive the URL directly
   const supabase = await createClient()
   
-  const ticket: Omit<ParkingTicket, 'id'> = {
+  const ticket: Omit<ParkingTicket, 'id' | 'created_at'> = {
     booking_id: bookingId,
     driver_id: driverId,
     vehicle_number: vehicleNumber,
-    submission_date: new Date(),
+    submission_date: new Date().toISOString(),
     status: 'pending_review',
     parsed_data: {
       ...parsedData,

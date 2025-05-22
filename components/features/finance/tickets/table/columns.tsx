@@ -8,7 +8,7 @@ import {
     Button,
 } from "@/components/ui"
 import { ArrowUp, ArrowDown } from "lucide-react"
-import type { ParkingTicket } from "@/types/domain/tickets"
+import type { ParkingTicket } from "@/types/domain/tickets/types"
 import TicketImageViewer from "./ticket-image-viewer"
 import { statusMap, type TicketStatus } from "./status-map"
 

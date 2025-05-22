@@ -2,7 +2,7 @@
 
 import { Chat } from './chat';
 import { Message } from 'ai';
-import { ChatSession } from '@/types/domain/chat';
+import { ChatSession } from '@/types/domain/chat/types';
 
 export interface TransvipPanelProps {
 	id: string;
