@@ -1,5 +1,18 @@
 import type { Branch } from '@/types/domain/admin/types'; // Import Branch from admin
 
+export interface Driver {
+    id: string
+    first_name: string
+    last_name: string
+    country_code: string
+    phone: string
+    branch_name: string
+    is_active: boolean
+    fleet_id: string
+    fleet_thumb_image?: string
+    // add additional fields as needed
+}
+
 export interface DriverRating {
     fleet_rating: number;
     fleet_comment: string;
@@ -106,8 +119,8 @@ export interface DriverSession {
 }
 
 export interface CreateDriverSessionReturnType {
-	session: DriverSession;
-	encryptedSession: string;
+    session: DriverSession;
+    encryptedSession: string;
 }
 
 export interface DriverOwnVehicle {

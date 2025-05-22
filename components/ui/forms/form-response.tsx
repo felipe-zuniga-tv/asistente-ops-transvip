@@ -129,9 +129,9 @@ export function FormResponse({ formId, responseId, sections, answers }: FormResp
 
     // Cleanup timeouts on unmount
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        const timeouts = saveTimeoutsRef.current;
         return () => {
-            Object.values(saveTimeoutsRef.current).forEach(timeout => {
+            Object.values(timeouts).forEach(timeout => {
                 clearTimeout(timeout);
             });
         };

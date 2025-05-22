@@ -1,4 +1,4 @@
-export {};
+import { Branch } from "../admin";
 
 export interface DateFields {
     creation_datetime: string;
@@ -28,9 +28,6 @@ export interface ValidationResult {
 }
 
 // Copied from types/domain/chat/models.ts
-// IBranch will need to be imported or defined if not already (e.g. from driver types or admin types)
-import type { IBranch } from '../driver/types'; // Temporary import, to be resolved
-
 export interface IBookingInfo {
     job_id: number;
     job_status: number;
@@ -92,7 +89,7 @@ export interface IBookingInfoOutput {
         cancellation_reason?: string;
     };
     dates: DateFields; // Uses DateFields defined above
-    branch?: IBranch;
+    branch?: Branch;
     directions: {
         origin: {
             address: string;

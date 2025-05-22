@@ -4,7 +4,7 @@ import { addDays, format, parseISO, getDay } from 'date-fns'
 import { getVehicleShiftsByDateRange } from '@/lib/features/vehicle-shifts'
 import { getVehicleStatuses } from '@/lib/features/vehicle-status'
 import { VEHICLE_STATUS } from '@/utils/constants'
-import type { ShiftSummary, ShiftSummaryVehicle } from '@/types/domain/calendar/types.ts'
+import type { ShiftSummary } from '@/types/domain/calendar/types'
 import type { UseVehicleShiftsProps } from "@/types/hooks/features/vehicle";
 
 export function useVehicleShifts({ currentDate, branchId }: UseVehicleShiftsProps) {
@@ -128,7 +128,7 @@ export function useVehicleShifts({ currentDate, branchId }: UseVehicleShiftsProp
     } finally {
       setIsLoading(false)
     }
-  }, [currentDate, branchId, vehicleStatusesData.loaded]) // vehicleStatusesData.loaded ensures general statuses are there
+  }, [currentDate, branchId, vehicleStatusesData.loaded, vehicleStatusesData.statuses]) // vehicleStatusesData.loaded ensures general statuses are there
 
   // Effect to run fetchSummaries when its dependencies change
   useEffect(() => {
@@ -140,7 +140,7 @@ export function useVehicleShifts({ currentDate, branchId }: UseVehicleShiftsProp
     } else if (currentDate && !vehicleStatusesData.loaded) {
       setIsLoading(true);
     }
-  }, [currentDate, branchId, vehicleStatusesData.loaded, fetchSummaries])
+  }, [currentDate, branchId, vehicleStatusesData.loaded, vehicleStatusesData.statuses, fetchSummaries])
 
 
   // Function to fetch online status for specific vehicles on demand
