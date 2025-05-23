@@ -35,8 +35,9 @@ export function AuthProvider({
     const router = useRouter()
 
     // Helper to determine if the current path is public (no auth needed)
+    const publicPaths = Object.values(Routes.PUBLIC)
     const isPublicPath = useCallback((pathname: string) => {
-        return pathname === Routes.LOGIN || pathname.startsWith('/auth');
+        return publicPaths.includes(pathname);
     }, []);
 
     // Get current user, update state, and handle redirects

@@ -59,6 +59,7 @@ export const Routes = Object.freeze({
 		TURNOS: '/turnos',
 		FORMULARIOS: '/formularios',
 		TICKETS: '/conductores',
+		SEGURIDAD: '/seguridad',
 	},
 	QR_GEN: '/qr-code',
 	ROUTING: {
@@ -69,6 +70,7 @@ export const Routes = Object.freeze({
 		RESPONSES_SUMMARY: '/ventas/respuestas/resumen',
 		BRANCH_RESPONSES: '/ventas/respuestas/:branch',
 	},
+	SEGURIDAD: '/seguridad',
 	TEXT: {
 		WRITE: '/write',
 	},
