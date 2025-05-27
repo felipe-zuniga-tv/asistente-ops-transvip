@@ -44,31 +44,30 @@ export function AuthProvider({
     const getUser = useCallback(async (): Promise<User | null> => {
         try {
             const response = await fetch('/api/auth/session');
+            console.log('response', response)
             if (!response.ok) {
                 setUser(null);
-                if (!isPublicPath(window.location.pathname)) {
-                    router.push(Routes.LOGIN);
-                }
+                // if (!isPublicPath(window.location.pathname)) {
+                //     router.push(Routes.LOGIN);
+                // }
                 return null;
             }
 
             const data = await response.json();
+            console.log('data', data)
             if (data.user) {
                 setUser(data.user);
                 return data.user;
             } else {
                 setUser(null);
-                if (!isPublicPath(window.location.pathname)) {
-                    router.push(Routes.LOGIN);
-                }
+                // if (!isPublicPath(window.location.pathname)) {
+                //     router.push(Routes.LOGIN);
+                // }
                 return null;
             }
         } catch (error) {
             console.error('Get user error:', error);
             setUser(null);
-            if (!isPublicPath(window.location.pathname)) {
-                router.push(Routes.LOGIN);
-            }
             return null;
         }
     }, [router, setUser, isPublicPath]);

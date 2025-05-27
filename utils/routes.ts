@@ -70,7 +70,13 @@ export const Routes = Object.freeze({
 		RESPONSES_SUMMARY: '/ventas/respuestas/resumen',
 		BRANCH_RESPONSES: '/ventas/respuestas/:branch',
 	},
-	SEGURIDAD: '/seguridad',
+	SEGURIDAD: {
+		HOME: '/sso',
+		CONDUCTORES: '/sso/conductores',
+		VEHICULOS: '/sso/moviles',
+		ASIGNACIONES: '/sso/asignaciones',
+		RESUMEN: '/sso/resumen',
+	},
 	TEXT: {
 		WRITE: '/write',
 	},

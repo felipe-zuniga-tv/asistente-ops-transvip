@@ -13,15 +13,11 @@ export default function ProtectedRoute({
 }) {
     const { user, isLoading, isLogged } = useAuth()
 
-    if (!isLogged || !user) {
-        redirect(Routes.LOGIN)
-    }
-
     useEffect(() => {
-        if (!isLoading && !user) {
+        if (!isLoading && (!user || !isLogged)) {
             redirect(Routes.LOGIN)
         }
-    }, [user, isLoading])
+    }, [user, isLoading, isLogged])
 
     if (isLoading) {
         return (

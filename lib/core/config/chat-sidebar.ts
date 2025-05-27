@@ -268,6 +268,27 @@ const driversMenu: SidebarItem = {
 	],
 }
 
+const safetyMenu: SidebarItem = {
+	title: "Seguridad",
+	url: "#",
+	icon: UserRound,
+	active: false,
+	items: [
+		{
+			title: 'Buscar Conductores',
+			icon: UserRound,
+			url: Routes.SEGURIDAD.CONDUCTORES,
+			active: true
+		},
+		{
+			title: 'Buscar Vehículos',
+			icon: Car,
+			url: Routes.SEGURIDAD.VEHICULOS,
+			active: true
+		},
+	],
+}
+
 const bookingsMenu: SidebarItem = {
 	title: "Reservas",
 	url: "#",
@@ -342,6 +363,7 @@ export const sidebarData: { navMain: SidebarItem[], navSecondary: SidebarItem[] 
 		financeMenu,
 		formsMenu,
 		salesFormsMenu,
+		safetyMenu,
 		controlFlotaAdminMenu,
 		controlFlotaViewMenu,
 		bookingsMenu,
