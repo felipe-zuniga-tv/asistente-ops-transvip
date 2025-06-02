@@ -32,7 +32,7 @@ export default function SeguridadPage() {
                 </CardTitle>
             </CardHeader>
             <CardContent className="p-8 py-6">
-                <div className="w-full flex flex-col gap-6 max-w-md">
+                <div className="w-full flex flex-col gap-6">
                     {seguridadLinks.map((link) => (
                         <Link key={link.href} href={link.href} target="_blank" className="block transition-transform hover:scale-[1.02] min-h-28">
                             <Card className="h-full hover:bg-transvip/80 hover:text-white transition-colors">

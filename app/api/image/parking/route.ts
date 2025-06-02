@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
                 const buffer = Buffer.from(bytes);
                 const base64Image = buffer.toString('base64');
 
-                // Call OpenAI API
+                // Call LLM API
                 const result = await generateText({
                     model: google(GOOGLE_MODEL_NAME),
                     system: TICKET_OCR_SYSTEM_MESSAGE,

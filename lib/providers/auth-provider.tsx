@@ -44,7 +44,6 @@ export function AuthProvider({
     const getUser = useCallback(async (): Promise<User | null> => {
         try {
             const response = await fetch('/api/auth/session');
-            console.log('response', response)
             if (!response.ok) {
                 setUser(null);
                 // if (!isPublicPath(window.location.pathname)) {
@@ -54,7 +53,6 @@ export function AuthProvider({
             }
 
             const data = await response.json();
-            console.log('data', data)
             if (data.user) {
                 setUser(data.user);
                 return data.user;
@@ -92,7 +90,6 @@ export function AuthProvider({
 
         if (pollingEnabled && isLogged) {
             intervalId = setInterval(async () => {
-                console.log('Polling for session update...');
                 await getUser();
             }, pollingInterval);
         }

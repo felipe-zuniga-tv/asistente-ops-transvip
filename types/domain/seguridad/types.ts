@@ -15,6 +15,35 @@ export interface Division extends BaseAuditEntity {
 export interface Driver extends BaseAuditEntity {
   fleet_id: string; // Unique identifier for the driver within the fleet
   name: string; // Full name of the driver
+
+  // New fields based on your requirements:
+  branch_name?: string; // Sucursal
+  driver_category?: string; // Categoria conductor
+  employment_status?: string; // Estado (e.g., Active, Inactive, On Vacation)
+  digital_folder_url?: string; // Carpeta digital (CONDUCTOR) - URL to the driver's digital folder
+  national_id_number: string; // RUN - Chilean National ID number
+  national_id_dv: string; // dv - Verification digit for RUN
+  phone_contact?: string; // TELÉFONO CONDUCTOR
+  email_contact?: string; // CORREO
+  employer_rut?: string; // RUT EMPLEADOR - Employer's tax ID
+  employer_name?: string; // EMPLEADOR - Employer's name
+  national_id_card_expiry_date?: string; // timestamptz - Vencimiento CI
+  occupational_exam_expiry_date?: string; // timestamptz - Examen Ocupacional (expiry date)
+  psychotechnical_exam_expiry_date?: string; // timestamptz - Examen psico (expiry date)
+  risk_aversion_test_expiry_date?: string; // timestamptz - Examen aversión al riesgo (expiry date)
+  driving_license_expiry_date?: string; // timestamptz - Vencimiento licencia de conducir
+  defensive_driving_course_expiry_date?: string; // timestamptz - Manejo a la defensiva (expiry date)
+  new_hire_induction_expiry_date?: string; // timestamptz - Inducción hombre nuevo (expiry date or completion status)
+
+  // Division-specific requirement expiry dates
+  // These correspond to specific trainings/certifications for CODELCO divisions
+  dch_odi_expiry_date?: string; // timestamptz - (División Chuquicamata - ODI)
+  drt_plant_driving_expiry_date?: string; // timestamptz - (División Radomiro Tomic - Conducción planta)
+  dmh_plant_driving_expiry_date?: string; // timestamptz - (División Ministro Hales - Conducción planta)
+  dgm_driving_qualification_expiry_date?: string; // timestamptz - (División Gabriela Mistral - Conducción)
+
+  overall_accreditation_status?: string; // Estado acreditación - Overall driver accreditation status
+  notes?: string; // OBSERVACION - General notes or observations
 }
 
 // Represents a vehicle

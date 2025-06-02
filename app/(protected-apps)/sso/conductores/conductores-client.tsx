@@ -19,6 +19,7 @@ import {
 import { ConductoresDialog } from './conductores-dialog'; // To be created for add/edit driver
 import { ClearancesDialog } from './clearances-dialog'; // To be created for managing clearances
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog'; // Assuming AlertDialog is available
+import type { DriverFormValues } from './conductores-dialog'; // Import the form values type from the dialog
 
 interface ConductoresClientContentProps {
   initialDrivers: DriverWithClearances[];
@@ -86,7 +87,7 @@ export function ConductoresClientContent({
     setEditingDriver(null);
   };
 
-  const onDriverSave = async (values: Pick<Driver, 'fleet_id' | 'name'>, id?: string) => {
+  const onDriverSave = async (values: DriverFormValues, id?: string) => {
     try {
       if (id) {
         await updateDriver(id, values);
@@ -119,6 +120,10 @@ export function ConductoresClientContent({
   const columns: ColumnDef<DriverWithClearances>[] = useMemo(() => [
     { accessorKey: 'fleet_id', header: 'ID Flota' },
     { accessorKey: 'name', header: 'Nombre Conductor' },
+    { accessorKey: 'branch_name', header: 'Sucursal', cell: ({ row }) => row.original.branch_name || 'N/A' },
+    { accessorKey: 'national_id_number', header: 'RUN', cell: ({row}) => `${row.original.national_id_number}-${row.original.national_id_dv}` },
+    { accessorKey: 'phone_contact', header: 'Teléfono', cell: ({ row }) => row.original.phone_contact || 'N/A' },
+    { accessorKey: 'email_contact', header: 'Email', cell: ({ row }) => row.original.email_contact || 'N/A' },
     {
       id: 'clearances_summary',
       header: 'Habilitaciones (Divisiones)',
@@ -154,7 +159,7 @@ export function ConductoresClientContent({
   ], [router]); // Add dependencies if any function used in columns changes
 
   return (
-    <ConfigCardContainer title="Gestión de Conductores y Habilitaciones" onAdd={handleAddNewDriver}>
+    <ConfigCardContainer title="Gestión de Conductores y Habilitaciones" onAdd={handleAddNewDriver} className="w-full">
       {/* Add Filters, Download/Upload buttons if needed, similar to ShiftsDefinition */}
       <DataTable columns={columns} data={drivers} />
 

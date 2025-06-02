@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Routes } from "@/utils/routes";
 import { Card, CardHeader, CardTitle } from "@/components/ui";
-import { Settings, CreditCard, Car, Building2, Cog } from "lucide-react";
+import { Settings, CreditCard, Car, Building2, Cog, Pickaxe } from "lucide-react";
 import { cn } from '@/utils/ui';
 import { ConfigCardContainer } from "@/components/ui/tables/config-card-container";
 
@@ -16,6 +16,7 @@ const adminTools = [
     { name: 'Métodos de Pago', active: true, href: Routes.ADMIN.PAYMENT_METHODS_CONFIG, icon: CreditCard },
     { name: 'Estados de Vehículos', active: true, href: Routes.ADMIN.VEHICLE_STATUS_CONFIG, icon: Settings },
     { name: 'Tipos de Vehículos', active: true, href: Routes.ADMIN.VEHICLE_TYPES_CONFIG, icon: Car },
+    { name: 'Divisiones Mineras', active: true, href: Routes.ADMIN.MINING_DIVISIONS_CONFIG, icon: Pickaxe },
     { name: 'Configuración Sistema', active: false, href: Routes.ADMIN.SYSTEM_CONFIG, icon: Cog },
 ];
 
